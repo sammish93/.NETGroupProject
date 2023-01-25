@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.HelloWorld", "Hiof.DotNetCourse.V2023.Group14.HelloWorld\Hiof.DotNetCourse.V2023.Group14.HelloWorld.csproj", "{EB96AED0-F64E-4DF4-817D-FE83956D3DA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.HelloWorld", "Hiof.DotNetCourse.V2023.Group14.HelloWorld\Hiof.DotNetCourse.V2023.Group14.HelloWorld.csproj", "{EB96AED0-F64E-4DF4-817D-FE83956D3DA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiofDotNetCourse.V2023.Group14.HelloAgain", "HiofDotNetCourse.V2023.Group14.HelloAgain\HiofDotNetCourse.V2023.Group14.HelloAgain.csproj", "{67B37B40-1DB6-4F86-A0A0-CC83BF458597}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EB96AED0-F64E-4DF4-817D-FE83956D3DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB96AED0-F64E-4DF4-817D-FE83956D3DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB96AED0-F64E-4DF4-817D-FE83956D3DA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67B37B40-1DB6-4F86-A0A0-CC83BF458597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67B37B40-1DB6-4F86-A0A0-CC83BF458597}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67B37B40-1DB6-4F86-A0A0-CC83BF458597}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67B37B40-1DB6-4F86-A0A0-CC83BF458597}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
