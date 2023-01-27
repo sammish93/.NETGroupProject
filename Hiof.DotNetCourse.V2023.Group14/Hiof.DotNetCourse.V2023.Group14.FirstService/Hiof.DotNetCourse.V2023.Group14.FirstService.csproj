@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>Hiof.DotNetCourse.V2023.Group14.Frist.Service</AssemblyName>
+    <AssemblyName>Hiof.DotNetCourse.V2023.Group14.FirstService</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />

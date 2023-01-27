@@ -5,9 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.HelloWorld", "Hiof.DotNetCourse.V2023.Group14.HelloWorld\Hiof.DotNetCourse.V2023.Group14.HelloWorld.csproj", "{EB96AED0-F64E-4DF4-817D-FE83956D3DA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiofDotNetCourse.V2023.Group14.HelloAgain", "HiofDotNetCourse.V2023.Group14.HelloAgain\HiofDotNetCourse.V2023.Group14.HelloAgain.csproj", "{67B37B40-1DB6-4F86-A0A0-CC83BF458597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiofDotNetCourse.V2023.Group14.HelloAgain", "HiofDotNetCourse.V2023.Group14.HelloAgain\HiofDotNetCourse.V2023.Group14.HelloAgain.csproj", "{67B37B40-1DB6-4F86-A0A0-CC83BF458597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.First.Service", "Hiof.DotNetCourse.V2023.Group14.Frist.Service\Hiof.DotNetCourse.V2023.Group14.First.Service.csproj", "{D18B855F-2326-43EC-A0EC-8F4A242F4817}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.FirstService", "Hiof.DotNetCourse.V2023.Group14.Frist.Service\Hiof.DotNetCourse.V2023.Group14.FirstService.csproj", "{D18B855F-2326-43EC-A0EC-8F4A242F4817}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
