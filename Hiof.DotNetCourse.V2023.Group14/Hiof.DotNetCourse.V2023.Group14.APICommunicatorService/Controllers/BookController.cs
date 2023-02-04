@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
 
 namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
 {
@@ -8,7 +7,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
     public class BookController : ControllerBase
     {
         private static BooksDataTransferObject books = new();
-      
+
+        // Changed client to a global variable instead
+        private static readonly HttpClient client = new();
+
 
         private readonly ILogger<BookController> _logger;
 
@@ -20,7 +22,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookISBN")]
         public async Task<string> Get(string ISBN)
         {
-            using var client = new HttpClient();
             var url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + ISBN;
             HttpResponseMessage responseMessage = await client.GetAsync(url);
             responseMessage.EnsureSuccessStatusCode();
@@ -32,7 +33,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookTitle")]
         public async Task<string> GetByTitle(string Title)
         {
-            using var client = new HttpClient();
             var url = "https://www.googleapis.com/books/v1/volumes?q=intitle:" + Title;
             HttpResponseMessage responseMessage = await client.GetAsync(url);
             responseMessage.EnsureSuccessStatusCode();
@@ -44,7 +44,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookAuthor")]
         public async Task<string> GetByAuthors(string Authors)
         {
-            using var client = new HttpClient();
             var url = "https://www.googleapis.com/books/v1/volumes?q=inauthor:" + Authors;
             HttpResponseMessage responseMessage = await client.GetAsync(url);
             responseMessage.EnsureSuccessStatusCode();
@@ -56,7 +55,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookCategories")]
         public async Task<string> GetBySubject(string Subject)
         {
-            using var client = new HttpClient();
             var url = "https://www.googleapis.com/books/v1/volumes?q=categories:" + Subject;
             HttpResponseMessage responseMessage = await client.GetAsync(url);
             responseMessage.EnsureSuccessStatusCode();
