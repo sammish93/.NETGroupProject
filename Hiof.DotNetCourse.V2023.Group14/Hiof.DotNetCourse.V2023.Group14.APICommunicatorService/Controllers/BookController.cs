@@ -36,7 +36,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         {
             var response = await CallAPI("intitle", Title);
             if (!CheckResponse(response))
-                return "Title do not exists";
+                return ErrorMessage("Title");
 
             return response;
         }
@@ -44,14 +44,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookAuthor")]
         public async Task<string> GetByAuthors(string Authors)
         {
-            return await CallAPI("inauthor", Authors);
+            var response = await CallAPI("inauthor", Authors);
+            if (!CheckResponse(response))
+                return ErrorMessage("Author");
+
+            return response;
          
         }
 
         [HttpGet("GetBookCategories")]
         public async Task<string> GetBySubject(string Subject)
         {
-            return await CallAPI("categories", Subject);
+            var response = await CallAPI("categories", Subject);
+            if (!CheckResponse(response))
+                return ErrorMessage("Category");
+
+            return response;
         
         }
 
@@ -75,7 +83,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             return responseBody;
         }
 
-        // Checks if the API response returns books or not
+        // Checks if the API response returns any books or not
         private static bool CheckResponse(string response)
         {
             if (response != null)
@@ -93,6 +101,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         {
             return $"https://www.googleapis.com/books/v1/volumes?q={search}:"
                     + parameter;
+        }
+
+        // Message to deliver in swagger.
+        private static string ErrorMessage(string subject)
+        {
+            return $"{subject} do not exists";
         }
 
     }
