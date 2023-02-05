@@ -6,12 +6,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
     [Route("books")]
     public class BookController : ControllerBase
     {
-        private static readonly BooksDataTransferObject books = new();
-
-        // Changed client to a global variable instead
-        private static readonly HttpClient client = new();
-
-
+        private static readonly BookDTO books = new();
         private readonly ILogger<BookController> _logger;
 
         public BookController(ILogger<BookController> logger)
@@ -22,80 +17,63 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookISBN")]
         public async Task<string> Get(string ISBN)
         {
-            var url = "";
-            var responseBody = "";
+            string errorMessage = "ISBN must be 10 or 13 digits.";
 
-            if (ISBN.Length < 13)
-            {
-                Console.WriteLine("ISBN must be 13 digits");
-            }
+            if (ISBN.Length == 13 || ISBN.Length == 10)
+                return await CallAPI("isbn", ISBN);
             else
             {
-                url = GetUrl("isbn", ISBN);
-                HttpResponseMessage responseMessage = await client.GetAsync(url);
-
-                ExceptionHandler(responseMessage);
-                responseBody = await responseMessage.Content.ReadAsStringAsync();
-
+                Console.WriteLine(errorMessage);
+                return errorMessage;
             }
-
-            return responseBody;
         }
 
         [HttpGet("GetBookTitle")]
         public async Task<string> GetByTitle(string Title)
         {
-            var url = GetUrl("intitle", Title);
-            HttpResponseMessage responseMessage = await client.GetAsync(url);
-
-            ExceptionHandler(responseMessage);
-            var responseBody = await responseMessage.Content.ReadAsStringAsync();
-
-            return responseBody;
+            return await CallAPI("intitle", Title);
+    
         }
 
         [HttpGet("GetBookAuthor")]
         public async Task<string> GetByAuthors(string Authors)
         {
-            var url = GetUrl("inauthor", Authors);
-            HttpResponseMessage responseMessage = await client.GetAsync(url);
-
-            ExceptionHandler(responseMessage);
-            var responseBody = await responseMessage.Content.ReadAsStringAsync();
-
-            return responseBody;
+            return await CallAPI("inauthor", Authors);
+         
         }
 
         [HttpGet("GetBookCategories")]
         public async Task<string> GetBySubject(string Subject)
         {
-            var url = GetUrl("categories", Subject);
-            HttpResponseMessage responseMessage = await client.GetAsync(url);
+            return await CallAPI("categories", Subject);
+        
+        }
 
-            ExceptionHandler(responseMessage);
+        // Method that executes the API calls.
+        private async Task<string> CallAPI(string endpoint, string query)
+        {
+            var url = GetUrl(endpoint, query);
+            HttpClient client = new HttpClient();
+            HttpResponseMessage responseMessage;
+            try
+            {
+                responseMessage = await client.GetAsync(url);
+                responseMessage.EnsureSuccessStatusCode();
+            }
+            catch(HttpRequestException ex)
+            {
+                _logger.LogError(ex, "Request error");
+                return "Request error";
+            }
             var responseBody = await responseMessage.Content.ReadAsStringAsync();
-
             return responseBody;
         }
 
         // Returns URL for googleapis with specified search and endparameter
         private static String GetUrl(string search, string parameter)
         {
-            return $"https://www.googleapis.com/books/v1/volumes?q={search}:" + parameter;
-        }
-
-        // Handle exceptions on bad requests.
-        private static void ExceptionHandler(HttpResponseMessage response)
-        {
-            try
-            {
-                response.EnsureSuccessStatusCode();
-            }
-            catch(HttpRequestException exception)
-            {
-                Console.WriteLine("Exception caught: {0}" + exception);
-            }
-
+            return $"https://www.googleapis.com/books/v1/volumes?q={search}:"
+                    + parameter;
         }
 
     }
