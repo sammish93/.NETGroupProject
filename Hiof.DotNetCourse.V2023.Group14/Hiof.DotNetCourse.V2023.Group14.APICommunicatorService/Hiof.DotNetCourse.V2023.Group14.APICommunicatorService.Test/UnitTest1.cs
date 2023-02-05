@@ -1,4 +1,5 @@
-namespace Tests;
+
+namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Tests;
 
 [TestClass]
 public class UnitTest1
