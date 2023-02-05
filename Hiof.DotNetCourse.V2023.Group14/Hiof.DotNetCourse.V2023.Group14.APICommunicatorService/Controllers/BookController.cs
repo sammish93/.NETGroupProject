@@ -1,4 +1,7 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+
 
 namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
 {
@@ -29,10 +32,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         }
 
         [HttpGet("GetBookTitle")]
-        public async Task<string> GetByTitle(string Title)
+        public async Task<string?> GetByTitle(string Title)
         {
-            return await CallAPI("intitle", Title);
-    
+            var response = await CallAPI("intitle", Title);
+
+            if (response != null)
+            {
+                var bookData = JsonConvert.DeserializeObject<Exists>(response);
+
+                if (bookData != null)
+                    return response;
+                else
+                    return "The title do not exists";
+            }
+            return response;
         }
 
         [HttpGet("GetBookAuthor")]

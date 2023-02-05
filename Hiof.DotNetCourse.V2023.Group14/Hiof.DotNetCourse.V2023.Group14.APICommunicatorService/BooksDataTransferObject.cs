@@ -11,4 +11,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService
         public string? Categories { get; set; }
         public string? Language { get; set; }
     }
+
+    // Use this class when the API do not return any books.
+    public class Exists
+    {
+        public string? kind { get; set; }
+        public int totalItems { get; set; }
+    }
 }
