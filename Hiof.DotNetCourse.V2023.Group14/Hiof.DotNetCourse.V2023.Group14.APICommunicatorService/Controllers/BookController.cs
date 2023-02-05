@@ -9,7 +9,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
     [Route("books")]
     public class BookController : ControllerBase
     {
-        private static readonly BookDTO books = new();
+        private readonly BookDTO books = new();
         private readonly ILogger<BookController> _logger;
 
         public BookController(ILogger<BookController> logger)
@@ -21,14 +21,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         public async Task<string> Get(string ISBN)
         {
             string message = "ISBN must be 10 or 13 digits.";
+            var response = await CallAPI("isbn", ISBN);
 
             if (ISBN.Length == 13 || ISBN.Length == 10)
-                return await CallAPI("isbn", ISBN);
-            else
             {
-                Console.WriteLine(message);
-                return message;
+                if (!CheckResponse(response))
+                    return ErrorMessage("ISBN");
+                else
+                    return response;
+                    
             }
+            Console.WriteLine(message);
+            return message;
         }
 
         [HttpGet("GetBookTitle")]
@@ -77,7 +81,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             catch(HttpRequestException ex)
             {
                 _logger.LogError(ex, "Request error");
-                return "Request error";
+                return "HTTP error status code: " + ex;
             }
             var responseBody = await responseMessage.Content.ReadAsStringAsync();
             return responseBody;
@@ -88,7 +92,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         {
             if (response != null)
             {
-                var bookData = JsonConvert.DeserializeObject<Exists>(response);
+                var bookData = JsonConvert.DeserializeObject<BookDTO>(response);
 
                 if (bookData != null && bookData.totalItems != 0)
                     return true;
@@ -108,6 +112,5 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         {
             return $"{subject} do not exists";
         }
-
     }
 }
