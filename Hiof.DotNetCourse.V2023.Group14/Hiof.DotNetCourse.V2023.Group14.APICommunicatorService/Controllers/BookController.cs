@@ -40,7 +40,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             {
                 var bookData = JsonConvert.DeserializeObject<Exists>(response);
 
-                if (bookData != null)
+                if (bookData != null && bookData.totalItems != 0)
                     return response;
                 else
                     return "The title do not exists";
