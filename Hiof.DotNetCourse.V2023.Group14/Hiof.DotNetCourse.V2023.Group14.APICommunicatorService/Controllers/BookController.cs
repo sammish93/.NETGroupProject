@@ -20,14 +20,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookISBN")]
         public async Task<string> Get(string ISBN)
         {
-            string errorMessage = "ISBN must be 10 or 13 digits.";
+            string message = "ISBN must be 10 or 13 digits.";
 
             if (ISBN.Length == 13 || ISBN.Length == 10)
                 return await CallAPI("isbn", ISBN);
             else
             {
-                Console.WriteLine(errorMessage);
-                return errorMessage;
+                Console.WriteLine(message);
+                return message;
             }
         }
 
@@ -35,16 +35,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         public async Task<string?> GetByTitle(string Title)
         {
             var response = await CallAPI("intitle", Title);
+            if (!CheckResponse(response))
+                return "Title do not exists";
 
-            if (response != null)
-            {
-                var bookData = JsonConvert.DeserializeObject<Exists>(response);
-
-                if (bookData != null && bookData.totalItems != 0)
-                    return response;
-                else
-                    return "The title do not exists";
-            }
             return response;
         }
 
@@ -80,6 +73,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             }
             var responseBody = await responseMessage.Content.ReadAsStringAsync();
             return responseBody;
+        }
+
+        // Checks if the API response returns books or not
+        private static bool CheckResponse(string response)
+        {
+            if (response != null)
+            {
+                var bookData = JsonConvert.DeserializeObject<Exists>(response);
+
+                if (bookData != null && bookData.totalItems != 0)
+                    return true;
+            }
+            return false;
         }
 
         // Returns URL for googleapis with specified search and endparameter
