@@ -10,13 +10,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
     public class BookController : ControllerBase
     {
         private readonly BookDTO books = new();
-        private readonly ILogger<BookController>? _logger;
-
-        // Empty constructor for testing
-        public BookController()
-        {
-
-        }
+        private readonly ILogger<BookController> _logger;
 
         public BookController(ILogger<BookController> logger)
         {
@@ -42,9 +36,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         }
 
         [HttpGet("GetBookTitle")]
-        public async Task<string?> GetByTitle(string Title)
+        public async Task<string?> GetByTitle(string title)
         {
-            var response = await CallAPI("intitle", Title);
+            var response = await CallAPI("intitle", title);
             if (!CheckResponse(response))
                 return ErrorMessage("Title");
 
@@ -52,9 +46,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         }
 
         [HttpGet("GetBookAuthor")]
-        public async Task<string> GetByAuthors(string Authors)
+        public async Task<string> GetByAuthors(string authors)
         {
-            var response = await CallAPI("inauthor", Authors);
+            var response = await CallAPI("inauthor", authors);
             if (!CheckResponse(response))
                 return ErrorMessage("Author");
 
@@ -63,9 +57,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         }
 
         [HttpGet("GetBookCategories")]
-        public async Task<string> GetBySubject(string Subject)
+        public async Task<string> GetBySubject(string subject)
         {
-            var response = await CallAPI("categories", Subject);
+            var response = await CallAPI("categories", subject);
             if (!CheckResponse(response))
                 return ErrorMessage("Category");
 
@@ -106,7 +100,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             return false;
         }
 
-        // Returns URL for googleapis with specified search and endparameter
+        // Returns URL for googleapis with specified search and endpoint
         private static String GetUrl(string search, string endpoint)
         {
             return $"https://www.googleapis.com/books/v1/volumes?q={search}:"

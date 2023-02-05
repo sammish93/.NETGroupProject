@@ -19,9 +19,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Moq" Version="4.18.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.APICommunicatorService\Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Moq" />
   </ItemGroup>
 </Project>

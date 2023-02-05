@@ -2,15 +2,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService
 {
     public class BookDTO
     {
-        public int ISBN { get; set; }
-        public string? Title{ get; set; }  
-        public string? Author { get; set; }
-        public string? Publisher { get; set; }
-        public int pageCount { get; set; }
-        public string? PrintType { get; set; }
-        public string? Categories { get; set; }
-        public string? Language { get; set; }
         public string? kind { get; set; }
         public int totalItems { get; set; }
+        public List<Items>? items { get; set; }
+
+    }
+
+    public class Items
+    {
+        public string? kind { get; set; }
+        public string? id { get; set; }
+        public VolumeInfo? volumeInfo { get; set; }
+    }
+
+    public class VolumeInfo
+    {
+        public string? title { get; set; }
+        public List<string>? author { get; set; }
     }
 }
