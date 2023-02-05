@@ -10,7 +10,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
     public class BookController : ControllerBase
     {
         private readonly BookDTO books = new();
-        private readonly ILogger<BookController> _logger;
+        private readonly ILogger<BookController>? _logger;
+
+        // Empty constructor for testing
+        public BookController()
+        {
+
+        }
 
         public BookController(ILogger<BookController> logger)
         {
@@ -87,7 +93,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             return responseBody;
         }
 
-        // Checks if the API response returns any books or not
+        // Checks if the API response returns any books or not.
         private static bool CheckResponse(string response)
         {
             if (response != null)
@@ -101,10 +107,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         }
 
         // Returns URL for googleapis with specified search and endparameter
-        private static String GetUrl(string search, string parameter)
+        private static String GetUrl(string search, string endpoint)
         {
             return $"https://www.googleapis.com/books/v1/volumes?q={search}:"
-                    + parameter;
+                    + endpoint;
         }
 
         // Message to deliver in swagger.
