@@ -67,7 +67,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         
         }
 
-        // Method that executes the API calls.
+        // Execute API calls and return response as a string.
         private async Task<string> CallAPI(string endpoint, string query)
         {
             var url = GetUrl(endpoint, query);
