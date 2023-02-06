@@ -8,7 +8,7 @@ namespace APICommunicator.Tests;
 
 public class BookControllerTest
 {
-    // TEST FOR GetBookISBN
+    // TEST FOR GetBookISBN.
     [Fact]
     public async Task GetValidResponeOnValidISBN()
     {
@@ -50,7 +50,7 @@ public class BookControllerTest
 
     }
 
-    // TESTS FOR GetBookTitle
+    // TESTS FOR GetBookTitle.
     [Fact]
     public async Task GetValidResponseOnValidTitle()
     {
@@ -66,5 +66,72 @@ public class BookControllerTest
         Assert.Equal(title, resultTitle);
     }
 
+    [Fact]
+    public async Task GetErrorMessageOnFakeTitle()
+    {
+        var mockLogger = new Mock<ILogger<BookController>>();
+        var controller = new BookController(mockLogger.Object);
 
+        var title = "dfkjekjffd";
+        var result = await controller.GetByTitle(title);
+
+        Assert.Equal("Title do not exists", result);
+    }
+
+    
+    // TESTS FOR GetBookAuthor.
+    [Fact]
+    public async Task GetValidResponseOnValidAuthor()
+    {
+        var mockLogger = new Mock<ILogger<BookController>>();
+        var controller = new BookController(mockLogger.Object);
+
+        var author = "Eric Matthes";
+        var result = await controller.GetByAuthors(author);
+
+        var data = JsonSerializer.Deserialize<BookDTO>(result);
+        string? name = data?.items?[0].volumeInfo?.authors?[0];
+
+        Assert.Equal(author, name);
+    }
+
+    [Fact]
+    public async Task GetErrorMessageOnFakeAuthor()
+    {
+        var mockLogger = new Mock<ILogger<BookController>>();
+        var controller = new BookController(mockLogger.Object);
+
+        var author = "dfkjekjffd";
+        var result = await controller.GetByAuthors(author);
+
+        Assert.Equal("Author do not exists", result);
+    }
+
+    // TESTS FOR GetBookCategories.
+    [Fact]
+    public async Task GetValidResponseOnValidCategory()
+    {
+        var mockLogger = new Mock<ILogger<BookController>>();
+        var controller = new BookController(mockLogger.Object);
+
+        var category = "Programming";
+        var result = await controller.GetBySubject(category);
+
+        var data = JsonSerializer.Deserialize<BookDTO>(result);
+        string? categoryResult = data?.items?[0].volumeInfo?.categories?[0];
+
+        Assert.Equal("Computers", categoryResult);
+    }
+
+    [Fact]
+    public async Task GetErrorMessageOnFakeCategory()
+    {
+        var mockLogger = new Mock<ILogger<BookController>>();
+        var controller = new BookController(mockLogger.Object);
+
+        var category = "fdjksad";
+        var result = await controller.GetBySubject(category);
+
+        Assert.Equal("Category do not exists", result);
+    }
 }

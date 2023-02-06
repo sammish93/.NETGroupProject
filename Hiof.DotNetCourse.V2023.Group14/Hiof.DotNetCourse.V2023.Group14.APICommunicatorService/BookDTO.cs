@@ -18,6 +18,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService
     public class VolumeInfo
     {
         public string? title { get; set; }
-        public List<string>? author { get; set; }
+        public List<string>? authors { get; set; }
+        public List<string>? categories { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
     [Route("books")]
     public class BookController : ControllerBase
     {
-        private readonly BookDTO books = new();
+        private readonly BookDTO _books = new();
         private readonly ILogger<BookController> _logger;
 
         public BookController(ILogger<BookController> logger)
