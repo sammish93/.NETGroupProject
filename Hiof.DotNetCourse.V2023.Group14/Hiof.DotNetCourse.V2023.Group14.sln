@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Gro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiofDotNetCourse.V2023.Group14.HelloAgain", "HiofDotNetCourse.V2023.Group14.HelloAgain\HiofDotNetCourse.V2023.Group14.HelloAgain.csproj", "{67B37B40-1DB6-4F86-A0A0-CC83BF458597}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.FirstService", "Hiof.DotNetCourse.V2023.Group14.FirstService\Hiof.DotNetCourse.V2023.Group14.FirstService.csproj", "{3551E2C9-9434-4AEF-AC3B-D4EF004C717A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.APICommunicatorService", "Hiof.DotNetCourse.V2023.Group14.APICommunicatorService\Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.csproj", "{4D992D22-80A0-424A-9177-7B742AD09FE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICommunicator.Tests", "APICommunicator.Tests\APICommunicator.Tests.csproj", "{393BDD5A-B8A9-462E-B5A2-E5CC7B56F045}"
@@ -27,10 +25,6 @@ Global
 		{67B37B40-1DB6-4F86-A0A0-CC83BF458597}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67B37B40-1DB6-4F86-A0A0-CC83BF458597}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67B37B40-1DB6-4F86-A0A0-CC83BF458597}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3551E2C9-9434-4AEF-AC3B-D4EF004C717A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3551E2C9-9434-4AEF-AC3B-D4EF004C717A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3551E2C9-9434-4AEF-AC3B-D4EF004C717A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3551E2C9-9434-4AEF-AC3B-D4EF004C717A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D992D22-80A0-424A-9177-7B742AD09FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D992D22-80A0-424A-9177-7B742AD09FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D992D22-80A0-424A-9177-7B742AD09FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
