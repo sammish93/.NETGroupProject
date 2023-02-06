@@ -8,7 +8,7 @@ namespace APICommunicator.Tests;
 
 public class BookControllerTest
 {
-    // TEST FOR GetBookISBN.
+    // Test for GetBookISBN.
     [Fact]
     public async Task GetValidResponeOnValidISBN()
     {
@@ -50,7 +50,7 @@ public class BookControllerTest
 
     }
 
-    // TESTS FOR GetBookTitle.
+    // Test for GetBookTitle.
     [Fact]
     public async Task GetValidResponseOnValidTitle()
     {
@@ -79,7 +79,7 @@ public class BookControllerTest
     }
 
     
-    // TESTS FOR GetBookAuthor.
+    // Test for GetBookAuthor.
     [Fact]
     public async Task GetValidResponseOnValidAuthor()
     {
@@ -107,7 +107,7 @@ public class BookControllerTest
         Assert.Equal("Author do not exists", result);
     }
 
-    // TESTS FOR GetBookCategories.
+    // Test for GetBookCategories.
     [Fact]
     public async Task GetValidResponseOnValidCategory()
     {
@@ -122,7 +122,7 @@ public class BookControllerTest
 
         Assert.Equal("Computers", categoryResult);
     }
-
+   
     [Fact]
     public async Task GetErrorMessageOnFakeCategory()
     {

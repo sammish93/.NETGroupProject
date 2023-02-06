@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -23,7 +24,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             string message = "ISBN must be 10 or 13 digits.";
             var response = await CallAPI("isbn", ISBN);
 
-            if (ISBN.Length == 13 || ISBN.Length == 10)
+            if ((ISBN.Length == 13) || (ISBN.Length == 10))
             {
                 if (!CheckResponse(response))
                     return ErrorMessage("ISBN");
@@ -103,8 +104,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         // Returns URL for googleapis with specified search and endpoint
         private static String GetUrl(string search, string endpoint)
         {
-            return $"https://www.googleapis.com/books/v1/volumes?q={search}:"
-                    + endpoint;
+            StringBuilder url = new StringBuilder();
+            url.Append("https://www.googleapis.com/books/v1/volumes?q=");
+            url.Append($"{search}:");
+            url.Append(endpoint);
+
+            return url.ToString();
         }
 
         // Message to deliver in swagger.
