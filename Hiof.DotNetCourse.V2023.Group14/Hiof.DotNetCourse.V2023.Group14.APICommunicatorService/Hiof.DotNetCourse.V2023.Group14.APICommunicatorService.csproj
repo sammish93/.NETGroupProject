@@ -17,4 +17,8 @@
   <ItemGroup>
     <None Remove="Newtonsoft.Json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj" />
+  </ItemGroup>
 </Project>

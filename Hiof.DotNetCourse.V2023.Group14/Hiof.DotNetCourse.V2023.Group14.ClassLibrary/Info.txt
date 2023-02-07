@@ -1,0 +1,3 @@
+﻿This is our class library that holds models for classes that will be used by different projects/services.
+If you're having trouble finding or importing the models here, make sure that the project you are currently in refers to this ClassLibrary project.
+This is done by right clicking on your current project, selecting 'Add', and then selecting 'Project Reference'. Make sure that Hiof.DotNetCourse.V2023.Group14.ClassLibrary is selected, then click Ok.

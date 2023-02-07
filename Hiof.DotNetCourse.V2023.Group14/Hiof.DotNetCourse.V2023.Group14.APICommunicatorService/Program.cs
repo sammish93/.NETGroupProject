@@ -1,5 +1,4 @@
-
-namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
+namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService
 {
     public class Program
     {
