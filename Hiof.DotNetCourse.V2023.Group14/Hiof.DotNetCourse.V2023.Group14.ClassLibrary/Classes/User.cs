@@ -33,6 +33,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
             _username = username;
             _email = email;
             // This will store a hash that uses a salt stored in secrets.
+            // NOTE: The password won't be implemented like this. We can create a method.
+            // public string createSha256(string password) {
+            //     string salt = <salt from secrets>; 
+            //     string saltedPassword = salt + password;
+            //     return ShaCreator(saltedPassword);
             _password = password;
             _firstName = firstName;
             _lastName = lastName;
@@ -44,6 +49,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
             _lastActive = DateTime.UtcNow;
         }
 
+        // Getters and Setters.
         public Guid Id { get => _id; set => _id = value; }
         public string Username => _username;
         public string Email { get => _email; set => _email = value; }
