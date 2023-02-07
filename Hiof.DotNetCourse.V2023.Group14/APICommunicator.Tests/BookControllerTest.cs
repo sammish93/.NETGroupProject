@@ -8,43 +8,43 @@ namespace APICommunicator.Tests;
 
 public class BookControllerTest
 {
-    // Test for GetBookISBN.
+    // Test for GetBookISBN. To run tests in VS, go to 'Test' and select 'Run all Tests'.
     [Fact]
-    public async Task GetValidResponeOnValidISBN()
+    public async Task GetValidResponeOnValidIsbn()
     {
         var mockLogger = new Mock<ILogger<BookController>>();
         var controller = new BookController(mockLogger.Object);
 
-        var ISBN = "1260440214";
-        var result = await controller.Get(ISBN);
+        var isbn = "1260440214";
+        var result = await controller.Get(isbn);
 
-        var data = JsonSerializer.Deserialize<BookDTO>(result);
+        var data = JsonSerializer.Deserialize<BookDto>(result);
         string? id = data?.items?[0].id;
 
         Assert.Equal("YPRQtgEACAAJ", id);
     }
 
     [Fact]
-    public async Task GetBadResponseOnShortISBN()
+    public async Task GetBadResponseOnShortIsbn()
     {
         var mockLogger = new Mock<ILogger<BookController>>();
         var controller = new BookController(mockLogger.Object);
 
-        var ISBN = "123";
-        var result = await controller.Get(ISBN);
+        var isbn = "123";
+        var result = await controller.Get(isbn);
 
         Assert.Equal("ISBN must be 10 or 13 digits.", result);
 
     }
 
     [Fact]
-    public async Task GetBadResponseOnFakeISBN()
+    public async Task GetBadResponseOnFakeIsbn()
     {
         var mockLogger = new Mock<ILogger<BookController>>();
         var controller = new BookController(mockLogger.Object);
 
-        var ISBN = "6573849267364";
-        var result = await controller.Get(ISBN);
+        var isbn = "6573849267364";
+        var result = await controller.Get(isbn);
 
         Assert.Equal("ISBN do not exists", result);
 
@@ -60,7 +60,7 @@ public class BookControllerTest
         var title = "DATABASESYSTEMER.";
         var result = await controller.GetByTitle(title);
 
-        var data = JsonSerializer.Deserialize<BookDTO>(result);
+        var data = JsonSerializer.Deserialize<BookDto>(result);
         string? resultTitle = data?.items?[0].volumeInfo?.title;
 
         Assert.Equal(title, resultTitle);
@@ -89,7 +89,7 @@ public class BookControllerTest
         var author = "Eric Matthes";
         var result = await controller.GetByAuthors(author);
 
-        var data = JsonSerializer.Deserialize<BookDTO>(result);
+        var data = JsonSerializer.Deserialize<BookDto>(result);
         string? name = data?.items?[0].volumeInfo?.authors?[0];
 
         Assert.Equal(author, name);
@@ -117,7 +117,7 @@ public class BookControllerTest
         var category = "Programming";
         var result = await controller.GetBySubject(category);
 
-        var data = JsonSerializer.Deserialize<BookDTO>(result);
+        var data = JsonSerializer.Deserialize<BookDto>(result);
         string? categoryResult = data?.items?[0].volumeInfo?.categories?[0];
 
         Assert.Equal("Computers", categoryResult);
