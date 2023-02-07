@@ -1,0 +1,20 @@
+When testing, make sure to divide tests into three separate stages:
+- Arrange
+- Act
+- Assert
+
+Example:
+
+[Fact]
+public async Task ExampleTest()
+{
+	// Stage 1: arrange the variables and instances
+	var user = new User("sam", "davies");
+	var strToAdd = "sam@samland.no";
+
+	// Stage 2: act on those variables and instances
+	user.Email = strToAdd;
+
+	// Stage 3: assert that the results from stage 2 produced the desired effects
+	Assert.Equal(strToAdd, user.Email);
+}

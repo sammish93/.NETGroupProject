@@ -1,0 +1,1 @@
+﻿Just a little service we can use when we wish to debug in a terminal window.
