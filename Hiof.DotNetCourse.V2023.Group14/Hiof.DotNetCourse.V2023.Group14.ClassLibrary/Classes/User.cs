@@ -4,6 +4,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
 {
+    // I (Sam) haven't fully defined this class. There may be possible issues with db transactions because of private or readonly values. I also haven't annotated the fields.
+    // I also haven't created a table in the database. Read Info.txt in UserAccountService, as well as the test classes and comments in that project beforehand.
     public class User
     {
         private Guid _id;

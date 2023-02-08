@@ -3,26 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
+// Apparently the convention is to have DbContext related classes in a 'Data' folder.
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
 {
     public class DbOrmTestClassContext : DbContext
     {
-        public DbOrmTestClassContext(DbContextOptions<DbOrmTestClassContext> dbContextOptions) : base(dbContextOptions) 
-        {
-            try
-            {
-                var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
-                if (databaseCreator != null)
-                {
-                    if (!databaseCreator.CanConnect()) databaseCreator.Create();
-                    if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
-
-                }
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
+        // Constructor that uses dependency injection in the TestProgram.cs file to inject the database connection string.
+        public DbOrmTestClassContext(DbContextOptions<DbOrmTestClassContext> dbContextOptions) : base(dbContextOptions) { }
 
         public DbSet<DbOrmTestClass> Tests { get; set; }
     }
