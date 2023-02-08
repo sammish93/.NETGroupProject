@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
     [Route("books")]
     public class BookController : ControllerBase
     {
-        private readonly BookDTO books = new();
+        private readonly BookDto _books = new();
         private readonly ILogger<BookController> _logger;
 
         public BookController(ILogger<BookController> logger)
@@ -18,13 +19,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetBookISBN")]
-        public async Task<string> Get(string ISBN)
+        [HttpGet("GetBookIsbn")]
+        public async Task<string> Get(string isbn)
         {
             string message = "ISBN must be 10 or 13 digits.";
-            var response = await CallAPI("isbn", ISBN);
+            var response = await CallApi("isbn", isbn);
 
-            if (ISBN.Length == 13 || ISBN.Length == 10)
+            if ((isbn.Length == 13) || (isbn.Length == 10))
             {
                 if (!CheckResponse(response))
                     return ErrorMessage("ISBN");
@@ -39,7 +40,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookTitle")]
         public async Task<string?> GetByTitle(string title)
         {
-            var response = await CallAPI("intitle", title);
+            var response = await CallApi("intitle", title);
             if (!CheckResponse(response))
                 return ErrorMessage("Title");
 
@@ -49,7 +50,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookAuthor")]
         public async Task<string> GetByAuthors(string authors)
         {
-            var response = await CallAPI("inauthor", authors);
+            var response = await CallApi("inauthor", authors);
             if (!CheckResponse(response))
                 return ErrorMessage("Author");
 
@@ -60,7 +61,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         [HttpGet("GetBookCategories")]
         public async Task<string> GetBySubject(string subject)
         {
-            var response = await CallAPI("categories", subject);
+            var response = await CallApi("categories", subject);
             if (!CheckResponse(response))
                 return ErrorMessage("Category");
 
@@ -68,8 +69,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         
         }
 
-        // Method that executes the API calls.
-        private async Task<string> CallAPI(string endpoint, string query)
+        // Execute API calls and return response as a string.
+        private async Task<string> CallApi(string endpoint, string query)
         {
             var url = GetUrl(endpoint, query);
             HttpClient client = new HttpClient();
@@ -93,7 +94,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         {
             if (response != null)
             {
-                var bookData = JsonConvert.DeserializeObject<BookDTO>(response);
+                var bookData = JsonConvert.DeserializeObject<BookDto>(response);
 
                 if (bookData != null && bookData.totalItems != 0)
                     return true;
@@ -104,8 +105,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         // Returns URL for googleapis with specified search and endpoint
         private static String GetUrl(string search, string endpoint)
         {
-            return $"https://www.googleapis.com/books/v1/volumes?q={search}:"
-                    + endpoint;
+            StringBuilder url = new StringBuilder();
+            url.Append("https://www.googleapis.com/books/v1/volumes?q=");
+            url.Append($"{search}:");
+            url.Append(endpoint);
+
+            return url.ToString();
         }
 
         // Message to deliver in swagger.
