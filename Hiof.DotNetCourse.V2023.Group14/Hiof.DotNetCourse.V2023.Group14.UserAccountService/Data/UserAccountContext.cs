@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
 {
-    public class DbOrmUserAccountContext : DbContext
+    public class UserAccountContext : DbContext
     {
-        public DbOrmUserAccountContext(DbContextOptions<DbOrmUserAccountContext> dbContextOptions) : base(dbContextOptions) 
+        public UserAccountContext(DbContextOptions<UserAccountContext> dbContextOptions) : base(dbContextOptions) 
         {
             try
             {

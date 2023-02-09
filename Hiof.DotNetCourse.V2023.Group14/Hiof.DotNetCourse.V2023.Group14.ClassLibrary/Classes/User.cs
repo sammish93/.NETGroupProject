@@ -1,11 +1,14 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
 {
     // I (Sam) haven't fully defined this class. There may be possible issues with db transactions because of private or readonly values. I also haven't annotated the fields.
     // I also haven't created a table in the database. Read Info.txt in UserAccountService, as well as the test classes and comments in that project beforehand.
+    [Table("Users", Schema = "dbo")]
     public class User
     {
         private Guid _id;
@@ -52,18 +55,32 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         }
 
         // Getters and Setters.
+        [Key]
+        [Column("id")]
         public Guid Id { get => _id; set => _id = value; }
+
+        [Column("username")]
         public string Username => _username;
+        [Column("email")]
         public string Email { get => _email; set => _email = value; }
+        [Column("password")]
         public string Password { get => _password; set => _password = value; }
+        [Column("FirstName")]
         public string FirstName { get => _firstName; set => _firstName = value; }
+        [Column("lastName")]
         public string LastName { get => _lastName; set => _lastName = value; }
+        [Column("Country")]
         public string Country { get => _country; set => _country = value; }
+        [Column("City")]
         public string City { get => _city; set => _city = value; }
+        [Column("LangPreference")]
         public string LangPreference { get => _langPreference; set => _langPreference = value; }
+        [Column("Role")]
         public UserRole Role { get => _role; set => _role = value; }
+        [Column("RegistrationDate", TypeName = "datetimeoffset")]
         // Shouldn't be able to set a new date of registration.
         public DateTime RegistrationDate  => _registrationDate;
+        [Column("LastActive", TypeName = "datetimeoffset")]
         public DateTime LastActive { get => _lastActive; set => _lastActive = value; }
     }
 }
