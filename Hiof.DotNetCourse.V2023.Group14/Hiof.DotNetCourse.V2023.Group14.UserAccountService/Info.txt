@@ -1,5 +1,7 @@
 ﻿Please DON'T delete the TestController.cs, DbOrmTestClassContext.cs, TestProgram.cs, or the DbOrmTestClass.cs files. We can clean these up at a later date when we are more comfortable.
 
+TestProgram.cs is commented out so that ProgramUserAccount can run. 
+
 
 After trying many solutions I found the first half of this video the most useful: https://www.youtube.com/watch?v=2p01iafOxUw
 I also used chapter 20 in the pensum which gives several options on how to communicate with the database.
@@ -22,3 +24,5 @@ Finally, this method only works as long as we manually create a table using a SQ
 You can do this in the server explorer window once you're connected to the database by right clicking on the database and selecting 'New Query'.
 If you can't connect to the database then click on this link https://www.google.com/search?q=what%27s+my+ip and send your public IP to me (Sam) on the discord so I can create
 a firewall exception for you on Azure. You'll have to do this on every IP you connect through.
+
+
