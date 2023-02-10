@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,7 +46,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 			// Check if length is within the limits.
 			if (!CheckLength(user))
 			{
-				return BadRequest("Hello");
+				string msg = "Username and password length must be between: ";
+                return BadRequest(msg + Min + "-" + Max);
+			}
+
+			if (!CheckCharacters(user))
+			{
+				return BadRequest("Only alphanumeric characters in username");
 			}
 
 			// Check if name and password match with database.
@@ -104,6 +111,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 
 			return true;
 
+        }
+
+        /// <summary>
+        /// Checks if the username is written with alphanumeric characters.
+        /// </summary>
+        /// <param name="user">
+        /// Used to get username a field/form.
+        /// </param>
+        /// <returns>
+        /// False if it contains non-alphanumeric characters, true else.
+        /// </returns>
+        private static bool CheckCharacters(User user)
+		{
+            return Regex.IsMatch(user.UserName, @"^[a-zA-Z0-9]+$");
         }
 	}
 }
