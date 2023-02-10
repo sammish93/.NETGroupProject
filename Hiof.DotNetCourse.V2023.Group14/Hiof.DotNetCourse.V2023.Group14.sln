@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Gro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.UserAccountService", "Hiof.DotNetCourse.V2023.Group14.UserAccountService\Hiof.DotNetCourse.V2023.Group14.UserAccountService.csproj", "{DB4A1DDD-160A-431B-96AA-12D6E9949746}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.LoginService", "Hiof.DotNetCourse.V2023.Group14.LoginService\Hiof.DotNetCourse.V2023.Group14.LoginService.csproj", "{49C752A5-07F8-4F91-9E0F-27816EE0126B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49C752A5-07F8-4F91-9E0F-27816EE0126B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49C752A5-07F8-4F91-9E0F-27816EE0126B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49C752A5-07F8-4F91-9E0F-27816EE0126B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49C752A5-07F8-4F91-9E0F-27816EE0126B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{1CB3B2C6-7728-4F02-AAC1-3766559FFDEB} = {31B89BC7-F2B1-4626-A9DA-C41C2A20F4F7}
 		{5E1B2E61-8855-4944-B500-D3C7CDA4E29B} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
+		{49C752A5-07F8-4F91-9E0F-27816EE0126B} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96890292-801C-4299-8C07-E008A6411CBF}
