@@ -22,6 +22,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
         public async Task<ActionResult> Create(User user)
         {
             await _userAccountContext.Users.AddAsync(user);
+            //This line of code is blocked out because it was causing an error. I (Ashti) don't know why it was so for now it will be blocked out
             //await _userAccountContext.SaveChangesAsync();
             return Ok();
         }
