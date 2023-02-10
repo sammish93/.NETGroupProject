@@ -7,7 +7,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
     {
         static void Main(string[] args)
         {
-            /*
+            
             var user = new User("sammish", "sam@samland.no", "Afdkjfsd453kgfFGk43", "sam", "davies", "Norway", "Aalesund", "EN", UserRole.Admin);
 
             Console.WriteLine("User Information");
@@ -15,16 +15,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             Console.WriteLine("Hashed Password: " + user.Password);
             Console.WriteLine("Role: " + user.Role);
             Console.WriteLine("Registration Date: " + user.RegistrationDate);
-            */
+           
 
 
+            // Testing encryption of password.
             PasswordEncryption encryption = new PasswordEncryption();
-            var hash = encryption.EncryptPassword("Leon", out var salt);
+            var (hash, salt) = encryption.Encrypt("Leon");
 
-            Console.WriteLine($"Password hash: {hash}");
+            Console.WriteLine($"\nPassword hash: {hash}");
             Console.WriteLine($"Generated Salt: {Convert.ToHexString(salt)}");
 
-            var verify = encryption.verifyPassword("Leon", hash, salt);
+            // Test to se if the password is the same by passing the same
+            // hash and salt.
+            var verify = encryption.verify("Leon", hash, salt);
             Console.WriteLine($"Same password?: {verify}");
 
         }
