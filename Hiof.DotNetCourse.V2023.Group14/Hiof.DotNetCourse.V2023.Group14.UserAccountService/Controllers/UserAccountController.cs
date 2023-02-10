@@ -22,7 +22,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
         public async Task<ActionResult> Create(User user)
         {
             await _userAccountContext.Users.AddAsync(user);
-            await _userAccountContext.SaveChangesAsync();
+            //await _userAccountContext.SaveChangesAsync();
             return Ok();
         }
     }

@@ -13,7 +13,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
     {
         private Guid _id;
         // Assume that a user cannot change their username. This is the simplest way of maintaining integrity in our database during our first few sprints.
-        private readonly string _username;
+        private string _username;
         private string _email;
         // The password should be hashed using SHA256 or higher.
         private string _password;
@@ -32,10 +32,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         private readonly DateTime _registrationDate;
         private DateTime _lastActive;
 
-        public User(string username, string email, string password, string firstName, string lastName, string country, string city, string langPreference, UserRole role)
+        public User(string userName, string email, string password, string firstName, string lastName, string country, string city, string langPreference, UserRole role)
         {
             _id = Guid.NewGuid();
-            _username = username;
+            _username = userName;
             _email = email;
             // This will store a hash that uses a salt stored in secrets.
             // NOTE: The password won't be implemented like this. We can create a method.
@@ -53,14 +53,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
             _registrationDate = DateTime.UtcNow;
             _lastActive = DateTime.UtcNow;
         }
+        //public User() { }
+
 
         // Getters and Setters.
         [Key]
         [Column("id")]
         public Guid Id { get => _id; set => _id = value; }
 
-        [Column("username")]
-        public string Username => _username;
+        [Column("UserName")]
+        public string UserName { get => _username; set => _username = value;}
+        
         [Column("email")]
         public string Email { get => _email; set => _email = value; }
         [Column("password")]
@@ -77,10 +80,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         public string LangPreference { get => _langPreference; set => _langPreference = value; }
         [Column("Role")]
         public UserRole Role { get => _role; set => _role = value; }
-        [Column("RegistrationDate", TypeName = "datetimeoffset")]
+        [Column(TypeName = "date")]
         // Shouldn't be able to set a new date of registration.
         public DateTime RegistrationDate  => _registrationDate;
-        [Column("LastActive", TypeName = "datetimeoffset")]
+        [Column("LastActive", TypeName = "date")]
         public DateTime LastActive { get => _lastActive; set => _lastActive = value; }
     }
 }
