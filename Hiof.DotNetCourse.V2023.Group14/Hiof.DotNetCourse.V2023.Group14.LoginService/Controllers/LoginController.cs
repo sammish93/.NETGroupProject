@@ -22,16 +22,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 			_logger = logger;
 		}
 
-		/// <summary>
-		/// Method that checks if the username and password from the POST
-		/// request match with what is stored in the database.
-		/// </summary>
-		/// <param name="user">
-		/// Used to get username and password from a field/form.
-		/// </param>
-		/// <returns>
-		/// On success: 'Login successful', else 'Invalid Login Attempt'.
-		/// </returns>
+		
+		 // Method that checks if the username and password from the POST
+		 // request match with what is stored in the database.
+
 		[HttpPost]
 		public ActionResult<string> VerifyLogin([FromBody] User user)
 		{
@@ -43,14 +37,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 				return validationResult;
 			}
 
-			// Check if length is within the limits.
 			if (!CheckLength(user))
 			{
 				string msg = "Username and password length must be between: ";
                 return BadRequest(msg + Min + "-" + Max);
 			}
 
-			// Checks if usre
 			if (!CheckCharacters(user))
 			{
 				return BadRequest("Only alphanumeric characters in username");
@@ -66,16 +58,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
             }
 		}
 
-        /// <summary>
-        /// Method that checks if the results from the POST-request
-        /// is not null or empty.
-        /// </summary>
-        /// <param name="user">
-        /// Used to get username and password from a field/form.
-		/// </param>
-        /// <returns>
-		/// Null on good request, errormessage on bad.
-		/// </returns>
+        // Method that checks if the results from the POST-request
+        // is not null or empty.
+
         private ActionResult? InputValidation(User user)
 		{
 			if (string.IsNullOrEmpty(user.UserName) ||
@@ -87,16 +72,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 			return null;
 		}
 
-        /// <summary>
-        /// Checks if the length of both username and password are within
-        /// the specified limits.
-        /// </summary>
-        /// <param name="user">
-        /// Used to get username and password from a field/form.
-        /// </param>
-        /// <returns>
-		/// True if they are within the limits, false otherwise.
-		/// </returns>
+
+        // Checks if the length of both username and password are within
+        // the specified limits.
+
         private static bool CheckLength(User user)
 		{
             if (user.UserName.Length < Min || user.Password.Length < Min)
@@ -113,15 +92,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 
         }
 
-        /// <summary>
-        /// Checks if the username is written with alphanumeric characters.
-        /// </summary>
-        /// <param name="user">
-        /// Used to get username from a field/form.
-        /// </param>
-        /// <returns>
-        /// False if it contains non-alphanumeric characters, true else.
-        /// </returns>
+
+        // Checks if the username is written with alphanumeric characters.
+
         private static bool CheckCharacters(User user)
 		{
             return Regex.IsMatch(user.UserName, @"^[a-zA-Z0-9]+$");
