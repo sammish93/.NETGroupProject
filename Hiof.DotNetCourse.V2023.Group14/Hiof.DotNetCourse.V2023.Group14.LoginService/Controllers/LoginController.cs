@@ -50,12 +50,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
                 return BadRequest(msg + Min + "-" + Max);
 			}
 
+			// Checks if usre
 			if (!CheckCharacters(user))
 			{
 				return BadRequest("Only alphanumeric characters in username");
 			}
 
-			// Check if name and password match with database.
 			if (user.UserName != "DB info" && user.Password != "DB info")
 			{
                 return Unauthorized("Invalid Login Attempt");
@@ -117,7 +117,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         /// Checks if the username is written with alphanumeric characters.
         /// </summary>
         /// <param name="user">
-        /// Used to get username a field/form.
+        /// Used to get username from a field/form.
         /// </param>
         /// <returns>
         /// False if it contains non-alphanumeric characters, true else.
@@ -128,4 +128,5 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         }
 	}
 }
+
 
