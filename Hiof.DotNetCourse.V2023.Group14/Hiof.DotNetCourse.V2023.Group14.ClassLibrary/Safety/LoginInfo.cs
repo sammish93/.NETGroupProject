@@ -1,10 +1,11 @@
 ﻿using System;
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
 {
+	// Class used to verify users in Login Service.
 	public class LoginInfo
 	{
 		private string _username;
-		private string _password;
+		private string _password; 
 
 
 		public LoginInfo(string username, string password)

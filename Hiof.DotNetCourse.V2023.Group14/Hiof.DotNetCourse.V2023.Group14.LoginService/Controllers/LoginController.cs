@@ -34,8 +34,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 			// Check if fields are empty or null.
 			if (validationResult != null)
 			{
-				return validationResult;
-			}
+				return validationResult;  
+			} 
 
 			if (!CheckLength(user))
 			{
@@ -48,7 +48,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 				return BadRequest("Only alphanumeric characters in username");
 			}
 
-			if (user.UserName != "DB info" && user.Password != "DB info")
+			if (user.UserName != "steezBrah" && user.Password != "abc123")
 			{
                 return Unauthorized("Invalid Login Attempt");
             }
