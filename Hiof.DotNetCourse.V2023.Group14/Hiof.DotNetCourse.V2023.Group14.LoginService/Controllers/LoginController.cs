@@ -27,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 		 // request match with what is stored in the database.
 
 		[HttpPost]
-		public ActionResult<string> VerifyLogin([FromBody] User user)
+		public ActionResult<string> VerifyLogin([FromBody] LoginInfo user)
 		{
 			var validationResult = InputValidation(user);
 
@@ -61,7 +61,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         // Method that checks if the results from the POST-request
         // is not null or empty.
 
-        private ActionResult? InputValidation(User user)
+        private ActionResult? InputValidation(LoginInfo user)
 		{
 			if (string.IsNullOrEmpty(user.UserName) ||
 				string.IsNullOrEmpty(user.Password))
@@ -76,7 +76,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         // Checks if the length of both username and password are within
         // the specified limits.
 
-        private static bool CheckLength(User user)
+        private static bool CheckLength(LoginInfo user)
 		{
             if (user.UserName.Length < Min || user.Password.Length < Min)
             {
@@ -95,7 +95,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 
         // Checks if the username is written with alphanumeric characters.
 
-        private static bool CheckCharacters(User user)
+        private static bool CheckCharacters(LoginInfo user)
 		{
             return Regex.IsMatch(user.UserName, @"^[a-zA-Z0-9]+$");
         }
