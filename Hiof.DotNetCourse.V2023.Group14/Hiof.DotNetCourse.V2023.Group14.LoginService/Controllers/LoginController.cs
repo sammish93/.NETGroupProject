@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety;
+using Hiof.DotNetCourse.V2023.Group14.LoginService.Data;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -48,13 +50,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 				return BadRequest("Only alphanumeric characters in username");
 			}
 
-			if (user.UserName != "steezBrah" && user.Password != "abc123")
+			if (user.UserName != "steezBrah" || user.Password != "abc123")
 			{
                 return Unauthorized("Invalid Login Attempt");
             }
 			else
 			{
-                return Ok("Login successful");
+				var token = Token.createToken(user.Id);
+
+				// Add token in HTTP headers so that the client can include
+				// this in all subsequent requests.
+				Response.Headers.Add("Autorization", "Bearer" + token);
+
+                return Ok("Login Success");
             }
 		}
 
