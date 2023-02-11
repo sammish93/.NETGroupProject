@@ -2,7 +2,6 @@
 using System.Text.RegularExpressions;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety;
-using Hiof.DotNetCourse.V2023.Group14.LoginService.Data;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -62,7 +61,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 				// this in all subsequent requests.
 				Response.Headers.Add("Autorization", "Bearer" + token);
 
-                return Ok("Login Success");
+				return Ok("Login Success"); 
             }
 		}
 
