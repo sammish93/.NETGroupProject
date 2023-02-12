@@ -1,5 +1,6 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 {
@@ -29,6 +30,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             // hash and salt.
             var verify = encryption.verify("Leon", hash, salt);
             Console.WriteLine($"Same password?: {verify}");
+
+
+            // Test of method GenerateSecretKey
+            string key = Token.GenerateSecretKey(24);
+            Console.WriteLine("Generated secret key: " + key);
 
         }
     }

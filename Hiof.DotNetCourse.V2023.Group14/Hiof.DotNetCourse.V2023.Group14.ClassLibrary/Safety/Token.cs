@@ -14,9 +14,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety
 	public class Token
 	{
 		// Method that generates a new token and return it as a string.
-		public static string createToken(Guid userId)
+		public static string CreateToken(Guid userId)
 		{
-			var secretKey = Encoding.UTF8.GetBytes("AFR4D6Y7U8B24FB5M7HJL1L0");
+			var secretKey = Encoding.UTF8.GetBytes(GenerateSecretKey(24));
 			var securityKey = new SymmetricSecurityKey(secretKey);
 			var algorithm = SecurityAlgorithms.HmacSha256Signature;
 
@@ -37,6 +37,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety
 
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			return tokenHandler.WriteToken(token);
+		}
+
+		// Method used to generate a random string containing only
+		// alphanumeric values. Can specify length of the string with
+		// the parameter size.
+		public static string GenerateSecretKey(int size)
+		{
+			Random generator = new Random();
+            StringBuilder key = new StringBuilder();
+
+            string valid = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+			for (int i = 0; i < size; i++)
+			{
+				int randomIndex = generator.Next(valid.Length);
+
+				key.Append(valid[randomIndex]);
+			}
+
+			return key.ToString().ToUpper();
 		}
 
 	}
