@@ -16,7 +16,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety
 		// Method that generates a new token and return it as a string.
 		public static string CreateToken(Guid userId)
 		{
-			var secretKey = Encoding.UTF8.GetBytes(GenerateSecretKey(24));
+			var secretKey = Encoding.UTF8.GetBytes(GenerateSecretKey(20));
 			var securityKey = new SymmetricSecurityKey(secretKey);
 			var algorithm = SecurityAlgorithms.HmacSha256Signature;
 

@@ -55,11 +55,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
             }
 			else
 			{
-				var token = Token.CreateToken(user.Id);
+				var encryption = new PasswordEncryption();
+				var (hash, salt) = encryption.Encrypt(user.Password);
+
+				var dbUser = new LoginInfo(user.UserName, (hash + salt));
+				dbUser.Token = Token.CreateToken(user.Id);
 
 				// Add token in HTTP headers so that the client can include
 				// this in all subsequent requests.
-				Response.Headers.Add("Autorization", "Bearer" + token);
+				Response.Headers.Add("Autorization", "Bearer" + dbUser.Token);
 
 				return Ok("Login Success"); 
             }
