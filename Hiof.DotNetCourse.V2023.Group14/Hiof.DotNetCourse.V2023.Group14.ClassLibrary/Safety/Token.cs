@@ -42,7 +42,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety
 		// Method used to generate a random string containing only
 		// alphanumeric values. Can specify length of the string with
 		// the parameter size.
-		public static string GenerateSecretKey(int size)
+		private static string GenerateSecretKey(int size)
 		{
 			Random generator = new Random();
             StringBuilder key = new StringBuilder();
@@ -55,7 +55,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety
 
 				key.Append(valid[randomIndex]);
 			}
-
 			return key.ToString().ToUpper();
 		}
 

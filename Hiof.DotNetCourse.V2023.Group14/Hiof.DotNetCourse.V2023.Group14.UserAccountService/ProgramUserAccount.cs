@@ -18,7 +18,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             var dbConnectionStr = $"{dbHost};Initial Catalog={dbName};Persist Security Info=False;User ID=hedgehogfans;Password={dbPwd};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
             builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
-            
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             

@@ -18,7 +18,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 
 		private readonly ILogger<LoginController> _logger;
 
-		public LoginController(ILogger<LoginController> logger)
+        public LoginController(ILogger<LoginController> logger)
 		{
 			_logger = logger;
 		}
@@ -49,13 +49,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 				return BadRequest("Only alphanumeric characters in username");
 			}
 
-			if (user.UserName != "steezBrah" || user.Password != "abc123")
+			if (user.UserName != "username" || user.Password != "abc123")
 			{
                 return Unauthorized("Invalid Login Attempt");
             }
 			else
 			{
-				var token = Token.createToken(user.Id);
+				var token = Token.CreateToken(user.Id);
 
 				// Add token in HTTP headers so that the client can include
 				// this in all subsequent requests.

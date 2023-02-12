@@ -17,6 +17,9 @@
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.UserAccountService\Hiof.DotNetCourse.V2023.Group14.UserAccountService.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Data\" />
