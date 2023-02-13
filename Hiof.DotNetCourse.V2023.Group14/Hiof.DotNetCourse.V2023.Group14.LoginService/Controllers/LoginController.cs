@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
 using Microsoft.AspNetCore.Mvc;
 
 

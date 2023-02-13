@@ -18,10 +18,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Safety\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Safety\" />
-  </ItemGroup>
 </Project>

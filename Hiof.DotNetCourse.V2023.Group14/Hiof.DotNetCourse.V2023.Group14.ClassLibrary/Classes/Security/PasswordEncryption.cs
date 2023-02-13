@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
+namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security
 {
    public class PasswordEncryption
     {
@@ -27,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
 
         // Method that is used to verify if an encrypted password
         // matches any of the encrypted passwords in the database.
-        public bool verify(string password, string hash, byte[] salt)
+        public bool verify(string password, string hash, string salt)
         {  
             var compareHash = Rfc2898DeriveBytes.Pbkdf2(password, salt, iteration, hashAlgo, keySize);
             return compareHash.SequenceEqual(Convert.FromHexString(hash));

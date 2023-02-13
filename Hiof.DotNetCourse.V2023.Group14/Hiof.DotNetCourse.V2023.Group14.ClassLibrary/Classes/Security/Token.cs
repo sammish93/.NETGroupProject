@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
 
-namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety
+namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security
 {
     // Uses JwtSecurityTokenHandler, which is a built in class in .NET.
     // It is used to create and validate Json Web Tokens.
