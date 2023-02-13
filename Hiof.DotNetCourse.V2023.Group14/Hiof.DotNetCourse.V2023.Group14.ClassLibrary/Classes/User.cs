@@ -78,9 +78,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         public string City { get => _city; set => _city = value; }
         [Column("LangPreference")]
         public string LangPreference { get => _langPreference; set => _langPreference = value; }
-        [Column("Role")]
+        [Required]
+        [Column("UserRole")]
+        [EnumDataType(typeof(UserRole))]
+       
         public UserRole Role { get => _role; set => _role = value; }
-        [Column(TypeName = "date")]
+        [Column("RegistrationDate", TypeName = "date")]
         // Shouldn't be able to set a new date of registration.
         public DateTime RegistrationDate  => _registrationDate;
         [Column("LastActive", TypeName = "date")]
