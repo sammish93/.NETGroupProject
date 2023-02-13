@@ -1,6 +1,6 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Safety;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 {

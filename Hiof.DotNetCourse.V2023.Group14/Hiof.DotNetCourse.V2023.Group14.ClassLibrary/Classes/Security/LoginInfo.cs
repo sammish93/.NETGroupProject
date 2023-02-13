@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
+namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security
 {
 	// Class used to verify users in Login Service.
 	public class LoginInfo
