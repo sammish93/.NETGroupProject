@@ -28,8 +28,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         // Method that checks if the username and password from the POST
         // request match with what is stored in the database.
 
-        [HttpPost]
-        public ActionResult<string> VerifyLogin([FromBody] LoginInfo user)
+        [HttpPost("verification")]
+        public async Task<ActionResult<string>> VerifyLogin([FromBody] LoginInfo user)
         {
             var validationResult = InputValidation(user);
 
@@ -50,22 +50,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
                 return BadRequest("Only alphanumeric characters in username");
             }
 
-            if (user.UserName != "stian" || user.Password != "hello23")
+            // Get user from database.
+            var dbUser = await _loginDbContext.LoginInfo.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+
+
+            // Need to work more on this.
+            var (hash, salt) = PasswordEncryption.Encrypt(user.Password);
+            bool comp = PasswordEncryption.verify(user.Password, hash, salt);
+
+            if (user.UserName != dbUser?.UserName)
             {
                 return Unauthorized("Invalid Login Attempt");
             }
             else
             {
-                var encryption = new PasswordEncryption();
-                var (hash, salt) = encryption.Encrypt(user.Password);
-
-                var dbUser = new LoginInfo(user.Id, user.UserName, (hash + Convert.ToHexString(salt)));
-                dbUser.Token = Token.CreateToken(user.Id);
-
-                // Add token in HTTP headers so that the client can include
-                // this in all subsequent requests.
-                Response.Headers.Add("Autorization", "Bearer" + dbUser.Token);
-
                 return Ok("Login Success");
             }
         }
@@ -92,6 +90,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
             return NotFound();
             
         }
+
 
         // Method that checks if the results from the POST-request
         // is not null or empty.
