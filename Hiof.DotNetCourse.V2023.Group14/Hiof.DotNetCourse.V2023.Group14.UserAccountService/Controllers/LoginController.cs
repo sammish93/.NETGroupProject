@@ -2,8 +2,9 @@
 using System.Text.RegularExpressions;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 {
@@ -16,11 +17,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         private const int Min = 5;
         private const int Max = 20;
 
-        private readonly ILogger<LoginController> _logger;
+        private readonly LoginDbContext _loginDbContext;
 
-        public LoginController(ILogger<LoginController> logger)
+        public LoginController(LoginDbContext context)
         {
-            _logger = logger;
+            _loginDbContext = context;
         }
 
 
@@ -49,7 +50,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
                 return BadRequest("Only alphanumeric characters in username");
             }
 
-            if (user.UserName != "username" || user.Password != "abc123")
+            if (user.UserName != "stian" || user.Password != "hello23")
             {
                 return Unauthorized("Invalid Login Attempt");
             }
@@ -58,7 +59,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
                 var encryption = new PasswordEncryption();
                 var (hash, salt) = encryption.Encrypt(user.Password);
 
-                var dbUser = new LoginInfo(user.UserName, (hash + Convert.ToHexString(salt)));
+                var dbUser = new LoginInfo(user.Id, user.UserName, (hash + Convert.ToHexString(salt)));
                 dbUser.Token = Token.CreateToken(user.Id);
 
                 // Add token in HTTP headers so that the client can include
@@ -67,6 +68,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 
                 return Ok("Login Success");
             }
+        }
+
+        // Returns all the users in the database as a list.
+        [HttpGet]
+        [Route("users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _loginDbContext.LoginInfo.ToListAsync();
+            return Ok(users);
+        }
+
+        // Returns user from database specified by Id.
+        [HttpGet("users/{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _loginDbContext.LoginInfo.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user is not null)
+            {
+               return Ok(user);
+            }
+            return NotFound();
+            
         }
 
         // Method that checks if the results from the POST-request
