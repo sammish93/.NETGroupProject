@@ -58,7 +58,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 				var encryption = new PasswordEncryption();
 				var (hash, salt) = encryption.Encrypt(user.Password);
 
-				var dbUser = new LoginInfo(user.UserName, (hash + salt));
+				var dbUser = new LoginInfo(user.UserName, (hash + Convert.ToHexString(salt)));
 				dbUser.Token = Token.CreateToken(user.Id);
 
 				// Add token in HTTP headers so that the client can include

@@ -14,7 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security
         // Method that is used to encrypt passwords before they
         // are stored in the database. Returns a tuple that contains
         // both the hash string and the salt array.
-        public (string, string) Encrypt(string password)
+        public (string, byte[]) Encrypt(string password)
         {
             var salt = RandomNumberGenerator.GetBytes(keySize);
             var encoding = Encoding.UTF8.GetBytes(password);
@@ -22,13 +22,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security
             var hash = Rfc2898DeriveBytes.Pbkdf2(encoding, salt, iteration, hashAlgo, keySize);
             var hashHex = Convert.ToHexString(hash);
 
-            return (hashHex, Convert.ToHexString(salt));
+            return (hashHex, salt);
         }
 
         // Method that is used to verify if an encrypted password
         // matches any of the encrypted passwords in the database.
-        public bool verify(string password, string hash, string salt)
-        {  
+        public bool verify(string password, string hash, byte[] salt)
+        {
             var compareHash = Rfc2898DeriveBytes.Pbkdf2(password, salt, iteration, hashAlgo, keySize);
             return compareHash.SequenceEqual(Convert.FromHexString(hash));
         }

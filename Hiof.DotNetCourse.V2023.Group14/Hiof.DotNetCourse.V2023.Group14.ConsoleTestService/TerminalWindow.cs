@@ -24,7 +24,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             var (hash, salt) = encryption.Encrypt("Leon");
 
             Console.WriteLine($"\nPassword hash: {hash}");
-            Console.WriteLine($"Generated Salt: {salt}");
+            Console.WriteLine($"Generated Salt: {Convert.ToHexString(salt)}");
 
             // Test to se if the password is the same by passing the same
             // hash and salt.
