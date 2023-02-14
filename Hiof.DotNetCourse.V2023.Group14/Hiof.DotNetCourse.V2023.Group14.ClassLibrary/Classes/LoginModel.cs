@@ -16,6 +16,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
 
 		[Required]
 		public string? Token { get; set; }
-	}
+
+		[Required]
+        public string? Salt { get; set; }
+    }
 }
 
