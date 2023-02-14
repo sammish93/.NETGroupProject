@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
@@ -17,19 +18,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         private const int Min = 5;
         private const int Max = 20;
 
-        private readonly LoginDbContext _loginDbContext;
+        private readonly LoginDbContext _contex;
 
+        
         public LoginController(LoginDbContext context)
         {
-            _loginDbContext = context;
+            _contex = context;
         }
-
-
+        
         // Method that checks if the username and password from the POST
         // request match with what is stored in the database.
 
         [HttpPost("verification")]
-        public async Task<ActionResult<string>> VerifyLogin([FromBody] LoginInfo user)
+        public ActionResult<string> VerifyLogin([FromBody] LoginInfo user)
         {
             var validationResult = InputValidation(user);
 
@@ -50,47 +51,39 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
                 return BadRequest("Only alphanumeric characters in username");
             }
 
-            // Get user from database.
-            var dbUser = await _loginDbContext.LoginInfo.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+            // Retrieve user with the same id from database.
+            var dbUser = GetDbUser(user.Id);
 
-
-            // Need to work more on this.
-            var (hash, salt) = PasswordEncryption.Encrypt(user.Password);
-            bool comp = PasswordEncryption.verify(user.Password, hash, salt);
-
-            if (user.UserName != dbUser?.UserName)
+            if (dbUser != null && dbUser.Salt != null)
             {
-                return Unauthorized("Invalid Login Attempt");
+                // Get the hashed password and salt from database.
+                var salt = Convert.FromBase64String(dbUser.Salt);
+                var hash = dbUser.Password;
+
+                if (salt != null && hash != null)
+                {
+                    // Check if the hashed password and salt from database
+                    // match with the users password.
+                    bool result = PasswordEncryption.Verify(user.Password, hash, salt);
+
+                    if (user.UserName != dbUser.UserName || result != true)
+                    {
+                        return Unauthorized("Invalid Login Attempt");
+                    }
+
+                    return Ok("Login Success");
+                }
             }
-            else
-            {
-                return Ok("Login Success");
-            }
+
+            return Unauthorized("Account does not exists.");
         }
 
-        // Returns all the users in the database as a list.
-        [HttpGet]
-        [Route("users")]
-        public async Task<IActionResult> GetUsers()
+        // Gets an entity from the database based on id.
+
+        private LoginModel GetDbUser(int id)
         {
-            var users = await _loginDbContext.LoginInfo.ToListAsync();
-            return Ok(users);
+            return _contex.LoginModel.Single(l => l.Id == id);
         }
-
-        // Returns user from database specified by Id.
-        [HttpGet("users/{id}")]
-        public async Task<IActionResult> GetUserById(int id)
-        {
-            var user = await _loginDbContext.LoginInfo.FirstOrDefaultAsync(u => u.Id == id);
-
-            if (user is not null)
-            {
-               return Ok(user);
-            }
-            return NotFound();
-            
-        }
-
 
         // Method that checks if the results from the POST-request
         // is not null or empty.
@@ -125,7 +118,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
             return true;
 
         }
-
 
         // Checks if the username is written with alphanumeric characters.
 

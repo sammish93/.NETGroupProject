@@ -27,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security
 
         // Method that is used to verify if an encrypted password
         // matches any of the encrypted passwords in the database.
-        public static bool verify(string password, string hash, byte[] salt)
+        public static bool Verify(string password, string hash, byte[] salt)
         {
             var compareHash = Rfc2898DeriveBytes.Pbkdf2(password, salt, iteration, hashAlgo, keySize);
             return compareHash.SequenceEqual(Convert.FromHexString(hash));

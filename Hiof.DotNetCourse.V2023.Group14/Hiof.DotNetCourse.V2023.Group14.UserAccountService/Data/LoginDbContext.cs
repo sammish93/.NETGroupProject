@@ -1,5 +1,6 @@
 ﻿using System;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
@@ -8,7 +9,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
 	{
         public LoginDbContext(DbContextOptions<LoginDbContext> options) : base(options) { }
 
-		public DbSet<LoginClass> LoginInfo { get; set; }
+		public DbSet<LoginModel> LoginModel { get; set; }
 	}
 }
 
