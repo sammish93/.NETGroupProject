@@ -11,6 +11,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
         // Constructor that uses dependency injection in the TestProgram.cs file to inject the database connection string.
         public DbOrmTestClassContext(DbContextOptions<DbOrmTestClassContext> dbContextOptions) : base(dbContextOptions) { }
 
-        public DbSet<DbOrmTestClass> Tests { get; set; } 
+        public DbSet<DbOrmTestClass> Tests { get; set; }
     }
 }
