@@ -28,7 +28,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 
             // Test to se if the password is the same by passing the same
             // hash and salt.
-            var verify = PasswordEncryption.verify("Leon", hash, salt);
+            var verify = PasswordEncryption.Verify("Leon", hash, salt);
             Console.WriteLine($"Same password?: {verify}");
             
 
