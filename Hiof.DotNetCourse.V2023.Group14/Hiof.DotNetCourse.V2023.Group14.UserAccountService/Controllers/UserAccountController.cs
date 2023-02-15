@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
 {
     [ApiController]
-    [Route("users")]
+    [Route("Users")]
     public class UserAccountController : ControllerBase
     {
         private readonly UserAccountContext _userAccountContext;
