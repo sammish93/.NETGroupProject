@@ -26,14 +26,11 @@ If you can't connect to the database then click on this link https://www.google.
 a firewall exception for you on Azure. You'll have to do this on every IP you connect through.
 
 
-Example on how to encrypt passwords, create token and store user in database.
+Username and password for testing in LoginController:
 
-var encryption = new PasswordEncryption();
-var (hash, salt) = encryption.Encrypt(user.Password);
+username: stian
+password: abc123
 
-var dbUser = new LoginInfo(user.Id, user.UserName, (hash + Convert.ToHexString(salt)));
-dbUser.Token = Token.CreateToken(user.Id);
 
-Response.Headers.Add("Autorization", "Bearer" + dbUser.Token);
 
 

@@ -17,7 +17,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         // Constants used for input validation.
         private const int Min = 5;
         private const int Max = 20;
-
         private readonly LoginDbContext _contex;
 
         
