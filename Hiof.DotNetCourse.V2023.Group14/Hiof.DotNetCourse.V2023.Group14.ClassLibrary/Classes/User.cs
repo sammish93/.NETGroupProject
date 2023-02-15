@@ -39,7 +39,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         public string LangPreference { get; set; }
         // Used for establishing permissions and a user hierarchy. A 'User' can only view and edit their own data, whereas an 'Admin' can view and edit all data.
         // Decided against a single user having multiple roles (using ISet or ICollection) because a hierarchy of increasing privileges makes more sense.
-        [Column("UserRole")]
+        [Column("UserRole", TypeName = "nvarchar(20)")]
         public UserRole Role { get ; set ; }
         // Assume for localisation purposes that Coordinated Universal Time (UTC) will be used to always store information relating to DateTime, but DateTime.Now converts UTC to
         // the user's Local time, and we can use the latter in the GUI.
