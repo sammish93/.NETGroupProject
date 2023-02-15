@@ -12,5 +12,42 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
         public DbOrmTestClassContext(DbContextOptions<DbOrmTestClassContext> dbContextOptions) : base(dbContextOptions) { }
 
         public DbSet<DbOrmTestClass> Tests { get; set; }
+
+        // Seeding the database by inserting 5 new rows.
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DbOrmTestClass>().HasData(
+                new DbOrmTestClass
+                {
+                    Id = 1,
+                    Name = "Jonas",
+                    Age = 42
+                },
+                new DbOrmTestClass
+                {
+                    Id = 2,
+                    Name = "Dobby the House Dog",
+                    Age = 1
+                },
+                new DbOrmTestClass
+                {
+                    Id = 3,
+                    Name = "Margaret of Anjou",
+                    Age = 743
+                },
+                new DbOrmTestClass
+                {
+                    Id = 4,
+                    Name = "Sam",
+                    Age = 29
+                },
+                new DbOrmTestClass
+                {
+                    Id = 5,
+                    Name = "Squiggle",
+                    Age = 64
+                }
+            );
+        }
     }
 }

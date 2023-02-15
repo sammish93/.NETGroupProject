@@ -30,6 +30,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
 
 
             builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
+            // Test Controller just for test purposes. Feel free to remove this once everyone is comfortable with the migration process.
             builder.Services.AddDbContext<DbOrmTestClassContext>(options => options.UseSqlServer(dbConnectionStr));
 
             builder.Services.AddEndpointsApiExplorer();

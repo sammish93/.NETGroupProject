@@ -24,7 +24,5 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         public string Name { get; set; }
         [Column("age")]
         public int Age { get; set; }
-
-        public DateTime lastActive { get; set; }
     }
 }

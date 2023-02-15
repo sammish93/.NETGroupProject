@@ -3,6 +3,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations
 {
     [DbContext(typeof(DbOrmTestClassContext))]
-    partial class DbOrmTestClassContextModelSnapshot : ModelSnapshot
+    [Migration("20230215141707_RemoveLastActiveDateTime")]
+    partial class RemoveLastActiveDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,38 +45,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tests", "dbo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Age = 42,
-                            Name = "Jonas"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Age = 1,
-                            Name = "Dobby the House Dog"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Age = 743,
-                            Name = "Margaret of Anjou"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Age = 29,
-                            Name = "Sam"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Age = 64,
-                            Name = "Squiggle"
-                        });
                 });
 #pragma warning restore 612, 618
         }

@@ -83,4 +83,10 @@ Enter: Update-Database -context <context in question>
 To update the table after changes have been made in the DbOrmTestClass (e.g. added a new int field) just create a new migration using the Add-Migration syntax above.
 IMPORTANT FOR WHEN OTHERS CREATE A MIGRATION: Remember to use Update-Database after every new migration. Migrations will appear on the repo, so if someone creates a new migration then update!
 
+When removing columns from an already existing database you can just follow the Add-Migration and Update-Database syntax. You'll get a warning about potential loss of data. 
+If you remove the column and then go forward with the migration the data in that column will just disappear, unless further specified (not a big deal with dummy data).
 
+** Seeding the Database **
+
+Seeding is also done via migrations. Look at the DbOrmTestClassContext for a code example. There I added 5 objects/rows, added them to a migration called SeedTest, then did an Update-Database.
+If your database already has data this might cause issues. I had an issue with a primary key already being in use (UNIQUE) so I had to manually DELETE FROM dbo.Tests to clear the table first.
