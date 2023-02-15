@@ -44,10 +44,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         // Assume for localisation purposes that Coordinated Universal Time (UTC) will be used to always store information relating to DateTime, but DateTime.Now converts UTC to
         // the user's Local time, and we can use the latter in the GUI.
 
-        [Column("RegistrationDate", TypeName = "date")]
+        [Column("RegistrationDate", TypeName = "datetime")]
         // Shouldn't be able to set a new date of registration.
         public DateTime RegistrationDate { get; set; }
-        [Column("LastActive", TypeName = "date")]
+        [Column("LastActive", TypeName = "datetime")]
         public DateTime LastActive { get; set; }
 
         public User(string userName, string email, string password, string firstName, string lastName, string country, string city, string langPreference, UserRole role)
