@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
 {
-	public class LoginModel
+    [Table("LoginVerification", Schema = "dbo")]
+    public class LoginModel
 	{
 		[Key]
 		public int Id { get; set; }

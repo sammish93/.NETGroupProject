@@ -17,12 +17,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         // Constants used for input validation.
         private const int Min = 5;
         private const int Max = 20;
-        private readonly LoginDbContext _contex;
+        private readonly LoginDbContext _context;
 
         
         public LoginController(LoginDbContext context)
         {
-            _contex = context;
+            _context = context;
         }
         
         // Method that checks if the username and password from the POST
@@ -51,7 +51,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
             }
 
             // Retrieve user with the same id from database.
-            var dbUser = GetDbUser(user.Id);
+            var dbUser = GetDbUser(user.UserName);
 
             if (dbUser != null && dbUser.Salt != null)
             {
@@ -79,9 +79,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 
         // Gets an entity from the database based on id.
 
-        private LoginModel GetDbUser(int id)
+        private LoginModel GetDbUser(string username)
         {
-            return _contex.LoginModel.Single(l => l.Id == id);
+            return _context.LoginModel.Single(l => l.UserName == username);
         }
 
         // Method that checks if the results from the POST-request

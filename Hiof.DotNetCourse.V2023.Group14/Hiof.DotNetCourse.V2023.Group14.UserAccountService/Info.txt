@@ -87,3 +87,10 @@ If you remove the column and then go forward with the migration the data in that
 
 Seeding is also done via migrations. Look at the DbOrmTestClassContext for a code example. There I added 5 objects/rows, added them to a migration called SeedTest, then did an Update-Database.
 If your database already has data this might cause issues. I had an issue with a primary key already being in use (UNIQUE) so I had to manually DELETE FROM dbo.Tests to clear the table first.
+
+Note: For each context you have, you have to do a separate Update-Database
+	example: Update-Database -context DbOrmTestClassContext
+	         Update-Database -context LoginDbContext
+
+Finally, if you get any errors such as 'Could not load assembly 'Hiof.DotNetCourse.V2023.Group14.UserAccountService'. Ensure it is referenced by the startup project 'APICommunicator.Tests'.', make sure
+that you have selected the correct project, you're in the correct directory,
