@@ -1,6 +1,7 @@
 ﻿
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 using System.Diagnostics.Metrics;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
@@ -27,7 +28,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             var dbHost = "localhost";
             var dbName = "UserAccounts";
             var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
-
 
             builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
             // Test Controller just for test purposes. Feel free to remove this once everyone is comfortable with the migration process.
