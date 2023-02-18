@@ -20,10 +20,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.LoginDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserName = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(500)", nullable: true),
+                    Salt = table.Column<string>(type: "nvarchar(500)", nullable: true)
                 },
                 constraints: table =>
                 {
