@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
 {
-    [Table("LoginVerification", Schema = "dbo")]
+    [Table("LoginVerification", Schema = "db")]
     public class LoginModel
 	{
 		[Key]
