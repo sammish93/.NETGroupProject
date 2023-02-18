@@ -34,6 +34,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             builder.Services.AddDbContext<DbOrmTestClassContext>(options => options.UseSqlServer(dbConnectionStr));
             builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
 
+
+            // Connection string for MySQL-database (only for stian).
+            var connectionStr = "Server=localhost;Database=dotnetproject;Uid=root;Password=" + Environment.GetEnvironmentVariable("DB_PASSWORD");
+            builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
+                connectionStr,
+                new MySqlServerVersion(new Version(8, 0, 32)
+                )));
+
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             
