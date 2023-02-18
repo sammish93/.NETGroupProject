@@ -1,6 +1,7 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 {
@@ -31,9 +32,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             var verify = PasswordEncryption.Verify("Leon", hash, salt);
             Console.WriteLine($"Same password?: {verify}");
 
-            String OperatingSystem = Environment.GetEnvironmentVariable("OS");
+            String? OperatingSystem = Environment.GetEnvironmentVariable("OS");
 
-            if (OperatingSystem.ToLower().Contains("windows"))
+            if (OperatingSystem != null && OperatingSystem.ToLower().Contains("windows"))
             {
                 Console.WriteLine("You have Windows!");
             }
