@@ -30,7 +30,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             // hash and salt.
             var verify = PasswordEncryption.Verify("Leon", hash, salt);
             Console.WriteLine($"Same password?: {verify}");
-            
+
+            String OperatingSystem = Environment.GetEnvironmentVariable("OS");
+
+            if (OperatingSystem.ToLower().Contains("windows"))
+            {
+                Console.WriteLine("You have Windows!");
+            }
+
+            Console.WriteLine(OperatingSystem);
+
 
         }
     }
