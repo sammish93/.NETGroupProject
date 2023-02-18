@@ -29,24 +29,31 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             var dbHost = "localhost";
             var dbName = "UserAccounts";
             var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
+
+            // Development purposes only! Those with Windows can use Microsoft SQL Server and those with mac can use MySQL.
+            String? OperatingSystem = Environment.GetEnvironmentVariable("OS");
+
+            if (OperatingSystem != null && OperatingSystem.ToLower().Contains("windows"))
+            {
+                builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
+                // Test Controller just for test purposes. Feel free to remove this once everyone is comfortable with the migration process.
+                builder.Services.AddDbContext<DbOrmTestClassContext>(options => options.UseSqlServer(dbConnectionStr));
+                builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
+            } else if (OperatingSystem != null && OperatingSystem.ToLower().Contains("mac"))
+            {
+                // Connection string for MySQL-database (only for stian)
+                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+                var connectionStr = $"Server=localhost;Database={dbName};Uid=root;Password={password}";
+                builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
+                    connectionStr,
+                    new MySqlServerVersion(new Version(8, 0, 32)),
+                    mysqlOptions =>
+                    {
+                        mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
+                    }
+                ));
+            }
             
-            builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
-            // Test Controller just for test purposes. Feel free to remove this once everyone is comfortable with the migration process.
-            builder.Services.AddDbContext<DbOrmTestClassContext>(options => options.UseSqlServer(dbConnectionStr));
-            builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
-
-            // Connection string for MySQL-database (only for stian)
-            var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-            var connectionStr = $"Server=localhost;Database={dbName};Uid=root;Password={password}";
-            builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
-                connectionStr,
-                new MySqlServerVersion(new Version(8, 0, 32)),
-                mysqlOptions =>
-                {
-                    mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
-                }
-            ));
-
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
