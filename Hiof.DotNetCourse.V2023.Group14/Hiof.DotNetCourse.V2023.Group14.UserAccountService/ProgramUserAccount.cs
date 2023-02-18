@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.Configuration;
 using System.Diagnostics.Metrics;
+using System.Runtime.InteropServices;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
 {
@@ -31,15 +32,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
 
             // Development purposes only! Those with Windows can use Microsoft SQL Server and those with mac can use MySQL.
-            String? OperatingSystem = Environment.GetEnvironmentVariable("OS");
 
-            if (OperatingSystem != null && OperatingSystem.ToLower().Contains("windows"))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
                 // Test Controller just for test purposes. Feel free to remove this once everyone is comfortable with the migration process.
                 builder.Services.AddDbContext<DbOrmTestClassContext>(options => options.UseSqlServer(dbConnectionStr));
                 builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
-            } else if (OperatingSystem != null && OperatingSystem.ToLower().Contains("mac"))
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) 
             {
                 // Connection string for MySQL-database (only for stian)
                 var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
@@ -52,8 +52,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
                         mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
                     }
                 ));
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // Development machines using Linux can do something here.
             }
-            
+
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

@@ -35,6 +35,7 @@ password: abc123
 ** Installing your own local database and using migrations **
 
 Note: I installed this on Windows 12
+If you're using a Mac then you can use MySQL instead of Microsoft SQL Server (ask Stian for more information).
 
 https://www.microsoft.com/en-us/sql-server/sql-server-downloads Download the 'Developer' edition. It's fully featured, but has a license so you can't use it in production.
 I had a few bugs installing it. You might need to download a driver to connect to the db and run the installer as admin.

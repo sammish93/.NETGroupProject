@@ -2,6 +2,7 @@
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
 using Microsoft.IdentityModel.Tokens;
+using System.Runtime.InteropServices;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 {
@@ -31,7 +32,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             // hash and salt.
             var verify = PasswordEncryption.Verify("Leon", hash, salt);
             Console.WriteLine($"Same password?: {verify}");
-
         }
     }
 }
