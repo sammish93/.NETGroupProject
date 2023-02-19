@@ -5,7 +5,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
+namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
 {
 
     [ApiController]
@@ -22,12 +22,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         {
             _context = context;
         }
-        
+
         // Method that checks if the username and password from the POST
         // request match with what is stored in the database.
 
-        [HttpPost("verification")]
-        public async Task<ActionResult<string>> VerifyLogin([FromBody] LoginInfo user)
+        [HttpPost]
+        [Route("api/verification")]
+        public async Task<IActionResult> VerifyLogin([FromBody] LoginInfo user)
         {
             var validationResult = InputValidation(user);
 
@@ -81,7 +82,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         {
             try
             {
-                return await _context.LoginModel.SingleOrDefaultAsync(l => l.UserName == username);
+                return  await _context.LoginModel.SingleOrDefaultAsync(l => l.UserName == username);
 
             } catch(InvalidOperationException)
             {
