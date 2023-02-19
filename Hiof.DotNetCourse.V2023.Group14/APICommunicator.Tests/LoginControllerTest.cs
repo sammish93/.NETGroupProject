@@ -1,7 +1,7 @@
 ﻿using System;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
-using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +33,7 @@ namespace APICommunicator.Tests
             dbContext.SaveChanges();
 
             // Opprett en instans av LoginController med LoginDbContext.
-            var controller = new LoginController(dbContext);
+            var controller = new V1LoginController(dbContext);
 
             // Oppretter en testbruker 
             var test = new LoginInfo("stian", "abc123");
@@ -62,7 +62,7 @@ namespace APICommunicator.Tests
             dbContext.Add(user);
             dbContext.SaveChanges();
 
-            var controller = new LoginController(dbContext);
+            var controller = new V1LoginController(dbContext);
 
             var test = new LoginInfo("fakeUser", "fake123");
             var actionResult = await controller.VerifyLogin(test);
@@ -90,7 +90,7 @@ namespace APICommunicator.Tests
             dbContext.Add(user);
             dbContext.SaveChanges();
 
-            var controller = new LoginController(dbContext);
+            var controller = new V1LoginController(dbContext);
 
             var test = new LoginInfo("", "");
             var actionResult = await controller.VerifyLogin(test);

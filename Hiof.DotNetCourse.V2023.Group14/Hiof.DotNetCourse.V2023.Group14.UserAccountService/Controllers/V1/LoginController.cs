@@ -10,7 +10,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
     [ApiController]
     [Route("api")]
-    public class LoginController : ControllerBase
+    public class V1LoginController : ControllerBase
     {
         // Constants used for input validation.
         private const int Min = 5;
@@ -18,7 +18,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         private readonly LoginDbContext _context;
 
         
-        public LoginController(LoginDbContext context)
+        public V1LoginController(LoginDbContext context)
         {
             _context = context;
         }
