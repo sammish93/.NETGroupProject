@@ -3,6 +3,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 {
@@ -26,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
         // request match with what is stored in the database.
 
         [HttpPost("verification")]
-        public ActionResult<string> VerifyLogin([FromBody] LoginInfo user)
+        public async Task<ActionResult<string>> VerifyLogin([FromBody] LoginInfo user)
         {
             var validationResult = InputValidation(user);
 
@@ -48,7 +49,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
             }
 
             // Retrieve user with the same id from database.
-            var dbUser = GetDbUser(user.UserName);
+            var dbUser = await GetDbUser(user.UserName);
 
             if (dbUser != null && dbUser.Salt != null)
             {
@@ -76,9 +77,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 
         // Gets an entity from the database based on id.
 
-        private LoginModel GetDbUser(string username)
+        private async Task<LoginModel?> GetDbUser(string username)
         {
-            return _context.LoginModel.Single(l => l.UserName == username);
+            try
+            {
+                return await _context.LoginModel.SingleOrDefaultAsync(l => l.UserName == username);
+
+            } catch(InvalidOperationException)
+            {
+                return null;
+            }
+
         }
 
         // Method that checks if the results from the POST-request
