@@ -69,7 +69,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
                         return Unauthorized("Invalid Login Attempt");
                     }
 
-                    return Ok("Login Success");
+                    return Ok("Login Success.");
                 }
             }
 
