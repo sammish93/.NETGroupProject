@@ -78,7 +78,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         // Gets an entity from the database based on id.
 
-        private async Task<LoginModel?> GetDbUser(string username)
+        private async Task<V1LoginModel?> GetDbUser(string username)
         {
             try
             {

@@ -9,12 +9,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
 	{
         public LoginDbContext(DbContextOptions<LoginDbContext> options) : base(options) { }
 
-		public DbSet<LoginModel> LoginModel { get; set; }
+		public DbSet<V1LoginModel> LoginModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<LoginModel>().HasData(
-                new LoginModel
+            modelBuilder.Entity<V1LoginModel>().HasData(
+                new V1LoginModel
                 {
                     Id = 1,
                     UserName = "stian",

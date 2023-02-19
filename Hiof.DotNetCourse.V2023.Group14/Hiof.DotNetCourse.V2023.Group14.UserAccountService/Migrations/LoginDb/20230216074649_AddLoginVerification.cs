@@ -10,7 +10,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.LoginDb
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
+            migrationBuilder.EnsureSchema( 
                 name: "dbo");
 
             migrationBuilder.CreateTable(

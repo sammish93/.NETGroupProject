@@ -23,7 +23,7 @@ namespace APICommunicator.Tests
             var dbContext = new LoginDbContext(options);
 
             // Legg til eksisterende bruker i databasen.
-            var user = new LoginModel
+            var user = new V1LoginModel
             {
                 UserName = "stian",
                 Password = "86D4CF04EDF276BA6AF1",
@@ -53,7 +53,7 @@ namespace APICommunicator.Tests
                 .UseInMemoryDatabase(databaseName: "TestDatabase").Options;
 
             var dbContext = new LoginDbContext(options);
-            var user = new LoginModel
+            var user = new V1LoginModel
             {
                 UserName = "stian",
                 Password = "86D4CF04EDF276BA6AF1",
@@ -81,7 +81,7 @@ namespace APICommunicator.Tests
                 .UseInMemoryDatabase(databaseName: "TestDatabase").Options;
 
             var dbContext = new LoginDbContext(options);
-            var user = new LoginModel
+            var user = new V1LoginModel
             {
                 UserName = "stian",
                 Password = "86D4CF04EDF276BA6AF1",

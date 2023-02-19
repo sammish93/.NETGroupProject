@@ -6,8 +6,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
 {
 	public interface ILoginDbContext
 	{
-        DbSet<LoginModel> LoginModel { get; set; }
+        DbSet<V1LoginModel> LoginModel { get; set; }
         int SaveChanges();
     }
 }
 
+ 

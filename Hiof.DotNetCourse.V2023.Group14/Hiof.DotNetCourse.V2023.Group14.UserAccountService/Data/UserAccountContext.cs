@@ -10,6 +10,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
         public UserAccountContext(DbContextOptions<UserAccountContext> dbContextOptions) : base(dbContextOptions) { }
 
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<V1User> Users { get; set; }
     }
 }
