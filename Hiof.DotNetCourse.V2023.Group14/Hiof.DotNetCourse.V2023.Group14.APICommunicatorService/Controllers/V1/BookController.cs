@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 
-namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
+namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
 {
     [ApiController]
-    [Route("books")]
+    [Route("api/1.0")]
     public class BookController : ControllerBase
     {
         private readonly BookDto _books = new();
