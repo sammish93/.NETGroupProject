@@ -9,7 +9,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
 {
 
     [ApiController]
-    [Route("login")]
+    [Route("api")]
     public class LoginController : ControllerBase
     {
         // Constants used for input validation.
@@ -27,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
         // request match with what is stored in the database.
 
         [HttpPost]
-        [Route("api/verification")]
+        [Route("1.0/login/verification")]
         public async Task<IActionResult> VerifyLogin([FromBody] LoginInfo user)
         {
             var validationResult = InputValidation(user);
