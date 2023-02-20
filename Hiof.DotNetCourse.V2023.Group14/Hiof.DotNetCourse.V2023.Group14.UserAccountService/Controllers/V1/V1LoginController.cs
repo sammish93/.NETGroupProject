@@ -82,7 +82,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         {
             try
             {
-                return  await _context.LoginModel.SingleOrDefaultAsync(l => l.UserName == username);
+                return await _context.LoginModel.SingleOrDefaultAsync(l => l.UserName == username);
 
             } catch(InvalidOperationException)
             {
