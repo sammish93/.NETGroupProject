@@ -18,10 +18,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public Guid Id { get; set; }
         // Assume that a user cannot change their username. This is the simplest way of maintaining integrity in our database during our first few sprints.
         [Required]
-        [ForeignKey("V1LoginModel")]
+        // Commented out the foreign key annotation because of problems it caused with migrations.
+        //[ForeignKey("V1LoginModel")]
         [Column("UserName", TypeName = "nvarchar(500)")]
         public string UserName { get; set; }
-        public V1LoginModel loginModel { get; set; }
+        //public V1LoginModel loginModel { get; set; }
         
         [Column("email", TypeName = "nvarchar(500)")]
         public string Email { get; set; }
