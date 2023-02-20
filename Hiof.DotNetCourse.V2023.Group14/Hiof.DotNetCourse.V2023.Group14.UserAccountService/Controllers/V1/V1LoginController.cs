@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +28,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         [HttpPost]
         [Route("1.0/login/verification")]
-        public async Task<IActionResult> VerifyLogin([FromBody] LoginInfo user)
+        public async Task<IActionResult> VerifyLogin([FromBody] V1LoginInfo user)
         {
             var validationResult = InputValidation(user);
 
@@ -62,7 +62,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
                 {
                     // Check if the hashed password and salt from database
                     // match with the users password.
-                    bool result = PasswordEncryption.Verify(user.Password, hash, salt);
+                    bool result = V1PasswordEncryption.Verify(user.Password, hash, salt);
 
                     if (user.UserName != dbUser.UserName || result != true)
                     {
@@ -94,7 +94,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         // Method that checks if the results from the POST-request
         // is not null or empty.
 
-        private ActionResult? InputValidation(LoginInfo user)
+        private ActionResult? InputValidation(V1LoginInfo user)
         {
             if (string.IsNullOrEmpty(user.UserName) ||
                 string.IsNullOrEmpty(user.Password))
@@ -109,7 +109,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         // Checks if the length of both username and password are within
         // the specified limits.
 
-        private static bool CheckLength(LoginInfo user)
+        private static bool CheckLength(V1LoginInfo user)
         {
             if (user.UserName.Length < Min || user.Password.Length < Min)
             {
@@ -127,7 +127,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         // Checks if the username is written with alphanumeric characters.
 
-        private static bool CheckCharacters(LoginInfo user)
+        private static bool CheckCharacters(V1LoginInfo user)
         {
             return Regex.IsMatch(user.UserName, @"^[a-zA-Z0-9]+$");
         }

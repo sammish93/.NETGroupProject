@@ -1,6 +1,6 @@
 ﻿using System;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +36,7 @@ namespace APICommunicator.Tests
             var controller = new V1LoginController(dbContext);
 
             // Oppretter en testbruker 
-            var test = new LoginInfo("stian", "abc123");
+            var test = new V1LoginInfo("stian", "abc123");
 
             var actionResult = await controller.VerifyLogin(test);
 
@@ -64,7 +64,7 @@ namespace APICommunicator.Tests
 
             var controller = new V1LoginController(dbContext);
 
-            var test = new LoginInfo("fakeUser", "fake123");
+            var test = new V1LoginInfo("fakeUser", "fake123");
             var actionResult = await controller.VerifyLogin(test);
 
             var badResult = Assert.IsType<UnauthorizedObjectResult>(actionResult);
@@ -92,7 +92,7 @@ namespace APICommunicator.Tests
 
             var controller = new V1LoginController(dbContext);
 
-            var test = new LoginInfo("", "");
+            var test = new V1LoginInfo("", "");
             var actionResult = await controller.VerifyLogin(test);
 
             var badResult = Assert.IsType<BadRequestObjectResult>(actionResult);

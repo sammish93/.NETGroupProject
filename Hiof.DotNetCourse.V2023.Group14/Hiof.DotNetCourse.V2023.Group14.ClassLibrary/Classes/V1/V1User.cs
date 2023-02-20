@@ -1,4 +1,4 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums;
+﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +6,7 @@ using System.Data;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
+namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
     // I (Sam) haven't fully defined this class. There may be possible issues with db transactions because of private or readonly values. I also haven't annotated the fields.
     // I also haven't created a table in the database. Read Info.txt in UserAccountService, as well as the test classes and comments in that project beforehand.
@@ -15,7 +15,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
     {
         [Key]
         [Column("id")]
-        public Guid Id { get; set ; }
+        public Guid Id { get; set; }
         // Assume that a user cannot change their username. This is the simplest way of maintaining integrity in our database during our first few sprints.
         [Required]
         [Column("UserName")]
@@ -24,23 +24,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         public string Email { get; set; }
         // The password should be hashed using SHA256 or higher.
         [Column("password")]
-        public string Password { get ; set ; }
+        public string Password { get; set; }
         [Column("FirstName")]
-        public string FirstName { get ; set ; }
+        public string FirstName { get; set; }
         [Column("lastName")]
-        public string LastName { get ; set ; }
+        public string LastName { get; set; }
         [Column("Country")]
-        public string Country { get ; set ; }
+        public string Country { get; set; }
         // City and town are interchangeable in this case. Assume that the user will just pick the town they want to be associated with for finding nearby users and events.
         [Column("City")]
-        public string City { get; set ; }
+        public string City { get; set; }
         // A two letter language code that we can use for localisation. 'EN' is English, and 'NO' is Norwegian.
         [Column("LangPreference")]
         public string LangPreference { get; set; }
         // Used for establishing permissions and a user hierarchy. A 'User' can only view and edit their own data, whereas an 'Admin' can view and edit all data.
         // Decided against a single user having multiple roles (using ISet or ICollection) because a hierarchy of increasing privileges makes more sense.
         [Column("UserRole", TypeName = "nvarchar(20)")]
-        public UserRole Role { get ; set ; }
+        public UserRole Role { get; set; }
         // Assume for localisation purposes that Coordinated Universal Time (UTC) will be used to always store information relating to DateTime, but DateTime.Now converts UTC to
         // the user's Local time, and we can use the latter in the GUI.
 
@@ -75,16 +75,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
 
 
         // Getters and Setters.
-       
 
-        
-        
-       
-       
-       
-        
 
-        
-      
+
+
+
+
+
+
+
+
+
     }
 }
