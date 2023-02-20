@@ -18,24 +18,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public Guid Id { get; set; }
         // Assume that a user cannot change their username. This is the simplest way of maintaining integrity in our database during our first few sprints.
         [Required]
-        [Column("UserName")]
+        [ForeignKey("V1LoginModel")]
+        [Column("UserName", TypeName = "nvarchar(500)")]
+        public V1LoginModel loginModel { get; set; }
         public string UserName { get; set; }
-        [Column("email")]
+        [Column("email", TypeName = "nvarchar(500)")]
         public string Email { get; set; }
         // The password should be hashed using SHA256 or higher.
-        [Column("password")]
+        [Column("password", TypeName = "nvarchar(500)")]
         public string Password { get; set; }
-        [Column("FirstName")]
+        [Column("FirstName", TypeName = "nvarchar(500)")]
         public string FirstName { get; set; }
-        [Column("lastName")]
+        [Column("lastName", TypeName = "nvarchar(500)")]
         public string LastName { get; set; }
-        [Column("Country")]
+        [Column("Country", TypeName = "nvarchar(500)")]
         public string Country { get; set; }
         // City and town are interchangeable in this case. Assume that the user will just pick the town they want to be associated with for finding nearby users and events.
-        [Column("City")]
+        [Column("City", TypeName = "nvarchar(500)")]
         public string City { get; set; }
         // A two letter language code that we can use for localisation. 'EN' is English, and 'NO' is Norwegian.
-        [Column("LangPreference")]
+        [Column("LangPreference", TypeName = "nvarchar(500)")]
         public string LangPreference { get; set; }
         // Used for establishing permissions and a user hierarchy. A 'User' can only view and edit their own data, whereas an 'Admin' can view and edit all data.
         // Decided against a single user having multiple roles (using ISet or ICollection) because a hierarchy of increasing privileges makes more sense.
