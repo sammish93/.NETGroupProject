@@ -2,9 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security
+namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security
 {
-   public class PasswordEncryption
+    public class V1PasswordEncryption
     {
         private const int keySize = 10;
         private const int iteration = 100;

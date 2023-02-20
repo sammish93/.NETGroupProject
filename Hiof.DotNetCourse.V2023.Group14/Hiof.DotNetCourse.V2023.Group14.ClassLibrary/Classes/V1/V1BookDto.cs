@@ -1,6 +1,6 @@
-namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService
+namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
-    public class BookDto
+    public class V1BookDto
     {
         public string? kind { get; set; }
         public int totalItems { get; set; }

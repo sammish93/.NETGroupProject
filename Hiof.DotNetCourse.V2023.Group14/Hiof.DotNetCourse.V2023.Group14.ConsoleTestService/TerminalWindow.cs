@@ -1,6 +1,6 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
+﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.IdentityModel.Tokens;
 using System.Runtime.InteropServices;
 
@@ -22,7 +22,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 
             
             // Testing encryption of password.
-            var (hash, salt) = PasswordEncryption.Encrypt("Leon");
+            var (hash, salt) = V1PasswordEncryption.Encrypt("Leon");
 
             Console.WriteLine($"\nPassword hash: {hash}");
             Console.WriteLine($"Generated Salt: {Convert.ToHexString(salt)}");
@@ -30,7 +30,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 
             // Test to se if the password is the same by passing the same
             // hash and salt.
-            var verify = PasswordEncryption.Verify("Leon", hash, salt);
+            var verify = V1PasswordEncryption.Verify("Leon", hash, salt);
             Console.WriteLine($"Same password?: {verify}");
         }
     }

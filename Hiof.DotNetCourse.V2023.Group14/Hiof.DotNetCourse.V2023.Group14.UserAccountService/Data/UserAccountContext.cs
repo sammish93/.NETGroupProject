@@ -1,4 +1,4 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
+﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;

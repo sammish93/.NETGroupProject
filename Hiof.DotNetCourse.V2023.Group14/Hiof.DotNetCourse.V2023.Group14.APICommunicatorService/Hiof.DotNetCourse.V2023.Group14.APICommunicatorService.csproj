@@ -24,7 +24,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\V1\" />
-  </ItemGroup>
 </Project>

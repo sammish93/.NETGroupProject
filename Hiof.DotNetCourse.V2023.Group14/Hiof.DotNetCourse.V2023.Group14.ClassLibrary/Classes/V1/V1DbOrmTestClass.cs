@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
+namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
     // We should think about splitting up each dataset into its own schema. For example, our 'User' class should only be accessible through our 'UserAccountService', and thus 
     // every class used by that service should be in their own schema (e.g. 'Accounts').
     [Table("Tests", Schema = "dbo")]
-    public class DbOrmTestClass
+    public class V1DbOrmTestClass
     {
         // Annotations to designate/override serialisation by Entity Framework Core. 
         // You can specify many things such as data types, lengths, encoding, nullable etc.

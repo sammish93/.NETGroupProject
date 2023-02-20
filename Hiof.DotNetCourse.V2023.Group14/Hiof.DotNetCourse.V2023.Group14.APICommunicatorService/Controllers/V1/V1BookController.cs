@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 
 
 namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
@@ -10,7 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
     [Route("api/1.0")]
     public class V1BookController : ControllerBase
     {
-        private readonly BookDto _books = new();
+        private readonly V1BookDto _books = new();
         private readonly ILogger<V1BookController> _logger;
 
         public V1BookController(ILogger<V1BookController> logger)
@@ -19,19 +20,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         }
 
         [HttpGet("GetBookIsbn")]
-        public async Task<IActionResult> Get(string isbn)
+        public async Task<ActionResult> Get(string isbn)
         {
             var response = await CallApi("isbn", isbn);
 
             if ((isbn.Length == 13) || (isbn.Length == 10))
             {
                 if (!CheckResponse(response))
-                    return NotFound("http 404: No book found.");
+                    return NotFound("No book found.");
                 else
-                    return Ok("http 200:" + response);
+                    return Ok(response);
                     
             }
-            return BadRequest("http 400: ISBN must be 10 or 13 digits");
+            return BadRequest("ISBN must be 10 or 13 digits");
         }
 
         [HttpGet("GetBookTitle")]
@@ -39,9 +40,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             var response = await CallApi("intitle", title);
             if (!CheckResponse(response))
-                return NotFound("http 404: No book found");
+                return NotFound("No book found.");
 
-            return Ok("http 200:" + response);
+            return Ok(response);
         }
 
         [HttpGet("GetBookAuthor")]
@@ -49,9 +50,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             var response = await CallApi("inauthor", authors);
             if (!CheckResponse(response))
-                return NotFound("http 404: No book found");
+                return NotFound("No book found.");
 
-            return Ok("http: 200" + response);
+            return Ok(response);
          
         }
 
@@ -60,9 +61,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             var response = await CallApi("categories", subject);
             if (!CheckResponse(response))
-                return NotFound("http 404: No book found");
+                return NotFound("No book found.");
 
-            return Ok("http 200:" + response);
+            return Ok(response);
         
         }
 
@@ -91,7 +92,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             if (response != null)
             {
-                var bookData = JsonConvert.DeserializeObject<BookDto>(response);
+                var bookData = JsonConvert.DeserializeObject<V1BookDto>(response);
 
                 if (bookData != null && bookData.totalItems != 0)
                     return true;

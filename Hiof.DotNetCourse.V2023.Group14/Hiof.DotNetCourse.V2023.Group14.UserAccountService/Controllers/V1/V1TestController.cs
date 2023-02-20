@@ -1,8 +1,8 @@
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
+namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 {
     [ApiController]
     [Route("[controller]")]
@@ -19,7 +19,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers
         // This Http request isn't coded to include lots of different Http codes yet.
         // Remember that it's important that this is set to async, along with await keywords.
         [HttpPost]
-        public async Task<ActionResult> Create(DbOrmTestClass dbOrmTestClass)
+        public async Task<ActionResult> Create(V1DbOrmTestClass dbOrmTestClass)
         {
             await _dbOrmTestClassContext.Tests.AddAsync(dbOrmTestClass);
             await _dbOrmTestClassContext.SaveChangesAsync();

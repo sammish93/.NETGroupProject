@@ -36,6 +36,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interface\" />
-    <Folder Include="Controllers\V1\" />
   </ItemGroup>
 </Project>
