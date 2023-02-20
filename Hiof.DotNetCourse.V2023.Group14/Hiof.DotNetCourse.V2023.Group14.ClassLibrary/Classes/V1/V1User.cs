@@ -20,8 +20,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         [Required]
         [ForeignKey("V1LoginModel")]
         [Column("UserName", TypeName = "nvarchar(500)")]
-        public V1LoginModel loginModel { get; set; }
         public string UserName { get; set; }
+        public V1LoginModel loginModel { get; set; }
+        
         [Column("email", TypeName = "nvarchar(500)")]
         public string Email { get; set; }
         // The password should be hashed using SHA256 or higher.
