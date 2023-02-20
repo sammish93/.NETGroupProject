@@ -8,9 +8,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APICommunicator.Tests", "APICommunicator.Tests\APICommunicator.Tests.csproj", "{393BDD5A-B8A9-462E-B5A2-E5CC7B56F045}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}"
-	ProjectSection(SolutionItems) = preProject
-		Guidelines.txt = Guidelines.txt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EA730EF2-3A7D-4C22-AB6B-722B60BADF26}"
 EndProject
@@ -20,7 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{31B89B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.ConsoleTestService", "Hiof.DotNetCourse.V2023.Group14.ConsoleTestService\Hiof.DotNetCourse.V2023.Group14.ConsoleTestService.csproj", "{5E1B2E61-8855-4944-B500-D3C7CDA4E29B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.UserAccountService", "Hiof.DotNetCourse.V2023.Group14.UserAccountService\Hiof.DotNetCourse.V2023.Group14.UserAccountService.csproj", "{DB4A1DDD-160A-431B-96AA-12D6E9949746}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.UserAccountService", "Hiof.DotNetCourse.V2023.Group14.UserAccountService\Hiof.DotNetCourse.V2023.Group14.UserAccountService.csproj", "{DB4A1DDD-160A-431B-96AA-12D6E9949746}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAccount.Tests", "UserAccount.Tests\UserAccount.Tests.csproj", "{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +47,10 @@ Global
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +61,7 @@ Global
 		{1CB3B2C6-7728-4F02-AAC1-3766559FFDEB} = {31B89BC7-F2B1-4626-A9DA-C41C2A20F4F7}
 		{5E1B2E61-8855-4944-B500-D3C7CDA4E29B} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
+		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96890292-801C-4299-8C07-E008A6411CBF}

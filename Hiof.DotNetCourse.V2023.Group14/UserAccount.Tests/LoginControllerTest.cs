@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 
 
-namespace APICommunicator.Tests
+namespace UserAccount.Tests
 {
 	public class LoginControllerTest
 	{
