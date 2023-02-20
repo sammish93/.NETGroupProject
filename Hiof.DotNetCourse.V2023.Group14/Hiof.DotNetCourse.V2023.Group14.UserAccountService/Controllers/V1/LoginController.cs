@@ -1,35 +1,34 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
+namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 {
 
     [ApiController]
-    [Route("login")]
-    public class LoginController : ControllerBase
+    [Route("api")]
+    public class V1LoginController : ControllerBase
     {
         // Constants used for input validation.
         private const int Min = 5;
         private const int Max = 20;
-        private readonly LoginDbContext _contex;
+        private readonly LoginDbContext _context;
 
         
-        public LoginController(LoginDbContext context)
+        public V1LoginController(LoginDbContext context)
         {
-            _contex = context;
+            _context = context;
         }
-        
+
         // Method that checks if the username and password from the POST
         // request match with what is stored in the database.
 
-        [HttpPost("verification")]
-        public ActionResult<string> VerifyLogin([FromBody] LoginInfo user)
+        [HttpPost]
+        [Route("1.0/login/verification")]
+        public async Task<IActionResult> VerifyLogin([FromBody] LoginInfo user)
         {
             var validationResult = InputValidation(user);
 
@@ -51,7 +50,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
             }
 
             // Retrieve user with the same id from database.
-            var dbUser = GetDbUser(user.Id);
+            var dbUser = await GetDbUser(user.UserName);
 
             if (dbUser != null && dbUser.Salt != null)
             {
@@ -70,7 +69,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
                         return Unauthorized("Invalid Login Attempt");
                     }
 
-                    return Ok("Login Success");
+                    return Ok("Login Success.");
                 }
             }
 
@@ -79,9 +78,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.LoginService.Controllers
 
         // Gets an entity from the database based on id.
 
-        private LoginModel GetDbUser(int id)
+        private async Task<V1LoginModel?> GetDbUser(string username)
         {
-            return _contex.LoginModel.Single(l => l.Id == id);
+            try
+            {
+                return  await _context.LoginModel.SingleOrDefaultAsync(l => l.UserName == username);
+
+            } catch(InvalidOperationException)
+            {
+                return null;
+            }
+
         }
 
         // Method that checks if the results from the POST-request

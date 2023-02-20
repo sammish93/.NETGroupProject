@@ -11,7 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
     // I (Sam) haven't fully defined this class. There may be possible issues with db transactions because of private or readonly values. I also haven't annotated the fields.
     // I also haven't created a table in the database. Read Info.txt in UserAccountService, as well as the test classes and comments in that project beforehand.
     [Table("Users", Schema = "dbo")]
-    public class User
+    public class V1User
     {
         [Key]
         [Column("id")]
@@ -50,7 +50,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes
         [Column("LastActive", TypeName = "datetime2")]
         public DateTime LastActive { get; set; }
 
-        public User(string userName, string email, string password, string firstName, string lastName, string country, string city, string langPreference, UserRole role)
+        public V1User(string userName, string email, string password, string firstName, string lastName, string country, string city, string langPreference, UserRole role)
         {
             Id = Guid.NewGuid();
             UserName = userName;

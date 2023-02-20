@@ -1,5 +1,5 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService;
-using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers;
+using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Text.Json;

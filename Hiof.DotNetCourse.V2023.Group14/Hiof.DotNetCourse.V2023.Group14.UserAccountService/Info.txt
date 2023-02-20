@@ -5,11 +5,9 @@ TestProgram.cs is commented out so that ProgramUserAccount can run.
 
 After trying many solutions I found the first half of this video the most useful: https://www.youtube.com/watch?v=2p01iafOxUw
 I also used chapter 20 in the pensum which gives several options on how to communicate with the database.
-I watched this video: https://www.youtube.com/watch?v=SryQxUeChMc and spent a good deal of time trying to make it work with migrations and the 'Add-Migration' command. 
-This isn't too useful for us who have a small database, but apparently is preferable for larger databases as you can automatically change database columns just by changing
-a field in a class. It also tracks changes in a separate table.
+I watched this video: https://www.youtube.com/watch?v=SryQxUeChMc that covers migrations.
 
-
+(Note that I've also managed to connect to a local database and instructions on how to are further below)
 I managed to connect to our remote database through dependency injection using Microsoft.EntityFrameworkCore.Tools, .Design, and .SqlServer packages I downloaded
 via NuGet. It's important that you check that the specific project you're using has all of these packages enabled. To do this:
 - Right click on desired project and select 'Manage NuGet Packages'.
@@ -34,3 +32,66 @@ password: abc123
 
 
 
+** Installing your own local database and using migrations **
+
+Note: I installed this on Windows 12
+If you're using a Mac then you can use MySQL instead of Microsoft SQL Server (ask Stian for more information).
+
+https://www.microsoft.com/en-us/sql-server/sql-server-downloads Download the 'Developer' edition. It's fully featured, but has a license so you can't use it in production.
+I had a few bugs installing it. You might need to download a driver to connect to the db and run the installer as admin.
+I downloaded Microsoft ODBC Driver V17 (18 didn't work) from here https://learn.microsoft.com/en-gb/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
+I also restarted my computer after this.
+Not sure which mac software can solve this though. 
+
+I then installed SQL Server Management Studio (SSMS) from here https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16
+Mac users can use Azure Data Studio in place of this https://learn.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver16&tabs=redhat-install%2Credhat-uninstall
+At first this program wouldn't launch. I uninstalled it and installed a previous version. That worked (but wouldn't let me add tables), so I installed the newest version
+as admin. It worked.. :D
+
+Launch SSMS and connect to:
+	Server type: Database Engine
+	Server name: localhost
+	Authentication: Windows Authentication (again, not too sure what mac users do here)
+
+You should see a folder named 'Databases'. Each server is capable of having many databases, and each database is capable of many tables.
+We aim to have a database for each service.
+Restart your computer at this point.
+
+The connection string for the database is "Server = {dbHost (localhost)};Database = {dbName (e.g. UserAccounts)};Trusted_Connection = Yes;Encrypt=False;"
+You don't need to launch SSMS for Visual Studio to write to your database as long as SQL server is running in the background.
+
+** Migrations **
+
+Migrations are recorded in a 'Migration' folder in each project, as well as in a table. They basically allow tables to be created
+and updated based on changes in the actual class.
+
+In Visual Studio open 'Tools' -> 'NuGet Package Manager' -> 'Package Manager Console'.
+Navigate to the directory of the project you wish to migrate (ls to list directories, cd to change).
+Enter: Add-Migration <name of migration (e.g. InitialCreate, or AddAgeColumn)> -context <context in question e.g. DbOrmTestClassContext>
+	my example: Add-Migration InitialCreate -context DbOrmTestClassContext
+	if you only have a single context in your project then you can drop the -context option.
+This created a migration class based on the classes used in my DbOrmTestClassContext (DbOrmTestClass), and this annotation in the class stated the table and schema [Table("Tests", Schema = "dbo")]
+The actual database is stated by the 'Database = UserAccounts;' part in the connection string.
+
+If you're not happy with the table that the migration has automatically created then just use annotations to specify data types, columns, nullable, primary keys etc.
+
+To create the table itself
+Enter: Update-Database -context <context in question>
+
+To update the table after changes have been made in the DbOrmTestClass (e.g. added a new int field) just create a new migration using the Add-Migration syntax above.
+IMPORTANT FOR WHEN OTHERS CREATE A MIGRATION: Remember to use Update-Database after every new migration. Migrations will appear on the repo, so if someone creates a new migration then update!
+
+When removing columns from an already existing database you can just follow the Add-Migration and Update-Database syntax. You'll get a warning about potential loss of data. 
+If you remove the column and then go forward with the migration the data in that column will just disappear, unless further specified (not a big deal with dummy data).
+
+** Seeding the Database **
+
+Seeding is also done via migrations. Look at the DbOrmTestClassContext for a code example. There I added 5 objects/rows, added them to a migration called SeedTest, then did an Update-Database.
+If your database already has data this might cause issues. I had an issue with a primary key already being in use (UNIQUE) so I had to manually DELETE FROM dbo.Tests to clear the table first.
+
+Note: For each context you have, you have to do a separate Update-Database
+	example: Update-Database -context DbOrmTestClassContext
+	         Update-Database -context LoginDbContext
+
+Finally, if you get any errors such as 'Could not load assembly 'Hiof.DotNetCourse.V2023.Group14.UserAccountService'. Ensure it is referenced by the startup project 'APICommunicator.Tests'.', make sure
+that you have selected the correct project, you're in the correct directory,

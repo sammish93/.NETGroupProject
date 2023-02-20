@@ -1,6 +1,8 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Security;
+using Microsoft.IdentityModel.Tokens;
+using System.Runtime.InteropServices;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 {
@@ -9,13 +11,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
         static void Main(string[] args)
         {
             
-            var user = new User("sammish", "sam@samland.no", "Afdkjfsd453kgfFGk43", "sam", "davies", "Norway", "Aalesund", "EN", UserRole.Admin);
+            var user = new V1User("sammish", "sam@samland.no", "Afdkjfsd453kgfFGk43", "sam", "davies", "Norway", "Aalesund", "EN", UserRole.Admin);
 
             Console.WriteLine("User Information");
             Console.WriteLine("Username: " + user.UserName);
             Console.WriteLine("Hashed Password: " + user.Password);
             Console.WriteLine("Role: " + user.Role);
-            Console.WriteLine("Registration Date: " + user.RegistrationDate);
+            Console.WriteLine("Registration Date: " + user.RegistrationDate); 
            
 
             
@@ -28,10 +30,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 
             // Test to se if the password is the same by passing the same
             // hash and salt.
-            var verify = PasswordEncryption.verify("Leon", hash, salt);
+            var verify = PasswordEncryption.Verify("Leon", hash, salt);
             Console.WriteLine($"Same password?: {verify}");
-            
-
         }
     }
 }
