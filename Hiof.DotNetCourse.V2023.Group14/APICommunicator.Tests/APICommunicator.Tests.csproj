@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -20,12 +20,18 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Moq" Version="4.18.4" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj" />
+    <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.UserAccountService\Hiof.DotNetCourse.V2023.Group14.UserAccountService.csproj" />
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.APICommunicatorService\Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Moq" />
+    <None Remove="Pomelo.EntityFrameworkCore.MySql" />
+    <None Remove="Microsoft.EntityFrameworkCore.InMemory" />
   </ItemGroup>
 </Project>

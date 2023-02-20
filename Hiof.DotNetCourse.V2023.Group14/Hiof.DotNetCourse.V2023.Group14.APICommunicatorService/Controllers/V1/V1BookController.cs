@@ -2,70 +2,68 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 
 
-
-namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
+namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
 {
     [ApiController]
-    [Route("books")]
-    public class BookController : ControllerBase
+    [Route("api/1.0")]
+    public class V1BookController : ControllerBase
     {
-        private readonly BookDto _books = new();
-        private readonly ILogger<BookController> _logger;
+        private readonly V1BookDto _books = new();
+        private readonly ILogger<V1BookController> _logger;
 
-        public BookController(ILogger<BookController> logger)
+        public V1BookController(ILogger<V1BookController> logger)
         {
             _logger = logger;
         }
 
         [HttpGet("GetBookIsbn")]
-        public async Task<string> Get(string isbn)
+        public async Task<ActionResult> Get(string isbn)
         {
-            string message = "ISBN must be 10 or 13 digits.";
             var response = await CallApi("isbn", isbn);
 
             if ((isbn.Length == 13) || (isbn.Length == 10))
             {
                 if (!CheckResponse(response))
-                    return ErrorMessage("ISBN");
+                    return NotFound("No book found.");
                 else
-                    return response;
+                    return Ok(response);
                     
             }
-            Console.WriteLine(message);
-            return message;
+            return BadRequest("ISBN must be 10 or 13 digits");
         }
 
         [HttpGet("GetBookTitle")]
-        public async Task<string?> GetByTitle(string title)
+        public async Task<IActionResult> GetByTitle(string title)
         {
             var response = await CallApi("intitle", title);
             if (!CheckResponse(response))
-                return ErrorMessage("Title");
+                return NotFound("No book found.");
 
-            return response;
+            return Ok(response);
         }
 
         [HttpGet("GetBookAuthor")]
-        public async Task<string> GetByAuthors(string authors)
+        public async Task<IActionResult> GetByAuthors(string authors)
         {
             var response = await CallApi("inauthor", authors);
             if (!CheckResponse(response))
-                return ErrorMessage("Author");
+                return NotFound("No book found.");
 
-            return response;
+            return Ok(response);
          
         }
 
         [HttpGet("GetBookCategories")]
-        public async Task<string> GetBySubject(string subject)
+        public async Task<IActionResult> GetBySubject(string subject)
         {
             var response = await CallApi("categories", subject);
             if (!CheckResponse(response))
-                return ErrorMessage("Category");
+                return NotFound("No book found.");
 
-            return response;
+            return Ok(response);
         
         }
 
@@ -94,7 +92,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
         {
             if (response != null)
             {
-                var bookData = JsonConvert.DeserializeObject<BookDto>(response);
+                var bookData = JsonConvert.DeserializeObject<V1BookDto>(response);
 
                 if (bookData != null && bookData.totalItems != 0)
                     return true;
@@ -111,12 +109,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers
             url.Append(endpoint);
 
             return url.ToString();
-        }
-
-        // Message to deliver in swagger.
-        private static string ErrorMessage(string subject)
-        {
-            return $"{subject} do not exists";
         }
     }
 }

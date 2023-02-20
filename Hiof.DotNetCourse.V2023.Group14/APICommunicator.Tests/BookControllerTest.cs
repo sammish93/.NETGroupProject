@@ -1,5 +1,6 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService;
-using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers;
+﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Text.Json;
@@ -12,41 +13,44 @@ public class BookControllerTest
     [Fact]
     public async Task GetValidResponeOnValidIsbn()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var isbn = "1260440214";
         var result = await controller.Get(isbn);
 
-        var data = JsonSerializer.Deserialize<BookDto>(result);
-        string? id = data?.items?[0].id;
+        var okResult = Assert.IsType<OkObjectResult>(result);
 
-        Assert.Equal("YPRQtgEACAAJ", id);
+        Assert.Equal(200, okResult.StatusCode);
     }
 
     [Fact]
     public async Task GetBadResponseOnShortIsbn()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var isbn = "123";
         var result = await controller.Get(isbn);
 
-        Assert.Equal("ISBN must be 10 or 13 digits.", result);
+        var badResponse = Assert.IsType<BadRequestObjectResult>(result);
+
+        Assert.Equal("ISBN must be 10 or 13 digits", badResponse.Value);
 
     }
 
     [Fact]
     public async Task GetBadResponseOnFakeIsbn()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var isbn = "6573849267364";
         var result = await controller.Get(isbn);
 
-        Assert.Equal("ISBN do not exists", result);
+        var notFound = Assert.IsType<NotFoundObjectResult>(result);
+
+        Assert.Equal("No book found.", notFound.Value);
 
     }
 
@@ -54,28 +58,29 @@ public class BookControllerTest
     [Fact]
     public async Task GetValidResponseOnValidTitle()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var title = "DATABASESYSTEMER.";
         var result = await controller.GetByTitle(title);
 
-        var data = JsonSerializer.Deserialize<BookDto>(result);
-        string? resultTitle = data?.items?[0].volumeInfo?.title;
+        var okResult = Assert.IsType<OkObjectResult>(result);
 
-        Assert.Equal(title, resultTitle);
+        Assert.Equal(200, okResult.StatusCode);
     }
 
     [Fact]
     public async Task GetErrorMessageOnFakeTitle()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var title = "dfkjekjffd";
         var result = await controller.GetByTitle(title);
 
-        Assert.Equal("Title do not exists", result);
+        var notFound = Assert.IsType<NotFoundObjectResult>(result);
+
+        Assert.Equal("No book found.", notFound.Value);
     }
 
     
@@ -83,55 +88,57 @@ public class BookControllerTest
     [Fact]
     public async Task GetValidResponseOnValidAuthor()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var author = "Eric Matthes";
         var result = await controller.GetByAuthors(author);
 
-        var data = JsonSerializer.Deserialize<BookDto>(result);
-        string? name = data?.items?[0].volumeInfo?.authors?[0];
+        var okResult = Assert.IsType<OkObjectResult>(result);
 
-        Assert.Equal(author, name);
+        Assert.Equal(200, okResult.StatusCode);
     }
 
     [Fact]
     public async Task GetErrorMessageOnFakeAuthor()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var author = "dfkjekjffd";
         var result = await controller.GetByAuthors(author);
 
-        Assert.Equal("Author do not exists", result);
+        var notFound = Assert.IsType<NotFoundObjectResult>(result);
+
+        Assert.Equal("No book found.", notFound.Value);
     }
 
     // Test for GetBookCategories.
     [Fact]
     public async Task GetValidResponseOnValidCategory()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var category = "Programming";
         var result = await controller.GetBySubject(category);
 
-        var data = JsonSerializer.Deserialize<BookDto>(result);
-        string? categoryResult = data?.items?[0].volumeInfo?.categories?[0];
+        var okResult = Assert.IsType<OkObjectResult>(result);
 
-        Assert.Equal("Computers", categoryResult);
+        Assert.Equal(200, okResult.StatusCode);
     }
    
     [Fact]
     public async Task GetErrorMessageOnFakeCategory()
     {
-        var mockLogger = new Mock<ILogger<BookController>>();
-        var controller = new BookController(mockLogger.Object);
+        var mockLogger = new Mock<ILogger<V1BookController>>();
+        var controller = new V1BookController(mockLogger.Object);
 
         var category = "fdjksad";
         var result = await controller.GetBySubject(category);
 
-        Assert.Equal("Category do not exists", result);
+        var notFound = Assert.IsType<NotFoundObjectResult>(result);
+
+        Assert.Equal("No book found.", notFound.Value);
     }
 }
