@@ -33,6 +33,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         public async Task<ActionResult> GetAllUsers()
         {
+            
             var user = from u in _userAccountContext.Users select u;
             if (user == null)
             {
@@ -50,7 +51,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         public async Task<ActionResult> GetUserId(Guid guid)
         {
-            V1User user = await _userAccountContext.Users.FindAsync(guid);
+            var user = await _userAccountContext.Users.FindAsync(guid);
             if (user == null)
             {
                 return NotFound("User doesn't exist");
@@ -67,7 +68,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         public async Task<ActionResult> GetUserUserName(string userName)
         {
-            V1User user = await _userAccountContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefaultAsync();
+            var user = await _userAccountContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -84,7 +85,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         public async Task<ActionResult> GetUserByEmail(string email)
         {
-            V1User user = await _userAccountContext.Users.Where(x => x.Email.Contains(email)).FirstOrDefaultAsync();
+            var user = await _userAccountContext.Users.Where(x => x.Email.Contains(email)).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -98,7 +99,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> ChangeUserAccountUsingId( Guid guid, V1User user)
+        public async Task<ActionResult> ChangeUserAccountUsingId( [FromBody] V1User user)
         {
             var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingData != null)
@@ -128,7 +129,78 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             }
             return Ok();
 
-        }   
-        
+        }
+
+        [HttpPut("ChangeNames/{id}")]
+
+        public async Task<ActionResult> ChangeNames(string firstName, string lastName, V1User user)
+        {
+            var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (existingData == null)
+            {
+                return BadRequest("ddjdj");
+            }
+            else
+            {
+                existingData.FirstName = firstName;
+                existingData.LastName = lastName;
+                _userAccountContext.SaveChanges();
+            }
+            return Ok();
+
+        }
+
+        [HttpPut("ChangeCity/{id}")]
+
+        public async Task<ActionResult> ChangeCity(string city, V1User user)
+        {
+            var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (existingData == null)
+            {
+                return BadRequest("ddjdj");
+            }
+            else
+            {
+                existingData.City= city;
+                _userAccountContext.SaveChanges();
+            }
+            return Ok();
+
+        }
+
+        [HttpDelete("deleteUser/{id}")]
+
+        public async Task<ActionResult> DeleteUser(V1User user)
+        {
+            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (existingUser == null)
+            {
+                return NotFound(existingUser);
+            }
+            else
+            {
+                _userAccountContext.Users.Remove(existingUser);
+                await _userAccountContext.SaveChangesAsync();
+            }
+            return Ok();
+        }
+
+        [HttpDelete("DeleteByEmail")]
+        public async Task<ActionResult> DeleteByEmail(string email)
+        {
+            var user = await _userAccountContext.Users.Where(x => x.Email.Contains(email)).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound("User doesn't exist");
+            }
+            else
+            {
+                _userAccountContext.Users.Remove(user);
+                await _userAccountContext.SaveChangesAsync();
+            }
+            return Ok();
+        }
+
     }
 }
