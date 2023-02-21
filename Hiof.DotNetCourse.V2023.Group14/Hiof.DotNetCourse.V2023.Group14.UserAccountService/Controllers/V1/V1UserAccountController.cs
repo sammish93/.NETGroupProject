@@ -11,7 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
     {
         private readonly UserAccountContext _userAccountContext;
 
-        public V1UserAccountController(UserAccountContext userAccountContext )
+        public V1UserAccountController(UserAccountContext userAccountContext)
         {
             _userAccountContext = userAccountContext;
         }
@@ -51,7 +51,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         public async Task<ActionResult> GetUserId(Guid guid)
         {
             V1User user = await _userAccountContext.Users.FindAsync(guid);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound("User doesn't exist");
             }
@@ -59,7 +59,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             {
                 return Ok(user);
             }
-            
+
         }
 
 
@@ -68,7 +68,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         public async Task<ActionResult> GetUserUserName(string userName)
         {
             V1User user = await _userAccountContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefaultAsync();
-            
+
             if (user == null)
             {
                 return NotFound("User doesn't exist");
@@ -97,5 +97,38 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ChangeUserAccountUsingId( Guid guid, V1User user)
+        {
+            var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (existingData != null)
+            {
+                _userAccountContext.Entry<V1User>(existingData).CurrentValues.SetValues(user);
+            }
+            else
+            {
+                return NotFound("User doesn't exist");
+            }
+            return Ok();
+        }
+        
+        [HttpPut("ModifyEmail/{id}")]
+
+        public async Task<ActionResult> ChangeEmail( string email, V1User user)
+        {
+            var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id );
+            if(existingData == null)
+            {
+                return BadRequest("ddjdj");
+            }
+            else
+            {
+               existingData.Email = email;
+               _userAccountContext.SaveChanges();
+            }
+            return Ok();
+
+        }   
+        
     }
 }
