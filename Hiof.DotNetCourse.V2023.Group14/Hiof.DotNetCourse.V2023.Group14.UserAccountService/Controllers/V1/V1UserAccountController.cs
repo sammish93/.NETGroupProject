@@ -29,6 +29,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             return Ok();
         }
 
+        [HttpGet("GetAllUsers")]
+
+        public async Task<ActionResult> GetAllUsers()
+        {
+            var user = from u in _userAccountContext.Users select u;
+            if (user == null)
+            {
+                return NotFound("User doesn't exist");
+            }
+            else
+            {
+                return Ok(user);
+            }
+
+        }
+
+
         [HttpGet("GetUserById")]
 
         public async Task<ActionResult> GetUserId(Guid guid)
@@ -52,6 +69,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         {
             V1User user = await _userAccountContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefaultAsync();
             
+            if (user == null)
+            {
+                return NotFound("User doesn't exist");
+            }
+            else
+            {
+                return Ok(user);
+            }
+
+        }
+
+        [HttpGet("GetUserByEmail")]
+
+        public async Task<ActionResult> GetUserByEmail(string email)
+        {
+            V1User user = await _userAccountContext.Users.Where(x => x.Email.Contains(email)).FirstOrDefaultAsync();
+
             if (user == null)
             {
                 return NotFound("User doesn't exist");
