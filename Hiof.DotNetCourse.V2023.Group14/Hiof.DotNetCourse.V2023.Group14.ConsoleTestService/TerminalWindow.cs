@@ -6,7 +6,9 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NuGet.Protocol;
+using System;
 using System.Collections;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -75,6 +77,34 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
                     {
                         Console.WriteLine("No book found.");
                     }
+                }
+            }
+
+
+            // Gets the top 10 book results from John Steinbeck and prints them to the console.
+            try
+            {
+                using HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:7027/api/1.0/GetBookAuthor?authors=john%20steinbeck");
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+                var bookSearch = new V1BooksDto(json);
+                Console.WriteLine("The total amount of books from this search is: " + bookSearch.TotalItems);
+                foreach (V1Book book in bookSearch.Books)
+                {
+                    Console.WriteLine("The book title is: " + book.Title);
+                    Console.WriteLine("It has " + book.PageCount + " pages.");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    Console.WriteLine("ISBN must be 10 or 13 digits");
+                }
+                else if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine("No book found.");
                 }
             }
         }
