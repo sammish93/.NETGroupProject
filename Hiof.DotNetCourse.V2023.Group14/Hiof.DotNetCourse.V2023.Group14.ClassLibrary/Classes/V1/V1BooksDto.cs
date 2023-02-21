@@ -9,27 +9,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         // Google Books API uses the field 'kind' for a publication object/type. Books have the kind "books#volumes". 
         public string? Kind { get; set; }
         // The amount of results from a single API request.
-        public int TotalItems { get; set; }
+        public int? TotalItems { get; set; }
         // A collection of books from a single search.
         public IList<V1Book>? Books { get; set; }
 
-        /*
+
+        // This constructor takes a Json object in string format and is hard-coded to accept only results following the Google Books API format.
         public V1BooksDto(string jsonString) 
         {
-            JObject jObject = JObject.Parse(jsonString);
+            // Creates a Json object.
+            dynamic? jsonObject = JsonConvert.DeserializeObject(jsonString);
 
-            IList<JToken> jTokens = jObject["items"].Children().ToList();
+            Kind = jsonObject.kind;
 
-            IList<V1Book> books = new List<V1Book>();
-            foreach (JToken jToken in jTokens)
+            TotalItems = jsonObject.totalItems;
+
+            // Creates a V1Book object for each book item from the search result.
+            var books = new List<V1Book>();
+            var jArrayBooks = jsonObject.items;
+            foreach (JObject jObjectItem in jArrayBooks)
             {
-                string name = jToken.
-
-                books.Add(new V1Book(
-                    )
+                var book = new V1Book(jObjectItem.ToString());
+                books.Add(book);
             }
-            JsonConvert.DeserializeObject<V1Book>(jsonString);
+            Books = books;
         }
-        */
+
+        // Blank constructor needed for APICommunicatorService.V1BookController.
+        public V1BooksDto()
+        {
+
+        }
     }
 }

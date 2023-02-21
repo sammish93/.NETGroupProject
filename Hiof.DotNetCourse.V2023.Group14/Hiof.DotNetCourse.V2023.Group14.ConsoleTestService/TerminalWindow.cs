@@ -81,94 +81,32 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             }
 
 
-            string jsonString = @"{
-              ""kind"": ""books#volume"",
-              ""id"": ""fo4rzdaHDAwC"",
-              ""etag"": ""Gi5SJsSPtSc"",
-              ""selfLink"": ""https://www.googleapis.com/books/v1/volumes/fo4rzdaHDAwC"",
-              ""volumeInfo"": {
-                ""title"": ""Harry Potter and the Sorcerer's Stone"",
-                ""authors"": [
-                  ""J. K. Rowling""
-                ],
-                ""publisher"": ""Arthur A. Levine Books"",
-                ""publishedDate"": ""1998"",
-                ""description"": ""Rescued from the outrageous neglect of his aunt and uncle, a young boy with a great destiny proves his worth while attending Hogwarts School for Witchcraft and Wizardry."",
-                ""industryIdentifiers"": [
-                  {
-                    ""type"": ""ISBN_10"",
-                    ""identifier"": ""059035342X""
-                  },
-                  {
-                    ""type"": ""ISBN_13"",
-                    ""identifier"": ""9780590353427""
-                  }
-                ],
-                ""readingModes"": {
-                  ""text"": false,
-                  ""image"": false
-                },
-                ""pageCount"": 324,
-                ""printType"": ""BOOK"",
-                ""categories"": [
-                  ""Juvenile Fiction""
-                ],
-                ""averageRating"": 4.5,
-                ""ratingsCount"": 1736,
-                ""maturityRating"": ""NOT_MATURE"",
-                ""allowAnonLogging"": false,
-                ""contentVersion"": ""0.8.4.0.preview.0"",
-                ""panelizationSummary"": {
-                  ""containsEpubBubbles"": false,
-                  ""containsImageBubbles"": false
-                },
-                ""imageLinks"": {
-                  ""smallThumbnail"": ""http://books.google.com/books/content?id=fo4rzdaHDAwC&printsec=frontcover&img=1&zoom=5&source=gbs_api"",
-                  ""thumbnail"": ""http://books.google.com/books/content?id=fo4rzdaHDAwC&printsec=frontcover&img=1&zoom=1&source=gbs_api""
-                },
-                ""language"": ""en"",
-                ""previewLink"": ""http://books.google.no/books?id=fo4rzdaHDAwC&dq=isbn:9780590353427&hl=&cd=1&source=gbs_api"",
-                ""infoLink"": ""http://books.google.no/books?id=fo4rzdaHDAwC&dq=isbn:9780590353427&hl=&source=gbs_api"",
-                ""canonicalVolumeLink"": ""https://books.google.com/books/about/Harry_Potter_and_the_Sorcerer_s_Stone.html?hl=&id=fo4rzdaHDAwC""
-              },
-              ""saleInfo"": {
-                ""country"": ""NO"",
-                ""saleability"": ""NOT_FOR_SALE"",
-                ""isEbook"": false
-              },
-              ""accessInfo"": {
-                ""country"": ""NO"",
-                ""viewability"": ""NO_PAGES"",
-                ""embeddable"": false,
-                ""publicDomain"": false,
-                ""textToSpeechPermission"": ""ALLOWED"",
-                ""epub"": {
-                  ""isAvailable"": false
-                },
-                ""pdf"": {
-                  ""isAvailable"": false
-                },
-                ""webReaderLink"": ""http://play.google.com/books/reader?id=fo4rzdaHDAwC&hl=&source=gbs_api"",
-                ""accessViewStatus"": ""NONE"",
-                ""quoteSharingAllowed"": false
-              },
-              ""searchInfo"": {
-                ""textSnippet"": ""Rescued from the outrageous neglect of his aunt and uncle, a young boy with a great destiny proves his worth while attending Hogwarts School for Witchcraft and Wizardry.""
-              }
-            }";
-
-
-            var book = new V1Book(jsonString);
-
-            Console.WriteLine(book.Title);
-
-            DateOnly thing = DateOnly.Parse("2021-07");
-
-            Console.WriteLine(thing);
-
-
-
-
+            // Gets the top 10 book results from John Steinbeck and prints them to the console.
+            try
+            {
+                using HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:7027/api/1.0/GetBookAuthor?authors=john%20steinbeck");
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+                var bookSearch = new V1BooksDto(json);
+                Console.WriteLine("The total amount of books from this search is: " + bookSearch.TotalItems);
+                foreach (V1Book book in bookSearch.Books)
+                {
+                    Console.WriteLine("The book title is: " + book.Title);
+                    Console.WriteLine("It has " + book.PageCount + " pages.");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    Console.WriteLine("ISBN must be 10 or 13 digits");
+                }
+                else if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine("No book found.");
+                }
+            }
         }
     }
 }

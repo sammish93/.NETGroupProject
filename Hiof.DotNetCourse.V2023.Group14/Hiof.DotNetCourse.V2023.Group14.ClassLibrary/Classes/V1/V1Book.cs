@@ -24,6 +24,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public IList<string> Categories { get; }
         public IDictionary<string, string> ImageLinks { get; }
 
+
         public V1Book(IDictionary<string, string> industryIdentifiers, string language, string title, IList<string> authors, string publisher, DateOnly publishedDate, string description, int pageCount, IList<string> categories, IDictionary<string, string> imageLinks)
         {
             IndustryIdentifiers = industryIdentifiers;
@@ -38,11 +39,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             ImageLinks = imageLinks;
         }
 
-        // Serialises a V1Book object based on a jsonString from Google Books API.
+        // Serialises a V1Book object based on a Json string from Google Books API.
         public V1Book(string jsonString)
         {
+            // Creates a Json object.
             dynamic? jsonObject = JsonConvert.DeserializeObject(jsonString);
 
+            // Assigns the relevant ISBN numbers to an IndustryIdentifiers Dictionary.
             var jArrayIndustryIdentifiers = jsonObject.volumeInfo["industryIdentifiers"];
             var industryIdentifiers = new Dictionary<string, string>();
             foreach (JObject jObjectIndustryIdentifier in jArrayIndustryIdentifiers)
@@ -56,10 +59,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             }
             IndustryIdentifiers = industryIdentifiers;
 
+            // Publication language.
             Language = jsonObject.volumeInfo["language"];
 
+            // Book title.
             Title = jsonObject.volumeInfo["title"];
 
+            // Authors as a List. One book can have several authors.
             var jArrayAuthors = jsonObject.volumeInfo["authors"];
             var authors = new List<string>();
             foreach (string author in jArrayAuthors)
@@ -68,8 +74,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             }
             Authors = authors;
 
+            // Publisher.
             Publisher = jsonObject.volumeInfo["publisher"];
 
+            // Date of publish. DateOnly.Parse() requires both a year and a month. If only a year is supplied then "-01" is automatically added to the string.
             string dateBefore = jsonObject.volumeInfo["publishedDate"];
             if (dateBefore.Length == 4)
             {
@@ -77,10 +85,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             }
             PublishedDate = DateOnly.Parse(dateBefore);
 
+            // Description.
             Description = jsonObject.volumeInfo["description"];
 
+            // Page Count.
             PageCount = jsonObject.volumeInfo["pageCount"];
 
+            // Categories/Genres. One book can have several categories.
             var jArrayCategories = jsonObject.volumeInfo["categories"];
             var categories = new List<string>();
             foreach (string category in jArrayCategories)
@@ -89,6 +100,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             }
             Categories = categories;
 
+            // Thumbnails for usage with the Gui.
             var jArrayImageLinks = jsonObject.volumeInfo["imageLinks"];
             var imageLinks = new Dictionary<string, string>();
             string smallThumbnail = jArrayImageLinks.smallThumbnail;
