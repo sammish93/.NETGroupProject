@@ -28,7 +28,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             // The specified table is given using an Entity Framework Core annotation in the actual class (see DbOrmTestClass.cs).
             // One server can hold many databases, and one database can hold many tables.
             var dbHost = "localhost";
-            var dbName = "UserAccounts";
+            var dbName = "user_accounts";
             var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
 
             // Development purposes only! Those with Windows can use Microsoft SQL Server and those with mac can use MySQL.

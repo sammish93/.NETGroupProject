@@ -3,6 +3,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.LoginDb
 {
     [DbContext(typeof(LoginDbContext))]
-    partial class LoginDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230221074024_UpdatedTableAndColumnNames")]
+    partial class UpdatedTableAndColumnNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
