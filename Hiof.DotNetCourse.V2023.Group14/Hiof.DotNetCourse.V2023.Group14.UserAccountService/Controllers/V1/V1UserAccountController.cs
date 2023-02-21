@@ -27,5 +27,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             await _userAccountContext.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpGet("GetUserById")]
+
+        public async Task<ActionResult> GetUserId(Guid guid)
+        {
+            V1User user = await _userAccountContext.Users.FindAsync(guid);
+            if(user == null)
+            {
+                return NotFound("User doesn't exist");
+            }
+            else
+            {
+                return Ok(user);
+            }
+            
+        }
+
     }
 }

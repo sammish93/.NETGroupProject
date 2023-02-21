@@ -11,5 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
 
 
         public DbSet<V1User> Users { get; set; }
+
+        
     }
 }
