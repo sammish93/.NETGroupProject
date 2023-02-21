@@ -20,7 +20,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         [Required]
         [Column("username", TypeName = "nvarchar(500)")]
         public string UserName { get; set; }
-        
         [Column("email", TypeName = "nvarchar(500)")]
         public string Email { get; set; }
         // The password should be hashed using SHA256 or higher.
