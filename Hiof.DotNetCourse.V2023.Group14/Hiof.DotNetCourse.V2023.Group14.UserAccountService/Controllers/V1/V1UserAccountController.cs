@@ -184,23 +184,5 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             }
             return Ok();
         }
-
-        [HttpDelete("DeleteByEmail")]
-        public async Task<ActionResult> DeleteByEmail(string email)
-        {
-            var user = await _userAccountContext.Users.Where(x => x.Email.Contains(email)).FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                return NotFound("User doesn't exist");
-            }
-            else
-            {
-                _userAccountContext.Users.Remove(user);
-                await _userAccountContext.SaveChangesAsync();
-            }
-            return Ok();
-        }
-
     }
 }
