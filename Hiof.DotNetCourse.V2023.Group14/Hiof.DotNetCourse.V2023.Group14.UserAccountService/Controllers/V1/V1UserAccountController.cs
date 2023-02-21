@@ -1,6 +1,7 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 {
@@ -42,6 +43,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
                 return Ok(user);
             }
             
+        }
+
+
+        [HttpGet("GetUserByUserName")]
+
+        public async Task<ActionResult> GetUserUserName(string userName)
+        {
+            V1User user = await _userAccountContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefaultAsync();
+            
+            if (user == null)
+            {
+                return NotFound("User doesn't exist");
+            }
+            else
+            {
+                return Ok(user);
+            }
+
         }
 
     }
