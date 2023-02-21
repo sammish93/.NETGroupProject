@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Gro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAccount.Tests", "UserAccount.Tests\UserAccount.Tests.csproj", "{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService", "Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService\Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.csproj", "{341F99D7-2F7D-41BF-AD1E-EC10BC83044F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{341F99D7-2F7D-41BF-AD1E-EC10BC83044F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{341F99D7-2F7D-41BF-AD1E-EC10BC83044F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{341F99D7-2F7D-41BF-AD1E-EC10BC83044F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{341F99D7-2F7D-41BF-AD1E-EC10BC83044F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{5E1B2E61-8855-4944-B500-D3C7CDA4E29B} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 		{DB4A1DDD-160A-431B-96AA-12D6E9949746} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 		{0ADA4539-D39B-4E98-804B-EF9D38BBBE74} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
+		{341F99D7-2F7D-41BF-AD1E-EC10BC83044F} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96890292-801C-4299-8C07-E008A6411CBF}
