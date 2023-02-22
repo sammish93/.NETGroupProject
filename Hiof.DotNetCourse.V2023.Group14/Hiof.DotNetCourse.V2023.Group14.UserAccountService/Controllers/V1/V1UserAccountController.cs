@@ -1,4 +1,5 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+﻿using System.Text.RegularExpressions;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,9 +24,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         [Route("users")]
         public async Task<ActionResult> Create(V1User user)
         {
-            await _userAccountContext.Users.AddAsync(user);
-            //This line of code is blocked out because it was causing an error. I (Ashti) don't know why it was so for now it will be blocked out
-            await _userAccountContext.SaveChangesAsync();
+            if(user != null)
+            {
+                await _userAccountContext.Users.AddAsync(user);
+                await _userAccountContext.SaveChangesAsync();
+            }
+            
             return Ok();
         }
 
@@ -105,6 +109,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             if (existingData != null)
             {
                 _userAccountContext.Entry<V1User>(existingData).CurrentValues.SetValues(user);
+                _userAccountContext.SaveChanges();
             }
             else
             {
@@ -120,7 +125,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id );
             if(existingData == null)
             {
-                return BadRequest("ddjdj");
+                return NotFound("User doesn't exist");
             }
             else
             {
@@ -138,7 +143,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingData == null)
             {
-                return BadRequest("ddjdj");
+                return NotFound("User doesn't exist");
             }
             else
             {
@@ -157,7 +162,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingData == null)
             {
-                return BadRequest("ddjdj");
+                return NotFound("User doesn't exist");
             }
             else
             {
@@ -183,6 +188,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
                 await _userAccountContext.SaveChangesAsync();
             }
             return Ok();
+        }
+
+        private static bool EmailIsValid(V1User user)
+        {
+            return Regex.IsMatch(user.Email, @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$");
         }
     }
 }
