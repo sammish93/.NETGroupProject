@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAccount
 {
     [DbContext(typeof(UserAccountContext))]
-    [Migration("20230221073751_UpdatedTableAndColumnNames")]
-    partial class UpdatedTableAndColumnNames
+    [Migration("20230222155009_UpdatedColumnsAndRows")]
+    partial class UpdatedColumnsAndRows
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,38 +24,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1LoginModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("password");
-
-                    b.Property<string>("Salt")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("salt");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("token");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("username");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("login_verification", "dbo");
-                });
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1User", b =>
                 {
@@ -117,25 +85,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("username");
 
-                    b.Property<int>("loginModelId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("loginModelId");
-
                     b.ToTable("users", "dbo");
-                });
-
-            modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1User", b =>
-                {
-                    b.HasOne("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1LoginModel", "loginModel")
-                        .WithMany()
-                        .HasForeignKey("loginModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("loginModel");
                 });
 #pragma warning restore 612, 618
         }
