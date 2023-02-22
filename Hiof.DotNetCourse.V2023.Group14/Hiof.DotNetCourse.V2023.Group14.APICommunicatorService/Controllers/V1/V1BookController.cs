@@ -11,7 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
     [Route("api/1.0")]
     public class V1BookController : ControllerBase
     {
-        private readonly V1BookDto _books = new();
+        private readonly V1BooksDto _books = new();
         private readonly ILogger<V1BookController> _logger;
 
         public V1BookController(ILogger<V1BookController> logger)
@@ -92,9 +92,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             if (response != null)
             {
-                var bookData = JsonConvert.DeserializeObject<V1BookDto>(response);
+                var bookData = JsonConvert.DeserializeObject<V1BooksDto>(response);
 
-                if (bookData != null && bookData.totalItems != 0)
+                if (bookData != null && bookData.TotalItems != 0)
                     return true;
             }
             return false;
