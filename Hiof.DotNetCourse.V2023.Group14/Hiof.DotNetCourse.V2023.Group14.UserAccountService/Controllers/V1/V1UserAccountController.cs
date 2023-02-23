@@ -30,7 +30,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
                 await _userAccountContext.SaveChangesAsync();
             }
             
-            return Ok();
+            return Ok(user);
         }
 
         [HttpGet("GetAllUsers")]

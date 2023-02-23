@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAccount
 {
     [DbContext(typeof(UserAccountContext))]
-    partial class UserAccountContextModelSnapshot : ModelSnapshot
+    [Migration("20230223103223_UniqueFields")]
+    partial class UniqueFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,10 +89,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("UserName")
+                    b.HasIndex("Email", "UserName")
                         .IsUnique();
 
                     b.ToTable("users", "dbo");
@@ -97,46 +97,46 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dc1dcbf9-3414-4f15-8745-6ebeada93861"),
+                            Id = new Guid("f77da20a-9f9b-45e9-8bc6-d2c0e6acdd86"),
                             City = "Seattle",
                             Country = "USA",
                             Email = "joojoo@gmail.com",
                             FirstName = "Jinkx",
                             LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8060),
+                            LastActive = new DateTime(2023, 2, 23, 11, 32, 23, 253, DateTimeKind.Local).AddTicks(200),
                             LastName = "Monsoon",
                             Password = "Itismonsoonseason!",
-                            RegistrationDate = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8010),
+                            RegistrationDate = new DateTime(2023, 2, 23, 11, 32, 23, 253, DateTimeKind.Local).AddTicks(160),
                             Role = "User",
                             UserName = "JinkxMonsoon"
                         },
                         new
                         {
-                            Id = new Guid("4cf318a5-95d1-4231-850f-a3aef61aaadd"),
+                            Id = new Guid("6f88f584-766f-48ab-b5a1-78770b89c337"),
                             City = "Toronto",
                             Country = "Canada",
                             Email = "b_hyteso@gmail.com",
                             FirstName = "Brooklyn",
                             LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8066),
+                            LastActive = new DateTime(2023, 2, 23, 11, 32, 23, 253, DateTimeKind.Local).AddTicks(207),
                             LastName = "Hytes",
                             Password = "CanadianTurkeyBacon",
-                            RegistrationDate = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8064),
+                            RegistrationDate = new DateTime(2023, 2, 23, 11, 32, 23, 253, DateTimeKind.Local).AddTicks(206),
                             Role = "User",
                             UserName = "QueenOfTheNorth"
                         },
                         new
                         {
-                            Id = new Guid("d9813480-cc17-4b2e-a749-626a16a1d096"),
+                            Id = new Guid("04303abe-0c95-40ad-b5e8-b2fa0aaaf985"),
                             City = "Palm Springs",
                             Country = "USA",
                             Email = "bdelrio@yahoo.com",
                             FirstName = "Bianca",
                             LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8069),
+                            LastActive = new DateTime(2023, 2, 23, 11, 32, 23, 253, DateTimeKind.Local).AddTicks(211),
                             LastName = "Del Rio",
                             Password = "Baloney2123",
-                            RegistrationDate = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8068),
+                            RegistrationDate = new DateTime(2023, 2, 23, 11, 32, 23, 253, DateTimeKind.Local).AddTicks(210),
                             Role = "Admin",
                             UserName = "ClownBeauty"
                         });
