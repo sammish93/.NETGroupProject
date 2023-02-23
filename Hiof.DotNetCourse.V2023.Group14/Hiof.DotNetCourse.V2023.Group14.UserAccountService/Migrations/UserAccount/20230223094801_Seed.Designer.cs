@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAccount
 {
     [DbContext(typeof(UserAccountContext))]
-    partial class UserAccountContextModelSnapshot : ModelSnapshot
+    [Migration("20230223094801_Seed")]
+    partial class Seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,48 +94,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                     b.HasData(
                         new
                         {
-                            Id = new Guid("59890f58-7bce-47d1-a308-56a72f58c80a"),
+                            Id = new Guid("a2e9ee22-e515-48cc-8ea0-7229a1c7c590"),
                             City = "Seattle",
                             Country = "USA",
                             Email = "joojoo@gmail.com",
                             FirstName = "Jinkx",
                             LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 10, 57, 23, 541, DateTimeKind.Local).AddTicks(6348),
+                            LastActive = new DateTime(2023, 2, 23, 10, 48, 1, 380, DateTimeKind.Local).AddTicks(4764),
                             LastName = "Monsoon",
                             Password = "Itismonsoonseason!",
-                            RegistrationDate = new DateTime(2023, 2, 23, 10, 57, 23, 541, DateTimeKind.Local).AddTicks(6307),
+                            RegistrationDate = new DateTime(2023, 2, 23, 10, 48, 1, 380, DateTimeKind.Local).AddTicks(4721),
                             Role = "User",
                             UserName = "JinkxMonsoon"
-                        },
-                        new
-                        {
-                            Id = new Guid("e43fdf2b-523c-471d-8664-97c9d9ad6c11"),
-                            City = "Toronto",
-                            Country = "Canada",
-                            Email = "b_hyteso@gmail.com",
-                            FirstName = "Brooklyn",
-                            LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 10, 57, 23, 541, DateTimeKind.Local).AddTicks(6354),
-                            LastName = "Hytes",
-                            Password = "CanadianTurkeyBacon",
-                            RegistrationDate = new DateTime(2023, 2, 23, 10, 57, 23, 541, DateTimeKind.Local).AddTicks(6353),
-                            Role = "User",
-                            UserName = "QueenOfTheNorth"
-                        },
-                        new
-                        {
-                            Id = new Guid("7a5e9c16-e8b0-498a-bbce-c674503346e9"),
-                            City = "Palm Springs",
-                            Country = "USA",
-                            Email = "bdelrio@yahoo.com",
-                            FirstName = "Bianca",
-                            LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 10, 57, 23, 541, DateTimeKind.Local).AddTicks(6358),
-                            LastName = "Del Rio",
-                            Password = "Baloney2123",
-                            RegistrationDate = new DateTime(2023, 2, 23, 10, 57, 23, 541, DateTimeKind.Local).AddTicks(6357),
-                            Role = "Admin",
-                            UserName = "ClownBeauty"
                         });
                 });
 #pragma warning restore 612, 618
