@@ -1,4 +1,5 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,11 +18,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         [Column("id")]
         public Guid Id { get; set; }
         // Assume that a user cannot change their username. This is the simplest way of maintaining integrity in our database during our first few sprints.
-        [Required]
+        [Required(ErrorMessage = "{0} is required")]
+        [StringLength(20, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
+        [RegularExpression(@"^[a-zA-Z0-9]+$",
+         ErrorMessage = "Only alphanumeric characters in username")]
         [Column("username", TypeName = "nvarchar(500)")]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         [Column("email", TypeName = "nvarchar(500)")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        [StringLength(100, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
+        [RegularExpression(@"^[a-zA-Z0-9]+$",
+         ErrorMessage = "Only alphanumeric characters in username")]
+        [DataType(DataType.Password)]
+
         // The password should be hashed using SHA256 or higher.
         [Column("password", TypeName = "nvarchar(500)")]
         public string Password { get; set; }

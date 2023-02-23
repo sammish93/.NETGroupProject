@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAccount
 {
     [DbContext(typeof(UserAccountContext))]
-    partial class UserAccountContextModelSnapshot : ModelSnapshot
+    [Migration("20230223074822_UpdatedColumnAnnotations")]
+    partial class UpdatedColumnAnnotations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,7 +68,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("password");
 
