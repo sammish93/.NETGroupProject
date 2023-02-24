@@ -1,4 +1,7 @@
 ﻿using System;
+using Azure;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using Hangfire;
 using Hangfire.Common;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
@@ -6,13 +9,12 @@ using Newtonsoft.Json;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
-	/*
-		The class is designed to check for updates in the marketplace, by sending
-		an http-Get request to the '/market' endpoint (not implemented yet). This
-		is to retrieve the current list of posts for sale. It then deserialize the
-		response into a list of 'V1MarketplacePost' objects. 
-	 */
-	public class MarketPlaceUpdate
+    // The class is designed to check for updates in the marketplace, by sending
+    // an http-Get request to the '/market' endpoint (not implemented yet). This
+	// is to retrieve the current list of posts for sale. It then deserialize the
+	// response into a list of 'V1MarketplacePost' objects.
+
+    public class MarketPlaceUpdate
 	{
 		private readonly ILogger<MarketPlaceUpdate> _logger;
 		private readonly HttpClient _httpClient;
