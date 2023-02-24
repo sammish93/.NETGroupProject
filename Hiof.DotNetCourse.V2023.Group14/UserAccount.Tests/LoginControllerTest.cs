@@ -25,9 +25,10 @@ namespace UserAccount.Tests
             // Legg til eksisterende bruker i databasen.
             var user = new V1LoginModel
             {
+                Id = Guid.Parse("3FA85F64-5717-4562-B3FC-2C963F66AFA6"),
                 UserName = "stian",
-                Password = "86D4CF04EDF276BA6AF1",
-                Salt = "20OVaK6glLyqxg=="
+                Password = "A8344CF7CA6FB2F730EB",
+                Salt = "44835FBC741A21B35D5E"
             };
             dbContext.Add(user);
             dbContext.SaveChanges();

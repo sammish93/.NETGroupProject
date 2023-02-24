@@ -76,7 +76,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             return Unauthorized("Account does not exists.");
         }
 
-
+        // Commented out for security reasons. This request shouldn't be publicly allowed to be edited. We can allow those with ADMIN privileges to call this later on with a valid token if we wish.
+        /*
         [HttpPost]
         [Route("create")]
         public async Task<ActionResult> Create(V1LoginModel loginModel)
@@ -90,6 +91,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
             return Ok();
         }
+        */
 
         // Gets an entity from the database based on id.
 
