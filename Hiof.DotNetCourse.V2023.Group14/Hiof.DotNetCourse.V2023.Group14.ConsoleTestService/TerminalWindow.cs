@@ -49,10 +49,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             // Fetching a JSON object from the APICommunicatorService
             // Creating 4 URIs to iterate through. Only the first one is valid
             var uris = new ArrayList();
-            uris.Add("https://localhost:7027/api/1.0/GetBookIsbn?isbn=9781119797203");
-            uris.Add("https://localhost:7027/api/1.0/GetBookIsbn?isbn=999");
-            uris.Add("https://localhost:7027/api/1.0/GetNOTHING?isbn=THROWSERROR404");
-            uris.Add("https://DOESNOTEXIST/api/1.0/GetBookIsbn?isbn=THROWSERROR443");
+            uris.Add("https://localhost:7027/api/1.0/books/getBookIsbn?isbn=9781119797203");
+            uris.Add("https://localhost:7027/api/1.0/books/getBookIsbn?isbn=999");
+            uris.Add("https://localhost:7027/api/1.0/books/getNOTHING?isbn=THROWSERROR404");
+            uris.Add("https://DOESNOTEXIST/api/1.0/books/getBookIsbn?isbn=THROWSERROR443");
 
             // Iterates through the 4 URIs above
             foreach (string uri in uris)
@@ -84,7 +84,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             // Gets the top 10 book results from John Steinbeck and prints them to the console.
             try
             {
-                using HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:7027/api/1.0/GetBookAuthor?authors=john%20steinbeck");
+                using HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:7027/api/1.0/books/getBookAuthor?authors=john%20steinbeck");
                 responseMessage.EnsureSuccessStatusCode();
                 var json = await responseMessage.Content.ReadAsStringAsync();
                 var bookSearch = new V1BooksDto(json);

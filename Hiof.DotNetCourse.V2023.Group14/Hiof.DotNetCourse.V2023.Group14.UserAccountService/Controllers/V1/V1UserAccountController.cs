@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 {
     [ApiController]
-    [Route("api/1.0/Users")]
+    [Route("api/1.0/users")]
     public class V1UserAccountController : ControllerBase
     {
         private readonly UserAccountContext _userAccountContext;
@@ -24,7 +24,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         // This Http request isn't coded to include lots of different Http codes yet.
         // Remember that it's important that this is set to async, along with await keywords.
         [HttpPost]
-        [Route("User")]
+        [Route("user")]
         public async Task<ActionResult> Create(V1User user)
         {
             if(user != null)
@@ -45,7 +45,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             return Ok();
         }
 
-        [HttpGet("GetAllUsers")]
+        [HttpGet("getUsers")]
 
         public async Task<ActionResult> GetAllUsers()
         {
@@ -63,7 +63,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         }
 
 
-        [HttpGet("GetUserById")]
+        [HttpGet("getUserById")]
 
         public async Task<ActionResult> GetUserId(Guid guid)
         {
@@ -80,7 +80,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         }
 
 
-        [HttpGet("GetUserByUserName")]
+        [HttpGet("getUserByUserName")]
 
         public async Task<ActionResult> GetUserUserName(string userName)
         {
@@ -97,7 +97,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         }
 
-        [HttpGet("GetUserByEmail")]
+        [HttpGet("getUserByEmail")]
 
         public async Task<ActionResult> GetUserByEmail(string email)
         {
@@ -114,14 +114,39 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("user")]
         public async Task<ActionResult> ChangeUserAccountUsingId( [FromBody] V1User user)
         {
-            var existingData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-            if (existingData != null)
+            // In the event of a username or password being changed it's required to update both the 'users' and 'login_verification' tables.
+            var existingUserData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            var existingVerificationData = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (existingUserData != null && existingVerificationData != null)
             {
-                _userAccountContext.Entry<V1User>(existingData).CurrentValues.SetValues(user);
-                _userAccountContext.SaveChanges();
+                // If the user updates their username or password the following code is executed.
+                // This is required because the password generates a unique salt in the 'login_verification' table as well.
+                if (existingUserData.Password != user.Password || existingUserData.UserName != user.UserName)
+                {
+                    var (hash, salt) = V1PasswordEncryption.Encrypt(user.Password);
+
+                    var loginModel = new V1LoginModel();
+                    loginModel.Id = existingVerificationData.Id;
+                    loginModel.UserName = user.UserName;
+                    loginModel.Token = existingVerificationData.Token;
+                    loginModel.Password = hash;
+                    loginModel.Salt = Convert.ToHexString(salt);
+
+                    user.Password = hash;
+
+                    _userAccountContext.Entry<V1User>(existingUserData).CurrentValues.SetValues(user);
+                    _userAccountContext.SaveChanges();
+
+                    _userAccountContext.Entry<V1LoginModel>(existingVerificationData).CurrentValues.SetValues(loginModel);
+                    _userAccountContext.SaveChanges();
+                } else
+                {
+                    _userAccountContext.Entry<V1User>(existingUserData).CurrentValues.SetValues(user);
+                    _userAccountContext.SaveChanges();
+                }
             }
             else
             {
@@ -130,6 +155,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             return Ok();
         }
         
+        // The following Http requests aren't necessary since we can use a single PUT requests to change any fields we wish.
+        /*
         [HttpPut("ModifyEmail/{id}")]
 
         public async Task<ActionResult> ChangeEmail( string email, V1User user)
@@ -206,5 +233,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         {
             return Regex.IsMatch(user.Email, @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$");
         }
+        */
     }
 }

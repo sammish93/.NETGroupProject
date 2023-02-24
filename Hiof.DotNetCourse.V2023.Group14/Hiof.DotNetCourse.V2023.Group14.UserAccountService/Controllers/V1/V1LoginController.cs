@@ -9,7 +9,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 {
 
     [ApiController]
-    [Route("api/1.0/Login")]
+    [Route("api/1.0/login")]
     public class V1LoginController : ControllerBase
     {
         // Constants used for input validation.
@@ -27,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         // request match with what is stored in the database.
 
         [HttpPost]
-        [Route("Verification")]
+        [Route("verification")]
         public async Task<IActionResult> VerifyLogin([FromBody] V1LoginInfo user)
         {
             var validationResult = InputValidation(user);
@@ -55,7 +55,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             if (dbUser != null && dbUser.Salt != null)
             {
                 // Get the hashed password and salt from database.
-                var salt = Convert.FromBase64String(dbUser.Salt);
+                var salt = Convert.FromHexString(dbUser.Salt);
                 var hash = dbUser.Password;
 
                 if (salt != null && hash != null)
@@ -78,7 +78,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
 
         [HttpPost]
-        [Route("Create")]
+        [Route("create")]
         public async Task<ActionResult> Create(V1LoginModel loginModel)
         {
             if (loginModel != null)
