@@ -40,6 +40,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
                 // Not really sure what to do here yet. Maybe we need to wait to the messaging
                 // is up and running.
 
+                _logger.LogInformation("Job ran successfully!");
+
             }
             catch (Exception ex)
             {
