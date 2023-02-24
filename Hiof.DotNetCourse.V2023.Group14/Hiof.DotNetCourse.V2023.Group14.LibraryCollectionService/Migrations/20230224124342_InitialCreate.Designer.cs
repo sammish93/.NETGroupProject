@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
 {
     [DbContext(typeof(LibraryCollectionContext))]
-    [Migration("20230224121120_InitialCreate")]
+    [Migration("20230224124342_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,9 +44,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                         .HasColumnType("nvarchar(13)")
                         .HasColumnName("isbn_13");
 
+                    b.Property<string>("MainAuthor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("main_author");
+
                     b.Property<int?>("Rating")
                         .HasColumnType("int")
                         .HasColumnName("rating");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("title");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier")

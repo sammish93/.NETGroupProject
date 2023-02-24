@@ -26,17 +26,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
         // Remember that it's important that this is set to async, along with await keywords.
         [HttpPost]
         [Route("entries")]
-        public async Task<ActionResult> Create(V1LibraryEntry libraryEntry)
+        public async Task<ActionResult> CreateEntry(V1LibraryEntry libraryEntry)
         {
             if (libraryEntry != null)
             {
+                // Checks to see if there exists at least one ISBN number, and it is of adequate length.
                 if (libraryEntry.LibraryEntryISBN13.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN10.IsNullOrEmpty())
                 {
                     return BadRequest("The book you are trying to add does not have a valid ISBN");
-                } else if (libraryEntry.LibraryEntryISBN10?.Length > 10 || libraryEntry.LibraryEntryISBN13?.Length > 13)
-                {
-                    return BadRequest("The ISBN of the book is of an invalid format.");
                 }
+
+                if (!libraryEntry.LibraryEntryISBN10.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN10.Length != 10)
+                {
+                    return BadRequest("The ISBN10 of the book is of an invalid format.");
+                } else if (!libraryEntry.LibraryEntryISBN13.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN13?.Length != 13)
+                {
+                    return BadRequest("The ISBN13 of the book is of an invalid format.");
+                }
+
                 await _libraryCollectionContext.LibraryEntries.AddAsync(libraryEntry);
                 await _libraryCollectionContext.SaveChangesAsync();
 
@@ -44,6 +51,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
             }
             
             return BadRequest("You failed to supply a valid library entry.");
+        }
+
+        [HttpGet("getLibraries")]
+
+        public async Task<ActionResult> GetAllLibraries()
+        {
+            var libraries = from library in _libraryCollectionContext.LibraryEntries select library;
+
+            if (libraries == null)
+            {
+                return NotFound("No libraries exist.");
+            }
+            else
+            {
+                return Ok(libraries);
+            }
         }
 
         /*

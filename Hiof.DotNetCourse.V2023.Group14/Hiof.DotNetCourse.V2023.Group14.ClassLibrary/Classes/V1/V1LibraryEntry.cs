@@ -22,6 +22,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string? LibraryEntryISBN10 { get; set; }
         [Column("isbn_13", TypeName = "nvarchar(13)")]
         public string? LibraryEntryISBN13 { get; set; }
+        [Column("title", TypeName = "nvarchar(500)")]
+        public string Title { get; set; }
+        // A book can have several authors, but this isn't always practical to display on the GUI, especially when there are many books being shown.
+        [Column("main_author", TypeName = "nvarchar(500)")]
+        public string MainAuthor { get; set; }
         [Column("rating")]
         public int? Rating { get; set; }
         // Type 'DateOnly' isn't supported in SQL, thus 'DateTime'.
@@ -43,6 +48,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             {
                 LibraryEntryISBN13 = isbn13;
             }
+
+            Title = book.Title;
+            MainAuthor = book.Authors[0];
 
             Rating = rating;
             DateRead = dateRead;
