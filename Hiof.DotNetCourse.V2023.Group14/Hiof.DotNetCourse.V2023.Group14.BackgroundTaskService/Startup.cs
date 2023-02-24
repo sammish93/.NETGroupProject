@@ -19,9 +19,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            // Set up Hangfire with SQL server storage
             string connection = $"Server={dbHost};Database={dbName};Trusted_Connection=True;";
-
             services.AddHangfire(x => x.UseSqlServerStorage(connection));
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
