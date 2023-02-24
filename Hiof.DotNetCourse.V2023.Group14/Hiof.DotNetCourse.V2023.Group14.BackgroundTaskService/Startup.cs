@@ -5,44 +5,45 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Hangfire;
+using Hangfire.MySql;
 using Microsoft.AspNetCore.Builder;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
     public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
     {
-        public void Configure(IServiceCollection services)
+        var dbHost = "localhost";
+        var dbName = "background_task";
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            var dbHost = "localhost";
-            var dbName = "backrgound_task";
+            // Set up Hangfire with SQL server storage
+            string connection = $"Server={dbHost};Database={dbName};Trusted_Connection=True;";
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                // Set up Hangfire with SQL server storage
-                string connection = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
-                GlobalConfiguration.Configuration.UseSqlServerStorage(connection);
-
-                // Add Hangfire service
-                services.AddHangfire(x => x.UseSqlServerStorage(connection));
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-                var connection = $"Server={dbHost};Database={dbName};Uid=root;Password={password}";
-                GlobalConfiguration.Configuration.UseSqlServerStorage(connection);
-
-                // Add Hangfire service
-                services.AddHangfire(x => x.UseSqlServerStorage(connection));
-
-            }
+            services.AddHangfire(x => x.UseSqlServerStorage(connection));
         }
-
- 
-        public void Configure(IApplicationBuilder application)
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            application.UseHangfireDashboard();
+            var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+            string connection = $"Server={dbHost};Database={dbName};Uid=root;Password={password}";
+            string tablePrefix = "backgroundJob_";
 
+            services.AddHangfire(x =>
+            {
+                x.UseStorage(
+                    new MySqlStorage(connection,
+                    new MySqlStorageOptions { TablesPrefix = tablePrefix }));
+            });
         }
     }
+
+    public void Configure(IApplicationBuilder application)
+    {
+        application.UseHangfireDashboard();
+    }
+}
+
 }
 
