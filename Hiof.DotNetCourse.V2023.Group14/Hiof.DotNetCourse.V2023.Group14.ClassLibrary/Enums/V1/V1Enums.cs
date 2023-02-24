@@ -7,4 +7,11 @@
         Moderator,
         Admin
     }
+
+    public enum ReadingStatus
+    {
+        Completed,
+        ToRead,
+        Reading
+    }
 }
