@@ -3,43 +3,47 @@ using Hangfire;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
-    // To use this class in a real scenario, we need to add a instanse of the class
-    // in the constructor of the class that want to use it. Then we can use
-    // that instanse to call the method 'CheckMessages', and pass the type
-    // of messages we want to check.
-
+    // Background job used to check for new messages in a messaging system. The
+    // class uses the Hangfire library to create a background job that runs every
+    // 10 seconds. The CheckMessage method adds the MessageJob method to the
+    // background job, which is responsible for checking for new messages.
+  
 	public class MessageChecker
 	{
 		private readonly ILogger<MessageChecker> _logger;
+        private readonly HttpClient _httpClient;
 
-		public MessageChecker(ILogger<MessageChecker> logger)
+		public MessageChecker(ILogger<MessageChecker> logger, HttpClient client)
 		{
 			_logger = logger;
+            _httpClient = client;
 		}
 
-        // This will run the job on minute '0' every hour.
-        public void CheckMessages(string messageType)
+        // This will make the job run every 10 second.
+        public void CheckMessages()
 		{
-            _logger.LogInformation($"Background job for checking {messageType} every hour.");
-			RecurringJob.AddOrUpdate(() => MessageJob(messageType), cronExpression: "0 * * * *");
+            _logger.LogInformation("Background job for checking messages every hour.");
+			RecurringJob.AddOrUpdate(() => MessageJob(), cronExpression: "*/10 * * * * *");
 		}
 
-        // Not finished. Need to find out what microservice we are targeting.
-        public async Task MessageJob(string messageType)
+        public async Task MessageJob()
         {
             try
             {
-                // Check for messages of the specified type
-                // TODO: Implement logic for checking messages
+                _logger.LogInformation("Checking for new messages...");
 
-                // Here we can send requests to other microservices
-                // to get the messages we want.
-                
-                _logger.LogInformation($"Checking for {messageType} messages...");
+                // Retrieve all conversations.
+                HttpResponseMessage response = await _httpClient.GetAsync("/messages");
+                response.EnsureSuccessStatusCode();
+
+                // TODO: Process the response and send notification if there are new messages.
+                // Not really sure what to do here yet. Maybe we need to wait to the messaging
+                // is up and running.
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error checking for {messageType} messages.");
+                _logger.LogError(ex, $"Error checking for messages.");
             }
         }
     }
