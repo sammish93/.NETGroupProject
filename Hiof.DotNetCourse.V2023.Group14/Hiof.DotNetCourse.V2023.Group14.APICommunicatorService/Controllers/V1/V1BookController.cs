@@ -56,7 +56,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
          
         }
 
-        [HttpGet("getBookCategories")]
+        [HttpGet("getBookCategory")]
         public async Task<IActionResult> GetBySubject(string subject)
         {
             var response = await CallApi("categories", subject);
