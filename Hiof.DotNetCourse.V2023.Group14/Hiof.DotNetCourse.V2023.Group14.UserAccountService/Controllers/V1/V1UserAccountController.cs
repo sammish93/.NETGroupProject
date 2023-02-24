@@ -29,9 +29,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         {
             if (user != null)
             {
-                if (!Regex.IsMatch(user.Password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"))
+                var existingUser = await _userAccountContext.Users.Where(x => x.UserName.Contains(user.UserName)).FirstOrDefaultAsync();
+                
+                if (existingUser != null)
+                {
+                    string msg = "The username is already in use";
+                    return BadRequest(msg);
+                } else if (!ValidPassword(user.Password))
                 {
                     string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long";
+                    return BadRequest(msg);
+                } else if (!ValidEmail(user.Email))
+                {
+                    string msg = "Email must be of a valid format";
                     return BadRequest(msg);
                 }
 
@@ -127,9 +137,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             var existingVerificationData = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingUserData != null && existingVerificationData != null)
             {
-                if (!Regex.IsMatch(user.Password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"))
+                if (!ValidPassword(user.Password))
                 {
                     string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long";
+                    return BadRequest(msg);
+                } else if (!ValidEmail(user.Email))
+                {
+                    string msg = "Email must be of a valid format";
                     return BadRequest(msg);
                 } else if (existingUserData.Password != user.Password || existingUserData.UserName != user.UserName)
                 {
@@ -163,7 +177,58 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             }
             return Ok();
         }
-        
+
+        [HttpDelete("deleteUser")]
+
+        public async Task<ActionResult> DeleteUser(V1User user)
+        {
+            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            var existingLoginModel = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            if (existingUser == null || existingLoginModel == null)
+            {
+                return NotFound("There user doesn't exist");
+            } else
+            {
+                _userAccountContext.Users.Remove(existingUser);
+
+                _userAccountContext.LoginModel.Remove(existingLoginModel);
+                await _userAccountContext.SaveChangesAsync();
+            }
+            return Ok();
+        }
+
+        [HttpDelete("deleteUserByUserName")]
+        public async Task<ActionResult> DeleteUserByUserName(string username)
+        {
+            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var existingLoginModel = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (existingUser == null || existingLoginModel == null)
+            {
+                return NotFound("There doesn't exist a user with that Username");
+            }
+            else
+            {
+                _userAccountContext.Users.Remove(existingUser);
+
+                _userAccountContext.LoginModel.Remove(existingLoginModel);
+                await _userAccountContext.SaveChangesAsync();
+            }
+            return Ok();
+        }
+
+        private static bool ValidEmail(string email)
+        {
+            return Regex.IsMatch(email, @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
+        }
+
+        // Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long.
+        private static bool ValidPassword(string password)
+        {
+            return Regex.IsMatch(password, @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
+        }
+
         // The following Http requests aren't necessary since we can use a single PUT requests to change any fields we wish.
         /*
         [HttpPut("ModifyEmail/{id}")]
@@ -219,23 +284,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             }
             return Ok();
 
-        }
-
-        [HttpDelete("deleteUser/{id}")]
-
-        public async Task<ActionResult> DeleteUser(V1User user)
-        {
-            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-            if (existingUser == null)
-            {
-                return NotFound(existingUser);
-            }
-            else
-            {
-                _userAccountContext.Users.Remove(existingUser);
-                await _userAccountContext.SaveChangesAsync();
-            }
-            return Ok();
         }
 
         private static bool EmailIsValid(V1User user)
