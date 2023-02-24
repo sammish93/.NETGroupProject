@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 
@@ -11,12 +13,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
     {
         public void Configure(IServiceCollection services)
         {
-            // Set up Hangfire with SQL server storage
-            string connectionString = "<SQL connection string>";
-            GlobalConfiguration.Configuration.UseSqlServerStorage(connectionString);
+            var dbHost = "localhost";
+            var dbName = "user_accounts";
+            var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
 
-            // Add Hangfire service
-            services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // Set up Hangfire with SQL server storage
+                string connection = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
+                GlobalConfiguration.Configuration.UseSqlServerStorage(connection);
+
+                // Add Hangfire service
+                services.AddHangfire(x => x.UseSqlServerStorage(connection));
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+                var connection = $"Server={dbHost};Database={dbName};Uid=root;Password={password}";
+                GlobalConfiguration.Configuration.UseSqlServerStorage(connection);
+
+                // Add Hangfire service
+                services.AddHangfire(x => x.UseSqlServerStorage(connection));
+
+            }
         }
 
  
