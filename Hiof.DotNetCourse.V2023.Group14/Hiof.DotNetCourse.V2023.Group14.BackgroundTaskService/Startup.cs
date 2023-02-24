@@ -14,8 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
         public void Configure(IServiceCollection services)
         {
             var dbHost = "localhost";
-            var dbName = "user_accounts";
-            var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
+            var dbName = "backrgound_task";
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
