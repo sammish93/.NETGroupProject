@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.LoginDb
 {
     /// <inheritdoc />
-    public partial class ChangeIdDataType : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,8 +22,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.LoginDb
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     username = table.Column<string>(type: "nvarchar(500)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(500)", nullable: false),
-                    token = table.Column<string>(type: "nvarchar(500)", nullable: true),
-                    salt = table.Column<string>(type: "nvarchar(500)", nullable: true)
+                    salt = table.Column<string>(type: "nvarchar(500)", nullable: true),
+                    token = table.Column<string>(type: "nvarchar(500)", nullable: true)
                 },
                 constraints: table =>
                 {

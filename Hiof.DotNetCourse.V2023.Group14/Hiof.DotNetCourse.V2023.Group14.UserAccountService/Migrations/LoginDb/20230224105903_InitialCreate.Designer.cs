@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.LoginDb
 {
     [DbContext(typeof(LoginDbContext))]
-    [Migration("20230224070558_ChangeIdDataType")]
-    partial class ChangeIdDataType
+    [Migration("20230224105903_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

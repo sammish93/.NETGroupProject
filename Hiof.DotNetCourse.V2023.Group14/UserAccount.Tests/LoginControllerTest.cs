@@ -25,10 +25,10 @@ namespace UserAccount.Tests
             // Legg til eksisterende bruker i databasen.
             var user = new V1LoginModel
             {
-                Id = Guid.Parse("3FA85F64-5717-4562-B3FC-2C963F66AFA6"),
-                UserName = "stian",
-                Password = "A8344CF7CA6FB2F730EB",
-                Salt = "44835FBC741A21B35D5E"
+                Id = Guid.Parse("54AF86BF-346A-4CBA-B36F-527748E1CB93"),
+                UserName = "testaccount",
+                Password = "A7E220F0781BE0C248A3",
+                Salt = "3E921C45F3A9089BDC7E"
             };
             dbContext.Add(user);
             dbContext.SaveChanges();
@@ -37,7 +37,7 @@ namespace UserAccount.Tests
             var controller = new V1LoginController(dbContext);
 
             // Oppretter en testbruker 
-            var test = new V1LoginInfo("stian", "abc123");
+            var test = new V1LoginInfo("testaccount", "TestPassword123!");
 
             var actionResult = await controller.VerifyLogin(test);
 
