@@ -25,6 +25,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
                     Id = Guid.NewGuid(),
                     UserName = "JinkxMonsoon",
                     Email = "joojoo@gmail.com",
+                    // Password is "Itismonsoonseason!"
                     Password = "Itismonsoonseason!",
                     FirstName = "Jinkx",
                     LastName = "Monsoon",

@@ -27,8 +27,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         [Route("user")]
         public async Task<ActionResult> Create(V1User user)
         {
-            if(user != null)
+            if (user != null)
             {
+                if (!Regex.IsMatch(user.Password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"))
+                {
+                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long";
+                    return BadRequest(msg);
+                }
+
                 var (hash, salt) = V1PasswordEncryption.Encrypt(user.Password);
                 user.Password = hash;
                 V1LoginModel loginModel = new V1LoginModel(user.Id, user.UserName, hash, Convert.ToHexString(salt));
@@ -39,7 +45,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
                 await _userAccountContext.LoginModel.AddAsync(loginModel);
                 await _userAccountContext.SaveChangesAsync();
-
             }
             
             return Ok();
@@ -122,10 +127,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             var existingVerificationData = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingUserData != null && existingVerificationData != null)
             {
-                // If the user updates their username or password the following code is executed.
-                // This is required because the password generates a unique salt in the 'login_verification' table as well.
-                if (existingUserData.Password != user.Password || existingUserData.UserName != user.UserName)
+                if (!Regex.IsMatch(user.Password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"))
                 {
+                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long";
+                    return BadRequest(msg);
+                } else if (existingUserData.Password != user.Password || existingUserData.UserName != user.UserName)
+                {
+                    // If the user updates their username or password the following code is executed.
+                    // This is required because the password generates a unique salt in the 'login_verification' table as well.
                     var (hash, salt) = V1PasswordEncryption.Encrypt(user.Password);
 
                     var loginModel = new V1LoginModel();

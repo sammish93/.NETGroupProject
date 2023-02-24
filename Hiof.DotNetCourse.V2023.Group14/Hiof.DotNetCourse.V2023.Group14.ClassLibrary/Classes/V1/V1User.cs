@@ -31,9 +31,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string Email { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [StringLength(100, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
-        [RegularExpression(@"^[a-zA-Z0-9]+$",
-         ErrorMessage = "Only alphanumeric characters in username")]
         [DataType(DataType.Password)]
 
         // The password should be hashed using SHA256 or higher.
@@ -70,11 +67,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             UserName = userName;
             Email = email;
             // This will store a hash that uses a salt stored in secrets.
-            // NOTE: The password won't be implemented like this. We can create a method.
-            // public string createSha256(string password) {
-            //     string salt = <salt from secrets>; 
-            //     string saltedPassword = salt + password;
-            //     return ShaCreator(saltedPassword);
             Password = password;
             FirstName = firstName;
             LastName = lastName;
