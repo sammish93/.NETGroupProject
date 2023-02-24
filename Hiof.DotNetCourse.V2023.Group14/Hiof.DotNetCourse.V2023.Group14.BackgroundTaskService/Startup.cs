@@ -36,18 +36,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
                         new MySqlStorageOptions { TablesPrefix = tablePrefix }));
                 });
             }
-
-            // Add MessageChecker service
-            services.AddTransient<MessageChecker>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceProvider serviceProvider)
         {
             application.UseHangfireDashboard();
-
-            // Just an example of how we can check for a messagetype like email.
-            MessageChecker? messageChecker = serviceProvider.GetService<MessageChecker>();
-            messageChecker?.CheckMessages("email");
         }
     }
 }

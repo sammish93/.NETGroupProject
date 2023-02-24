@@ -3,8 +3,10 @@ using Hangfire;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
-    // To use this class in pracice, we need to add an instanse of the class
-    // in the constructor of the class that want to use it.
+    // To use this class in a real scenario, we need to add a instanse of the class
+    // in the constructor of the class that want to use it. Then we can use
+    // that instanse to call the method 'CheckMessages', and pass the type
+    // of messages we want to check.
 
 	public class MessageChecker
 	{
@@ -22,6 +24,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 			RecurringJob.AddOrUpdate(() => MessageJob(messageType), cronExpression: "0 * * * *");
 		}
 
+        // Not finished. Need to find out what microservice we are targeting.
         public async Task MessageJob(string messageType)
         {
             try
