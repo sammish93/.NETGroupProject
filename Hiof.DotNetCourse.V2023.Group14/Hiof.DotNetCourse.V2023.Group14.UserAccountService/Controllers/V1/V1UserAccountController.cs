@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
+using Azure.Core;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,10 +9,11 @@ using Microsoft.EntityFrameworkCore;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 {
     [ApiController]
-    [Route("api/1.0")]
+    [Route("api/1.0/Users")]
     public class V1UserAccountController : ControllerBase
     {
         private readonly UserAccountContext _userAccountContext;
+
 
         public V1UserAccountController(UserAccountContext userAccountContext)
         {
@@ -21,13 +24,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         // This Http request isn't coded to include lots of different Http codes yet.
         // Remember that it's important that this is set to async, along with await keywords.
         [HttpPost]
-        [Route("users")]
+        [Route("User")]
         public async Task<ActionResult> Create(V1User user)
         {
             if(user != null)
             {
+                var (hash, salt) = V1PasswordEncryption.Encrypt(user.Password);
+                user.Password = hash;
+                V1LoginModel loginModel = new V1LoginModel(user.Id, user.UserName, hash, Convert.ToHexString(salt));
+                loginModel.Token = V1Token.CreateToken(loginModel.Id);
+
                 await _userAccountContext.Users.AddAsync(user);
                 await _userAccountContext.SaveChangesAsync();
+
+                await _userAccountContext.LoginModel.AddAsync(loginModel);
+                await _userAccountContext.SaveChangesAsync();
+
             }
             
             return Ok();

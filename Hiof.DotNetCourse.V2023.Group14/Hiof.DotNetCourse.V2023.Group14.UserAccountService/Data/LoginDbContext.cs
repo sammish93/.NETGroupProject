@@ -9,7 +9,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
         public LoginDbContext(DbContextOptions<LoginDbContext> options) : base(options) { }
 
 		public DbSet<V1LoginModel> LoginModel { get; set; }
-
+        /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<V1LoginModel>().HasData(
@@ -23,6 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
                 }
             );
         }
+        */
     }
 }
 

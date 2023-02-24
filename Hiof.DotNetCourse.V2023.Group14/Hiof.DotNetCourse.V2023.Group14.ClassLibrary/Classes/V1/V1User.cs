@@ -17,7 +17,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         [Key]
         [Column("id")]
         public Guid Id { get; set; }
-        // Assume that a user cannot change their username. This is the simplest way of maintaining integrity in our database during our first few sprints.
+
         [Required(ErrorMessage = "{0} is required")]
         [StringLength(20, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
         [RegularExpression(@"^[a-zA-Z0-9]+$",
