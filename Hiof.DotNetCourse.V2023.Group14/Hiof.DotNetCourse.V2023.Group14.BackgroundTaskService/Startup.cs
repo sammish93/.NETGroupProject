@@ -6,42 +6,49 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Hangfire;
 using Hangfire.MySql;
+using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
 using Microsoft.AspNetCore.Builder;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
     public class Startup
-{
-    public void ConfigureServices(IServiceCollection services)
     {
-        var dbHost = "localhost";
-        var dbName = "background_task";
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        public void ConfigureServices(IServiceCollection services)
         {
-            string connection = $"Server={dbHost};Database={dbName};Trusted_Connection=True;";
-            services.AddHangfire(x => x.UseSqlServerStorage(connection));
-        }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
-            var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-            string connection = $"Server={dbHost};Database={dbName};Uid=root;Password={password}";
-            string tablePrefix = "backgroundJob_";
+            var dbHost = "localhost";
+            var dbName = "background_task";
 
-            services.AddHangfire(x =>
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                x.UseStorage(
-                    new MySqlStorage(connection,
-                    new MySqlStorageOptions { TablesPrefix = tablePrefix }));
-            });
+                string connection = $"Server={dbHost};Database={dbName};Trusted_Connection=True;";
+                services.AddHangfire(x => x.UseSqlServerStorage(connection));
+            }
+            else
+            {
+                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+                string connection = $"Server={dbHost};Database={dbName};Uid=root;Password={password}";
+                string tablePrefix = "backgroundJob_";
+
+                services.AddHangfire(x =>
+                {
+                    x.UseStorage(
+                        new MySqlStorage(connection,
+                        new MySqlStorageOptions { TablesPrefix = tablePrefix }));
+                });
+            }
+
+            // Add MessageChecker service
+            services.AddTransient<MessageChecker>();
+        }
+
+        public void Configure(IApplicationBuilder application, IServiceProvider serviceProvider)
+        {
+            application.UseHangfireDashboard();
+
+            // Just an example of how we can check for a messagetype like email.
+            MessageChecker? messageChecker = serviceProvider.GetService<MessageChecker>();
+            messageChecker?.CheckMessages("email");
         }
     }
-
-    public void Configure(IApplicationBuilder application)
-    {
-        application.UseHangfireDashboard();
-    }
-}
-
 }
 
