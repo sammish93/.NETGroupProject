@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
 {
@@ -18,7 +18,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             _logger = logger;
         }
-
+        /*
         [HttpGet("getBookIsbn")]
         public async Task<ActionResult> Get(string isbn)
         {
@@ -44,18 +44,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
 
             return Ok(response);
         }
-
+        */
         [HttpGet("getBookAuthor")]
-        public async Task<IActionResult> GetByAuthors(string authors)
+        public async Task<IActionResult> GetByAuthors(string authors, int? maxResults, string? langRestrict)
         {
-            var response = await CallApi("inauthor", authors);
+            
+            var response = await CallApi("inauthor", authors, maxResults, langRestrict);
             if (!CheckResponse(response))
                 return NotFound("No book found.");
 
             return Ok(response);
          
         }
-
+        /*
         [HttpGet("getBookCategory")]
         public async Task<IActionResult> GetBySubject(string subject)
         {
@@ -66,11 +67,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
             return Ok(response);
         
         }
+        */
 
         // Execute API calls and return response as a string.
-        private async Task<string> CallApi(string endpoint, string query)
+        private async Task<string> CallApi(string endpoint, string query, int? maxResults, string? langRestrict)
         {
-            var url = GetUrl(endpoint, query);
+            var url = GetUrl(endpoint, query, maxResults, langRestrict);
             HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage;
             try
@@ -101,14 +103,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         }
 
         // Returns URL for googleapis with specified search and endpoint
-        private static String GetUrl(string search, string endpoint)
+        private static String GetUrl(string search, string endpoint, int? maxResults = null, string? langRestrict = null)
         {
             StringBuilder url = new StringBuilder();
             url.Append("https://www.googleapis.com/books/v1/volumes?q=");
+            
             url.Append($"{search}:");
             url.Append(endpoint);
+            if(maxResults != null)
+            {
+                url.Append("&maxResults=");
+                url.Append((int)maxResults.Value);
+            }
+            if(langRestrict != null)
+            {
+                url.Append("&langRestrict=");
+                url.Append(langRestrict);
+            }
+    
+           
 
             return url.ToString();
+            
         }
     }
 }
