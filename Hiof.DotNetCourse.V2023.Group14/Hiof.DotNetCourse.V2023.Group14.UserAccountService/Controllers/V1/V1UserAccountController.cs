@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         [Route("users")]
         public async Task<ActionResult> Create(V1User user)
         {
+            var (hash, salt) = V1PasswordEncryption.Encrypt(user.Password);
             if(user != null)
             {
                 await _userAccountContext.Users.AddAsync(user);

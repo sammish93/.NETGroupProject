@@ -35,7 +35,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string Email { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [StringLength(100, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
+        [StringLength(20, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
         [RegularExpression(@"^[a-zA-Z0-9]+$",
          ErrorMessage = "Only alphanumeric characters in username")]
         [DataType(DataType.Password)]
