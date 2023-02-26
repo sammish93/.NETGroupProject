@@ -9,6 +9,7 @@ namespace APICommunicator.Tests;
 
 public class BookControllerTest
 {
+    
     // Test for GetBookISBN. To run tests in VS, go to 'Test' and select 'Run all Tests'.
     [Fact]
     public async Task GetValidResponeOnValidIsbn()
@@ -17,7 +18,9 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var isbn = "1260440214";
-        var result = await controller.Get(isbn);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.Get(isbn, maxResult, langRestrict);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
 
@@ -31,7 +34,9 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var isbn = "123";
-        var result = await controller.Get(isbn);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.Get(isbn, maxResult, langRestrict);
 
         var badResponse = Assert.IsType<BadRequestObjectResult>(result);
 
@@ -46,7 +51,9 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var isbn = "6573849267364";
-        var result = await controller.Get(isbn);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.Get(isbn, maxResult, langRestrict);
 
         var notFound = Assert.IsType<NotFoundObjectResult>(result);
 
@@ -62,7 +69,9 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var title = "DATABASESYSTEMER.";
-        var result = await controller.GetByTitle(title);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.GetByTitle(title, maxResult, langRestrict);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
 
@@ -76,7 +85,9 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var title = "dfkjekjffd";
-        var result = await controller.GetByTitle(title);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.GetByTitle(title, maxResult, langRestrict);
 
         var notFound = Assert.IsType<NotFoundObjectResult>(result);
 
@@ -92,13 +103,15 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var author = "Eric Matthes";
-        var result = await controller.GetByAuthors(author);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.GetByAuthors(author, maxResult, langRestrict);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
 
         Assert.Equal(200, okResult.StatusCode);
     }
-
+    
     [Fact]
     public async Task GetErrorMessageOnFakeAuthor()
     {
@@ -106,13 +119,15 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var author = "dfkjekjffd";
-        var result = await controller.GetByAuthors(author);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.GetByAuthors(author, maxResult, langRestrict);
 
         var notFound = Assert.IsType<NotFoundObjectResult>(result);
 
         Assert.Equal("No book found.", notFound.Value);
     }
-
+    
     // Test for GetBookCategories.
     [Fact]
     public async Task GetValidResponseOnValidCategory()
@@ -121,12 +136,15 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var category = "Programming";
-        var result = await controller.GetBySubject(category);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.GetBySubject(category, maxResult, langRestrict);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
 
         Assert.Equal(200, okResult.StatusCode);
     }
+    
    
     [Fact]
     public async Task GetErrorMessageOnFakeCategory()
@@ -135,7 +153,9 @@ public class BookControllerTest
         var controller = new V1BookController(mockLogger.Object);
 
         var category = "fdjksad";
-        var result = await controller.GetBySubject(category);
+        var maxResult = 10;
+        var langRestrict = "en";
+        var result = await controller.GetBySubject(category, maxResult, langRestrict);
 
         var notFound = Assert.IsType<NotFoundObjectResult>(result);
 
