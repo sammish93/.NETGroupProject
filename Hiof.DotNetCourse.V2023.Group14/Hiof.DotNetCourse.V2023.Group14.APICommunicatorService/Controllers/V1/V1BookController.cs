@@ -18,11 +18,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             _logger = logger;
         }
-        /*
+        
         [HttpGet("getBookIsbn")]
-        public async Task<ActionResult> Get(string isbn)
+        public async Task<ActionResult> Get(string isbn, int? maxResults, string? langRestrict)
         {
-            var response = await CallApi("isbn", isbn);
+            var response = await CallApi("isbn", isbn, maxResults, langRestrict);
 
             if ((isbn.Length == 13) || (isbn.Length == 10))
             {
@@ -36,15 +36,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         }
 
         [HttpGet("getBookTitle")]
-        public async Task<IActionResult> GetByTitle(string title)
+        public async Task<IActionResult> GetByTitle(string title, int? maxResults, string? langRestrict)
         {
-            var response = await CallApi("intitle", title);
+            var response = await CallApi("intitle", title, maxResults, langRestrict);
             if (!CheckResponse(response))
                 return NotFound("No book found.");
 
             return Ok(response);
         }
-        */
+        
         [HttpGet("getBookAuthor")]
         public async Task<IActionResult> GetByAuthors(string authors, int? maxResults, string? langRestrict)
         {
@@ -56,18 +56,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
             return Ok(response);
          
         }
-        /*
+        
         [HttpGet("getBookCategory")]
-        public async Task<IActionResult> GetBySubject(string subject)
+        public async Task<IActionResult> GetBySubject(string subject, int? maxResults, string? langRestrict)
         {
-            var response = await CallApi("categories", subject);
+            var response = await CallApi("categories", subject, maxResults, langRestrict);
             if (!CheckResponse(response))
                 return NotFound("No book found.");
 
             return Ok(response);
         
         }
-        */
+        
 
         // Execute API calls and return response as a string.
         private async Task<string> CallApi(string endpoint, string query, int? maxResults, string? langRestrict)
@@ -110,6 +110,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
             
             url.Append($"{search}:");
             url.Append(endpoint);
+
+
             if(maxResults != null)
             {
                 url.Append("&maxResults=");
