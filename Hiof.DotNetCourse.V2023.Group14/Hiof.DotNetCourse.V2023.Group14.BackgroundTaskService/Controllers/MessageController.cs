@@ -11,31 +11,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
     [Route("api/[controller]")]
     public class MessageController : ControllerBase
     {
-        private readonly ILogger<MessageController> _logger;
-        private readonly HttpClient _httpClient;
-
-        public MessageController(ILogger<MessageController> logger, HttpClient httpClient)
+        
+        [HttpPost("fire")]
+        public IActionResult FireAndForget(string mail)
         {
-            _logger = logger;
-            _httpClient = httpClient;
+            // Stores the job id into a variable and adding a background job for SendMail method.
+            var fireAndForgetJob = BackgroundJob.Enqueue(() => SendMail(mail));
+
+            // Return OK (Status 200) with a message that includes the job id from the scheduled job
+            return Ok($"Great! The job {fireAndForgetJob} has been completed. The mail has been sent to the user.");
         }
 
-        [HttpPost("trigger-message-check")]
-        public IActionResult TriggerMessageCheck()
+        [HttpGet("send-mail")]
+        public void SendMail(string mail)
         {
-            try
-            {
-                // Enqueue the Hangfire job to check for new messages
-                BackgroundJob.Enqueue(() => new MessageChecker((ILogger<MessageChecker>)_logger, _httpClient).MessageJob());
-
-                return Ok("Message check triggered.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error triggering message check.");
-
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            // Implement any logic you want - not in the controller but in some repository.
+            Console.WriteLine($"This is a test - Hello {mail}");
         }
     }
 
