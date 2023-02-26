@@ -2,6 +2,7 @@
 using Hangfire;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 {

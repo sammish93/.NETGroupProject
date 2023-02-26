@@ -1,47 +1,74 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Hangfire;
 using Hangfire.MySql;
+using Hangfire.AspNetCore;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
-using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Hangfire.Dashboard;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
     public class Startup
     {
-        public void ConfigureServices(IServiceCollection services)
+        public IConfiguration configRoot
         {
-            var dbHost = "localhost";
-            var dbName = "background_task";
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                string connection = $"Server={dbHost};Database={dbName};Trusted_Connection=True;";
-                services.AddHangfire(x => x.UseSqlServerStorage(connection));
-            }
-            else
-            {
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-                string connection = $"Server={dbHost};Database={dbName};Uid=root;Password={password}";
-                string tablePrefix = "backgroundJob_";
-
-                services.AddHangfire(x =>
-                {
-                    x.UseStorage(
-                        new MySqlStorage(connection,
-                        new MySqlStorageOptions { TablesPrefix = tablePrefix }));
-                });
-            }
+            get;
+        }
+        public Startup(IConfiguration configuration)
+        {
+            configRoot = configuration;
         }
 
-        public void Configure(IApplicationBuilder application, IServiceProvider serviceProvider)
+        public void ConfigureServices(IServiceCollection services)
         {
-            application.UseHangfireDashboard();
+            var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+            var connection = "server=localhost;database=background_task;uid=root;pwd=" + password + ";" + "Allow User Variables=true";
+
+
+            services.AddHangfire(config => config
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseStorage(
+                    new MySqlStorage(connection, new MySqlStorageOptions
+                        {
+                            QueuePollInterval = TimeSpan.FromSeconds(10),
+                            JobExpirationCheckInterval = TimeSpan.FromHours(1),
+                            CountersAggregateInterval = TimeSpan.FromMinutes(5),
+                            PrepareSchemaIfNecessary = true,
+                            DashboardJobListLimit = 23000,
+                            TransactionTimeout = TimeSpan.FromMinutes(1),
+                            TablesPrefix = "Hangfire",
+                        }
+                    )
+                ));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer(options => options.WorkerCount = 1);
+        }
+
+        public void Configure(WebApplication app, IWebHostEnvironment env)
+        {
+            // Use the Hangfire Dashboard with the new UI.
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                IsReadOnlyFunc = (DashboardContext context) => true
+            });
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.MapControllers();
+            app.Run();
         }
     }
 }
+
 
