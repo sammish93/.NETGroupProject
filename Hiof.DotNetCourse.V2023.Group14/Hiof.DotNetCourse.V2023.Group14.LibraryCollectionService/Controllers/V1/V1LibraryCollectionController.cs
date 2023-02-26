@@ -2,70 +2,80 @@
 using Azure.Core;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
-using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
+using Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
+namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V1
 {
     [ApiController]
-    [Route("api/1.0/users")]
-    public class V1UserAccountController : ControllerBase
+    [Route("api/1.0/libraries")]
+    public class V1LibraryCollectionController : ControllerBase
     {
-        private readonly UserAccountContext _userAccountContext;
+        private readonly LibraryCollectionContext _libraryCollectionContext;
 
 
-        public V1UserAccountController(UserAccountContext userAccountContext)
+        public V1LibraryCollectionController(LibraryCollectionContext libraryCollectionContext)
         {
-            _userAccountContext = userAccountContext;
+            _libraryCollectionContext = libraryCollectionContext;
         }
 
         // Example of inserting a new object into the database. If you use swagger you can see that we supply it with a JSON DTO.
         // This Http request isn't coded to include lots of different Http codes yet.
         // Remember that it's important that this is set to async, along with await keywords.
         [HttpPost]
-        [Route("user")]
-        public async Task<ActionResult> Create(V1User user)
+        [Route("entries")]
+        public async Task<ActionResult> CreateEntry(V1LibraryEntry libraryEntry)
         {
-            if (user != null)
+            if (libraryEntry != null)
             {
-                var existingUser = await _userAccountContext.Users.Where(x => x.UserName.Contains(user.UserName)).FirstOrDefaultAsync();
-                
-                if (existingUser != null)
+                // Checks to see if there exists at least one ISBN number, and it is of adequate length.
+                if (libraryEntry.LibraryEntryISBN13.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN10.IsNullOrEmpty())
                 {
-                    string msg = "The username is already in use";
-                    return BadRequest(msg);
-                } else if (!ValidPassword(user.Password))
-                {
-                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long";
-                    return BadRequest(msg);
-                } else if (!ValidEmail(user.Email))
-                {
-                    string msg = "Email must be of a valid format";
-                    return BadRequest(msg);
+                    return BadRequest("The book you are trying to add does not have a valid ISBN");
                 }
 
-                var (hash, salt) = V1PasswordEncryption.Encrypt(user.Password);
-                user.Password = hash;
-                V1LoginModel loginModel = new V1LoginModel(user.Id, user.UserName, hash, Convert.ToHexString(salt));
-                loginModel.Token = V1Token.CreateToken(loginModel.Id);
+                if (!libraryEntry.LibraryEntryISBN10.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN10.Length != 10)
+                {
+                    return BadRequest("The ISBN10 of the book is of an invalid format.");
+                } else if (!libraryEntry.LibraryEntryISBN13.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN13?.Length != 13)
+                {
+                    return BadRequest("The ISBN13 of the book is of an invalid format.");
+                }
 
-                await _userAccountContext.Users.AddAsync(user);
-                await _userAccountContext.SaveChangesAsync();
+                await _libraryCollectionContext.LibraryEntries.AddAsync(libraryEntry);
+                await _libraryCollectionContext.SaveChangesAsync();
 
-                await _userAccountContext.LoginModel.AddAsync(loginModel);
-                await _userAccountContext.SaveChangesAsync();
+                return Ok();
             }
             
-            return Ok();
+            return BadRequest("You failed to supply a valid library entry.");
         }
 
+        [HttpGet("getLibraries")]
+
+        public async Task<ActionResult> GetAllLibraries()
+        {
+            var libraries = from library in _libraryCollectionContext.LibraryEntries select library;
+
+            if (libraries == null)
+            {
+                return NotFound("No libraries exist.");
+            }
+            else
+            {
+                return Ok(libraries);
+            }
+        }
+
+        /*
         [HttpGet("getUsers")]
 
         public async Task<ActionResult> GetAllUsers()
         {
             
-            var user = from u in _userAccountContext.Users select u;
+            var user = from u in _libraryCollectionContext.Users select u;
             if (user == null)
             {
                 return NotFound("User doesn't exist");
@@ -82,7 +92,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         public async Task<ActionResult> GetUserId(Guid guid)
         {
-            var user = await _userAccountContext.Users.FindAsync(guid);
+            var user = await _libraryCollectionContext.Users.FindAsync(guid);
             if (user == null)
             {
                 return NotFound("User doesn't exist");
@@ -99,7 +109,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         public async Task<ActionResult> GetUserUserName(string userName)
         {
-            var user = await _userAccountContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefaultAsync();
+            var user = await _libraryCollectionContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -116,7 +126,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         public async Task<ActionResult> GetUserByEmail(string email)
         {
-            var user = await _userAccountContext.Users.Where(x => x.Email.Contains(email)).FirstOrDefaultAsync();
+            var user = await _libraryCollectionContext.Users.Where(x => x.Email.Contains(email)).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -133,17 +143,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         public async Task<ActionResult> ChangeUserAccountUsingId( [FromBody] V1User user)
         {
             // In the event of a username or password being changed it's required to update both the 'users' and 'login_verification' tables.
-            var existingUserData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-            var existingVerificationData = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
+            var existingUserData = await _libraryCollectionContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            var existingVerificationData = await _libraryCollectionContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingUserData != null && existingVerificationData != null)
             {
-                if (!ValidPassword(user.Password))
+                if (!Regex.IsMatch(user.Password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"))
                 {
                     string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long";
-                    return BadRequest(msg);
-                } else if (!ValidEmail(user.Email))
-                {
-                    string msg = "Email must be of a valid format";
                     return BadRequest(msg);
                 } else if (existingUserData.Password != user.Password || existingUserData.UserName != user.UserName)
                 {
@@ -160,15 +166,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
                     user.Password = hash;
 
-                    _userAccountContext.Entry<V1User>(existingUserData).CurrentValues.SetValues(user);
-                    _userAccountContext.SaveChanges();
+                    _libraryCollectionContext.Entry<V1User>(existingUserData).CurrentValues.SetValues(user);
+                    _libraryCollectionContext.SaveChanges();
 
-                    _userAccountContext.Entry<V1LoginModel>(existingVerificationData).CurrentValues.SetValues(loginModel);
-                    _userAccountContext.SaveChanges();
+                    _libraryCollectionContext.Entry<V1LoginModel>(existingVerificationData).CurrentValues.SetValues(loginModel);
+                    _libraryCollectionContext.SaveChanges();
                 } else
                 {
-                    _userAccountContext.Entry<V1User>(existingUserData).CurrentValues.SetValues(user);
-                    _userAccountContext.SaveChanges();
+                    _libraryCollectionContext.Entry<V1User>(existingUserData).CurrentValues.SetValues(user);
+                    _libraryCollectionContext.SaveChanges();
                 }
             }
             else
@@ -177,58 +183,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             }
             return Ok();
         }
-
-        [HttpDelete("deleteUser")]
-
-        public async Task<ActionResult> DeleteUser(V1User user)
-        {
-            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-            var existingLoginModel = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
-
-            if (existingUser == null || existingLoginModel == null)
-            {
-                return NotFound("There user doesn't exist");
-            } else
-            {
-                _userAccountContext.Users.Remove(existingUser);
-
-                _userAccountContext.LoginModel.Remove(existingLoginModel);
-                await _userAccountContext.SaveChangesAsync();
-            }
-            return Ok();
-        }
-
-        [HttpDelete("deleteUserByUserName")]
-        public async Task<ActionResult> DeleteUserByUserName(string username)
-        {
-            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            var existingLoginModel = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.UserName == username);
-
-            if (existingUser == null || existingLoginModel == null)
-            {
-                return NotFound("There doesn't exist a user with that Username");
-            }
-            else
-            {
-                _userAccountContext.Users.Remove(existingUser);
-
-                _userAccountContext.LoginModel.Remove(existingLoginModel);
-                await _userAccountContext.SaveChangesAsync();
-            }
-            return Ok();
-        }
-
-        private static bool ValidEmail(string email)
-        {
-            return Regex.IsMatch(email, @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
-        }
-
-        // Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long.
-        private static bool ValidPassword(string password)
-        {
-            return Regex.IsMatch(password, @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
-        }
-
+        
         // The following Http requests aren't necessary since we can use a single PUT requests to change any fields we wish.
         /*
         [HttpPut("ModifyEmail/{id}")]
@@ -284,6 +239,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             }
             return Ok();
 
+        }
+
+        [HttpDelete("deleteUser/{id}")]
+
+        public async Task<ActionResult> DeleteUser(V1User user)
+        {
+            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (existingUser == null)
+            {
+                return NotFound(existingUser);
+            }
+            else
+            {
+                _userAccountContext.Users.Remove(existingUser);
+                await _userAccountContext.SaveChangesAsync();
+            }
+            return Ok();
         }
 
         private static bool EmailIsValid(V1User user)

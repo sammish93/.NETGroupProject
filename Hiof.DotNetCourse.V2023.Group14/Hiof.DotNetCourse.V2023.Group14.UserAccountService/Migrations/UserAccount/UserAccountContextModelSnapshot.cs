@@ -22,6 +22,62 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1LoginModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("password");
+
+                    b.Property<string>("Salt")
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("salt");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("token");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("login_verification", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+                            Password = "70A1AF97C0496AD874DC",
+                            Salt = "247432D4ED93DCE32929",
+                            Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzZmE4NWY2NC01NzE3LTQ1NjItYjNmYy0yYzk2M2Y2NmFmYTYiLCJuYmYiOjE2NzcyMzUxMDEsImV4cCI6MTY3NzQ5NDMwMSwiaWF0IjoxNjc3MjM1MTAxfQ.LqUQyhrnWwkNtkQUYcatydTdeAqvCaZZ4tEYovAGkJI",
+                            UserName = "JinkxMonsoon"
+                        },
+                        new
+                        {
+                            Id = new Guid("54af86bf-346a-4cba-b36f-527748e1cb93"),
+                            Password = "A7E220F0781BE0C248A3",
+                            Salt = "3E921C45F3A9089BDC7E",
+                            Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI1NGFmODZiZi0zNDZhLTRjYmEtYjM2Zi01Mjc3NDhlMWNiOTMiLCJuYmYiOjE2NzcyMzU0OTQsImV4cCI6MTY3NzQ5NDY5NCwiaWF0IjoxNjc3MjM1NDk0fQ._VGOcvMVXmtj741AoUGLYnWsAvG5geuLHX_phvfOuT8",
+                            UserName = "testaccount"
+                        },
+                        new
+                        {
+                            Id = new Guid("e8cc12ba-4df6-4b06-b96e-9ad00a927a93"),
+                            Password = "B1A8A1223DCA3A102726",
+                            Salt = "A91F72A37D0E46037B85",
+                            Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJlOGNjMTJiYS00ZGY2LTRiMDYtYjk2ZS05YWQwMGE5MjdhOTMiLCJuYmYiOjE2NzcyMzUyNDcsImV4cCI6MTY3NzQ5NDQ0NywiaWF0IjoxNjc3MjM1MjQ3fQ.NMCEXx8Dhr40krHQrpz4Zwgslj9N_HN3fi_Qrt4oMes",
+                            UserName = "QueenOfTheNorth"
+                        });
+                });
+
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -65,7 +121,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("password");
 
@@ -86,59 +141,53 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("UserName")
-                        .IsUnique();
-
                     b.ToTable("users", "dbo");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dc1dcbf9-3414-4f15-8745-6ebeada93861"),
+                            Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
                             City = "Seattle",
                             Country = "USA",
                             Email = "joojoo@gmail.com",
                             FirstName = "Jinkx",
                             LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8060),
+                            LastActive = new DateTime(2023, 2, 24, 10, 37, 8, 387, DateTimeKind.Unspecified),
                             LastName = "Monsoon",
-                            Password = "Itismonsoonseason!",
-                            RegistrationDate = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8010),
+                            Password = "70A1AF97C0496AD874DC",
+                            RegistrationDate = new DateTime(2023, 2, 24, 10, 37, 8, 387, DateTimeKind.Unspecified),
                             Role = "User",
                             UserName = "JinkxMonsoon"
                         },
                         new
                         {
-                            Id = new Guid("4cf318a5-95d1-4231-850f-a3aef61aaadd"),
+                            Id = new Guid("e8cc12ba-4df6-4b06-b96e-9ad00a927a93"),
                             City = "Toronto",
                             Country = "Canada",
                             Email = "b_hyteso@gmail.com",
                             FirstName = "Brooklyn",
                             LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8066),
+                            LastActive = new DateTime(2023, 2, 24, 10, 39, 32, 540, DateTimeKind.Unspecified),
                             LastName = "Hytes",
-                            Password = "CanadianTurkeyBacon",
-                            RegistrationDate = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8064),
+                            Password = "B1A8A1223DCA3A102726",
+                            RegistrationDate = new DateTime(2023, 2, 24, 10, 39, 32, 540, DateTimeKind.Unspecified),
                             Role = "User",
                             UserName = "QueenOfTheNorth"
                         },
                         new
                         {
-                            Id = new Guid("d9813480-cc17-4b2e-a749-626a16a1d096"),
-                            City = "Palm Springs",
-                            Country = "USA",
-                            Email = "bdelrio@yahoo.com",
-                            FirstName = "Bianca",
-                            LangPreference = "en",
-                            LastActive = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8069),
-                            LastName = "Del Rio",
-                            Password = "Baloney2123",
-                            RegistrationDate = new DateTime(2023, 2, 23, 11, 49, 20, 14, DateTimeKind.Local).AddTicks(8068),
+                            Id = new Guid("54af86bf-346a-4cba-b36f-527748e1cb93"),
+                            City = "Oslo",
+                            Country = "Norway",
+                            Email = "testme@test.no",
+                            FirstName = "Ola",
+                            LangPreference = "no",
+                            LastActive = new DateTime(2023, 2, 24, 10, 42, 49, 373, DateTimeKind.Unspecified),
+                            LastName = "Nordmann",
+                            Password = "A7E220F0781BE0C248A3",
+                            RegistrationDate = new DateTime(2023, 2, 24, 10, 42, 49, 373, DateTimeKind.Unspecified),
                             Role = "Admin",
-                            UserName = "ClownBeauty"
+                            UserName = "testaccount"
                         });
                 });
 #pragma warning restore 612, 618

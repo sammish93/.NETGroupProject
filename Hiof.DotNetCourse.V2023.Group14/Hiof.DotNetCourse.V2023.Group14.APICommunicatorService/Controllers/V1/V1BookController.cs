@@ -8,7 +8,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
 {
     [ApiController]
-    [Route("api/1.0")]
+    [Route("api/1.0/books")]
     public class V1BookController : ControllerBase
     {
         private readonly V1BooksDto _books = new();
@@ -19,7 +19,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
             _logger = logger;
         }
 
-        [HttpGet("GetBookIsbn")]
+        [HttpGet("getBookIsbn")]
         public async Task<ActionResult> Get(string isbn)
         {
             var response = await CallApi("isbn", isbn);
@@ -35,7 +35,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
             return BadRequest("ISBN must be 10 or 13 digits");
         }
 
-        [HttpGet("GetBookTitle")]
+        [HttpGet("getBookTitle")]
         public async Task<IActionResult> GetByTitle(string title)
         {
             var response = await CallApi("intitle", title);
@@ -45,7 +45,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
             return Ok(response);
         }
 
-        [HttpGet("GetBookAuthor")]
+        [HttpGet("getBookAuthor")]
         public async Task<IActionResult> GetByAuthors(string authors)
         {
             var response = await CallApi("inauthor", authors);
@@ -56,7 +56,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
          
         }
 
-        [HttpGet("GetBookCategories")]
+        [HttpGet("getBookCategory")]
         public async Task<IActionResult> GetBySubject(string subject)
         {
             var response = await CallApi("categories", subject);

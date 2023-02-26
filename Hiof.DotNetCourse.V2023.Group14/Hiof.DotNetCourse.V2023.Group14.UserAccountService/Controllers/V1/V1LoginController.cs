@@ -9,7 +9,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 {
 
     [ApiController]
-    [Route("api")]
+    [Route("api/1.0/login")]
     public class V1LoginController : ControllerBase
     {
         // Constants used for input validation.
@@ -27,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         // request match with what is stored in the database.
 
         [HttpPost]
-        [Route("1.0/login/verification")]
+        [Route("verification")]
         public async Task<IActionResult> VerifyLogin([FromBody] V1LoginInfo user)
         {
             var validationResult = InputValidation(user);
@@ -55,7 +55,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             if (dbUser != null && dbUser.Salt != null)
             {
                 // Get the hashed password and salt from database.
-                var salt = Convert.FromBase64String(dbUser.Salt);
+                var salt = Convert.FromHexString(dbUser.Salt);
                 var hash = dbUser.Password;
 
                 if (salt != null && hash != null)
@@ -75,6 +75,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
             return Unauthorized("Account does not exists.");
         }
+
+        // Commented out for security reasons. This request shouldn't be publicly allowed to be edited. We can allow those with ADMIN privileges to call this later on with a valid token if we wish.
+        /*
+        [HttpPost]
+        [Route("create")]
+        public async Task<ActionResult> Create(V1LoginModel loginModel)
+        {
+            if (loginModel != null)
+            {
+                loginModel.Token = V1Token.CreateToken(loginModel.Id);
+                await _context.LoginModel.AddAsync(loginModel);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok();
+        }
+        */
 
         // Gets an entity from the database based on id.
 

@@ -26,10 +26,8 @@ a firewall exception for you on Azure. You'll have to do this on every IP you co
 
 Username and password for testing in LoginController:
 
-username: stian
-password: abc123
-
-
+username: testaccount
+password: TestPassword123!
 
 
 ** Installing your own local database and using migrations **
