@@ -20,9 +20,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         }
         
         [HttpGet("getBookIsbn")]
-        public async Task<ActionResult> Get(string isbn, int? maxResults, string? langRestrict)
+        public async Task<ActionResult> Get(string isbn)
         {
-            var response = await CallApi("isbn", isbn, maxResults, langRestrict);
+            var response = await CallApi("isbn", isbn, null, null);
 
             if ((isbn.Length == 13) || (isbn.Length == 10))
             {
@@ -32,15 +32,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
                     return Ok(response);
                     
             }
-            return BadRequest("ISBN must be 10 or 13 digits");
+            return BadRequest("ISBN must be 10 or 13 digits.");
         }
 
         [HttpGet("getBookTitle")]
         public async Task<IActionResult> GetByTitle(string title, int? maxResults, string? langRestrict)
         {
             var response = await CallApi("intitle", title, maxResults, langRestrict);
-            if (!CheckResponse(response))
+
+            if (maxResults > 40 || maxResults < 1)
+            {
+                return BadRequest("The maximum amount of results must be larger than 0, and equal to or fewer than 40.");
+            }
+            else if (!CheckResponse(response))
+            {
                 return NotFound("No book found.");
+            }
 
             return Ok(response);
         }
@@ -50,8 +57,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             
             var response = await CallApi("inauthor", authors, maxResults, langRestrict);
-            if (!CheckResponse(response))
+
+            if (maxResults > 40 || maxResults < 1)
+            {
+                return BadRequest("The maximum amount of results must be larger than 0, and equal to or fewer than 40.");
+            }
+            else if (!CheckResponse(response))
+            {
                 return NotFound("No book found.");
+            }
+
 
             return Ok(response);
          
@@ -61,8 +76,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         public async Task<IActionResult> GetBySubject(string subject, int? maxResults, string? langRestrict)
         {
             var response = await CallApi("categories", subject, maxResults, langRestrict);
-            if (!CheckResponse(response))
+
+            if (maxResults > 40 || maxResults < 1)
+            {
+                return BadRequest("The maximum amount of results must be larger than 0, and equal to or fewer than 40.");
+            } else if (!CheckResponse(response))
+            {
                 return NotFound("No book found.");
+            }
+                
 
             return Ok(response);
         
