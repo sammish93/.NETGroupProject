@@ -20,7 +20,7 @@ public class BookControllerTest
         var isbn = "1260440214";
         var maxResult = 10;
         var langRestrict = "en";
-        var result = await controller.Get(isbn, maxResult, langRestrict);
+        var result = await controller.Get(isbn);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
 
@@ -36,11 +36,11 @@ public class BookControllerTest
         var isbn = "123";
         var maxResult = 10;
         var langRestrict = "en";
-        var result = await controller.Get(isbn, maxResult, langRestrict);
+        var result = await controller.Get(isbn);
 
         var badResponse = Assert.IsType<BadRequestObjectResult>(result);
 
-        Assert.Equal("ISBN must be 10 or 13 digits", badResponse.Value);
+        Assert.Equal("ISBN must be 10 or 13 digits.", badResponse.Value);
 
     }
 
@@ -53,7 +53,7 @@ public class BookControllerTest
         var isbn = "6573849267364";
         var maxResult = 10;
         var langRestrict = "en";
-        var result = await controller.Get(isbn, maxResult, langRestrict);
+        var result = await controller.Get(isbn);
 
         var notFound = Assert.IsType<NotFoundObjectResult>(result);
 

@@ -70,7 +70,7 @@ namespace UserAccount.Tests
 
             var badResult = Assert.IsType<UnauthorizedObjectResult>(actionResult);
 
-            Assert.Equal("Account does not exists.", badResult.Value);
+            Assert.Equal("Account does not exist.", badResult.Value);
 
         }
 
@@ -98,7 +98,7 @@ namespace UserAccount.Tests
 
             var badResult = Assert.IsType<BadRequestObjectResult>(actionResult);
 
-            Assert.Equal("Username and password are required!", badResult.Value);
+            Assert.Equal("Both username and password are required.", badResult.Value);
 
         }
 
