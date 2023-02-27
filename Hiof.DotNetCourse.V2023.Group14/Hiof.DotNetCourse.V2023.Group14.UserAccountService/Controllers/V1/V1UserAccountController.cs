@@ -33,15 +33,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
                 
                 if (existingUser != null)
                 {
-                    string msg = "The username is already in use";
+                    string msg = "The username is already in use.";
                     return BadRequest(msg);
-                } else if (!ValidPassword(user.Password))
+                } else if (!V1User.ValidPassword(user.Password))
                 {
-                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long";
+                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 5 characters long.";
                     return BadRequest(msg);
-                } else if (!ValidEmail(user.Email))
+                } else if (!V1User.ValidEmail(user.Email))
                 {
-                    string msg = "Email must be of a valid format";
+                    string msg = "Email must be of a valid format.";
+                    return BadRequest(msg);
+                } else if (!V1User.ValidUsername(user.UserName))
+                {
+                    string msg = "Username must be between 5 and 20 characters and only contain alphanumerical characters.";
                     return BadRequest(msg);
                 }
 
@@ -68,7 +72,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             var user = from u in _userAccountContext.Users select u;
             if (user == null)
             {
-                return NotFound("User doesn't exist");
+                return NotFound("User doesn't exist.");
             }
             else
             {
@@ -85,7 +89,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             var user = await _userAccountContext.Users.FindAsync(guid);
             if (user == null)
             {
-                return NotFound("User doesn't exist");
+                return NotFound("User doesn't exist.");
             }
             else
             {
@@ -101,10 +105,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         {
             var user = await _userAccountContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefaultAsync();
 
-            if (user == null)
+            if (!V1User.ValidUsername(userName))
             {
-                return NotFound("User doesn't exist");
-            }
+                string msg = "Username must be between 5 and 20 characters and only contain alphanumerical characters.";
+                return BadRequest(msg);
+            } else if (user == null)
+            {
+                return NotFound("User doesn't exist.");
+            } 
             else
             {
                 return Ok(user);
@@ -120,7 +128,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
             if (user == null)
             {
-                return NotFound("User doesn't exist");
+                return NotFound("User doesn't exist.");
             }
             else
             {
@@ -137,13 +145,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             var existingVerificationData = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingUserData != null && existingVerificationData != null)
             {
-                if (!ValidPassword(user.Password))
+                if (!V1User.ValidPassword(user.Password))
                 {
-                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long";
+                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 5 characters long.";
                     return BadRequest(msg);
-                } else if (!ValidEmail(user.Email))
+                } else if (!V1User.ValidEmail(user.Email))
                 {
-                    string msg = "Email must be of a valid format";
+                    string msg = "Email must be of a valid format.";
+                    return BadRequest(msg);
+                } else if (!V1User.ValidUsername(user.UserName))
+                {
+                    string msg = "Username must be between 5 and 20 characters and only contain alphanumerical characters.";
                     return BadRequest(msg);
                 } else if (existingUserData.Password != user.Password || existingUserData.UserName != user.UserName)
                 {
@@ -187,7 +199,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
             if (existingUser == null || existingLoginModel == null)
             {
-                return NotFound("There user doesn't exist");
+                return NotFound("User doesn't exist.");
             } else
             {
                 _userAccountContext.Users.Remove(existingUser);
@@ -206,9 +218,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
             if (existingUser == null || existingLoginModel == null)
             {
-                return NotFound("There doesn't exist a user with that Username");
-            }
-            else
+                return NotFound("User doesn't exist.");
+            } else if (!V1User.ValidUsername(username))
+            {
+                string msg = "Username must be between 5 and 20 characters and only contain alphanumerical characters.";
+                return BadRequest(msg);
+            } else
             {
                 _userAccountContext.Users.Remove(existingUser);
 
@@ -216,17 +231,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
                 await _userAccountContext.SaveChangesAsync();
             }
             return Ok();
-        }
-
-        private static bool ValidEmail(string email)
-        {
-            return Regex.IsMatch(email, @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
-        }
-
-        // Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 8 characters long.
-        private static bool ValidPassword(string password)
-        {
-            return Regex.IsMatch(password, @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
         }
 
         // The following Http requests aren't necessary since we can use a single PUT requests to change any fields we wish.

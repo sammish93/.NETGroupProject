@@ -13,8 +13,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
     public class V1LoginController : ControllerBase
     {
         // Constants used for input validation.
-        private const int Min = 5;
-        private const int Max = 20;
+        // private const int Min = 5;
+        // private const int Max = 20;
         private readonly LoginDbContext _context;
 
         
@@ -30,23 +30,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         [Route("verification")]
         public async Task<IActionResult> VerifyLogin([FromBody] V1LoginInfo user)
         {
-            var validationResult = InputValidation(user);
-
             // Check if fields are empty or null.
-            if (validationResult != null)
+            if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password))
             {
-                return validationResult;
-            }
-
-            if (!CheckLength(user))
+                return BadRequest("Both username and password are required.");
+            } else if (!V1User.ValidUsername(user.UserName))
             {
-                string msg = "Username and password length must be between: ";
-                return BadRequest(msg + Min + "-" + Max);
-            }
-
-            if (!CheckCharacters(user))
-            {
-                return BadRequest("Only alphanumeric characters in username");
+                return BadRequest("Username must be between 5 and 20 characters and only contain alphanumerical characters.");
             }
 
             // Retrieve user with the same id from database.
@@ -66,14 +56,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
                     if (user.UserName != dbUser.UserName || result != true)
                     {
-                        return Unauthorized("Invalid Login Attempt");
+                        return Unauthorized("Invalid Login Attempt.");
                     }
 
                     return Ok("Login Success.");
                 }
             }
 
-            return Unauthorized("Account does not exists.");
+            return Unauthorized("Account does not exist.");
+        }
+
+        // Gets an entity from the database based on id.
+        private async Task<V1LoginModel?> GetDbUser(string username)
+        {
+            try
+            {
+                return await _context.LoginModel.SingleOrDefaultAsync(l => l.UserName == username);
+
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
+
         }
 
         // Commented out for security reasons. This request shouldn't be publicly allowed to be edited. We can allow those with ADMIN privileges to call this later on with a valid token if we wish.
@@ -91,36 +96,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
             return Ok();
         }
-        */
-
-        // Gets an entity from the database based on id.
-
-        private async Task<V1LoginModel?> GetDbUser(string username)
-        {
-            try
-            {
-                return await _context.LoginModel.SingleOrDefaultAsync(l => l.UserName == username);
-
-            } catch(InvalidOperationException)
-            {
-                return null;
-            }
-
-        }
 
         // Method that checks if the results from the POST-request
         // is not null or empty.
-
-        private ActionResult? InputValidation(V1LoginInfo user)
+        private bool InputValidation(V1LoginInfo user)
         {
             if (string.IsNullOrEmpty(user.UserName) ||
                 string.IsNullOrEmpty(user.Password))
             {
-                return BadRequest("Username and password are required!");
+                return true;
             }
 
-            return null;
-        }
+            return false;
 
 
         // Checks if the length of both username and password are within
@@ -141,12 +128,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             return true;
 
         }
-
-        // Checks if the username is written with alphanumeric characters.
-
-        private static bool CheckCharacters(V1LoginInfo user)
-        {
-            return Regex.IsMatch(user.UserName, @"^[a-zA-Z0-9]+$");
-        }
+        */
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
@@ -12,7 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
     // I (Sam) haven't fully defined this class. There may be possible issues with db transactions because of private or readonly values. I also haven't annotated the fields.
     // I also haven't created a table in the database. Read Info.txt in UserAccountService, as well as the test classes and comments in that project beforehand.
     [Table("users", Schema = "dbo")]
-    public class V1User
+    public class V1User : V1IValidator
     {
         [Key]
         [Column("id")]
@@ -76,6 +78,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             Role = role;
             RegistrationDate = DateTime.UtcNow;
             LastActive = DateTime.UtcNow;
+        }
+
+        // Email must be of a valid format.
+        public static bool ValidEmail(string email)
+        {
+            return Regex.IsMatch(email, @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
+        }
+
+        // Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 5 characters long.
+        public static bool ValidPassword(string password)
+        {
+            return Regex.IsMatch(password, @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{4,20}$");
+        }
+
+        // Username must be alphanumeric and between 5 and 20 characters.
+        public static bool ValidUsername(string username)
+        {
+            return Regex.IsMatch(username, @"^[a-zA-Z0-9].{4,20}$");
         }
     }
 }
