@@ -126,7 +126,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         {
             var user = await _userAccountContext.Users.Where(x => x.Email.Contains(email)).FirstOrDefaultAsync();
 
-            if (user == null)
+            if (!V1User.ValidEmail(email))
+            {
+                string msg = "Email must be of a valid format.";
+                return BadRequest(msg);
+            } else if (user == null)
             {
                 return NotFound("User doesn't exist.");
             }
