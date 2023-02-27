@@ -7,6 +7,8 @@ using Hangfire.Common;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Newtonsoft.Json;
 
+// This class needs to be modified later in order to work.
+
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
     // The class is designed to check for updates in the marketplace, by sending

@@ -1,6 +1,8 @@
 ﻿using System;
 using Hangfire;
 
+// This class needs to be modified later in order to work.
+
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
     // Background job used to check for new messages in a messaging system. The

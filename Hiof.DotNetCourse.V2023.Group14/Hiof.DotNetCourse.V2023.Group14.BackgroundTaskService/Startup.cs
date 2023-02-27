@@ -5,6 +5,10 @@ using Hangfire.AspNetCore;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
 using Microsoft.Extensions.Configuration;
 using Hangfire.Dashboard;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
+using System.Xml.Linq;
+using Hangfire.SqlServer;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
@@ -21,16 +25,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-            var connection = "server=localhost;database=background_task;uid=root;pwd=" + password + ";" + "Allow User Variables=true";
 
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var connection = "server=localhost;database=background_task;trusted_connection=Yes;encrypt=False;Allow User Variables=true";
 
-            services.AddHangfire(config => config
-                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                .UseSimpleAssemblyNameTypeSerializer()
-                .UseRecommendedSerializerSettings()
-                .UseStorage(
-                    new MySqlStorage(connection, new MySqlStorageOptions
+                services.AddHangfire(config => config
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseSqlServerStorage(connection, new SqlServerStorageOptions
+                        {
+                            QueuePollInterval = TimeSpan.FromSeconds(10),
+                            JobExpirationCheckInterval = TimeSpan.FromHours(1),
+                            CountersAggregateInterval = TimeSpan.FromMinutes(5),
+                            PrepareSchemaIfNecessary = true,
+                            DashboardJobListLimit = 23000,
+                            TransactionTimeout = TimeSpan.FromMinutes(1)
+                        }));
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+                var connection = "server=localhost;database=background_task;uid=root;pwd=" + password + ";" + "Allow User Variables=true";
+
+                services.AddHangfire(config => config
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseStorage(
+                        new MySqlStorage(connection, new MySqlStorageOptions
                         {
                             QueuePollInterval = TimeSpan.FromSeconds(10),
                             JobExpirationCheckInterval = TimeSpan.FromHours(1),
@@ -40,8 +64,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
                             TransactionTimeout = TimeSpan.FromMinutes(1),
                             TablesPrefix = "Hangfire",
                         }
-                    )
-                ));
+                        )
+                    ));
+            }
+
 
             // Add the processing server as IHostedService
             services.AddHangfireServer(options => options.WorkerCount = 1);
