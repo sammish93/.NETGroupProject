@@ -1,4 +1,6 @@
-﻿README.md fila that came with the installation.
+﻿Remember that your database server needs a database called 'background_task' to function. The tables are created automatically when this service is run.
+
+README.md fila that came with the installation.
 
 Please see https://docs.hangfire.io for more information on using Hangfire. The
 `Hangfire` meta-package is using SQL Server as a job storage and intended to run
