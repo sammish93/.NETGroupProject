@@ -14,7 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
     // I (Sam) haven't fully defined this class. There may be possible issues with db transactions because of private or readonly values. I also haven't annotated the fields.
     // I also haven't created a table in the database. Read Info.txt in UserAccountService, as well as the test classes and comments in that project beforehand.
     [Table("users", Schema = "dbo")]
-    public class V1User : V1IValidator
+    public class V1User : V1IUserValidator
     {
         [Key]
         [Column("id")]

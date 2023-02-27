@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
 {
     [DbContext(typeof(LibraryCollectionContext))]
-    partial class LibraryCollectionContextModelSnapshot : ModelSnapshot
+    [Migration("20230227125337_AddSeeds")]
+    partial class AddSeeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

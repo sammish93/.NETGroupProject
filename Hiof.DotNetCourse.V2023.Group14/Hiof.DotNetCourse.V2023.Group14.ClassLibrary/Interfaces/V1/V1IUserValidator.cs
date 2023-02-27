@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 {
-    interface V1IValidator
+    interface V1IUserValidator
     {
         // Email must be a correct email format.
         abstract static bool ValidEmail(string email);

@@ -13,6 +13,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
     public class V1LibraryCollection
     {
-        // Class to be serialised.
+        public Guid? UserId { get; set; }
+        public int? Items { get; set; }
+        public IList<V1LibraryEntry>? Entries { get; set; }
+
+        public V1LibraryCollection() { }
     }
 }
