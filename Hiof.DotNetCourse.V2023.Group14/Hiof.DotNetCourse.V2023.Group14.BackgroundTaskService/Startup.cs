@@ -28,7 +28,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var connection = "server=localhost;database=background_task;trusted_connection=Yes;encrypt=False;Allow User Variables=true";
+                var connection = "server=localhost;database=background_task;Integrated Security=True";
 
                 services.AddHangfire(config => config
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
