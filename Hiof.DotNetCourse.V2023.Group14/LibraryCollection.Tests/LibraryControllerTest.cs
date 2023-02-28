@@ -148,7 +148,7 @@ namespace LibraryCollection.Tests
 
             using var dbContext = new LibraryCollectionContext(options);
 
-
+            // Adds 6 entries.
             dbContext.Add(entry1);
             dbContext.Add(entry2);
             dbContext.Add(entry3);
@@ -162,12 +162,11 @@ namespace LibraryCollection.Tests
             var actionResult = await controller.GetAllEntries();
 
             var receivedJson = JObject.Parse(actionResult.ToJson())["Value"];
-            //var thing = Convert.ToString(receivedJson);
-
 
 
             Assert.IsType<OkObjectResult>(actionResult);
-            Assert.Equal("5", receivedJson.Count().ToString());
+            // Checks that there's 6 entries in the database.
+            Assert.Equal("6", receivedJson?.Count().ToString());
         }
     }
 }
