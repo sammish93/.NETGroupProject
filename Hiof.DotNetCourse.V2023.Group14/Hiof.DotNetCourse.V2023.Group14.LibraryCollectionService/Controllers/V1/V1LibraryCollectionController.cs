@@ -58,7 +58,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
         }
 
         [HttpGet("getEntries")]
-        public ActionResult GetAllEntries()
+        public async Task<IActionResult> GetAllEntries()
         {
             var libEntries = from library in _libraryCollectionContext.LibraryEntries 
                             select library;

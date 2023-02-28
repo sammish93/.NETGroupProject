@@ -139,5 +139,35 @@ namespace LibraryCollection.Tests
 
             Assert.IsType<NotFoundObjectResult>(actionResult);
         }
+
+        [Fact]
+        public async Task GetOkResponseOnGetAllEntries()
+        {
+            var options = new DbContextOptionsBuilder<LibraryCollectionContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+
+            using var dbContext = new LibraryCollectionContext(options);
+
+
+            dbContext.Add(entry1);
+            dbContext.Add(entry2);
+            dbContext.Add(entry3);
+            dbContext.Add(entry4);
+            dbContext.Add(entry5);
+            dbContext.Add(entry6);
+            dbContext.SaveChanges();
+
+            var controller = new V1LibraryCollectionController(dbContext);
+
+            var actionResult = await controller.GetAllEntries();
+
+            var receivedJson = JObject.Parse(actionResult.ToJson())["Value"];
+            //var thing = Convert.ToString(receivedJson);
+
+
+
+            Assert.IsType<OkObjectResult>(actionResult);
+            Assert.Equal("5", receivedJson.Count().ToString());
+        }
     }
 }
