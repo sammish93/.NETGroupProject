@@ -16,7 +16,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
     {
         private readonly LibraryCollectionContext _libraryCollectionContext;
 
-
         public V1LibraryCollectionController(LibraryCollectionContext libraryCollectionContext)
         {
             _libraryCollectionContext = libraryCollectionContext;
@@ -76,7 +75,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
 
         // Returns a specific user's library, complete with a count of all items currently in their library.
         [HttpGet("getUserLibrary")]
-        public ActionResult GetUserLibrary(Guid userId)
+        public async Task<IActionResult> GetUserLibrary(Guid userId)
         {
             var libraries = from library in _libraryCollectionContext.LibraryEntries
                             where library.UserId == userId
