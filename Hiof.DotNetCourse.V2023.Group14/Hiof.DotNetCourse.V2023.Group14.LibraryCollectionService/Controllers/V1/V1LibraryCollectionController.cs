@@ -23,7 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
         }
 
         [HttpPost]
-        [Route("entries")]
+        [Route("entry")]
         public async Task<ActionResult> CreateEntry(V1LibraryEntry libraryEntry)
         {
             if (libraryEntry != null)
@@ -40,6 +40,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
                 } else if (!libraryEntry.LibraryEntryISBN13.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN13?.Length != 13)
                 {
                     return BadRequest("The ISBN13 of the book is of an invalid format.");
+                }
+
+                // Rating must be between 1 and 10.
+                if (libraryEntry.Rating != null)
+                {
+                    if (libraryEntry.Rating < 1 || libraryEntry.Rating > 10)
+                        return BadRequest("The book rating must be between 1 and 10.");
                 }
 
                 await _libraryCollectionContext.LibraryEntries.AddAsync(libraryEntry);
@@ -84,13 +91,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
                 var libCollection = new V1LibraryCollection();
                 libCollection.UserId = userId;
                 libCollection.Entries = new List<V1LibraryEntry>();
+                libCollection.ItemsRead = 0;
 
                 foreach (var libEntry in libraries)
                 {
                     libCollection.Entries.Add(libEntry);
+                    if (libEntry.ReadingStatus == ReadingStatus.Completed)
+                    {
+                        libCollection.ItemsRead++;
+                    }
                 }
 
                 libCollection.Items = libCollection.Entries.Count;
+
                 return Ok(libCollection);
             }
         }
@@ -109,6 +122,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
                 _libraryCollectionContext.LibraryEntries.Remove(libraryEntry);
                 await _libraryCollectionContext.SaveChangesAsync();
             }
+
             return Ok();
         }
 
@@ -133,6 +147,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
 
                 await _libraryCollectionContext.SaveChangesAsync();
             }
+
             return Ok();
         }
 
@@ -145,12 +160,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
             if (libraryEntry == null)
             {
                 return NotFound("An entry with the id '" + entryId + "' was not found.");
-            }
-            else
+            } else if (rating < 1 || rating > 10) 
+            {
+                // Rating must be between 1 and 10.
+                return BadRequest("The book rating must be between 1 and 10.");
+            } else
             {
                 libraryEntry.Rating = rating;
                 _libraryCollectionContext.SaveChanges();
             }
+
             return Ok();
         }
 
@@ -182,7 +201,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
             {
                 return NotFound("An entry with the id '" + entryId + "' was not found.");
             }
-            else
+            
+            // A valid ReadingStatus enum is to be supplied (Completed, ToRead, Reading).
+            if (!Enum.IsDefined(typeof(ReadingStatus), readingStatus))
+            {
+                return BadRequest("'" + readingStatus + "' is not a valid reading status.");
+            } else
             {
                 libraryEntry.ReadingStatus = readingStatus;
                 _libraryCollectionContext.SaveChanges();
