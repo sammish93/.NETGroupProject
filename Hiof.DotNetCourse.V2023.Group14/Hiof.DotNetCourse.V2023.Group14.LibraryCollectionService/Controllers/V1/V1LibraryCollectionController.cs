@@ -73,6 +73,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
             }
         }
 
+        // Returns a single entry.
+        [HttpGet("getEntry")]
+        public async Task<IActionResult> GetEntry(Guid entryId)
+        {
+            var entry = await _libraryCollectionContext.LibraryEntries.FirstOrDefaultAsync(l => l.Id == entryId);
+
+            if (entry == null)
+            {
+                return NotFound("No libraries exist.");
+            }
+            else
+            {
+                return Ok(entry);
+            }
+        }
+
         // Returns a specific user's library, complete with a count of all items currently in their library.
         [HttpGet("getUserLibrary")]
         public async Task<IActionResult> GetUserLibrary(Guid userId)
