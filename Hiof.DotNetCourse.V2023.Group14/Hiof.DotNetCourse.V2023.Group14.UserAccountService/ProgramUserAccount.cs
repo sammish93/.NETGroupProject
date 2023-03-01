@@ -41,7 +41,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) 
             {
                 // Connection string for MySQL-database (only for stian)
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
                 var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;";
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
                     connectionStr,
