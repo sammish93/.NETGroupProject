@@ -66,7 +66,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         }
 
         [HttpGet("getUsers")]
-
         public async Task<ActionResult> GetAllUsers()
         {
             

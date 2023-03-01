@@ -16,6 +16,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 			_httpClient = httpClientFactory.CreateClient();
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> Users()
+			=> await ProxyTo("https://localhost:7021/api/1.0/users/getUsers");
+
+		private async Task<ContentResult> ProxyTo(string url)
+			=> Content(await _httpClient.GetStringAsync(url));
 	}
 }
 
