@@ -15,17 +15,27 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		{
 			_httpClient = httpClientFactory.CreateClient();
 		}
+		
 
 		[HttpGet]
 		public async Task<IActionResult> GetUsers()
-			=> await ProxyTo("https://localhost:7021/api/1.0/users/getUsers");
+			=> await Proxy("https://localhost:7021/api/1.0/users/getUsers");
 
 		[HttpGet]
 		public async Task<IActionResult> GetUserById(Guid id)
-			=> await ProxyTo($"https://localhost:7021/api/1.0/users/getUserById?guid={id}");
+			=> await Proxy($"https://localhost:7021/api/1.0/users/getUserById?guid={id}");
+
+		[HttpGet]
+		public async Task<IActionResult> GetUserByName(string name)
+			=> await Proxy($"https://localhost:7021/api/1.0/users/getUserByUserName?userName={name}");
+		
+
+		[HttpGet]
+		public async Task<IActionResult> GetUserByEmail(string email)
+			=> await Proxy($"https://localhost:7021/api/1.0/users/getUserByEmail?email={email}");
 
 
-		private async Task<ContentResult> ProxyTo(string url)
+		private async Task<ContentResult> Proxy(string url)
 			=> Content(await _httpClient.GetStringAsync(url));
 	}
 }
