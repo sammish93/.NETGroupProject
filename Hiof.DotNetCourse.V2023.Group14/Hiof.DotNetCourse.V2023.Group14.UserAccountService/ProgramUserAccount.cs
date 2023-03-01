@@ -42,7 +42,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             {
                 // Connection string for MySQL-database (only for stian)
                 var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-                var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;Password={password}";
+                var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;";
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
                     connectionStr,
                     new MySqlServerVersion(new Version(8, 0, 32)),
