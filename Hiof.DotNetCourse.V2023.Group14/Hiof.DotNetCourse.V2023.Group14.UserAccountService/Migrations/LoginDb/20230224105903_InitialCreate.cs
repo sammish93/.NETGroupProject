@@ -19,7 +19,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.LoginDb
                 schema: "dbo",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    id = table.Column<Guid>(type: "nvarchar(36)", nullable: false),
                     username = table.Column<string>(type: "nvarchar(500)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(500)", nullable: false),
                     salt = table.Column<string>(type: "nvarchar(500)", nullable: true),
