@@ -8,6 +8,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string GetUserById { get; set; }
         public string GetUserByName { get; set; }
         public string GetUserByEmail { get; set; }
+        public string CreateUserAccount { get; set; }
     }
 
 }

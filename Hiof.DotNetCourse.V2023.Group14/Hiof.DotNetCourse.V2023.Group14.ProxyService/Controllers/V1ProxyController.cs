@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 {
@@ -21,7 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
-			=> await Proxy(_apiUrl?.GetUsers);
+			=> await Proxy(_apiUrl.GetUsers);
 
 		[HttpGet]
         public async Task<IActionResult> GetById(Guid id)
@@ -35,6 +37,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpGet]
         public async Task<IActionResult> GetByEmail(string email)
 			=> await Proxy(_apiUrl.GetUserByEmail + $"?email={email}");
+
+		[HttpPost]
+		public async Task<IActionResult> CreateUserAccount(V1User user)
+		{
+			var url = _apiUrl.CreateUserAccount;
+
+            using var content = new StringContent(
+				JsonConvert.SerializeObject(user),
+				Encoding.UTF8, "application/json"
+			);
+
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.ReasonPhrase);
+            }
+        }
 
 		// This is the method that executes the calls.
 		private async Task<ContentResult> Proxy(string url)
