@@ -10,8 +10,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 	[Route("proxy/1.0/users/[action]")]
 	public class V1ProxyController : ControllerBase
 	{
-		// We will use httpclient to make calls to the other
-		// microservices.
 		private readonly HttpClient _httpClient;
 		private readonly V1UserAccountApiUrls _apiUrl;
 
