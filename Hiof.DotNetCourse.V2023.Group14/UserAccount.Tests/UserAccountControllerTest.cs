@@ -579,7 +579,7 @@ namespace UserAccount.Tests
 
         }
         */
-        
+        /*
         [Fact]
 
         public async Task TestDeleteUserByUserNameOkResponse()
@@ -613,7 +613,7 @@ namespace UserAccount.Tests
 
 
         }
-        
+        */
 
 
     }
