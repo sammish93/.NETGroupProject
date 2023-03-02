@@ -6,6 +6,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 {
@@ -33,20 +34,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
                 
                 if (existingUser != null)
                 {
-                    string msg = "The username is already in use.";
-                    return BadRequest(msg);
+                    return BadRequest("The username is already in use.");
+
                 } else if (!V1User.ValidPassword(user.Password))
                 {
-                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 5 characters long.";
-                    return BadRequest(msg);
+                    return BadRequest("Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 5 characters long.");
+                
                 } else if (!V1User.ValidEmail(user.Email))
                 {
-                    string msg = "Email must be of a valid format.";
-                    return BadRequest(msg);
+                    return BadRequest("Email must be of a valid format.");
+
                 } else if (!V1User.ValidUsername(user.UserName))
                 {
-                    string msg = "Username must be between 5 and 20 characters and only contain alphanumerical characters.";
-                    return BadRequest(msg);
+                    return BadRequest("Username must be between 5 and 20 characters and only contain alphanumerical characters.");
                 }
 
                 var (hash, salt) = V1PasswordEncryption.Encrypt(user.Password);
@@ -59,9 +59,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
                 await _userAccountContext.LoginModel.AddAsync(loginModel);
                 await _userAccountContext.SaveChangesAsync();
+                
+
             }
             
-            return Ok();
+            return Ok(user);
         }
 
         [HttpGet("getUsers")]
@@ -69,7 +71,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         {
             
             var user = await _userAccountContext.Users.ToListAsync();
-            if (user == null)
+            if (user.IsNullOrEmpty())
             {
                 return NotFound("User doesn't exist.");
             }
@@ -106,8 +108,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
             if (!V1User.ValidUsername(userName))
             {
-                string msg = "Username must be between 5 and 20 characters and only contain alphanumerical characters.";
-                return BadRequest(msg);
+                return BadRequest("Username must be between 5 and 20 characters and only contain alphanumerical characters.");
+
             } else if (user == null)
             {
                 return NotFound("User doesn't exist.");
@@ -127,8 +129,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
             if (!V1User.ValidEmail(email))
             {
-                string msg = "Email must be of a valid format.";
-                return BadRequest(msg);
+                return BadRequest("Email must be of a valid format.");
+
             } else if (user == null)
             {
                 return NotFound("User doesn't exist.");
@@ -150,16 +152,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             {
                 if (!V1User.ValidPassword(user.Password))
                 {
-                    string msg = "Password must have at least one lower-case letter, one upper-case letter, one number, and one special character, and be at least 5 characters long.";
-                    return BadRequest(msg);
+                    return BadRequest("Password must have at least one lower-case letter, " +
+                        "one upper-case letter, one number, and one special character, and be at least 5 characters long.");
                 } else if (!V1User.ValidEmail(user.Email))
                 {
-                    string msg = "Email must be of a valid format.";
-                    return BadRequest(msg);
+                    return BadRequest("Email must be of a valid format.");
+
                 } else if (!V1User.ValidUsername(user.UserName))
                 {
-                    string msg = "Username must be between 5 and 20 characters and only contain alphanumerical characters.";
-                    return BadRequest(msg);
+                    return BadRequest("Username must be between 5 and 20 characters and only contain alphanumerical characters.");
+
                 } else if (existingUserData.Password != user.Password || existingUserData.UserName != user.UserName)
                 {
                     // If the user updates their username or password the following code is executed.
@@ -222,10 +224,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             if (existingUser == null || existingLoginModel == null)
             {
                 return NotFound("User doesn't exist.");
+
             } else if (!V1User.ValidUsername(username))
             {
-                string msg = "Username must be between 5 and 20 characters and only contain alphanumerical characters.";
-                return BadRequest(msg);
+                return BadRequest("Username must be between 5 and 20 characters and only contain alphanumerical characters.");
             } else
             {
                 _userAccountContext.Users.Remove(existingUser);

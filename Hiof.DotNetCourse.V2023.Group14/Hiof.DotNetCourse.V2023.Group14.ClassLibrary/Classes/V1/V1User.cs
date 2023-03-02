@@ -80,6 +80,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             LastActive = DateTime.UtcNow;
         }
 
+        public V1User()
+        {
+        }
+
         // Email must be of a valid format.
         public static bool ValidEmail(string email)
         {
