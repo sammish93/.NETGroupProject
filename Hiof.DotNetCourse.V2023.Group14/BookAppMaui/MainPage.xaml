@@ -6,8 +6,10 @@
              Background="white"
              >
 
-    <Grid RowDefinitions="25,25, 25, 25"
+    <Grid RowDefinitions="100, 25*"
           ColumnDefinitions=".75*, .25"
+          RowSpacing="20"
+          Margin="20,35,30,20"
           >
        
 
@@ -19,20 +21,42 @@
         <StackLayout
             Grid.Row ="2"
             >
+            <Border Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="Rectangle 40,0,0,40"
+                    Background="white"
+                    Padding="1"
+                    Margin="5"
+                    HorizontalOptions="Center">
+                
             <Entry Placeholder="Enter User Name"
-               Text=""
-               Grid.Row="3"
-               VerticalOptions="Center"
-               HorizontalOptions="Center"
+                   Text=""
+               
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
                
             />
+            </Border>
+            <Border Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="Rectangle 40,0,0,40"
+                    Background="white"
+                    Padding="1"
+                    Margin="5"
+                    HorizontalOptions="Center">
             <Entry Placeholder="Enter User Name"
-               Text=""
-               Grid.Row="3"
-               VerticalOptions="Center"
-               HorizontalOptions="Center"
+                   Text=""
+               
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
             />
-            
+            </Border>
+            <Button Text="Log In"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+               
+                    BackgroundColor="Red"/>
+
         </StackLayout>
         
     </Grid>

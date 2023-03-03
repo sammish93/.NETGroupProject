@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
+
 namespace BookAppMaui
 {
     public static class MauiProgram
