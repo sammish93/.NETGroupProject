@@ -23,7 +23,7 @@
             >
             <Border Stroke="Black"
                     StrokeThickness="1"
-                    StrokeShape="Rectangle 40,0,0,40"
+                    StrokeShape="Rectangle "
                     Background="white"
                     Padding="1"
                     Margin="5"
@@ -46,7 +46,7 @@
                     HorizontalOptions="Center">
             <Entry Placeholder="Enter User Name"
                    Text=""
-               
+                   IsPassword="True"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
             />
