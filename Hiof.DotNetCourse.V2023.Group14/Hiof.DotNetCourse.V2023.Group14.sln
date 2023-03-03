@@ -25,14 +25,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Gro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService", "Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService\Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.csproj", "{A0BDACD1-7022-4F75-87EB-EA55B08CE605}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryCollection.Tests", "LibraryCollection.Tests\LibraryCollection.Tests.csproj", "{C34A6466-9CE6-4C26-AFF3-7FCDD676FE63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryCollection.Tests", "LibraryCollection.Tests\LibraryCollection.Tests.csproj", "{C34A6466-9CE6-4C26-AFF3-7FCDD676FE63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.ProxyService", "Hiof.DotNetCourse.V2023.Group14.ProxyService\Hiof.DotNetCourse.V2023.Group14.ProxyService.csproj", "{CCC582B5-0240-4B6E-B94B-0634119F9FFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.ProxyService", "Hiof.DotNetCourse.V2023.Group14.ProxyService\Hiof.DotNetCourse.V2023.Group14.ProxyService.csproj", "{CCC582B5-0240-4B6E-B94B-0634119F9FFC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E3DE9EE8-4F8B-4425-B81B-6F88E63F2D96}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookAppMaui", "BookAppMaui\BookAppMaui.csproj", "{93AD4415-547C-4D97-A4F1-70F4BB81EB71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +82,12 @@ Global
 		{CCC582B5-0240-4B6E-B94B-0634119F9FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCC582B5-0240-4B6E-B94B-0634119F9FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCC582B5-0240-4B6E-B94B-0634119F9FFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93AD4415-547C-4D97-A4F1-70F4BB81EB71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93AD4415-547C-4D97-A4F1-70F4BB81EB71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93AD4415-547C-4D97-A4F1-70F4BB81EB71}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{93AD4415-547C-4D97-A4F1-70F4BB81EB71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93AD4415-547C-4D97-A4F1-70F4BB81EB71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93AD4415-547C-4D97-A4F1-70F4BB81EB71}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

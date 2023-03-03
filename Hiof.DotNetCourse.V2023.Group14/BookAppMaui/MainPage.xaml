@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BookAppMaui.MainPage"
+             Title="First App"
+             Background="white"
+             >
+
+    <Grid RowDefinitions="25,25, 25, 25"
+          ColumnDefinitions=".75*, .25"
+          >
+       
+
+        <Image
+            Source="books_icon.png"
+            BackgroundColor="White"
+            Margin="10"
+            />
+        <StackLayout
+            Grid.Row ="2"
+            >
+            <Entry Placeholder="Enter User Name"
+               Text=""
+               Grid.Row="3"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               
+            />
+            <Entry Placeholder="Enter User Name"
+               Text=""
+               Grid.Row="3"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+            />
+            
+        </StackLayout>
+        
+    </Grid>
+</ContentPage>
