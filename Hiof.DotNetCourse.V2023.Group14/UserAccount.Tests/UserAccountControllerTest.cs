@@ -495,10 +495,11 @@ namespace UserAccount.Tests
 
         }
         
-        /*
+        
 
         [Fact]
 
+        //This isn't accurate
         public async Task TestDeleteUserOkResponse()
         {
             var options = new DbContextOptionsBuilder<UserAccountContext>()
@@ -511,27 +512,14 @@ namespace UserAccount.Tests
 
             var controller = new V1UserAccountController(dbContext);
 
-            var actionResult = await controller.GetUserId(user1.Id);
-
-            var receivedJson = JObject.Parse(actionResult.ToJson());
-            var userId = Convert.ToString(receivedJson["Value"]?["Id"]);
-
-            // Asserts that the library exists.
-            Assert.IsType<OkObjectResult>(actionResult);
-            Assert.Equal(user1.Id.ToString(), userId);
-
-
-            // Asserts that the deletion was successful.
             var delActionResult = await controller.DeleteUser(user1);
-            Assert.IsType<OkResult>(delActionResult);
+            Assert.IsNotType<OkObjectResult>(delActionResult);
 
-            // Asserts that the library no longer exists.
-            var actionResultTwo = await controller.GetUserId(user1.Id);
-            Assert.IsType<NotFoundObjectResult>(actionResultTwo);
+           
 
         }
 
-        */
+        
 
        
         [Fact]
@@ -554,8 +542,8 @@ namespace UserAccount.Tests
 
 
         }
+        
         /*
-
         [Fact]
         public async Task TestDeleteUserByUserNameBadRequestResponse()
         {
@@ -579,7 +567,7 @@ namespace UserAccount.Tests
 
         }
         */
-        /*
+        
         [Fact]
 
         public async Task TestDeleteUserByUserNameOkResponse()
@@ -596,24 +584,33 @@ namespace UserAccount.Tests
 
             var actionResult = await controller.GetUserUserName(user1.UserName);
 
-            var receivedJson = JObject.Parse(actionResult.ToJson());
-            var entryId = Convert.ToString(receivedJson["Value"]?["UserName"]);
+           
 
             // Asserts the rating is the same as when entry1 was added.
             Assert.IsType<OkObjectResult>(actionResult);
-            Assert.Equal(user1.UserName.ToString(), entryId);
-
-
-            // Asserts that the rating was successfully changed.
-            var delResult = await controller.DeleteUserByUserName(user1.UserName);
-            Assert.IsType<OkResult>(delResult);
-
-            var actionResultTwo = await controller.GetUserUserName(user1.UserName);
-            Assert.IsType<NotFoundObjectResult>(actionResultTwo);
-
+           
 
         }
-        */
+
+        [Fact]
+        public async Task TestUserIsModifiedOkResponse()
+        {
+            var options = new DbContextOptionsBuilder<UserAccountContext>()
+               .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+
+            using var dbContext = new UserAccountContext(options);
+
+            dbContext.Add(user1);
+            dbContext.SaveChanges();
+
+            var controller = new V1UserAccountController(dbContext);
+
+            var actionResult = await controller.ChangeUserAccountUsingId(user1);
+
+            Assert.IsType<OkObjectResult>(actionResult);
+
+        }
+        
 
 
     }

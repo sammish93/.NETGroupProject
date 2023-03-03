@@ -25,6 +25,7 @@
                     StrokeThickness="1"
                     StrokeShape="Rectangle "
                     Background="white"
+                   
                     Padding="1"
                     Margin="5"
                     HorizontalOptions="Center">
@@ -32,6 +33,7 @@
             <Entry Placeholder="Enter User Name"
                    Text=""
                    TextColor="Black"
+                   MaxLength="20"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
                
@@ -47,6 +49,7 @@
             <Entry Placeholder="Enter Password"
                    Text=""
                    TextColor="Black"
+                   MaxLength="20"
                    IsPassword="True"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
