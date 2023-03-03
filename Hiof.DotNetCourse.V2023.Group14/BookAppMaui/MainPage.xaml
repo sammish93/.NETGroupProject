@@ -31,7 +31,7 @@
                 
             <Entry Placeholder="Enter User Name"
                    Text=""
-               
+                   TextColor="Black"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
                
@@ -44,8 +44,9 @@
                     Padding="1"
                     Margin="5"
                     HorizontalOptions="Center">
-            <Entry Placeholder="Enter User Name"
+            <Entry Placeholder="Enter Password"
                    Text=""
+                   TextColor="Black"
                    IsPassword="True"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
