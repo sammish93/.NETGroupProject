@@ -8,8 +8,11 @@
         
             <SearchBar x:Name="SearchBar"
                        Placeholder="Search"/>
-            <CarouselView
-                        BackgroundColor="Red"/>
+        <ListView
+            
+            BackgroundColor="Red">
+            <!-- Might change to caroselView to see books-->
+        </ListView>
 
 
     </VerticalStackLayout>
