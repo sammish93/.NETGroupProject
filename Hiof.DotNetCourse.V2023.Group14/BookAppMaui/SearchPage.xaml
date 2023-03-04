@@ -2,11 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookAppMaui.NewPage2"
-             Title="NewPage2">
+             Title="NewPage2"
+             Background="white">
     <VerticalStackLayout>
-        <Label 
-            Text="Second Page"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        
+            <SearchBar x:Name="SearchBar"
+                       Placeholder="Search"/>
+            <CarouselView
+                        BackgroundColor="Red"/>
+
+
     </VerticalStackLayout>
 </ContentPage>
