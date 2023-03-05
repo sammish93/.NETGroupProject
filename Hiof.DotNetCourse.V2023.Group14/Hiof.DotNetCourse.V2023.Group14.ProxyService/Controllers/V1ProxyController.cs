@@ -123,6 +123,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpGet("books/[action]")]
 		public async Task<IActionResult> GetByAuthor(string name, int? maxResults, string? langRestrict)
 			=> await Proxy(_apiUrls.GetBookByAuthor + ConcatUri("authors", name, maxResults, langRestrict));
+
+
+		[HttpGet("books/[action]")]
+		public async Task<IActionResult> GetBookByCategory(string subject, int? maxResults, string? langRestrict)
+			=> await Proxy(_apiUrls.GetBookByCategory + ConcatUri("categories", subject, maxResults, langRestrict));
 	
 
 		// This is the method that executes the calls.
