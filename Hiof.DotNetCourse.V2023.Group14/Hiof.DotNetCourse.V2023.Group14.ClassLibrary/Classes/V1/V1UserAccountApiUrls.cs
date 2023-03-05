@@ -11,6 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string CreateUserAccount { get; set; }
         public string UpdateUserAccount { get; set; }
         public string Delete { get; set; }
+        public string DeleteByUsername { get; set; }
     }
 
 }

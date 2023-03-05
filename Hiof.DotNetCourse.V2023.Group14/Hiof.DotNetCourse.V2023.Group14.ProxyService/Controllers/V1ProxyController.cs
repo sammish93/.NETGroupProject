@@ -95,6 +95,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 			else
 				return BadRequest(response.ReasonPhrase);
 		}
+
+
+		[HttpDelete("users/[action]")]
+		public async Task<IActionResult> DeleteByUsername(string username)
+		{
+			var url = _apiUrl.DeleteByUsername + $"?username={username}";
+			
+			var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.ReasonPhrase);
+        }
 	
 
 		// This is the method that executes the calls.
