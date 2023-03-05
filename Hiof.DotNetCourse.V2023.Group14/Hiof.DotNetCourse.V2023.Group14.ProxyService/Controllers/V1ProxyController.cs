@@ -128,6 +128,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpGet("books/[action]")]
 		public async Task<IActionResult> GetBookByCategory(string subject, int? maxResults, string? langRestrict)
 			=> await Proxy(_apiUrls.GetBookByCategory + ConcatUri("subject", subject, maxResults, langRestrict));
+
+
+		// TODO: Legg til kode for LibraryCollectionService.
 	
 
 		// This is the method that executes the calls.
