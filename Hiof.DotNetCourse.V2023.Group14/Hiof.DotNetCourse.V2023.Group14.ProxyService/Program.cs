@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 var apiUrls = builder.Configuration
     .GetSection("V1UserAccountApiUrls")
-    .Get<V1UserAccountApiUrls>() ?? new V1UserAccountApiUrls();
+    .Get<V1ApiUrls>() ?? new V1ApiUrls();
 
 builder.Services.AddSingleton(apiUrls);
 

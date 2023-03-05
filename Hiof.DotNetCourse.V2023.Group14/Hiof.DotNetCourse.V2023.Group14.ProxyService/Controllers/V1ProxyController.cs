@@ -113,6 +113,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpGet("books/[action]")]
 		public async Task<IActionResult> GetByIsbn(string isbn)
 			=> await Proxy(_apiUrls.GetBookByIsbn + $"?isbn={isbn}");
+
+
+		[HttpGet("books/[action]")]
+		public async Task<IActionResult> GetByTitle(string title)
+			=> await Proxy(_apiUrls.GetBookByTitle + $"?title={title}");
 	
 
 		// This is the method that executes the calls.
