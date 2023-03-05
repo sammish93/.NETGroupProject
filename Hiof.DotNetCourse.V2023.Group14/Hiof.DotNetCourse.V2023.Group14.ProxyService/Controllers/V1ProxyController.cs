@@ -116,13 +116,37 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
 
 		[HttpGet("books/[action]")]
-		public async Task<IActionResult> GetByTitle(string title)
-			=> await Proxy(_apiUrls.GetBookByTitle + $"?title={title}");
+		public async Task<IActionResult> GetByTitle(string title, int? maxResults, string? langRestrict)
+            => await Proxy(_apiUrls.GetBookByTitle + ConcatUri("title", title, maxResults, langRestrict));
+
+
+		[HttpGet("books/[action]")]
+		public async Task<IActionResult> GetByAuthor(string name, int? maxResults, string? langRestrict)
+			=> await Proxy(_apiUrls.GetBookByAuthor + ConcatUri("authors", name, maxResults, langRestrict));
 	
 
 		// This is the method that executes the calls.
 		private async Task<ContentResult> Proxy(string url)
 			=> Content(await _httpClient.GetStringAsync(url));
+
+
+		private static string ConcatUri(string search, string param, int? maxResults, string? langRestrict)
+		{
+			StringBuilder uri = new StringBuilder($"?{search}={param}");
+
+            if (maxResults != null)
+            {
+                uri.Append("&maxResults=");
+                uri.Append((int)maxResults.Value);
+            }
+            if (langRestrict != null)
+            {
+                uri.Append("&langRestrict=");
+                uri.Append(langRestrict);
+            }
+
+			return uri.ToString();
+        }
 	}
 }
 
