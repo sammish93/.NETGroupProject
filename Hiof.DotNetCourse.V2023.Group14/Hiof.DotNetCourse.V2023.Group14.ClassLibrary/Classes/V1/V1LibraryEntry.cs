@@ -17,7 +17,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         [Column("id")]
         public Guid Id { get; set; }
         [Required(ErrorMessage = "{0} is required")]
-        [Column("user_id")]
+        [Column("user_id", TypeName = "nvarchar(36)")]
         // Choosing to use a User Guid instead of UserName here because UserNames can be changed.
         public Guid UserId { get; set; }
         [Column("isbn_10", TypeName = "nvarchar(10)")]
