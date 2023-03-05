@@ -37,9 +37,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService
                 builder.Services.AddDbContext<LibraryCollectionContext>(options => options.UseSqlServer(dbConnectionStr));
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) 
             {
-                // Connection string for MySQL-database (only for stian)
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-                var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;Password={password}";
+                // Connection string for MySQL-database (only for stian).
+                var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;";
                 builder.Services.AddDbContext<LibraryCollectionContext>(options => options.UseMySql(
                     connectionStr,
                     new MySqlServerVersion(new Version(8, 0, 32)),
