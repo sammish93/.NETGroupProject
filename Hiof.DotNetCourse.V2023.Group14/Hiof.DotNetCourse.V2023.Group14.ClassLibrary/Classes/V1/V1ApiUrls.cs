@@ -19,6 +19,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string GetBookByTitle { get; set; }
         public string GetBookByAuthor { get; set; }
         public string GetBookByCategory { get; set; }
+
+        // Urls for library
+
     }
 
 }
