@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
-    // Class used to get the urls in the appsettings.json file in ProxyService.
+    // Class used to get the urls from the appsettings.json file in ProxyService.
     public class V1ApiUrls
     {
         // Urls for users
@@ -21,7 +21,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string GetBookByCategory { get; set; }
 
         // Urls for library
-
+        public string LibraryEntry { get; set; }
+        public string LibraryGetEntries { get; set; }
+        public string LibraryGetEntry { get; set; }
+        public string GetUserLibrary { get; set; }
+        public string LibraryDeleteEntry { get; set; }
+        public string LibraryDeleteUserLibrary { get; set; }
+        public string LibraryChangeRating { get; set; }
+        public string LibraryChangeDateRead { get; set; }
+        public string LibraryChangeReadingStatus { get; set; }
     }
 
 }
