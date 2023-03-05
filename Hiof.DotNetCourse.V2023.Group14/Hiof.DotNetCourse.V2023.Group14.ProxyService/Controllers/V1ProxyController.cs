@@ -13,40 +13,39 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 	{
 
 		private readonly HttpClient _httpClient;
-		private readonly V1UserAccountApiUrls _apiUrl;
+		private readonly V1ApiUrls _apiUrls;
 
-
-		public V1ProxyController(IHttpClientFactory httpClientFactory, V1UserAccountApiUrls url)
+		public V1ProxyController(IHttpClientFactory httpClientFactory, V1ApiUrls urls)
 		{
 			_httpClient = httpClientFactory.CreateClient();
-			_apiUrl = url;
+			_apiUrls = urls;
 		}
 
 
 		[HttpGet("users/[action]")]
 		public async Task<IActionResult> GetAll()
-			=> await Proxy(_apiUrl.GetUsers);
+			=> await Proxy(_apiUrls.GetUsers);
 
 
 		[HttpGet("users/[action]")]
         public async Task<IActionResult> GetById(Guid id)
-			=> await Proxy(_apiUrl.GetUserById + $"?guid={id}");
+			=> await Proxy(_apiUrls.GetUserById + $"?guid={id}");
 
 
 		[HttpGet("users/[action]")]
         public async Task<IActionResult> GetByName(string name)
-			=> await Proxy(_apiUrl.GetUserByName + $"?userName={name}");
+			=> await Proxy(_apiUrls.GetUserByName + $"?userName={name}");
 		
 
 		[HttpGet("users/[action]")]
         public async Task<IActionResult> GetByEmail(string email)
-			=> await Proxy(_apiUrl.GetUserByEmail + $"?email={email}");
+			=> await Proxy(_apiUrls.GetUserByEmail + $"?email={email}");
 
 
 		[HttpPost("users/[action]")]
 		public async Task<IActionResult> CreateUserAccount(V1User user)
 		{
-			var url = _apiUrl.CreateUserAccount;
+			var url = _apiUrls.CreateUserAccount;
 
             using var content = new StringContent(
 				JsonConvert.SerializeObject(user),
@@ -65,7 +64,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpPut("users/[action]")]
 		public async Task<IActionResult> UpdateAccountById(V1User user)
 		{
-			var url = _apiUrl.UpdateUserAccount;
+			var url = _apiUrls.UpdateUserAccount;
 
 			using var content = new StringContent
 			(
@@ -86,7 +85,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpDelete("users/[action]")]
 		public async Task<IActionResult> DeleteById(Guid id)
 		{
-			var url = _apiUrl.Delete + $"?Id={id}";
+			var url = _apiUrls.Delete + $"?Id={id}";
 
 			var response = await _httpClient.DeleteAsync(url);
 			
@@ -100,7 +99,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpDelete("users/[action]")]
 		public async Task<IActionResult> DeleteByUsername(string username)
 		{
-			var url = _apiUrl.DeleteByUsername + $"?username={username}";
+			var url = _apiUrls.DeleteByUsername + $"?username={username}";
 			
 			var response = await _httpClient.DeleteAsync(url);
 
@@ -109,6 +108,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             else
                 return BadRequest(response.ReasonPhrase);
         }
+
+
+		[HttpGet("books/[action]")]
+		public async Task<IActionResult> GetByIsbn(string isbn)
+			=> await Proxy(_apiUrls.GetBookByIsbn + $"?isbn={isbn}");
 	
 
 		// This is the method that executes the calls.
