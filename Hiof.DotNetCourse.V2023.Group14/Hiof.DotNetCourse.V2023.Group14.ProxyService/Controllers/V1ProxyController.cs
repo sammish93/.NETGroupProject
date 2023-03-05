@@ -46,12 +46,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		public async Task<IActionResult> CreateUserAccount(V1User user)
 		{
 			var url = _apiUrls.CreateUserAccount;
-
-            using var content = new StringContent(
-				JsonConvert.SerializeObject(user),
-				Encoding.UTF8, "application/json"
-			);
-
+			using var content = SerializeToJsonString(user);
             using var response = await _httpClient.PostAsync(url, content);
 
             if (response.IsSuccessStatusCode)
@@ -65,13 +60,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		public async Task<IActionResult> UpdateAccountById(V1User user)
 		{
 			var url = _apiUrls.UpdateUserAccount;
-
-			using var content = new StringContent
-			(
-				JsonConvert.SerializeObject(user),
-				Encoding.UTF8, "application/json"
-			);
-
+			using var content = SerializeToJsonString(user);
 			using var response = await _httpClient.PutAsync(url, content);
 
 			if (response.IsSuccessStatusCode)
@@ -86,7 +75,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		public async Task<IActionResult> DeleteById(Guid id)
 		{
 			var url = _apiUrls.Delete + $"?Id={id}";
-
 			var response = await _httpClient.DeleteAsync(url);
 			
 			if (response.IsSuccessStatusCode)
@@ -100,7 +88,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		public async Task<IActionResult> DeleteByUsername(string username)
 		{
 			var url = _apiUrls.DeleteByUsername + $"?username={username}";
-			
 			var response = await _httpClient.DeleteAsync(url);
 
             if (response.IsSuccessStatusCode)
@@ -130,8 +117,33 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 			=> await Proxy(_apiUrls.GetBookByCategory + ConcatUri("subject", subject, maxResults, langRestrict));
 
 
-		// TODO: Legg til kode for LibraryCollectionService.
+		[HttpPost("libraries/[action]")]
+		public async Task<IActionResult> CreateEntry(V1LibraryEntry entry)
+		{
+			var url = _apiUrls.LibraryEntry;
+			using var content = SerializeToJsonString(entry);
+            using var response = await _httpClient.PostAsync(url, content);
 
+			if (response.IsSuccessStatusCode)
+				return Ok();
+			else
+				return BadRequest(response.RequestMessage);
+        }
+
+
+		[HttpGet("libraries/[action]")]
+		public async Task<IActionResult> GetAllEntries()
+			=> await Proxy(_apiUrls.LibraryGetEntries);
+
+
+		[HttpGet("libraries/[action]")]
+		public async Task<IActionResult> GetEntry()
+			=> await Proxy(_apiUrls.LibraryGetEntry);
+
+
+		[HttpGet("libraries/[action]")]
+		public async Task<IActionResult> GetUserLibrary(Guid userId)
+			=> await Proxy(_apiUrls.GetUserLibrary + $"?userId={userId}");
 	
 
 		// This is the method that executes the calls.
@@ -156,6 +168,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
 			return uri.ToString();
         }
+
+
+		// Used to convert objects to Json strings.
+		private static StringContent SerializeToJsonString<T>(T data)
+			=> new StringContent
+			(
+				JsonConvert.SerializeObject(data),
+				Encoding.UTF8,
+				"application/json"
+			);
+		
 	}
 }
 
