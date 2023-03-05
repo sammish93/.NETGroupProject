@@ -9,6 +9,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string GetUserByName { get; set; }
         public string GetUserByEmail { get; set; }
         public string CreateUserAccount { get; set; }
+        public string UpdateUserAccount { get; set; }
+        public string Delete { get; set; }
     }
 
 }
