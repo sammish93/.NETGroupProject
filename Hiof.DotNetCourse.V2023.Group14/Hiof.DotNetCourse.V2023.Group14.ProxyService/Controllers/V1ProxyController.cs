@@ -144,7 +144,34 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpGet("libraries/[action]")]
 		public async Task<IActionResult> GetUserLibrary(Guid userId)
 			=> await Proxy(_apiUrls.GetUserLibrary + $"?userId={userId}");
-	
+
+
+		[HttpDelete("libraries/[action]")]
+		public async Task<IActionResult> DeleteEntry(Guid entry)
+		{
+			var url = _apiUrls.LibraryDeleteEntry + $"?entryId={entry}";
+			var response = await _httpClient.DeleteAsync(url);
+
+			if (response.IsSuccessStatusCode)
+				return Ok();
+			else
+				return BadRequest(response.ReasonPhrase);
+		}
+
+
+		[HttpDelete("libraries/[action]")]
+		public async Task<IActionResult> DeleteUserLibrary(Guid userId)
+		{
+            var url = _apiUrls.LibraryDeleteUserLibrary + $"?userId={userId}";
+            var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.ReasonPhrase);
+        }
+
+		// TODO: Continue implementing V1LibraryCollectionController.
 
 		// This is the method that executes the calls.
 		private async Task<ContentResult> Proxy(string url)
