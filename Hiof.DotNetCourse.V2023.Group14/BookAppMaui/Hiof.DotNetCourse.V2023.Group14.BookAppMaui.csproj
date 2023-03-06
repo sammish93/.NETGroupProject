@@ -49,6 +49,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="ModelView\**" />
+	  <Compile Remove="ModelView\**" />
+	  <EmbeddedResource Remove="ModelView\**" />
+	  <MauiCss Remove="ModelView\**" />
+	  <MauiXaml Remove="ModelView\**" />
+	  <None Remove="ModelView\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
@@ -60,10 +69,6 @@
 	  <MauiXaml Update="NewPage1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="ModelView\" />
 	</ItemGroup>
 
 </Project>
