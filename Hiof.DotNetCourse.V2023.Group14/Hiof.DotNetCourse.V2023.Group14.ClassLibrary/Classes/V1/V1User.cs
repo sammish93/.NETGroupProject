@@ -17,7 +17,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
     public class V1User : V1IUserValidator
     {
         [Key]
-        [Column("id")]
+        [Column("id", TypeName = "char(36)")]
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]

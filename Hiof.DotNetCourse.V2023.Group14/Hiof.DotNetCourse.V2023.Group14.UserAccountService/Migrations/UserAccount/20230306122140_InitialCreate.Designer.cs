@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAccount
 {
     [DbContext(typeof(UserAccountContext))]
-    [Migration("20230226123713_InitialCreate")]
+    [Migration("20230306122140_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -27,9 +27,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1LoginModel", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("id");
 
                     b.Property<string>("Password")
@@ -57,7 +57,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+                            Id = "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             Password = "70A1AF97C0496AD874DC",
                             Salt = "247432D4ED93DCE32929",
                             Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzZmE4NWY2NC01NzE3LTQ1NjItYjNmYy0yYzk2M2Y2NmFmYTYiLCJuYmYiOjE2NzcyMzUxMDEsImV4cCI6MTY3NzQ5NDMwMSwiaWF0IjoxNjc3MjM1MTAxfQ.LqUQyhrnWwkNtkQUYcatydTdeAqvCaZZ4tEYovAGkJI",
@@ -65,7 +65,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                         },
                         new
                         {
-                            Id = new Guid("54af86bf-346a-4cba-b36f-527748e1cb93"),
+                            Id = "54af86bf-346a-4cba-b36f-527748e1cb93",
                             Password = "A7E220F0781BE0C248A3",
                             Salt = "3E921C45F3A9089BDC7E",
                             Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI1NGFmODZiZi0zNDZhLTRjYmEtYjM2Zi01Mjc3NDhlMWNiOTMiLCJuYmYiOjE2NzcyMzU0OTQsImV4cCI6MTY3NzQ5NDY5NCwiaWF0IjoxNjc3MjM1NDk0fQ._VGOcvMVXmtj741AoUGLYnWsAvG5geuLHX_phvfOuT8",
@@ -73,7 +73,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                         },
                         new
                         {
-                            Id = new Guid("e8cc12ba-4df6-4b06-b96e-9ad00a927a93"),
+                            Id = "e8cc12ba-4df6-4b06-b96e-9ad00a927a93",
                             Password = "B1A8A1223DCA3A102726",
                             Salt = "A91F72A37D0E46037B85",
                             Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJlOGNjMTJiYS00ZGY2LTRiMDYtYjk2ZS05YWQwMGE5MjdhOTMiLCJuYmYiOjE2NzcyMzUyNDcsImV4cCI6MTY3NzQ5NDQ0NywiaWF0IjoxNjc3MjM1MjQ3fQ.NMCEXx8Dhr40krHQrpz4Zwgslj9N_HN3fi_Qrt4oMes",
@@ -83,9 +83,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("id");
 
                     b.Property<string>("City")
@@ -149,7 +149,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+                            Id = "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             City = "Seattle",
                             Country = "USA",
                             Email = "joojoo@gmail.com",
@@ -164,7 +164,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                         },
                         new
                         {
-                            Id = new Guid("e8cc12ba-4df6-4b06-b96e-9ad00a927a93"),
+                            Id = "e8cc12ba-4df6-4b06-b96e-9ad00a927a93",
                             City = "Toronto",
                             Country = "Canada",
                             Email = "b_hyteso@gmail.com",
@@ -179,7 +179,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations.UserAcco
                         },
                         new
                         {
-                            Id = new Guid("54af86bf-346a-4cba-b36f-527748e1cb93"),
+                            Id = "54af86bf-346a-4cba-b36f-527748e1cb93",
                             City = "Oslo",
                             Country = "Norway",
                             Email = "testme@test.no",

@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1

@@ -125,7 +125,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<UserAccountContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
             dbContext.Add(user3);
             dbContext.SaveChanges();
@@ -146,7 +146,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<UserAccountContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
             var controller = new V1UserAccountController(dbContext);
 
@@ -164,7 +164,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<UserAccountContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
             var controller = new V1UserAccountController(dbContext);
 
@@ -182,7 +182,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<UserAccountContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
             var controller = new V1UserAccountController(dbContext);
 
@@ -192,48 +192,41 @@ namespace UserAccount.Tests
     
             
         }
-        /*
-         //This doesn't work but I will try to find out why later
 
          [Fact]
 
          public async Task TestCreateOkResponse()
          {
-             var options = new DbContextOptionsBuilder<UserAccountContext>()
-                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var options = new DbContextOptionsBuilder<UserAccountContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-             var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
-             dbContext.Add(user3);
-             dbContext.SaveChanges();
+            var controller = new V1UserAccountController(dbContext);
 
-             var controller = new V1UserAccountController(dbContext);
+            var userTest = new V1User("o2PalO02kFQSGJioGs0p", "user@example.com", "stringTest1!", "string", "string", "string", "string", "string", 0);
 
-             var result = await controller.Create(user1);
-
-
-             Assert.IsType<OkResult>(result);
-
-             var result2 = await controller.GetUserId(user1.Id);
-
-             var receivedJson = JObject.Parse(result2.ToJson());
-             var id = Convert.ToString(receivedJson["Value"]?["Id"]);
-
-             Assert.IsType<OkObjectResult>(result2);
-             Assert.Equal(user1.Id.ToString(), id);
+            var result = await controller.Create(userTest);
 
 
+            Assert.IsType<OkObjectResult>(result);
+
+            var result2 = await controller.GetUserId(userTest.Id);
+
+            var receivedJson = JObject.Parse(result2.ToJson());
+            var id = Convert.ToString(receivedJson["Value"]?["Id"]);
+
+            Assert.IsType<OkObjectResult>(result2);
+            Assert.Equal(userTest.Id.ToString(), id);
          }
-        */
           
-
         [Fact]
         public async Task TestGetUsersOkResponse()
         {
             var options = new DbContextOptionsBuilder<UserAccountContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
             dbContext.Add(user3);
             dbContext.SaveChanges();
@@ -275,7 +268,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<UserAccountContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
             dbContext.Add(user1);
             dbContext.Add(user3);
@@ -320,7 +313,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<UserAccountContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
             dbContext.Add(user1);
             dbContext.Add(user3);
@@ -390,7 +383,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<UserAccountContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
-            var dbContext = new UserAccountContext(options);
+            using var dbContext = new UserAccountContext(options);
 
             dbContext.Add(user1);
             dbContext.Add(user3);
@@ -543,7 +536,6 @@ namespace UserAccount.Tests
 
         }
         
-        /*
         [Fact]
         public async Task TestDeleteUserByUserNameBadRequestResponse()
         {
@@ -559,14 +551,12 @@ namespace UserAccount.Tests
 
             var result = await controller.DeleteUserByUserName("");
 
-            var badResult = Assert.IsType<BadRequestObjectResult>(result);
+            var badResult = Assert.IsType<NotFoundObjectResult>(result);
 
-            Assert.Equal("Username must be between 5 " +
-                "and 20 characters and only contain alphanumerical characters.", badResult.Value);
+            Assert.Equal("User doesn't exist.", badResult.Value);
 
 
         }
-        */
         
         [Fact]
 
@@ -591,7 +581,7 @@ namespace UserAccount.Tests
            
 
         }
-        /*
+
         [Fact]
         public async Task TestUserIsModifiedOkResponse()
         {
@@ -600,20 +590,33 @@ namespace UserAccount.Tests
 
             using var dbContext = new UserAccountContext(options);
 
-            dbContext.Add(user1);
-            dbContext.SaveChanges();
+            var userTest = new V1User("o2PalO02kFQSGJioGs0p", "user@example.com", "stringTest1!", "string", "string", "string", "string", "string", 0);
 
             var controller = new V1UserAccountController(dbContext);
 
-            var actionResult = await controller.ChangeUserAccountUsingId(user1);
+            var actionResult = await controller.Create(userTest);
 
             Assert.IsType<OkObjectResult>(actionResult);
 
+            var actionResult2 = await controller.GetUserUserName(userTest.UserName);
+
+            var okResult = Assert.IsType<OkObjectResult>(actionResult2);
+
+            V1User thing = new V1User();
+
+            if (okResult?.Value?.GetType() == typeof(V1User))
+            {
+                thing = (V1User)okResult.Value;
+                Assert.Equal(userTest.UserName, thing.UserName);
+
+            }
+
+            String newUserName = "squiggle";
+            thing.UserName = newUserName;
+
+            var actionResult3 = await controller.ChangeUserAccountUsingId(thing);
+
+            Assert.IsType<OkResult>(actionResult3);
         }
-        */
-        
-
-
     }
-
 }

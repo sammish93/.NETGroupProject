@@ -60,8 +60,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
         [HttpGet("getEntries")]
         public async Task<IActionResult> GetAllEntries()
         {
-            var libEntries = from library in _libraryCollectionContext.LibraryEntries 
-                            select library;
+            var libEntries = await (from library in _libraryCollectionContext.LibraryEntries 
+                            select library).ToListAsync();
 
             if (libEntries.IsNullOrEmpty())
             {
@@ -93,9 +93,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
         [HttpGet("getUserLibrary")]
         public async Task<IActionResult> GetUserLibrary(Guid userId)
         {
-            var libraries = from library in _libraryCollectionContext.LibraryEntries
+            var libraries = await (from library in _libraryCollectionContext.LibraryEntries
                             where library.UserId == userId
-                            select library;
+                            select library).ToListAsync();
 
             if (libraries.IsNullOrEmpty())
             {

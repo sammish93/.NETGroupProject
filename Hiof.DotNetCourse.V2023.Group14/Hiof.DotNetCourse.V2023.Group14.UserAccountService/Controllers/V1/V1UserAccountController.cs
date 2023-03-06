@@ -143,18 +143,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         }
 
         [HttpPut("user")]
-        public async Task<ActionResult> ChangeUserAccountUsingId( [FromBody] V1User user)
+        public async Task<ActionResult> ChangeUserAccountUsingId([FromBody] V1User user)
         {
             // In the event of a username or password being changed it's required to update both the 'users' and 'login_verification' tables.
             var existingUserData = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
             var existingVerificationData = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingUserData != null && existingVerificationData != null)
             {
-                if (!V1User.ValidPassword(user.Password))
-                {
-                    return BadRequest("Password must have at least one lower-case letter, " +
-                        "one upper-case letter, one number, and one special character, and be at least 5 characters long.");
-                } else if (!V1User.ValidEmail(user.Email))
+                if (!V1User.ValidEmail(user.Email))
                 {
                     return BadRequest("Email must be of a valid format.");
 
@@ -164,6 +160,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
                 } else if (existingUserData.Password != user.Password || existingUserData.UserName != user.UserName)
                 {
+                    if (!V1User.ValidPassword(user.Password))
+                    {
+                        return BadRequest("Password must have at least one lower-case letter, " +
+                            "one upper-case letter, one number, and one special character, and be at least 5 characters long.");
+                    }
                     // If the user updates their username or password the following code is executed.
                     // This is required because the password generates a unique salt in the 'login_verification' table as well.
                     var (hash, salt) = V1PasswordEncryption.Encrypt(user.Password);

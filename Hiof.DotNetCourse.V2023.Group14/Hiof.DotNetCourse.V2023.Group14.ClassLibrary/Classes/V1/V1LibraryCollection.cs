@@ -13,6 +13,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
     public class V1LibraryCollection
     {
+        [Column(TypeName = "char(36)")]
         public Guid? UserId { get; set; }
         // Total number of books in a user's library.
         public int? Items { get; set; }

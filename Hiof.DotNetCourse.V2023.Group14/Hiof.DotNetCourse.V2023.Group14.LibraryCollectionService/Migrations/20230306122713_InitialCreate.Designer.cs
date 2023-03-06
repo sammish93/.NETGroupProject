@@ -3,6 +3,7 @@ using System;
 using Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
 {
     [DbContext(typeof(LibraryCollectionContext))]
-    [Migration("20230305152246_InitialCreate")]
+    [Migration("20230306122713_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,11 +21,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1LibraryEntry", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
@@ -72,7 +75,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2d87b44e-20da-45a8-abdf-8296f251a680"),
+                            Id = "2d87b44e-20da-45a8-abdf-8296f251a680",
                             DateRead = new DateTime(2023, 2, 24, 12, 55, 19, 113, DateTimeKind.Unspecified),
                             LibraryEntryISBN10 = "1440674132",
                             LibraryEntryISBN13 = "9781440674136",
@@ -84,7 +87,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3bba26a9-3d8e-4f51-9ff4-1ad2d8da112b"),
+                            Id = "3bba26a9-3d8e-4f51-9ff4-1ad2d8da112b",
                             DateRead = new DateTime(2023, 1, 24, 11, 54, 29, 123, DateTimeKind.Unspecified),
                             LibraryEntryISBN10 = "1440674132",
                             LibraryEntryISBN13 = "9781440674136",
@@ -96,7 +99,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b77cc25f-68ed-40ab-9b0e-91ab588557f2"),
+                            Id = "b77cc25f-68ed-40ab-9b0e-91ab588557f2",
                             LibraryEntryISBN10 = "1119797209",
                             LibraryEntryISBN13 = "9781119797203",
                             MainAuthor = "Christian Nagel",
@@ -106,7 +109,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5c7629a7-bca3-481e-bddb-ffc263f7232a"),
+                            Id = "5c7629a7-bca3-481e-bddb-ffc263f7232a",
                             DateRead = new DateTime(2023, 2, 18, 8, 53, 21, 423, DateTimeKind.Unspecified),
                             LibraryEntryISBN10 = "0486415872",
                             LibraryEntryISBN13 = "9780486415871",
@@ -118,7 +121,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f26d0753-c47a-4745-9cd7-b207790617d0"),
+                            Id = "f26d0753-c47a-4745-9cd7-b207790617d0",
                             LibraryEntryISBN10 = "144810369X",
                             LibraryEntryISBN13 = "9781448103690",
                             MainAuthor = "Haruki Murakami",
@@ -128,7 +131,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8cae4a7d-a7e3-4d19-a20d-cb6b07641e95"),
+                            Id = "8cae4a7d-a7e3-4d19-a20d-cb6b07641e95",
                             DateRead = new DateTime(2023, 2, 21, 7, 43, 11, 453, DateTimeKind.Unspecified),
                             LibraryEntryISBN10 = "144810369X",
                             LibraryEntryISBN13 = "9781448103690",

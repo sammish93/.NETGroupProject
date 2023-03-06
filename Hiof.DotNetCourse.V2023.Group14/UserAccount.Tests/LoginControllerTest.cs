@@ -20,7 +20,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<LoginDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase").Options;
 
-            var dbContext = new LoginDbContext(options);
+            using var dbContext = new LoginDbContext(options);
 
             // Legg til eksisterende bruker i databasen.
             var user = new V1LoginModel
@@ -53,7 +53,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<LoginDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase").Options;
 
-            var dbContext = new LoginDbContext(options);
+            using var dbContext = new LoginDbContext(options);
             var user = new V1LoginModel
             {
                 UserName = "stian",
@@ -81,7 +81,7 @@ namespace UserAccount.Tests
             var options = new DbContextOptionsBuilder<LoginDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase").Options;
 
-            var dbContext = new LoginDbContext(options);
+            using var dbContext = new LoginDbContext(options);
             var user = new V1LoginModel
             {
                 UserName = "stian",
