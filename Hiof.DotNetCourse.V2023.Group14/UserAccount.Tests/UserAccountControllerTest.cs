@@ -488,7 +488,7 @@ namespace UserAccount.Tests
 
             var controller = new V1UserAccountController(dbContext);
 
-            var result = await controller.DeleteUser(user3);
+            var result = await controller.DeleteUser(user3.Id);
 
             Assert.IsType<NotFoundObjectResult>(result);
 
@@ -512,7 +512,7 @@ namespace UserAccount.Tests
 
             var controller = new V1UserAccountController(dbContext);
 
-            var delActionResult = await controller.DeleteUser(user1);
+            var delActionResult = await controller.DeleteUser(user1.Id);
             Assert.IsNotType<OkObjectResult>(delActionResult);
 
            
