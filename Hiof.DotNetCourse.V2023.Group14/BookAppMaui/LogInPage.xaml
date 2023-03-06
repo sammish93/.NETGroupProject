@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BookAppMaui.LogInPage"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Shell.FlyoutItemIsVisible="False"
+             Title="LogInPage">
+    <VerticalStackLayout
+        Spacing="25" 
+            Padding="30,0" 
+            VerticalOptions="Center">
+        <Image
+            Source="books_icon.png"
+            BackgroundColor="White"
+            Margin="1"
+            HeightRequest="70" WidthRequest="70"
+            />
+        <StackLayout
+            Grid.Row ="2"
+            >
+            <Border Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="Rectangle "
+                    Background="white"
+                    HeightRequest="50" WidthRequest="200"
+                   
+                    Padding="1"
+                    Margin="5"
+                    HorizontalOptions="Center">
+
+                <Entry Placeholder="Enter User Name"
+                   Text=""
+                   TextColor="Black"
+                   MaxLength="20"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+               
+            />
+            </Border>
+            <Border Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="Rectangle 40,0,0,40"
+                    Background="white"
+                    HeightRequest="50" WidthRequest="200"
+                    Padding="1"
+                    Margin="5"
+                    HorizontalOptions="Center">
+                <Entry Placeholder="Enter Password"
+                   Text=""
+                   TextColor="Black"
+                   MaxLength="20"
+                   IsPassword="True"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+            />
+            </Border>
+            <Button Text="Log In"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+               
+                    BackgroundColor="Red"/>
+
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
+            <Label Text="Don't have account?" TextColor="Gray" />
+            <Label Text="Sign Up here" TextColor="#50b3f2" />
+        </StackLayout>
+
+    </VerticalStackLayout>
+</ContentPage>

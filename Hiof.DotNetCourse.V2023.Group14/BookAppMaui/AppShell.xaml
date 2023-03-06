@@ -6,9 +6,12 @@
     xmlns:local="clr-namespace:BookAppMaui"
     Shell.FlyoutBehavior="Flyout">
 
-    
 
-        
+    <ShellContent
+      Title="Login"
+      ContentTemplate="{DataTemplate local:LogInPage }"
+      Route="login" />
+
     <ShellContent
      Title="Home"
      ContentTemplate="{DataTemplate local:MainPage}"
@@ -19,10 +22,7 @@
       ContentTemplate="{DataTemplate local:NewPage1}"
       Route="NewPage1" />
     
-     <ShellContent
-      Title="New Page2"
-      ContentTemplate="{DataTemplate local:NewPage2}"
-      Route="NewPage2" />
+     
    
     
 </Shell>
