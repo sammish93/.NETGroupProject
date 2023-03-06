@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace BookAppMaui
+namespace BookAppMaui.Platforms.iOS
 {
     public class Program
     {

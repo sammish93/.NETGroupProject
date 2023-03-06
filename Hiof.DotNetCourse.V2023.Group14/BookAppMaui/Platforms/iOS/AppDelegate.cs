@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace BookAppMaui
+namespace BookAppMaui.Platforms.iOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
