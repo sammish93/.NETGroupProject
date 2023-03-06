@@ -4,6 +4,7 @@
              x:Class="BookAppMaui.MainPage"
              Title="First App"
              Background="white"
+             
              >
 
     <Grid RowDefinitions="100, 25*"
@@ -13,55 +14,6 @@
           >
        
 
-        <Image
-            Source="books_icon.png"
-            BackgroundColor="White"
-            Margin="10"
-            />
-        <StackLayout
-            Grid.Row ="2"
-            >
-            <Border Stroke="Black"
-                    StrokeThickness="1"
-                    StrokeShape="Rectangle "
-                    Background="white"
-                   
-                    Padding="1"
-                    Margin="5"
-                    HorizontalOptions="Center">
-                
-            <Entry Placeholder="Enter User Name"
-                   Text=""
-                   TextColor="Black"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-               
-            />
-            </Border>
-            <Border Stroke="Black"
-                    StrokeThickness="1"
-                    StrokeShape="Rectangle 40,0,0,40"
-                    Background="white"
-                    Padding="1"
-                    Margin="5"
-                    HorizontalOptions="Center">
-            <Entry Placeholder="Enter Password"
-                   Text=""
-                   TextColor="Black"
-                   MaxLength="20"
-                   IsPassword="True"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-            />
-            </Border>
-            <Button Text="Log In"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
-               
-                    BackgroundColor="Red"/>
-
-        </StackLayout>
-        
+       
     </Grid>
 </ContentPage>
