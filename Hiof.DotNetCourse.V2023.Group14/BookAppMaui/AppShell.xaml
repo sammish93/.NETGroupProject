@@ -17,12 +17,12 @@
      <ShellContent
       Title="New Page"
       ContentTemplate="{DataTemplate local:NewPage1}"
-      Route="NewPage" />
+      Route="NewPage1" />
     
      <ShellContent
       Title="New Page2"
       ContentTemplate="{DataTemplate local:NewPage2}"
-      Route="NewPage" />
+      Route="NewPage2" />
    
     
 </Shell>
