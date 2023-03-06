@@ -34,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookAppMaui", "BookAppMaui\BookAppMaui.csproj", "{93AD4415-547C-4D97-A4F1-70F4BB81EB71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.BookAppMaui", "BookAppMaui\Hiof.DotNetCourse.V2023.Group14.BookAppMaui.csproj", "{93AD4415-547C-4D97-A4F1-70F4BB81EB71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +103,7 @@ Global
 		{A0BDACD1-7022-4F75-87EB-EA55B08CE605} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 		{C34A6466-9CE6-4C26-AFF3-7FCDD676FE63} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
 		{CCC582B5-0240-4B6E-B94B-0634119F9FFC} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
+		{93AD4415-547C-4D97-A4F1-70F4BB81EB71} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96890292-801C-4299-8C07-E008A6411CBF}
