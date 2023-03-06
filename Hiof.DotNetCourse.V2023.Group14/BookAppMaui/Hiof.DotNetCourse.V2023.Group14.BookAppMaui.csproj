@@ -62,4 +62,8 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ModelView\" />
+	</ItemGroup>
+
 </Project>
