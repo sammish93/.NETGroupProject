@@ -2,9 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookAppMaui.LogInPage"
-             Shell.NavBarIsVisible="False"
-             Shell.TabBarIsVisible="False"
-             Shell.FlyoutItemIsVisible="False"
+             
+             Shell.FlyoutBehavior="Disabled"
              Title="LogInPage">
     <VerticalStackLayout
         Spacing="25" 
@@ -35,6 +34,7 @@
                    MaxLength="20"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
+                   
                
             />
             </Border>
@@ -46,6 +46,7 @@
                     Padding="1"
                     Margin="5"
                     HorizontalOptions="Center">
+                
                 <Entry Placeholder="Enter Password"
                    Text=""
                    TextColor="Black"
@@ -58,8 +59,9 @@
             <Button Text="Log In"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-               
-                    BackgroundColor="Red"/>
+                    BackgroundColor="White"
+                    
+                    />
 
         </StackLayout>
         <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
