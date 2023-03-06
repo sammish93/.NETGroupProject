@@ -197,10 +197,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         [HttpDelete("deleteUser")]
 
-        public async Task<ActionResult> DeleteUser(V1User user)
+        public async Task<ActionResult> DeleteUser(Guid id)
         {
-            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-            var existingLoginModel = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == user.Id);
+            var existingUser = await _userAccountContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var existingLoginModel = await _userAccountContext.LoginModel.FirstOrDefaultAsync(u => u.Id == id);
 
             if (existingUser == null || existingLoginModel == null)
             {

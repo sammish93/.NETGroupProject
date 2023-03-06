@@ -3,7 +3,6 @@ using System;
 using Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -18,15 +17,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1LibraryEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("id");
 
                     b.Property<DateTime?>("DateRead")
@@ -34,10 +31,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                         .HasColumnName("date_read");
 
                     b.Property<string>("LibraryEntryISBN10")
+                        .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)")
                         .HasColumnName("isbn_10");
 
                     b.Property<string>("LibraryEntryISBN13")
+                        .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)")
                         .HasColumnName("isbn_13");
 
@@ -58,8 +57,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("title");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(36)")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -77,7 +77,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                             Rating = 8,
                             ReadingStatus = "Completed",
                             Title = "The Moon Is Down",
-                            UserId = new Guid("54af86bf-346a-4cba-b36f-527748e1cb93")
+                            UserId = "54af86bf-346a-4cba-b36f-527748e1cb93"
                         },
                         new
                         {
@@ -89,7 +89,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                             Rating = 7,
                             ReadingStatus = "Completed",
                             Title = "The Moon Is Down",
-                            UserId = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                            UserId = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
                         },
                         new
                         {
@@ -99,7 +99,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                             MainAuthor = "Christian Nagel",
                             ReadingStatus = "ToRead",
                             Title = "Professional C# and .NET",
-                            UserId = new Guid("54af86bf-346a-4cba-b36f-527748e1cb93")
+                            UserId = "54af86bf-346a-4cba-b36f-527748e1cb93"
                         },
                         new
                         {
@@ -111,7 +111,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                             Rating = 9,
                             ReadingStatus = "Completed",
                             Title = "Crime and Punishment",
-                            UserId = new Guid("54af86bf-346a-4cba-b36f-527748e1cb93")
+                            UserId = "54af86bf-346a-4cba-b36f-527748e1cb93"
                         },
                         new
                         {
@@ -121,7 +121,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                             MainAuthor = "Haruki Murakami",
                             ReadingStatus = "Reading",
                             Title = "Kafka on the Shore",
-                            UserId = new Guid("e8cc12ba-4df6-4b06-b96e-9ad00a927a93")
+                            UserId = "e8cc12ba-4df6-4b06-b96e-9ad00a927a93"
                         },
                         new
                         {
@@ -133,7 +133,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Migrations
                             Rating = 10,
                             ReadingStatus = "Completed",
                             Title = "Kafka on the Shore",
-                            UserId = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                            UserId = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
                         });
                 });
 #pragma warning restore 612, 618
