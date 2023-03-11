@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace BookAppMaui.Platforms.MacCatalyst
+namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.Platforms.MacCatalyst
 {
     public class Program
     {
