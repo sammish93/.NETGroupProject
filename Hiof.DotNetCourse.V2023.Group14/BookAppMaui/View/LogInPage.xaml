@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookAppMaui.LogInPage"
-             
+             xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
+             x:DataType="viewmodel:LoginViewModel"
              Shell.FlyoutBehavior="Flyout"
              Title="LogInPage">
     <VerticalStackLayout
@@ -29,7 +30,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter User Name"
-                   Text=""
+                   Text="{Binding Username}"
                    TextColor="Black"
                    MaxLength="20"
                    VerticalOptions="Center"
@@ -48,7 +49,7 @@
                     HorizontalOptions="Center">
                 
                 <Entry Placeholder="Enter Password"
-                   Text=""
+                   Text="{Binding Password}"
                    TextColor="Black"
                    MaxLength="20"
                    IsPassword="True"
