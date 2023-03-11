@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookAppMaui.LogInPage"
              
-             Shell.FlyoutBehavior="Disabled"
+             Shell.FlyoutBehavior="Flyout"
              Title="LogInPage">
     <VerticalStackLayout
         Spacing="25" 
