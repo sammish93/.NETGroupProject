@@ -16,7 +16,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
         [ObservableProperty]
-        
+        [NotifyPropertyChangedFor(nameof(IsNotBusy))]
         bool isBusy;
         [ObservableProperty]
         string title;
