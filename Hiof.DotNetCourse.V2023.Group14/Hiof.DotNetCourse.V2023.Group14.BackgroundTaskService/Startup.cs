@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Hangfire.SqlServer;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
+using System.Configuration;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {

@@ -3,6 +3,10 @@ using System.Net.Http;
 using Hangfire;
 using System.Xml.Linq;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
@@ -15,9 +19,45 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
             startup.ConfigureServices(builder.Services);
 
             // Add services
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            var dbHost = "localhost";
+            var dbName = "user_accounts";
+            var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
+                builder.Services.AddDbContext<DbOrmTestClassContext>(options => options.UseSqlServer(dbConnectionStr));
+                builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                
+                var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;";
+                builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
+                    connectionStr,
+                    new MySqlServerVersion(new Version(8, 0, 32)),
+                    mysqlOptions =>
+                    {
+                        mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
+                    }
+                ));
+                builder.Services.AddDbContext<UserAccountContext>(options => options.UseMySql(
+                    connectionStr,
+                    new MySqlServerVersion(new Version(8, 0, 32)),
+                    mysqlOptions =>
+                    {
+                        mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
+                    }
+                ));
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // Development machines using Linux can do something here.
+            }
+
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
