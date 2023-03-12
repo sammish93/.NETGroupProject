@@ -46,18 +46,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         }
 
         [HttpPost]
-        [Route("InactiveUserJob/[action]")]
+        [Route("InactiveUser/[action]")]
         public IActionResult Start()
         {
             // This will check the database for inactive users every day.
             RecurringJob.AddOrUpdate(() => CheckInactivity(), Cron.Daily());
 
-            var message = "Reccuring job to check for inactive users daily is activated";
+            var message = "Recurring job to check for inactive users daily is activated";
             return Ok(message);
         }
 
         [HttpPost]
-        [Route("InactiveUserJob/[action]")]
+        [Route("InactiveUser/[action]")]
         public IActionResult Stop()
         {
             RecurringJob.RemoveIfExists("BackgroundJobController.CheckInactivity");
