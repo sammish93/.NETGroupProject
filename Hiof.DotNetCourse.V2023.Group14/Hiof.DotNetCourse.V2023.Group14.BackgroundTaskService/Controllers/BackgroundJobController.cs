@@ -35,12 +35,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult CheckInactiveUsers()
+        public IActionResult StartInactiveUsersJob()
         {
             RecurringJob.AddOrUpdate(() => CheckInactivity(), Cron.Daily());
 
             var message = "Reccuring job to check for inactive users daily is activated";
             return Ok(message);
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult StopInactiveUserJob()
+        {
+            RecurringJob.RemoveIfExists("need to get the job id");
+            return Ok("Job successfully stopped.");
         }
 
        
