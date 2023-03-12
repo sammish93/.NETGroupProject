@@ -58,7 +58,7 @@ namespace MyWebApplication
             GlobalConfiguration.Configuration
                 .UseSqlServerStorage("<name or connection string>");
 
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard(); 
             app.UseHangfireServer();
         }
     }

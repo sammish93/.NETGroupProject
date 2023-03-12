@@ -37,6 +37,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         [Route("InactiveUserJob/[action]")]
         public IActionResult Start()
         {
+            // This will check the database for inactive users every day.
             RecurringJob.AddOrUpdate(() => CheckInactivity(), Cron.Daily());
 
             var message = "Reccuring job to check for inactive users daily is activated";
@@ -48,7 +49,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         public IActionResult Stop()
         {
             RecurringJob.RemoveIfExists("BackgroundJobController.CheckInactivity");
-            return Ok("Job successfully stopped.");
+            return Ok("InactiveUser-Job successfully stopped.");
         }
 
        
@@ -57,7 +58,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         [HttpGet]
         public void CheckInactivity()
         {
-            var inactiveTime = DateTime.Now.AddDays(-1);
+            var inactiveTime = DateTime.Now.AddDays(-10);
             var inactiveUsers = _dbContext.Users.Where(u => u.LastActive < inactiveTime).ToList();
             CreateMailToInactiveUsers(inactiveUsers);
         }
@@ -72,10 +73,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
                 message.Append($"\nUser {user.UserName} has been inactive for 10 days.");
                 message.Append("\nPlease log in to the service soon.");
 
-                Console.WriteLine($"Sending mail to: {user.Email}.");
-                Console.WriteLine($"Content:\n{message}");
+                var result = $"\nMail sent to: {user.Email}.";
+                var content = $"\nContent: {message}";
+                WriteResultToFile(result, content);
             }
 
+        }
+
+        private static void WriteResultToFile(string result, string content)
+        {
+            using StreamWriter file = new("TextFile/log.txt", append: true);
+            file.Write(result + content);
         }
 
         public static void SendWelcomeMail(string mail)
