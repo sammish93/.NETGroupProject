@@ -46,8 +46,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-                var connection = "server=localhost;database=background_task;uid=root;pwd=" + password + ";" + "Allow User Variables=true";
+                var connection = "server=localhost;database=background_task;uid=root;Allow User Variables=true";
 
                 services.AddHangfire(config => config
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)

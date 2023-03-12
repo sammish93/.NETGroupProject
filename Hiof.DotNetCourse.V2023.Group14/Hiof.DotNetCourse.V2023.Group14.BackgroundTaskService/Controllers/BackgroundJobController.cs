@@ -13,17 +13,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult SendWelcomeMessage(string mail)
+        public IActionResult WelcomeMessage(string mail)
         {
 
             var jobId = BackgroundJob.Enqueue(() => SendMail(mail));
+            var message = $"Job ID: {jobId} has been completed. The mail has been sent to {mail}";
 
-            return Ok($"Great! The job {jobId} has been completed. The mail has been sent to the user.");
+            return Ok(message);
         }
 
-        public void SendMail(string mail)
+        public static void SendMail(string mail)
         {
-            Console.WriteLine($"This is a test - Hello {mail}");
+            Console.WriteLine($"Welcome {mail} to the Book Application!");
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Net.Http;
 using Hangfire;
 using System.Xml.Linq;
+using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
