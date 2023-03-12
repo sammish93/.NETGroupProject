@@ -11,11 +11,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
     [Route("api/[controller]")]
     public class BackgroundJobController : ControllerBase
     {
+        private readonly InactiveUsers _inactiveUsers;
         private readonly UserAccountContext _dbContext;
 
-        public BackgroundJobController(UserAccountContext context)
+        public BackgroundJobController(UserAccountContext context, InactiveUsers users)
         {
             _dbContext = context;
+            _inactiveUsers = users;
+         
         }
 
 
@@ -34,10 +37,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         [Route("[action]")]
         public IActionResult CheckInactiveUsers()
         {
-            var inactiveUserJob = new InactiveUsers();
-            RecurringJob.AddOrUpdate<InactiveUsers>(u => u.CheckInactiveUsers(_dbContext), Cron.Daily());
+            RecurringJob.AddOrUpdate(() => _inactiveUsers.CheckInactiveUsers(_dbContext), Cron.Daily());
 
-            var message = "Reccuring job to check for inactive users is activated";
+            var message = "Reccuring job to check for inactive users daily is activated";
             return Ok(message);
         }
 

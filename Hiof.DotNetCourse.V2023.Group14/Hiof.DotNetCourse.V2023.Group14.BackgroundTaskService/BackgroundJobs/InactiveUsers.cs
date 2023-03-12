@@ -13,12 +13,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 		{
 			var inactiveTime = DateTime.Now.AddDays(-10);
 
-            using (var context = dbContext)
-			{
-				var inactiveUsers = await dbContext.Users.Where(u => u.LastActive < inactiveTime).ToListAsync();
+			var inactiveUsers = await dbContext.Users.Where(u => u.LastActive < inactiveTime).ToListAsync();
 
-				sendMailToInactiveUsers(inactiveUsers);
-            }
+			sendMailToInactiveUsers(inactiveUsers);
+            
 		}
 
 		private static void sendMailToInactiveUsers(List<V1User> inactiveUsers)
