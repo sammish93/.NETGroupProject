@@ -23,8 +23,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
 
         [HttpPost]
-        [Route("[action]")]
-        public IActionResult WelcomeMessage(string mail)
+        [Route("WelcomeMessage/[action]")]
+        public IActionResult run(string mail)
         {
 
             var jobId = BackgroundJob.Enqueue(() => SendWelcomeMail(mail));
@@ -34,8 +34,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         }
 
         [HttpPost]
-        [Route("[action]")]
-        public IActionResult StartInactiveUsersJob()
+        [Route("InactiveUserJob/[action]")]
+        public IActionResult Start()
         {
             RecurringJob.AddOrUpdate(() => CheckInactivity(), Cron.Daily());
 
@@ -44,10 +44,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         }
 
         [HttpPost]
-        [Route("[action]")]
-        public IActionResult StopInactiveUserJob()
+        [Route("InactiveUserJob/[action]")]
+        public IActionResult Stop()
         {
-            RecurringJob.RemoveIfExists("need to get the job id");
+            RecurringJob.RemoveIfExists("BackgroundJobController.CheckInactivity");
             return Ok("Job successfully stopped.");
         }
 
@@ -57,7 +57,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         [HttpGet]
         public void CheckInactivity()
         {
-            var inactiveTime = DateTime.Now.AddDays(-10);
+            var inactiveTime = DateTime.Now.AddDays(-1);
             var inactiveUsers = _dbContext.Users.Where(u => u.LastActive < inactiveTime).ToList();
             CreateMailToInactiveUsers(inactiveUsers);
         }
