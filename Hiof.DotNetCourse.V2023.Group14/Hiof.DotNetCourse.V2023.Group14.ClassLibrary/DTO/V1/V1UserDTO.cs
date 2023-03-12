@@ -9,7 +9,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.DTO.V1
 
 	public class V1UserDTO
 	{
-		public string Username { get; set; }
+        public Guid Id { get; set; }
+        public string Username { get; set; }
 		public string Email { get; set; }
         public string Country { get; set; }
         public string City { get; set; }

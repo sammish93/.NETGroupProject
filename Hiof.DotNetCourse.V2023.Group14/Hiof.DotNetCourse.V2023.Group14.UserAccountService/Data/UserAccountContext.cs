@@ -17,8 +17,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
 
         public DbSet<V1LoginModel> LoginModel { get; set; }
 
-        public DbSet<V1UserDTO> UserDTO { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

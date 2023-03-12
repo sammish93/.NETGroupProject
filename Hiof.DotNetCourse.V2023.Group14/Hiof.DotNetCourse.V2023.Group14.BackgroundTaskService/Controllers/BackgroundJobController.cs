@@ -34,6 +34,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             return Ok(message);
         }
 
+        // This method is causing circular references and needs to be fixed.
         [HttpPost]
         [Route("UpdateCache/[action]")]
         public IActionResult StartJob()
@@ -42,7 +43,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             RecurringJob.AddOrUpdate(() => UpdateCacheJob.Update(_dbContext), "*/5 * * * *");
 
             return Ok("Cache updating job is scheduled!");
-
         }
 
         [HttpPost]

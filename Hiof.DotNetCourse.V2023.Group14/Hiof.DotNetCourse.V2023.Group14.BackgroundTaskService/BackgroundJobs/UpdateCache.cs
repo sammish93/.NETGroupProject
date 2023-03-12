@@ -14,7 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
         {
             
             // Get a list of all the users from the database.
-            List<V1UserDTO> users = dbContext.UserDTO.ToList();
+            var users = dbContext.Users.ToList();
 
             // Add the data to the cache.
             _cache.Set("UserDtoData", users);
