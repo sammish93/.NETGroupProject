@@ -2,25 +2,26 @@
 using System.Text;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
 	public class InactiveUsers
 	{
 		// Checks if a user has been inactive for 10 days.
-		public void CheckInactiveUsers(UserAccountContext dbContext)
+		public async Task CheckInactiveUsers(UserAccountContext dbContext)
 		{
 			var inactiveTime = DateTime.Now.AddDays(-10);
 
             using (var context = dbContext)
 			{
-				var inactiveUsers = dbContext.Users.Where(u => u.LastActive < inactiveTime);
+				var inactiveUsers = await dbContext.Users.Where(u => u.LastActive < inactiveTime).ToListAsync();
 
 				sendMailToInactiveUsers(inactiveUsers);
             }
 		}
 
-		public void sendMailToInactiveUsers(IQueryable<V1User> inactiveUsers)
+		private static void sendMailToInactiveUsers(List<V1User> inactiveUsers)
 		{
 			foreach (var user in inactiveUsers)
 			{
@@ -33,7 +34,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 
 		}
 
-		public void sendMail(string email, string content)
+		private static void sendMail(string email, string content)
 		{
 			Console.WriteLine($"Sending mail to: {email}.");
             Console.WriteLine($"Content:\n{content}");
