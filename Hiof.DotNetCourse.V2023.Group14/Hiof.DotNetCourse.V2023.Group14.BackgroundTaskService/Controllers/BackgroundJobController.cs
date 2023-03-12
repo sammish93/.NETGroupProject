@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.Json.Serialization;
 using Hangfire;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
@@ -33,9 +34,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             return Ok(message);
         }
 
-        [HttpGet]
-        [Route("UpdateCacheJob/[action]")]
-        public IActionResult Update()
+        [HttpPost]
+        [Route("UpdateCache/[action]")]
+        public IActionResult StartJob()
         {
             // This will make the job run every 5 minute.
             RecurringJob.AddOrUpdate(() => UpdateCacheJob.Update(_dbContext), "*/5 * * * *");

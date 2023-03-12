@@ -1,4 +1,5 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.DTO.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Migrations;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
         public DbSet<V1User> Users { get; set; }
 
         public DbSet<V1LoginModel> LoginModel { get; set; }
+
+        public DbSet<V1UserDTO> UserDTO { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -92,8 +95,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data
                     Password = "B1A8A1223DCA3A102726",
                     Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJlOGNjMTJiYS00ZGY2LTRiMDYtYjk2ZS05YWQwMGE5MjdhOTMiLCJuYmYiOjE2NzcyMzUyNDcsImV4cCI6MTY3NzQ5NDQ0NywiaWF0IjoxNjc3MjM1MjQ3fQ.NMCEXx8Dhr40krHQrpz4Zwgslj9N_HN3fi_Qrt4oMes",
                     Salt = "A91F72A37D0E46037B85"
-                }
-            );
+                });
         }
     }
 }
