@@ -6,20 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
-	public class InactiveUsers
+	public class InactiveUsersMailSender
 	{
-		// Checks if a user has been inactive for 10 days.
-		public async Task CheckInactiveUsers(UserAccountContext dbContext)
-		{
-			var inactiveTime = DateTime.Now.AddDays(-10);
 
-			var inactiveUsers = await dbContext.Users.Where(u => u.LastActive < inactiveTime).ToListAsync();
-
-			sendMailToInactiveUsers(inactiveUsers);
-            
-		}
-
-		private static void sendMailToInactiveUsers(List<V1User> inactiveUsers)
+		public void SendMailToInactiveUsers(List<V1User> inactiveUsers)
 		{
 			foreach (var user in inactiveUsers)
 			{
