@@ -51,7 +51,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             RecurringJob.RemoveIfExists("BackgroundJobController.CheckInactivity");
             return Ok("InactiveUser-Job successfully stopped.");
         }
-
        
 
         [ApiExplorerSettings(IgnoreApi = true)]
