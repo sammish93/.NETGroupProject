@@ -24,13 +24,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
         [HttpPost]
         [Route("WelcomeMessage/[action]")]
-        public IActionResult run(string mail)
+        public IActionResult Run(string mail)
         {
 
             var jobId = BackgroundJob.Enqueue(() => SendWelcomeMail(mail));
             var message = $"Job ID: {jobId} has been completed. The mail has been sent to {mail}";
 
             return Ok(message);
+        }
+
+        [HttpGet]
+        [Route("UpdateCacheJob/[action]")]
+        public IActionResult Update()
+        {
+            // This will make the job run every 5 minute.
+            RecurringJob.AddOrUpdate(() => UpdateCacheJob.Update(_dbContext), "*/5 * * * *");
+
+            return Ok("Cache updating job is scheduled!");
+
         }
 
         [HttpPost]
