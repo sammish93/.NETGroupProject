@@ -14,33 +14,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+            builder.Configuration.AddJsonFile("appsettings.json");
 
-
-            // Connection string to Azure db (cloud). The free pricing plan is too restrictive, so it's best for each of us to use a local db and seed it.
-            var dbHostAzure = "Server = tcp:dotnetgroupproject.database.windows.net,1433"; 
-            var dbNameAzure = "DotNetGroupProjectSQLDB";
-            var dbPwdAzure = "Hodgeheg14";
-            var dbConnectionStrAzure = $"{dbHostAzure};Initial Catalog={dbNameAzure};Persist Security Info=False;User ID=hedgehogfans;Password={dbPwdAzure};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
-            // Encrypt=False is a quick fix for a reintroduced bug in SQL Server 2022 - see https://stackoverflow.com/a/70850834 for more information.
-            // IMPORTANT: We should separate each microservice in its own database, in this case it's called 'UserAccounts'.
-            // The specified table is given using an Entity Framework Core annotation in the actual class (see DbOrmTestClass.cs).
-            // One server can hold many databases, and one database can hold many tables.
-            var dbHost = "localhost";
-            var dbName = "library_collections";
-            var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
 
             // Development purposes only! Those with Windows can use Microsoft SQL Server and those with mac can use MySQL.
-
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                builder.Services.AddDbContext<LibraryCollectionContext>(options => options.UseSqlServer(dbConnectionStr));
+                var connectionString = builder.Configuration
+                    .GetConnectionString("SqlServerConnectionString");
+
+                builder.Services.AddDbContext<LibraryCollectionContext>(options => options.UseSqlServer(connectionString));
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) 
             {
                 // Connection string for MySQL-database (only for stian).
-                var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;";
+                var connectionString = builder.Configuration
+                    .GetConnectionString("MySqlConnectionString");
+
                 builder.Services.AddDbContext<LibraryCollectionContext>(options => options.UseMySql(
-                    connectionStr,
+                    connectionString,
                     new MySqlServerVersion(new Version(8, 0, 32)),
                     mysqlOptions =>
                     {

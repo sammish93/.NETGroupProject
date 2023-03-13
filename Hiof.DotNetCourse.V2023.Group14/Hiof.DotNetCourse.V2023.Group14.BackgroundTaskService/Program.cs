@@ -15,11 +15,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Configuration.AddJsonFile("appsettings.json");
             var startup = new Startup(builder.Configuration);
             startup.ConfigureServices(builder.Services);
 
             // Add services
             builder.Services.AddControllers();
+
 
             var dbHost = "localhost";
             var dbName = "user_accounts";
