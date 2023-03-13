@@ -1,0 +1,42 @@
+﻿
+Mail sent to: joojoo@gmail.com.
+Content:
+
+User JinkxMonsoon has been inactive for 10 days.
+Please log in to the service soon.Mail sent to: testme@test.no.
+Content:
+
+User testaccount has been inactive for 10 days.
+Please log in to the service soon.Mail sent to: b_hyteso@gmail.com.
+Content:
+
+User QueenOfTheNorth has been inactive for 10 days.
+Please log in to the service soon.Mail sent to: joojoo@gmail.com.
+Content:
+
+User JinkxMonsoon has been inactive for 10 days.
+Please log in to the service soon.Mail sent to: testme@test.no.
+Content:
+
+User testaccount has been inactive for 10 days.
+Please log in to the service soon.Mail sent to: b_hyteso@gmail.com.
+Content:
+
+User QueenOfTheNorth has been inactive for 10 days.
+Please log in to the service soon.
+Mail sent to: testme@test.no.
+Content: 
+User testaccount has been inactive for 10 days.
+Please log in to the service soon.
+Mail sent to: b_hyteso@gmail.com.
+Content: 
+User QueenOfTheNorth has been inactive for 10 days.
+Please log in to the service soon.
+Mail sent to: testme@test.no.
+Content: 
+User testaccount has been inactive for 10 days.
+Please log in to the service soon.
+Mail sent to: b_hyteso@gmail.com.
+Content: 
+User QueenOfTheNorth has been inactive for 10 days.
+Please log in to the service soon.

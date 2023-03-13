@@ -9,17 +9,20 @@ using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Hangfire.SqlServer;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
+using System.Configuration;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
     public class Startup
     {
-        public IConfiguration configRoot
-        {
-            get;
-        }
+        public IConfiguration configRoot { get; }
+        
+        public string connectionString { get; set; }
+
         public Startup(IConfiguration configuration)
         {
+
             configRoot = configuration;
         }
 
@@ -28,13 +31,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var connection = "server=localhost;database=background_task;Integrated Security=True";
+                var connectionString = configRoot
+                    .GetConnectionString("SqlServerConnectionString");
 
                 services.AddHangfire(config => config
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(connection, new SqlServerStorageOptions
+                    .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                         {
                             QueuePollInterval = TimeSpan.FromSeconds(10),
                             JobExpirationCheckInterval = TimeSpan.FromHours(1),
@@ -46,15 +50,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-                var connection = "server=localhost;database=background_task;uid=root;pwd=" + password + ";" + "Allow User Variables=true";
+                var connectionString = configRoot
+                    .GetConnectionString("MySqlConnectionString");
 
                 services.AddHangfire(config => config
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
                     .UseStorage(
-                        new MySqlStorage(connection, new MySqlStorageOptions
+                        new MySqlStorage(connectionString, new MySqlStorageOptions
                         {
                             QueuePollInterval = TimeSpan.FromSeconds(10),
                             JobExpirationCheckInterval = TimeSpan.FromHours(1),

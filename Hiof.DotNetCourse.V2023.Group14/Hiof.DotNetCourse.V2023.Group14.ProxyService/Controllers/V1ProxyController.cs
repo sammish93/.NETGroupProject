@@ -35,9 +35,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpGet("users/[action]")]
         public async Task<IActionResult> GetByName(string name)
 			=> await Proxy(_apiUrls.GetUserByName + $"?userName={name}");
-		
 
-		[HttpGet("users/[action]")]
+
+        [HttpGet("users/[action]")]
         public async Task<IActionResult> GetByEmail(string email)
 			=> await Proxy(_apiUrls.GetUserByEmail + $"?email={email}");
 

@@ -30,7 +30,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
                 // Checks to see if there exists at least one ISBN number, and it is of adequate length.
                 if (libraryEntry.LibraryEntryISBN13.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN10.IsNullOrEmpty())
                 {
-                    return BadRequest("The book you are trying to add does not have a valid ISBN");
+                    return BadRequest("The book you are trying to add does not have a valid ISBN.");
                 }
 
                 if (!libraryEntry.LibraryEntryISBN10.IsNullOrEmpty() && libraryEntry.LibraryEntryISBN10?.Length != 10)
@@ -81,7 +81,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
 
             if (entry == null)
             {
-                return NotFound("No libraries exist.");
+                return NotFound("No entry exists.");
             }
             else
             {
