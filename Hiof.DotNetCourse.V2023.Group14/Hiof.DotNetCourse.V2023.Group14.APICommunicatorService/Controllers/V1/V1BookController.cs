@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using System.ComponentModel.DataAnnotations;
+using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
 {
@@ -13,10 +15,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
     {
         private readonly V1BooksDto _books = new();
         private readonly ILogger<V1BookController> _logger;
+        // Accesses settings from appsettings.json. Example:
+        // string exampleString = _settings.Value.DefaultSettings;
+        private readonly IOptions<ApiCommunicatorSettings> _settings;
 
-        public V1BookController(ILogger<V1BookController> logger)
+        public V1BookController(ILogger<V1BookController> logger, IOptions<ApiCommunicatorSettings> settings)
         {
             _logger = logger;
+            _settings = settings;
         }
         
         [HttpGet("getBookIsbn")]
@@ -39,7 +45,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         public async Task<IActionResult> GetByTitle(string title, int? maxResults, string? langRestrict)
         {
             var response = await CallApi("intitle", title, maxResults, langRestrict);
-
+            
             if (maxResults > 40 || maxResults < 1)
             {
                 return BadRequest("The maximum amount of results must be larger than 0, and equal to or fewer than 40.");

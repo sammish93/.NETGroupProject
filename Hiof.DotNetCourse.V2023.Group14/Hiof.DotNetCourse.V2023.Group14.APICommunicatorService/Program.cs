@@ -1,3 +1,5 @@
+using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Configuration;
+
 namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService
 {
     public class Program
@@ -6,8 +8,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.Configure<ApiCommunicatorSettings>(builder.Configuration.GetSection("ApiCommunicator"));
 
+            // Add services to the container.
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
