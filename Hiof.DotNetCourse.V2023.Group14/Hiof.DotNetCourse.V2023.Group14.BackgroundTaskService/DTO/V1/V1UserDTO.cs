@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.DTO.V1
 {
@@ -9,13 +11,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.DTO.V1
 
 	public class V1UserDTO
 	{
-        public Guid Id { get; set; }
-        public string Username { get; set; }
+		public Guid Id { get; set; }
+        public string FirstName { get; set; }
+		public string LastName { get; set; }
 		public string Email { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
-        public DateTime RegistrationDate { get; set; }
-        public DateTime LastActive { get; set; }
     }
 }
 

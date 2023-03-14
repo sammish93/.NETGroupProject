@@ -20,11 +20,13 @@
     <None Remove="Controllers\" />
     <None Remove="BackgroundJobs\" />
     <None Remove="TextFile\" />
+    <None Remove="DTO\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="BackgroundJobs\" />
     <Folder Include="TextFile\" />
+    <Folder Include="DTO\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj">

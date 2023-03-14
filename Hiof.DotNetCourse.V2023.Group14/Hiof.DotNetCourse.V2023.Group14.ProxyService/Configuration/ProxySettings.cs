@@ -1,9 +1,8 @@
 ﻿using System;
-namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
+namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
 {
-    // Class used to get the urls from the appsettings.json file in ProxyService.
-    public class V1ApiUrls
-    {
+	public class ProxySettings
+	{
         // Urls for users
         public string GetUsers { get; set; }
         public string GetUserById { get; set; }
@@ -31,6 +30,5 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string LibraryChangeDateRead { get; set; }
         public string LibraryChangeReadingStatus { get; set; }
     }
-
 }
 

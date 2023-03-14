@@ -15,9 +15,11 @@
 
   <ItemGroup>
     <None Remove="Controllers\" />
+    <None Remove="Configuration\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Configuration\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj">
