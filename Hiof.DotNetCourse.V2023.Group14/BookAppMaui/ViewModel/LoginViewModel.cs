@@ -74,7 +74,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 IsLoggingIn = false;
             }
         }
-
         
     }
 }
