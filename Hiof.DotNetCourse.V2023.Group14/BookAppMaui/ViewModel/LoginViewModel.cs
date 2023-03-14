@@ -58,11 +58,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     await Shell.Current.GoToAsync(nameof(MainPage));
-                    Preferences.Set("UserName", Username);
-                    Preferences.Set($"{nameof(MainPage)}", Username);
-                    Preferences.Set("Password", Password);
-                    Preferences.Set($"{Username}", Password);
-                    
+                   
                 }
                 else
                 {   //will fix these later

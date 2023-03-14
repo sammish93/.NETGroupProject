@@ -5,7 +5,8 @@
              xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
              x:DataType="viewmodel:LoginViewModel"
              Shell.FlyoutBehavior="Flyout"
-             Title="LogInPage">
+             Title="LogInPage"
+             BackgroundColor="White">
     <VerticalStackLayout
         Spacing="25" 
             Padding="30,0" 
@@ -29,7 +30,7 @@
                     Margin="5"
                     HorizontalOptions="Center">
 
-                <Entry Placeholder="Enter User Name"
+                <Entry Placeholder="JinkxMonsoon"
                    Text="{Binding Username}"
                    TextColor="Black"
                    MaxLength="20"
@@ -47,7 +48,7 @@
                     Margin="5"
                     HorizontalOptions="Center">
 
-                <Entry Placeholder="Enter Password"
+                <Entry Placeholder="Itismonsoonseason1!"
                    Text="{Binding Password}"
                    TextColor="Black"
                    MaxLength="20"
@@ -63,6 +64,7 @@
                     BackgroundColor="White"
                     
                     />
+            
 
         </StackLayout>
         <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
