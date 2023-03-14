@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using System.Text;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -172,7 +173,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         }
 
 		// TODO: Continue implementing V1LibraryCollectionController.
-		// ChangeDateRead and ChangeReadingStatus
+		// ChangeReadingStatus
 
 		[HttpPut("libraries/[action]")]
 		public async Task<IActionResult> ChangeRating(Guid entryId, int rating)
@@ -200,13 +201,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
                 return Ok();
             else
                 return BadRequest(response.ReasonPhrase);
-
-
         }
 
 
-		// This is the method that executes the calls.
-		private async Task<ContentResult> Proxy(string url)
+		[HttpPut("libraries/[action]")]
+		public async Task<IActionResult> ChangeReadingStatus(Guid entryId, ReadingStatus readingStatus)
+		{
+			var url = $"{_apiUrls.LibraryChangeReadingStatus}?entryId={entryId}&readingStatus={readingStatus}";
+			var content = new StringContent(readingStatus.ToString(), Encoding.UTF8, "application/json");
+
+			var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.ReasonPhrase);
+        }
+
+
+        // This is the method that executes the calls.
+        private async Task<ContentResult> Proxy(string url)
 			=> Content(await _httpClient.GetStringAsync(url));
 
 
