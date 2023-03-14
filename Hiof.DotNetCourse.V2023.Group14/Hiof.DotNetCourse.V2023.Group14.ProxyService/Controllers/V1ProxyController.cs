@@ -172,9 +172,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
                 return BadRequest(response.ReasonPhrase);
         }
 
-		// TODO: Continue implementing V1LibraryCollectionController.
-		// ChangeReadingStatus
-
 		[HttpPut("libraries/[action]")]
 		public async Task<IActionResult> ChangeRating(Guid entryId, int rating)
 		{
