@@ -191,7 +191,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 		[HttpPut("libraries/[action]")]
 		public async Task<IActionResult> ChangeDateRead(Guid entryId, DateTime dateTime)
 		{
-            var url = $"{_apiUrls.LibraryChangeRating}?entryId={entryId}&dateTime={dateTime}";
+            var url = $"{_apiUrls.LibraryChangeDateRead}?entryId={entryId}&dateTime={dateTime}";
 			var content = new StringContent(dateTime.ToString(), Encoding.UTF8, "application/json");
 
 			var response = await _httpClient.PutAsync(url, content);
@@ -200,6 +200,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
                 return Ok();
             else
                 return BadRequest(response.ReasonPhrase);
+
+
         }
 
 
