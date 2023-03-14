@@ -12,7 +12,7 @@
           ContentTemplate="{DataTemplate local:LogInPage }"/>
     </ShellItem>
 
-
+    <!--Add icons in the flyout items-->
     <FlyoutItem Title="Home">
 
         <Tab>
