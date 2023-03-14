@@ -35,6 +35,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.BookAppMaui", "BookAppMaui\Hiof.DotNetCourse.V2023.Group14.BookAppMaui.csproj", "{93AD4415-547C-4D97-A4F1-70F4BB81EB71}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1CB3B2C6-7728-4F02-AAC1-3766559FFDEB} = {1CB3B2C6-7728-4F02-AAC1-3766559FFDEB}
+		{CCC582B5-0240-4B6E-B94B-0634119F9FFC} = {CCC582B5-0240-4B6E-B94B-0634119F9FFC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
