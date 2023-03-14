@@ -61,8 +61,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                    
                 }
                 else
-                {   //will fix these later
-                    await Shell.Current.DisplayAlert("Login Failed", "username or password is wrong. Reenter please", "OK");
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+
+                    // Dynamic does so the type is decieded at runtime.
+                    dynamic json = JsonConvert.DeserializeObject(content);
+
+                    StringBuilder errorMessage = new StringBuilder();
+                    foreach (var error in json.errors)
+                    {
+                        // Therefore we can append the right errormessage at runtime.
+                        errorMessage.Append($"{error.Value[0]}\n");
+                    }
+
+                    await Application.Current.MainPage.DisplayAlert("Error", errorMessage.ToString(), "OK");
                 }
             }
             catch (Exception ex)
