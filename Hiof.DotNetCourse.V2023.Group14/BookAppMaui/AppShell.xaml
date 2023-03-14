@@ -6,23 +6,31 @@
     xmlns:local="clr-namespace:BookAppMaui"
     >
 
+    <ShellItem Route="login">
+        <ShellContent
+          Title="Login"
+          ContentTemplate="{DataTemplate local:LogInPage }"/>
+    </ShellItem>
 
-    <ShellContent
-      Title="Login"
-      ContentTemplate="{DataTemplate local:LogInPage }"
-      Route="login"
-      Shell.FlyoutBehavior="Disabled"
-      Shell.FlyoutItemIsVisible="False"/>
-    
-    
-    <ShellContent
-     Title="Home"
-     ContentTemplate="{DataTemplate local:MainPage}"
-     Route="/MainPage"
-     Shell.FlyoutBehavior="Flyout"/>
-   
-    
+
+    <FlyoutItem Title="Home">
+
+        <Tab>
+            <ShellContent
      
+                 ContentTemplate="{DataTemplate local:MainPage}"
+                 Route="/MainPage"
+                 Shell.FlyoutBehavior="Flyout"/>
+
+        </Tab>
+        
+        
+    </FlyoutItem>
+
    
+
     
+
+
+
 </Shell>

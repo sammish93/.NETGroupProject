@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookAppMaui.MainPage"
              Title="First App"
+           
              Background="white"
              
              >
