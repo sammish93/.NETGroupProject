@@ -58,16 +58,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     await Shell.Current.GoToAsync(nameof(MainPage));
+                    Preferences.Set("UserName", Username);
+                    Preferences.Set($"{nameof(MainPage)}", Username);
+                    Preferences.Set("Password", Password);
+                    Preferences.Set($"{Username}", Password);
                     
                 }
                 else
                 {   //will fix these later
-                    Debug.WriteLine("Login Failed");
+                    await Shell.Current.DisplayAlert("Login Failed", "username or password is wrong. Reenter please", "OK");
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Login Error");
+                await Shell.Current.DisplayAlert("Login Error", ex.Message, "OK");
             }
             finally
             {
@@ -75,6 +79,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        
+        private Task DisplayAlert(string v1, string v2, string v3)
+        {
+            return Task.CompletedTask;
+        }
     }
 }
