@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -14,8 +15,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.DTO.V1
         public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
-        [JsonIgnore]
-        public UserAccountContext Context { get; set; }
     }
 }
 

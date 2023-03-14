@@ -24,10 +24,5 @@
   <ItemGroup>
     <None Remove="Pomelo.EntityFrameworkCore.MySql" />
     <None Remove="New Folder\" />
-    <None Remove="DTO\V1\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DTO\" />
-    <Folder Include="DTO\V1\" />
   </ItemGroup>
 </Project>
