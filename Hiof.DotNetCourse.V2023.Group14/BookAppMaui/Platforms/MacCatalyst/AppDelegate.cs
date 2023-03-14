@@ -1,6 +1,7 @@
 ﻿using Foundation;
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui;
 
-namespace BookAppMaui
+namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.Platforms.MacCatalyst
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

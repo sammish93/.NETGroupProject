@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using BookAppMaui;
+using Microsoft.Extensions.Logging;
 
 
-namespace BookAppMaui
+namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 {
     public static class MauiProgram
     {
@@ -17,7 +18,7 @@ namespace BookAppMaui
                 });
 
 #if DEBUG
-		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

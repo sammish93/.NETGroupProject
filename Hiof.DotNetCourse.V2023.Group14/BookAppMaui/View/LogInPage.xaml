@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookAppMaui.LogInPage"
-             
-             Shell.FlyoutBehavior="Disabled"
+             xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
+             x:DataType="viewmodel:LoginViewModel"
+             Shell.FlyoutBehavior="Flyout"
              Title="LogInPage">
     <VerticalStackLayout
         Spacing="25" 
@@ -29,7 +30,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter User Name"
-                   Text=""
+                   Text="{}"
                    TextColor="Black"
                    MaxLength="20"
                    VerticalOptions="Center"
