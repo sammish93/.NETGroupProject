@@ -21,6 +21,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private string _username;
         private string _password;
         private bool _isLoggingIn;
+        private bool _isSuccessLabelVisible;
 
         public string Username
         {
@@ -40,11 +41,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set => SetProperty(ref _isLoggingIn, value);
         }
 
+        public bool IsSuccessLabelVisible
+        {
+            get => _isSuccessLabelVisible;
+            set => SetProperty(ref _isSuccessLabelVisible, value);
+        }
+
         public ICommand LoginCommand => new Command(async () => await LoginAsync());
 
         private async Task LoginAsync()
         {
             IsLoggingIn = true;
+
+            // IsSuccessLabelVisible = false;
 
             try
             {
@@ -57,6 +66,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 if (response.IsSuccessStatusCode)
                 {
+                    // IsSuccessLabelVisible = true;
                     await Shell.Current.GoToAsync(nameof(MainPage));
                    
                 }

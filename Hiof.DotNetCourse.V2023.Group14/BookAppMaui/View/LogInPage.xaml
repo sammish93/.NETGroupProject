@@ -63,8 +63,10 @@
                     HorizontalOptions="Center"
                     BackgroundColor="White"
                     
-                    />
-            
+             />
+            <Label x:Name="SuccessLabel"
+                   Text="Login success!"
+                   IsVisible="{Binding IsSuccessLabelVisible}"/>
 
         </StackLayout>
         <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
