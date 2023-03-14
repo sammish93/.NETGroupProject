@@ -34,7 +34,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             return Ok(message);
         }
 
-        // This method is causing circular references and needs to be fixed.
+        // TODO: This method is causing circular references and needs to be fixed.
         [HttpPost]
         [Route("UpdateCache/[action]")]
         public IActionResult StartJob()

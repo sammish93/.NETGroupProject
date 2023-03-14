@@ -172,6 +172,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         }
 
 		// TODO: Continue implementing V1LibraryCollectionController.
+		// ChangeDateRead and ChangeReadingStatus
+
+		[HttpPut("libraries/[action]")]
+		public async Task<IActionResult> ChangeRating(Guid entryId, int rating)
+		{
+			var url = $"{_apiUrls.LibraryChangeRating}?entryId={entryId}&rating={rating}";
+			var content = new StringContent(rating.ToString(), Encoding.UTF8, "application/json");
+
+			var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.ReasonPhrase);
+        }
+
+		[HttpPut("libraries/[action]")]
+		public async Task<IActionResult> ChangeDateRead(Guid entryId, DateTime dateTime)
+		{
+            var url = $"{_apiUrls.LibraryChangeRating}?entryId={entryId}&dateTime={dateTime}";
+			var content = new StringContent(dateTime.ToString(), Encoding.UTF8, "application/json");
+
+			var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.ReasonPhrase);
+        }
+
 
 		// This is the method that executes the calls.
 		private async Task<ContentResult> Proxy(string url)
