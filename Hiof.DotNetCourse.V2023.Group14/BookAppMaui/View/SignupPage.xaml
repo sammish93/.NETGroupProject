@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.SignupPage"
              Title="SignupPage">
-    <StackLayout>
+    <VerticalStackLayout>
         <Label Text="Username:" />
         <Entry Placeholder="Enter username"
                Text="{Binding UserName, Mode=TwoWay}"
@@ -66,5 +66,5 @@
         <Entry Placeholder="Enter user role"
                Text="{Binding Role, Mode=TwoWay}"
                Keyboard="Text" />
-    </StackLayout>
+    </VerticalStackLayout>
 </ContentPage>
