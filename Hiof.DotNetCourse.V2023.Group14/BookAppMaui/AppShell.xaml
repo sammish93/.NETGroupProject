@@ -5,12 +5,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui"
     xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
+    x:Name="MyAppShell"
+    BackgroundColor="White"
     >
 
     <ShellItem Route="mainPage" FlyoutItemIsVisible="false">
         <ShellContent
           Title="This is the Main Page"
           ContentTemplate="{DataTemplate view:MainPage}"/>
+    </ShellItem>
+    
+    <!--
+    <ShellItem Route="login" x:Name="MyLogin">
+        <ShellContent
+          Title="This is the Main Page"
+          ContentTemplate="{DataTemplate view:MainPage}"/>
+    </ShellItem>
+    -->
+    
+    <ShellItem Route="signup" >
+        <ShellContent
+          Title="sign up"
+          ContentTemplate="{DataTemplate view:SignupPage }"/>
     </ShellItem>
 
     <!--Add icons in the flyout items-->
@@ -26,8 +42,5 @@
                  Title="Page2"
                  Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
-
-
-
 
 </Shell>

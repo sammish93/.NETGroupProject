@@ -66,12 +66,15 @@
              />
             <Label x:Name="SuccessLabel"
                    Text="Login success!"
-                   IsVisible="{Binding IsSuccessLabelVisible}"/>
+                   IsVisible="{Binding IsSuccessLabelVisible}"
+                   TextColor="Black"/>
+            
 
         </StackLayout>
         <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
-            <Label Text="Don't have account?" TextColor="Gray" />
-            <Label Text="Sign Up here" TextColor="#50b3f2" />
+            <Label Text="Don't have account?" TextColor="Gray" TextDecorations="Underline" />
+            <Button Text="Signup here!" Command="{Binding SignupCommand}" />
+            
         </StackLayout>
 
     </VerticalStackLayout>

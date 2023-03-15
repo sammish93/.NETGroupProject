@@ -10,6 +10,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 
             Routing.RegisterRoute(nameof(LogInPage), typeof(LogInPage));
             Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+            Routing.RegisterRoute(nameof(SignupPage), typeof(SignupPage));
+            /*
+            var userSaveKey = Preferences.Get("UserIsLoggedIn", false);
+
+            if(userSaveKey == true)
+            {
+                MyAppShell.CurrentItem = MyHomePage;
+            }
+            else
+            {
+                MyAppShell.CurrentItem = MyLogin;
+            }
+            */
             Routing.RegisterRoute(nameof(Page2), typeof(Page2));
         }
     }
