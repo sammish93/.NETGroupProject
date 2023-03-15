@@ -21,13 +21,14 @@
           Title="This is the Main Page"
           ContentTemplate="{DataTemplate view:MainPage}"/>
     </ShellItem>
-    -->
+
     
     <ShellItem Route="signup" >
         <ShellContent
           Title="sign up"
           ContentTemplate="{DataTemplate view:SignupPage }"/>
     </ShellItem>
+    -->
 
     <!--Add icons in the flyout items-->
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
