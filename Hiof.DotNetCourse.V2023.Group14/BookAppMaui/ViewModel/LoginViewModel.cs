@@ -67,6 +67,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     // IsSuccessLabelVisible = true;
+                    //Preferences.Set("UserIsLoggedIn", true);
                     await Shell.Current.GoToAsync(nameof(MainPage));
                    
                 }
@@ -95,6 +96,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 IsLoggingIn = false;
             }
+        }
+        public ICommand SignupCommand => new Command(async () => await SignupAsync());
+
+        private async Task SignupAsync()
+        {
+            await Shell.Current.GoToAsync(nameof(SignupPage));
         }
 
         private Task DisplayAlert(string v1, string v2, string v3)
