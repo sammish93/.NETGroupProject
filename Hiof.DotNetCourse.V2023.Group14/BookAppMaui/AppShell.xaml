@@ -4,9 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BookAppMaui"
+    x:Name="MyAppShell"
     >
 
-    <ShellItem Route="login">
+    <ShellItem Route="login" x:Name="MyLogin">
         <ShellContent
           Title="Login"
           ContentTemplate="{DataTemplate local:LogInPage }"/>
@@ -16,7 +17,7 @@
     <FlyoutItem Title="Home">
 
         <Tab>
-            <ShellContent
+            <ShellContent x:Name="MyHomePage"
      
                  ContentTemplate="{DataTemplate local:MainPage}"
                  Route="/MainPage"

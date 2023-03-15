@@ -57,6 +57,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 if (response.IsSuccessStatusCode)
                 {
+                    //To keep user logged in
+                    Preferences.Set("UserIsLoggedIn", true);
+
                     await Shell.Current.GoToAsync(nameof(MainPage));
                    
                 }
