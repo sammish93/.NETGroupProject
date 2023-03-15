@@ -1,4 +1,4 @@
-﻿using BookAppMaui;
+﻿using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Microsoft.Extensions.Logging;
 

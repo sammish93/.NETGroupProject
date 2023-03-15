@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
-using BookAppMaui;
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;

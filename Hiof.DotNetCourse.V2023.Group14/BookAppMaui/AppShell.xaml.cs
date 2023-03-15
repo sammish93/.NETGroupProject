@@ -1,4 +1,6 @@
-﻿namespace BookAppMaui
+﻿using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
+
+namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 {
     public partial class AppShell : Shell
     {
