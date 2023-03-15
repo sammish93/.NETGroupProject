@@ -6,15 +6,32 @@
     xmlns:local="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui"
     xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
     x:Name="MyAppShell"
-    BackgroundColor="White"
-    >
+    FlyoutBackgroundColor="BlanchedAlmond"
+    TitleColor="SaddleBrown"
+    ForegroundColor="SaddleBrown">
 
-    <ShellItem Route="mainPage" FlyoutItemIsVisible="false">
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="SandyBrown"
+                  HeightRequest="100">
+                <Label Text="Book App Header"
+                       TextColor="SaddleBrown"
+                       FontAttributes="Bold"
+                       FontSize="20"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+
+    
+    <ShellItem Title="Home"
+               Icon="home.png"
+               Route="mainPage">
         <ShellContent
-          Title="This is the Main Page"
           ContentTemplate="{DataTemplate view:MainPage}"/>
     </ShellItem>
-    
+
     <!--
     <ShellItem Route="login" x:Name="MyLogin">
         <ShellContent
@@ -31,17 +48,59 @@
     -->
 
     <!--Add icons in the flyout items-->
-    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent
-                 ContentTemplate="{DataTemplate view:MainPage}"
-                 Route="mainPage"
-                 Title="Home"
-                 Shell.FlyoutBehavior="Flyout"/>
+    <FlyoutItem Title="Library"
+                Icon="book_alt.png">
         <ShellContent
                  ContentTemplate="{DataTemplate view:Page2}"
-                 Route="page2"
-                 Title="Page2"
+                 Route="library"
                  Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
+
+    <FlyoutItem Title="Marketplace"
+                Icon="shop.png">
+        <ShellContent
+                 ContentTemplate="{DataTemplate view:Page2}"
+                 Route="marketplace"
+                 Shell.FlyoutBehavior="Flyout"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Messages"
+                Icon="messages.png">
+        <ShellContent
+                 ContentTemplate="{DataTemplate view:Page2}"
+                 Route="account"
+                 Shell.FlyoutBehavior="Flyout"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Profile"
+                Icon="portrait.png">
+        <ShellContent
+                 ContentTemplate="{DataTemplate view:Page2}"
+                 Route="profile"
+                 Shell.FlyoutBehavior="Flyout"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Settings"
+                Icon="settings.png">
+        <ShellContent
+                 ContentTemplate="{DataTemplate view:Page2}"
+                 Route="settings"
+                 Shell.FlyoutBehavior="Flyout"/>
+    </FlyoutItem>
+
+
+    <Shell.FlyoutFooterTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="SandyBrown"
+                  HeightRequest="30">
+                <Label Text="{Binding Name, StringFormat='Hello, {0}!'}"
+                       TextColor="SaddleBrown"
+                       FontAttributes="Bold"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutFooterTemplate>
 
 </Shell>
