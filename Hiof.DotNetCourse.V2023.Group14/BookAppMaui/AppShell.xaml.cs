@@ -1,23 +1,21 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 {
     public partial class AppShell : Shell
     {
-        public V1User User;
-        public string Name { get; set; } = "defaultNameThingy";
-        public AppShell(V1User user)
+        
+        public AppShell()
         {
-            User = user;
-            Name = user.FirstName;
-
             InitializeComponent();
 
+            Routing.RegisterRoute(nameof(LogInPage), typeof(LogInPage));
             Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+            //Routing.RegisterRoute(nameof(Page2), typeof(Page2));
 
-            
-            BindingContext = this;
+            this.BindingContext = new AppShellViewModel();
 
             /*
             Routing.RegisterRoute(nameof(LogInPage), typeof(LogInPage));
@@ -33,7 +31,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
             {
                 MyAppShell.CurrentItem = MyLogin;
             }
-            //Routing.RegisterRoute(nameof(Page2), typeof(Page2));
             */
         }
     }

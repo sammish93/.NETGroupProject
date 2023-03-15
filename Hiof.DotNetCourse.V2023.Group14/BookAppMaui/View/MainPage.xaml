@@ -4,6 +4,9 @@
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.MainPage"
              Title="Home"
              BackgroundColor="FloralWhite">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False"/>
+    </Shell.BackButtonBehavior>
 
     <VerticalStackLayout>
         <Label 

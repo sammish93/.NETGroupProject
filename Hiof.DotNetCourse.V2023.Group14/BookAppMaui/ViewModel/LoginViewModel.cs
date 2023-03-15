@@ -71,8 +71,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     //Preferences.Set("UserIsLoggedIn", true);
                     var user = new V1User();
                     user.FirstName = "testName";
-                    Application.Current.MainPage = new AppShell(user);
-                   
+                    Shell.Current.BindingContext = new AppShellViewModel(user);
+                    await Shell.Current.GoToAsync(nameof(MainPage));
                 }
                 else
                 {
