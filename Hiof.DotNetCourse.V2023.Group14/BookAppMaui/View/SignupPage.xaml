@@ -3,10 +3,68 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.SignupPage"
              Title="SignupPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <StackLayout>
+        <Label Text="Username:" />
+        <Entry Placeholder="Enter username"
+               Text="{Binding UserName, Mode=TwoWay}"
+               Keyboard="Text">
+            <Entry.Triggers>
+                <DataTrigger TargetType="Entry" Binding="{Binding UserName, Mode=TwoWay}" Value="">
+                    <Setter Property="Placeholder" Value="Username is required" />
+                </DataTrigger>
+            </Entry.Triggers>
+        </Entry>
+
+        <Label Text="Email:" />
+        <Entry Placeholder="Enter email"
+               Text="{Binding Email, Mode=TwoWay}"
+               Keyboard="Email">
+            <Entry.Triggers>
+                <DataTrigger TargetType="Entry" Binding="{Binding Email, Mode=TwoWay}" Value="">
+                    <Setter Property="Placeholder" Value="Email is required" />
+                </DataTrigger>
+            </Entry.Triggers>
+        </Entry>
+
+        <Label Text="Password:" />
+        <Entry Placeholder="Enter password"
+               Text="{Binding Password, Mode=TwoWay}"
+               IsPassword="True">
+            <Entry.Triggers>
+                <DataTrigger TargetType="Entry" Binding="{Binding Password, Mode=TwoWay}" Value="">
+                    <Setter Property="Placeholder" Value="Password is required" />
+                </DataTrigger>
+            </Entry.Triggers>
+        </Entry>
+
+        <Label Text="First Name:" />
+        <Entry Placeholder="Enter first name"
+               Text="{Binding FirstName, Mode=TwoWay}"
+               Keyboard="Text" />
+
+        <Label Text="Last Name:" />
+        <Entry Placeholder="Enter last name"
+               Text="{Binding LastName, Mode=TwoWay}"
+               Keyboard="Text" />
+
+        <Label Text="Country:" />
+        <Entry Placeholder="Enter country"
+               Text="{Binding Country, Mode=TwoWay}"
+               Keyboard="Text" />
+
+        <Label Text="City/Town:" />
+        <Entry Placeholder="Enter city or town"
+               Text="{Binding City, Mode=TwoWay}"
+               Keyboard="Text" />
+
+        <Label Text="Language Preference:" />
+        <Entry Placeholder="Enter language preference"
+               Text="{Binding LangPreference, Mode=TwoWay}"
+               Keyboard="Text" />
+
+        <Label Text="User Role:" />
+        <Entry Placeholder="Enter user role"
+               Text="{Binding Role, Mode=TwoWay}"
+               Keyboard="Text" />
+    </StackLayout>
 </ContentPage>

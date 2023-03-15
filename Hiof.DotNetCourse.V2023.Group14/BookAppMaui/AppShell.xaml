@@ -13,6 +13,12 @@
           Title="Login"
           ContentTemplate="{DataTemplate view:LogInPage }"/>
     </ShellItem>
+    
+    <ShellItem Route="signup" >
+        <ShellContent
+          Title="sign up"
+          ContentTemplate="{DataTemplate view:SignupPage }"/>
+    </ShellItem>
 
     <!--Add icons in the flyout items-->
     <FlyoutItem Title="Home">
