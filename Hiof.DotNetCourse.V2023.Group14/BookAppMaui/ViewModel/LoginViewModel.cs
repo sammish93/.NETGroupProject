@@ -75,9 +75,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        private Task DisplayAlert(string v1, string v2, string v3)
-        {
-            return Task.CompletedTask;
-        }
+        
     }
 }
