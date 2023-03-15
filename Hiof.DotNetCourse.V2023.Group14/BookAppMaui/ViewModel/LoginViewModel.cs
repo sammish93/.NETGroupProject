@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
-using BookAppMaui;
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
@@ -21,6 +21,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private string _username;
         private string _password;
         private bool _isLoggingIn;
+        private bool _isSuccessLabelVisible;
 
         public string Username
         {
@@ -40,11 +41,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set => SetProperty(ref _isLoggingIn, value);
         }
 
+        public bool IsSuccessLabelVisible
+        {
+            get => _isSuccessLabelVisible;
+            set => SetProperty(ref _isSuccessLabelVisible, value);
+        }
+
         public ICommand LoginCommand => new Command(async () => await LoginAsync());
 
         private async Task LoginAsync()
         {
             IsLoggingIn = true;
+
+            // IsSuccessLabelVisible = false;
 
             try
             {
@@ -57,15 +66,25 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 if (response.IsSuccessStatusCode)
                 {
-                    //To keep user logged in
-                    Preferences.Set("UserIsLoggedIn", true);
-
+                    // IsSuccessLabelVisible = true;
                     await Shell.Current.GoToAsync(nameof(MainPage));
                    
                 }
                 else
-                {   //will fix these later
-                    await Shell.Current.DisplayAlert("Login Failed", "username or password is wrong. Reenter please", "OK");
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+
+                    // Dynamic does so the type is decieded at runtime.
+                    dynamic json = JsonConvert.DeserializeObject(content);
+
+                    StringBuilder errorMessage = new StringBuilder();
+                    foreach (var error in json.errors)
+                    {
+                        // Therefore we can append the right errormessage at runtime.
+                        errorMessage.Append($"{error.Value[0]}\n");
+                    }
+
+                    await Application.Current.MainPage.DisplayAlert("Error", errorMessage.ToString(), "OK");
                 }
             }
             catch (Exception ex)
@@ -78,6 +97,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        
+        private Task DisplayAlert(string v1, string v2, string v3)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

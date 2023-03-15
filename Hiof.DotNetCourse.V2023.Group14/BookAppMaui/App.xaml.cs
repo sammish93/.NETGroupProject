@@ -1,4 +1,4 @@
-﻿namespace BookAppMaui
+﻿namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 {
     public partial class App : Application
     {
