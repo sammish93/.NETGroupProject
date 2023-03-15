@@ -23,6 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                 MyAppShell.CurrentItem = MyLogin;
             }
             */
+            Routing.RegisterRoute(nameof(Page2), typeof(Page2));
         }
     }
 }
