@@ -108,13 +108,28 @@
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>
             <Grid BackgroundColor="SandyBrown"
-                  HeightRequest="30">
-                <Label Text="{Binding Name, StringFormat='Hello, {0}!'}"
+                  HeightRequest="45">
+                <Label
                        TextColor="SaddleBrown"
                        FontAttributes="Bold"
                        FontSize="14"
+                       Margin="3"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center" />
+                       VerticalTextAlignment="Start">
+                    <Label.Text>
+                        <MultiBinding StringFormat="Hello, {0} {1}!">
+                            <Binding Path="User.FirstName" />
+                            <Binding Path="User.LastName" />
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
+                <Label Text="{Binding Path='User.LastActive', StringFormat='Last Active: {0}'}"
+                       TextColor="SaddleBrown"
+                       FontAttributes="Bold"
+                       FontSize="14"
+                       Margin="3"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="End" />
             </Grid>
         </DataTemplate>
     </Shell.FlyoutFooterTemplate>

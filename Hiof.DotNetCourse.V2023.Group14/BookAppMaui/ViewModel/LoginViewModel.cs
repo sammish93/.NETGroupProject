@@ -10,6 +10,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
 using System.Windows.Input;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -69,8 +70,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 {
                     // IsSuccessLabelVisible = true;
                     //Preferences.Set("UserIsLoggedIn", true);
-                    var user = new V1User();
-                    user.FirstName = "testName";
+
+                    loginUrl = $"{_apiBaseUrl}/users/getUserByUserName?userName={Username}";
+
+                    HttpResponseMessage result = await _httpClient.GetAsync(loginUrl);
+                    var responseString = await result.Content.ReadAsStringAsync();
+
+                    V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
+
+
                     Shell.Current.BindingContext = new AppShellViewModel(user);
                     await Shell.Current.GoToAsync(nameof(MainPage));
                 }
