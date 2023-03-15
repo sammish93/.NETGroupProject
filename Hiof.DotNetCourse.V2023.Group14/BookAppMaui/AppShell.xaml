@@ -7,26 +7,27 @@
     xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
     >
 
-    <ShellItem Route="login">
+    <ShellItem Route="mainPage" FlyoutItemIsVisible="false">
         <ShellContent
-          Title="Login"
-          ContentTemplate="{DataTemplate view:LogInPage }"/>
+          Title="This is the Main Page"
+          ContentTemplate="{DataTemplate view:MainPage}"/>
     </ShellItem>
 
     <!--Add icons in the flyout items-->
-    <FlyoutItem Title="Home">
-
-        <Tab>
-            <ShellContent
-     
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
                  ContentTemplate="{DataTemplate view:MainPage}"
-                 Route="/MainPage"
+                 Route="mainPage"
+                 Title="Home"
                  Shell.FlyoutBehavior="Flyout"/>
-
-        </Tab>
-        
-        
+        <ShellContent
+                 ContentTemplate="{DataTemplate view:Page2}"
+                 Route="page2"
+                 Title="Page2"
+                 Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
 
-   
+
+
+
 </Shell>

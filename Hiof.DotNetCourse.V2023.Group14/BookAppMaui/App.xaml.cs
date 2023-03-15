@@ -1,4 +1,7 @@
-﻿namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
+﻿using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
+
+namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 {
     public partial class App : Application
     {
@@ -6,7 +9,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new LogInPage(new LoginViewModel());
         }
         protected override Window CreateWindow(IActivationState activationState)
         {

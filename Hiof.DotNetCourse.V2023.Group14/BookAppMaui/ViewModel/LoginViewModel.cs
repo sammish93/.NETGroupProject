@@ -67,7 +67,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     // IsSuccessLabelVisible = true;
-                    await Shell.Current.GoToAsync(nameof(MainPage));
+                     Application.Current.MainPage = new AppShell();
                    
                 }
                 else
@@ -89,7 +89,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Login Error", ex.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("Login Error", ex.Message, "OK");
             }
             finally
             {
