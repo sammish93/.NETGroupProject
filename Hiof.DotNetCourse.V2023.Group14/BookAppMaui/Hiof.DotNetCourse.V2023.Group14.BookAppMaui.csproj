@@ -60,6 +60,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\book_alt.png" />
+	  <None Remove="Resources\Images\home.png" />
+	  <None Remove="Resources\Images\icon_references.txt" />
+	  <None Remove="Resources\Images\messages.png" />
+	  <None Remove="Resources\Images\portrait.png" />
+	  <None Remove="Resources\Images\settings.png" />
+	  <None Remove="Resources\Images\shop.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\icon_references.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>

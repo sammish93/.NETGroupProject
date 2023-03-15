@@ -69,7 +69,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 {
                     // IsSuccessLabelVisible = true;
                     //Preferences.Set("UserIsLoggedIn", true);
-                     Application.Current.MainPage = new AppShell();
+                    var user = new V1User();
+                    user.FirstName = "testName";
+                    Application.Current.MainPage = new AppShell(user);
                    
                 }
                 else
