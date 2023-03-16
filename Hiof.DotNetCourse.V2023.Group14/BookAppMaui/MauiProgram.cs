@@ -1,4 +1,5 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
+﻿using CommunityToolkit.Maui;
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +13,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

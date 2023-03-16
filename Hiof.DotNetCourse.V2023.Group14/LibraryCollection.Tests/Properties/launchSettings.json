@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "APICommunicator.Tests": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53502;http://localhost:53503"
+    }
+  }
+}

@@ -5,11 +5,89 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui"
     xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="MyAppShell"
     BackgroundColor="White"
     FlyoutBackgroundColor="BlanchedAlmond"
     TitleColor="SaddleBrown"
-    ForegroundColor="SaddleBrown">
+    ForegroundColor="SaddleBrown" Padding="10,0,0,0">
+
+    <!--MAUI Community Toolkit-->
+    <Shell.Resources>
+        <ResourceDictionary>
+            <toolkit:MathExpressionConverter x:Key="MathExpressionConverter"/>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <Shell.TitleView>
+        <Grid ColumnSpacing="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"
+                                  x:Name="TitleColumn"/>
+                <ColumnDefinition Width="5*"
+                                  x:Name="SearchColumn"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition 
+                    Height="1*"/>
+                <RowDefinition 
+                    Height="1*"
+                    x:Name="TitleRow"/>
+                <RowDefinition 
+                    Height="1*"/>
+            </Grid.RowDefinitions>
+            <ImageButton 
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    CornerRadius="50"
+                    HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                    Command="{Binding HomeButtonCommand}"
+                    Source="home.png"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"/>
+            <Label 
+                Grid.Column="1"
+                Grid.Row="1"
+                Text="{Binding TitleCurrentPage}"
+                TextColor="White"
+                FontAttributes="Bold"
+                HorizontalOptions="Start"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center" 
+                FontAutoScalingEnabled="True"/>
+            <SearchBar
+                x:Name="SearchBar"
+                Grid.Column="2"
+                Grid.Row="1"
+                HeightRequest="{Binding Height, Source={x:Reference TitleRow}}"
+                WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
+                HorizontalOptions="End"
+                Placeholder="Search"
+                PlaceholderColor="Red"
+                BackgroundColor="White"
+                TextColor="Red"
+                VerticalOptions="Center" FontAutoScalingEnabled="True"/>
+            <ImageButton 
+                    Grid.Column="3"
+                    Grid.Row="1"
+                    CornerRadius="50"
+                    Source="messages.png"
+                    HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"/>
+            <ImageButton 
+                    Grid.Column="4"
+                    Grid.Row="1"
+                    CornerRadius="50"
+                    HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                    Source="default_display_picture.png"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"/>
+        </Grid>
+    </Shell.TitleView>
 
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
@@ -26,8 +104,8 @@
                        Padding="10">
                     <Label.Text>
                         <MultiBinding StringFormat="Hello, {0} {1}!">
-                            <Binding Path="User.FirstName" />
-                            <Binding Path="User.LastName" />
+                            <Binding Path="User.FirstName"/>
+                            <Binding Path="User.LastName"/>
                         </MultiBinding>
                     </Label.Text>
                 </Label>
@@ -108,14 +186,6 @@
                  Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Page3"
-                Route="home">
-        <ShellContent
-                 ContentTemplate="{DataTemplate view:Page3}"
-                 Route="page3"
-                 Shell.FlyoutBehavior="Flyout"/>
-    </FlyoutItem>
-
 
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>
@@ -127,7 +197,7 @@
                        FontSize="14"
                        Margin="3"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center" />
+                       VerticalTextAlignment="Center"/>
             </Grid>
         </DataTemplate>
     </Shell.FlyoutFooterTemplate>

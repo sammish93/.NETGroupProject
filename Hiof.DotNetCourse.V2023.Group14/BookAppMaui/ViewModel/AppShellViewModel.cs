@@ -28,6 +28,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private UserRole _userRole;
         private DateTime _registrationDate;
         private DateTime _lastActive;
+        private string _titleCurrentPage = "defaultTitle";
+
 
         public V1User User
         {
@@ -90,6 +92,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set => SetProperty(ref _lastActive, value);
         }
 
+        public string TitleCurrentPage
+        {
+            get => _titleCurrentPage;
+            set => SetProperty(ref _titleCurrentPage, value);
+        }
+
 
         public AppShellViewModel()
         {
@@ -110,6 +118,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             UserRole = user.Role;
             RegistrationDate = user.RegistrationDate;
             LastActive = user.LastActive;
+        }
+
+        public ICommand HomeButtonCommand => new Command(async () => await HomeButtonAsync());
+
+        private async Task HomeButtonAsync()
+        {
+            await Shell.Current.GoToAsync("///home");
         }
     }
 }

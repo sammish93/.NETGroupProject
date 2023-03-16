@@ -6,7 +6,10 @@
              x:DataType="viewmodel:LoginViewModel"
              Shell.FlyoutBehavior="Disabled"
              Title="LogInPage"
-             BackgroundColor="White">
+             BackgroundColor="White"
+             x:Name="Login"
+             Shell.NavBarIsVisible="False">
+    
     <VerticalStackLayout
         Spacing="25" 
             Padding="30,0" 

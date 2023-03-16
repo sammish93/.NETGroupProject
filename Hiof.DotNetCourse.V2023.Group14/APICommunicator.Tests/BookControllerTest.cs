@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
+using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Configuration;
 
 namespace APICommunicator.Tests;
 
@@ -15,7 +17,8 @@ public class BookControllerTest
     public async Task GetValidResponeOnValidIsbn()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var isbn = "1260440214";
         var maxResult = 10;
@@ -31,7 +34,8 @@ public class BookControllerTest
     public async Task GetBadResponseOnShortIsbn()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var isbn = "123";
         var maxResult = 10;
@@ -48,7 +52,8 @@ public class BookControllerTest
     public async Task GetBadResponseOnFakeIsbn()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var isbn = "6573849267364";
         var maxResult = 10;
@@ -66,7 +71,8 @@ public class BookControllerTest
     public async Task GetValidResponseOnValidTitle()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var title = "DATABASESYSTEMER.";
         var maxResult = 10;
@@ -82,7 +88,8 @@ public class BookControllerTest
     public async Task GetErrorMessageOnFakeTitle()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var title = "dfkjekjffd";
         var maxResult = 10;
@@ -100,7 +107,8 @@ public class BookControllerTest
     public async Task GetValidResponseOnValidAuthor()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var author = "Eric Matthes";
         var maxResult = 10;
@@ -116,7 +124,8 @@ public class BookControllerTest
     public async Task GetErrorMessageOnFakeAuthor()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var author = "dfkjekjffd";
         var maxResult = 10;
@@ -133,7 +142,8 @@ public class BookControllerTest
     public async Task GetValidResponseOnValidCategory()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var category = "Programming";
         var maxResult = 10;
@@ -150,7 +160,8 @@ public class BookControllerTest
     public async Task GetErrorMessageOnFakeCategory()
     {
         var mockLogger = new Mock<ILogger<V1BookController>>();
-        var controller = new V1BookController(mockLogger.Object);
+        var mockSettings = new Mock<IOptions<ApiCommunicatorSettings>>();
+        var controller = new V1BookController(mockLogger.Object, mockSettings.Object);
 
         var category = "fdjksad";
         var maxResult = 10;
