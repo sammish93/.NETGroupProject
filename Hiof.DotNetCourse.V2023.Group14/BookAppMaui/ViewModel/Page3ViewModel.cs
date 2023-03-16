@@ -20,7 +20,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         private async Task NavigateAsync()
         {
-            await Shell.Current.GoToAsync("home");
+            await Shell.Current.GoToAsync("..");
         }
 
     }
