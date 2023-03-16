@@ -1,4 +1,5 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Configuration;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
@@ -15,6 +16,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+
+            // Adding authentication and the extended ConfigureIdentity method.
+            builder.Services.AddAuthentication();
+            builder.Services.ConfigureIdentity();
+
+
             // Fetches the appsettings.json file to inject into a context.
             // Encrypt=False is a quick fix for a reintroduced bug in SQL Server 2022 - see https://stackoverflow.com/a/70850834 for more information.
             builder.Configuration.AddJsonFile("appsettings.json");

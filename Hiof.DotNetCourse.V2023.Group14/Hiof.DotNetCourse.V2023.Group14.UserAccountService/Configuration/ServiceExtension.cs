@@ -11,7 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Configuration
 	
 		public static void ConfigureIdentity(this IServiceCollection services)
 		{
-			// Adding and configuring identity for a spesific type.
+			// Adding and configure identity for a spesific type.
 			// In this case, the V1UserIdentity and IdentityRole.
 			var builder = services.AddIdentity<V1UserIdentity, IdentityRole>(user =>
 			{
