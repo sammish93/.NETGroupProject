@@ -80,7 +80,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
 
                     Shell.Current.BindingContext = new AppShellViewModel(user);
-                    await Shell.Current.GoToAsync(nameof(MainPage));
+                    await Shell.Current.GoToAsync("///home");
                 }
                 else
                 {
