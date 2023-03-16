@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -127,6 +127,12 @@
                Route="home">
         <ShellContent
           ContentTemplate="{DataTemplate view:MainPage}"/>
+    </ShellItem>
+    <ShellItem Title="Signup" 
+
+               Route="signup">
+        <ShellContent
+          ContentTemplate="{DataTemplate view:SignupPage}"/>
     </ShellItem>
 
 
