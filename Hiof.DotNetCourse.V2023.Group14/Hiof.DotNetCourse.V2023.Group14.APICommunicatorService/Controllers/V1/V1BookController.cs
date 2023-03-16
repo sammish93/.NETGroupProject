@@ -19,17 +19,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         // string exampleString = _settings.Value.DefaultSettings;
         private readonly IOptions<ApiCommunicatorSettings> _settings;
 
-        public ILogger<V1BookController> Object { get; }
-
         public V1BookController(ILogger<V1BookController> logger, IOptions<ApiCommunicatorSettings> settings)
         {
             _logger = logger;
             _settings = settings;
-        }
-
-        public V1BookController(ILogger<V1BookController> @object)
-        {
-            Object = @object;
         }
 
         [HttpGet("getBookIsbn")]
@@ -43,7 +36,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
                     return NotFound("No book found.");
                 else
                     return Ok(response);
-                    
+
             }
             return BadRequest("ISBN must be 10 or 13 digits.");
         }
@@ -52,7 +45,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         public async Task<IActionResult> GetByTitle(string title, int? maxResults, string? langRestrict)
         {
             var response = await CallApi("intitle", title, maxResults, langRestrict);
-            
+
             if (maxResults > 40 || maxResults < 1)
             {
                 return BadRequest("The maximum amount of results must be larger than 0, and equal to or fewer than 40.");
@@ -64,11 +57,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
 
             return Ok(response);
         }
-        
+
         [HttpGet("getBookAuthor")]
         public async Task<IActionResult> GetByAuthors(string authors, int? maxResults, string? langRestrict)
         {
-            
+
             var response = await CallApi("inauthor", authors, maxResults, langRestrict);
 
             if (maxResults > 40 || maxResults < 1)
@@ -82,9 +75,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
 
 
             return Ok(response);
-         
+
         }
-        
+
         [HttpGet("getBookCategory")]
         public async Task<IActionResult> GetBySubject(string subject, int? maxResults, string? langRestrict)
         {
@@ -93,16 +86,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
             if (maxResults > 40 || maxResults < 1)
             {
                 return BadRequest("The maximum amount of results must be larger than 0, and equal to or fewer than 40.");
-            } else if (!CheckResponse(response))
+            }
+            else if (!CheckResponse(response))
             {
                 return NotFound("No book found.");
             }
-                
+
 
             return Ok(response);
-        
+
         }
-        
+
 
         // Execute API calls and return response as a string.
         private async Task<string> CallApi(string endpoint, string query, int? maxResults, string? langRestrict)
@@ -115,7 +109,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
                 responseMessage = await client.GetAsync(url);
                 responseMessage.EnsureSuccessStatusCode();
             }
-            catch(HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 _logger.LogError(ex, "Request error");
                 return "HTTP error status code: " + ex;
@@ -142,26 +136,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         {
             StringBuilder url = new StringBuilder();
             url.Append("https://www.googleapis.com/books/v1/volumes?q=");
-            
+
             url.Append($"{search}:");
             url.Append(endpoint);
 
 
-            if(maxResults != null)
+            if (maxResults != null)
             {
                 url.Append("&maxResults=");
                 url.Append((int)maxResults.Value);
             }
-            if(langRestrict != null)
+            if (langRestrict != null)
             {
                 url.Append("&langRestrict=");
                 url.Append(langRestrict);
             }
-    
-           
+
+
 
             return url.ToString();
-            
+
         }
     }
 }

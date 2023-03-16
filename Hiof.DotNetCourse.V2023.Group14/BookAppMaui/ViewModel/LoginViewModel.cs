@@ -66,8 +66,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 {
                     //Preferences.Set("UserIsLoggedIn", true);
-                     Application.Current.MainPage = new AppShell();
-                   
+                    loginUrl = $"{_apiBaseUrl}/users/getUserByUserName?userName={Username}";
+
+                    HttpResponseMessage result = await _httpClient.GetAsync(loginUrl);
+                    var responseString = await result.Content.ReadAsStringAsync();
+
+                    V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
+
+
+                    Shell.Current.BindingContext = new AppShellViewModel(user);
+                    await Shell.Current.GoToAsync("///home");
                 }
                 else
                 {

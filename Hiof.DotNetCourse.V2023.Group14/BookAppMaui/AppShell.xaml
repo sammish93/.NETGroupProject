@@ -129,7 +129,7 @@
           ContentTemplate="{DataTemplate view:MainPage}"/>
     </ShellItem>
     <ShellItem Title="Signup" 
-
+               FlyoutItemIsVisible="False"
                Route="signup">
         <ShellContent
           ContentTemplate="{DataTemplate view:SignupPage}"/>
