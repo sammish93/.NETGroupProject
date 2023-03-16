@@ -33,8 +33,10 @@
     <None Remove="Pomelo.EntityFrameworkCore.MySql" />
     <None Remove="Interface\" />
     <None Remove="Controllers\V1\" />
+    <None Remove="Configuration\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interface\" />
+    <Folder Include="Configuration\" />
   </ItemGroup>
 </Project>
