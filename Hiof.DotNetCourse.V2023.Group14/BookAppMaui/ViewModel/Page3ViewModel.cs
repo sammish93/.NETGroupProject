@@ -16,12 +16,5 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
     public class Page3ViewModel : BaseViewModel
     {
 
-        public ICommand NavCommand => new Command(async () => await NavigateAsync());
-
-        private async Task NavigateAsync()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
-
     }
 }

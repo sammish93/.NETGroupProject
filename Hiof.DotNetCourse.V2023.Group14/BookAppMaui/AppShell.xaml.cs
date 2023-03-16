@@ -50,6 +50,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                     model.TitleCurrentPage = currentPage;
                 }
             }
+
+            base.OnNavigated(args);
         }
     }
 }
