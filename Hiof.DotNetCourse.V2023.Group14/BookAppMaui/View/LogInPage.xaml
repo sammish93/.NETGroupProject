@@ -59,8 +59,13 @@
                    HorizontalOptions="Center"
             />
             </Border>
-            <Label Text="Login automatically" />
-            <CheckBox x:Name="CheckBox1" IsChecked="False" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="Center" />
+            <StackLayout>
+
+                <Label Text="Login automatically" TextColor="Black" HorizontalOptions="Center" />
+                <CheckBox x:Name="CheckBox1" IsChecked="False" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="Center" />
+
+            </StackLayout>
+            
             <Button Text="Log In"
                     Command="{Binding LoginCommand}"
                     VerticalOptions="Center"
