@@ -80,7 +80,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             
 
             app.UseHttpsRedirection();
-            
+
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.MapControllers();
