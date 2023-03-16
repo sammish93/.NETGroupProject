@@ -10,6 +10,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
+		public string Password { get; set; }
 	}
 }
 

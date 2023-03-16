@@ -50,18 +50,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
                         mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
                     }
                 ));
-                builder.Services.AddDbContext<UserAccountContext>(options => options.UseMySql(
-                    connectionString,
-                    new MySqlServerVersion(new Version(8, 0, 32)),
-                    mysqlOptions =>
-                    {
-                        mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
-                    }
-                ));
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 // Development machines using Linux can do something here.
             }
+
+            // Just to test Microsoft.Identity
+            var connectIdentity = builder.Configuration.GetConnectionString("MySqlConnectionIdentity");
+
+            builder.Services.AddDbContext<UserIdentityContext>(o => o.UseMySql(
+                connectIdentity, new MySqlServerVersion(new Version(8, 0, 32)),
+                mysqlOptions => mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore)));
 
 
             builder.Services.AddEndpointsApiExplorer();
