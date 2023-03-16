@@ -3,6 +3,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
 {
 	public class ProxySettings
 	{
+        // Url for login
+        public string LoginVerification { get; set; }
+
         // Urls for users
         public string GetUsers { get; set; }
         public string GetUserById { get; set; }

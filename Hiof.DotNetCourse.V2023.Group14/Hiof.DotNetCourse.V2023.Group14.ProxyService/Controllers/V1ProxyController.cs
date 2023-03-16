@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using System.Text;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 			_httpClient = httpClientFactory.CreateClient();
 			_apiUrls = urls;
 		}
+
+		[HttpPost("login/[action]")]
+		public async Task<IActionResult> Verification(V1LoginInfo info)
+		{
+			var url = _apiUrls.Value.LoginVerification;
+			var content = SerializeToJsonString(info);
+
+			var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.ReasonPhrase);
+        }
 
 
 		[HttpGet("users/[action]")]
