@@ -17,6 +17,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
     public class LoginViewModel : BaseViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
+        // NOTE !!!!!!!!!!! "https://localhost:7268/proxy/1.0" !!!!!!!! once login/verification is in the proxy
         private readonly string _apiBaseUrl = "https://localhost:7021/api/1.0";
 
         private string _username;

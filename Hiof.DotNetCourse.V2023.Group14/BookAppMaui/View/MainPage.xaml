@@ -8,11 +8,56 @@
         <BackButtonBehavior IsVisible="False"/>
     </Shell.BackButtonBehavior>
 
-    <VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <CollectionView ItemsSource="{Binding Books}"
+                ItemsLayout="HorizontalList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Row="0"
+                       Source="{Binding ImageLinks[thumbnail]}"
+                       Aspect="AspectFill"
+                       HeightRequest="60"
+                       WidthRequest="60" />
+                        <Label Grid.Row="1"
+                       Text="{Binding Title}"
+                       FontAttributes="Bold"
+                       LineBreakMode="TailTruncation"
+                       HorizontalOptions="Start" />
+                        <Label Grid.Row="2"
+                       Text="{Binding Authors[0]}"
+                       LineBreakMode="TailTruncation"
+                       FontAttributes="Italic"
+                       HorizontalOptions="End" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
         <Label 
+            Text=""
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            TextColor="Black"/>
+        <Label 
+            Grid.Row="1"
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             TextColor="Black"/>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

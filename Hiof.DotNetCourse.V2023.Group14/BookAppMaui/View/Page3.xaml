@@ -6,7 +6,7 @@
              x:DataType="viewmodel:Page3ViewModel"
              Title="Page3">
     <VerticalStackLayout>
-        <Button Text="Go To Page 2" Command="{Binding NavCommand}" />
+        
     </VerticalStackLayout>
     
 </ContentPage>
