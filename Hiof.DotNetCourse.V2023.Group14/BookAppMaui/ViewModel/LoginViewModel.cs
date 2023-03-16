@@ -22,7 +22,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private string _username;
         private string _password;
         private bool _isLoggingIn;
-        private bool _isSuccessLabelVisible;
 
         
 
@@ -44,11 +43,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set => SetProperty(ref _isLoggingIn, value);
         }
 
-        public bool IsSuccessLabelVisible
-        {
-            get => _isSuccessLabelVisible;
-            set => SetProperty(ref _isSuccessLabelVisible, value);
-        }
 
         public ICommand LoginCommand => new Command(async () => await LoginAsync());
 
@@ -70,19 +64,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
 
                 {
-                    // IsSuccessLabelVisible = true;
-                   // Preferences.Set("UserIsLoggedIn", true);
-
-                    loginUrl = $"{_apiBaseUrl}/users/getUserByUserName?userName={Username}";
-
-                    HttpResponseMessage result = await _httpClient.GetAsync(loginUrl);
-                    var responseString = await result.Content.ReadAsStringAsync();
-
-                    V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
-
-                    
-                    Shell.Current.BindingContext = new AppShellViewModel(user);
-                    await Shell.Current.GoToAsync("///home");
+                    //Preferences.Set("UserIsLoggedIn", true);
+                     Application.Current.MainPage = new AppShell();
+                   
                 }
                 else
                 {
