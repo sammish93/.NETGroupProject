@@ -24,6 +24,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private bool _isLoggingIn;
         private bool _isSuccessLabelVisible;
 
+        
+
         public string Username
         {
             get => _username;
@@ -69,7 +71,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 {
                     // IsSuccessLabelVisible = true;
-                    //Preferences.Set("UserIsLoggedIn", true);
+                   // Preferences.Set("UserIsLoggedIn", true);
 
                     loginUrl = $"{_apiBaseUrl}/users/getUserByUserName?userName={Username}";
 
@@ -78,7 +80,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                     V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
 
-
+                    
                     Shell.Current.BindingContext = new AppShellViewModel(user);
                     await Shell.Current.GoToAsync(nameof(MainPage));
                 }
@@ -115,6 +117,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await Shell.Current.GoToAsync(nameof(SignupPage));
         }
 
+  
         private Task DisplayAlert(string v1, string v2, string v3)
         {
             return Task.CompletedTask;

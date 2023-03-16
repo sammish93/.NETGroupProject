@@ -10,4 +10,21 @@ public partial class LogInPage : ContentPage
 		this.BindingContext = new LoginViewModel();
 
 	}
+
+    private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+		
+		
+		
+		if(e.Value == true)
+		{
+            LoginViewModel loginView = (LoginViewModel)this.BindingContext;
+            loginView.Username = "JinkxMonsoon";
+            loginView.Password = "Itismonsoonseason1!";
+        }
+		
+			
+        
+		
+    }
 }
