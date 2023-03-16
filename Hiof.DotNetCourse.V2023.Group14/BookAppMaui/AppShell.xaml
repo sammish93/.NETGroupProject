@@ -71,7 +71,7 @@
     <FlyoutItem Title="Library"
                 Icon="book_alt.png">
         <ShellContent
-                 ContentTemplate="{DataTemplate view:Page2}"
+                 ContentTemplate="{DataTemplate view:LibraryPage}"
                  Route="library"
                  Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
