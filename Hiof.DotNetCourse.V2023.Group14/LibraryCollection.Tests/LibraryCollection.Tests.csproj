@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.APICommunicatorService\Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.csproj" />
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj" />
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService\Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.csproj" />
   </ItemGroup>

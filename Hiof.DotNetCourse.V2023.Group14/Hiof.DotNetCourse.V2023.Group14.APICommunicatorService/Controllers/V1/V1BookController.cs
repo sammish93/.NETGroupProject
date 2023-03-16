@@ -19,12 +19,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1
         // string exampleString = _settings.Value.DefaultSettings;
         private readonly IOptions<ApiCommunicatorSettings> _settings;
 
+        public ILogger<V1BookController> Object { get; }
+
         public V1BookController(ILogger<V1BookController> logger, IOptions<ApiCommunicatorSettings> settings)
         {
             _logger = logger;
             _settings = settings;
         }
-        
+
+        public V1BookController(ILogger<V1BookController> @object)
+        {
+            Object = @object;
+        }
+
         [HttpGet("getBookIsbn")]
         public async Task<ActionResult> Get(string isbn)
         {
