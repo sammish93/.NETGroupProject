@@ -130,8 +130,8 @@
     </ShellItem>
 
     <ShellItem Title="Signup" 
-               
-               Route="signup">
+               Route="signup"
+               FlyoutItemIsVisible="False">
         <ShellContent
           ContentTemplate="{DataTemplate view:SignupPage}"/>
     </ShellItem>
