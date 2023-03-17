@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
     {
         // Books published before 2008 don't have an ISBN 13 number.
         // Important that ISBNs are string in the case of one beginning with 0.
-        public IDictionary<string, string> IndustryIdentifiers { get; }
+        public IDictionary<string, string>? IndustryIdentifiers { get; }
         public string Language { get; }
         public string Title { get; }
         // One book can have many authors.
@@ -21,7 +22,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public DateOnly PublishedDate { get; }
         public string Description { get; }
         public int PageCount { get; }
-        public IList<string> Categories { get; }
+        public IList<string>? Categories { get; }
         public IDictionary<string, string> ImageLinks { get; }
 
 
@@ -46,17 +47,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             dynamic? jsonObject = JsonConvert.DeserializeObject(jsonString);
 
             // Assigns the relevant ISBN numbers to an IndustryIdentifiers Dictionary.
-            var jArrayIndustryIdentifiers = jsonObject.volumeInfo["industryIdentifiers"];
+            var jArrayIndustryIdentifiers = jsonObject?.volumeInfo["industryIdentifiers"];
             var industryIdentifiers = new Dictionary<string, string>();
-            foreach (JObject jObjectIndustryIdentifier in jArrayIndustryIdentifiers)
+            if (jArrayIndustryIdentifiers != null)
             {
-                string? type = (string)jObjectIndustryIdentifier["type"];
-                string? identifier = (string)jObjectIndustryIdentifier["identifier"];
-                if (type != null && identifier != null)
+                foreach (JObject jObjectIndustryIdentifier in jArrayIndustryIdentifiers)
                 {
-                    industryIdentifiers.Add(type, identifier);
+                    string? type = (string)jObjectIndustryIdentifier["type"];
+                    string? identifier = (string)jObjectIndustryIdentifier["identifier"];
+                    if (type != null && identifier != null)
+                    {
+                        industryIdentifiers.Add(type, identifier);
+                    }
                 }
             }
+            
             IndustryIdentifiers = industryIdentifiers;
 
             // Publication language.
@@ -79,10 +84,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 
             // Date of publish. DateOnly.Parse() requires both a year and a month. If only a year is supplied then "-01" is automatically added to the string.
             string dateBefore = jsonObject.volumeInfo["publishedDate"];
-            if (dateBefore.Length == 4)
+            if (dateBefore.IsNullOrEmpty())
+            {
+                dateBefore = "1234";
+            }
+            if (!dateBefore.IsNullOrEmpty() && dateBefore.Length == 4)
             {
                 dateBefore = dateBefore + "-01";
-            }
+            } 
             PublishedDate = DateOnly.Parse(dateBefore);
 
             // Description.
@@ -94,10 +103,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             // Categories/Genres. One book can have several categories.
             var jArrayCategories = jsonObject.volumeInfo["categories"];
             var categories = new List<string>();
-            foreach (string category in jArrayCategories)
+            if (jArrayCategories != null)
             {
-                categories.Add(category);
+                foreach (string category in jArrayCategories)
+                {
+                    categories.Add(category);
+                }
             }
+            
             Categories = categories;
 
             // Thumbnails for usage with the Gui.

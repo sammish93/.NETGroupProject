@@ -1,4 +1,6 @@
-﻿namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
+﻿using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
+
+namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
 {
     public partial class MainPage : ContentPage
     { 
@@ -7,8 +9,21 @@
         public MainPage()
         {
             InitializeComponent();
+            this.BindingContext = new MainPageViewModel();
         }
 
-       
+        protected override async void OnAppearing()
+        {
+
+            var model = BindingContext as MainPageViewModel;
+
+            if (model != null)
+            {
+                await model.populateBooks();
+            }
+            
+            base.OnAppearing();
+        }
+
     }
 }

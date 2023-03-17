@@ -76,12 +76,6 @@
                     BackgroundColor="White"
                     
              />
-            <Label x:Name="SuccessLabel"
-                   Text="Login success!"
-                   IsVisible="{Binding IsSuccessLabelVisible}"
-                   TextColor="Black"/>
-            
-
         </StackLayout>
         <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
             <Label Text="Don't have account?" TextColor="Gray" TextDecorations="Underline" />

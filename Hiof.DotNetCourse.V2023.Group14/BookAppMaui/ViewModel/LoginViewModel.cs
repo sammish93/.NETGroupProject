@@ -17,12 +17,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
     public class LoginViewModel : BaseViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
+        // NOTE !!!!!!!!!!! "https://localhost:7268/proxy/1.0" !!!!!!!! once login/verification is in the proxy
         private readonly string _apiBaseUrl = "https://localhost:7021/api/1.0";
 
         private string _username;
         private string _password;
         private bool _isLoggingIn;
-        private bool _isSuccessLabelVisible;
 
         
 
@@ -44,11 +44,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set => SetProperty(ref _isLoggingIn, value);
         }
 
-        public bool IsSuccessLabelVisible
-        {
-            get => _isSuccessLabelVisible;
-            set => SetProperty(ref _isSuccessLabelVisible, value);
-        }
 
         public ICommand LoginCommand => new Command(async () => await LoginAsync());
 
@@ -70,9 +65,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
 
                 {
-                    // IsSuccessLabelVisible = true;
-                   // Preferences.Set("UserIsLoggedIn", true);
-
+                    //Preferences.Set("UserIsLoggedIn", true);
                     loginUrl = $"{_apiBaseUrl}/users/getUserByUserName?userName={Username}";
 
                     HttpResponseMessage result = await _httpClient.GetAsync(loginUrl);
@@ -80,7 +73,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                     V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
 
-                    
+
                     Shell.Current.BindingContext = new AppShellViewModel(user);
                     await Shell.Current.GoToAsync("///home");
                 }
