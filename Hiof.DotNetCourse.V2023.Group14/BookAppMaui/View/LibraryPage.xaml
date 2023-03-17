@@ -2,38 +2,38 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.LibraryPage"
+             xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
+             xmlns:model="clr-namespace:Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;assembly=Hiof.DotNetCourse.V2023.Group14.ClassLibrary"
              Title="LibraryPage"
              BackgroundColor="White">
-    <VerticalStackLayout>
-        <Label Text="Your books" TextColor="Black" Margin="10" FontSize="16"/>
-        <ListView HasUnevenRows="True">
-            <ListView.ItemsSource>
-                <!--change the type to book?-->
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>First book</x:String>
-                    <x:String>second book</x:String>
-                    <x:String>First book</x:String>
-                </x:Array>
-            </ListView.ItemsSource>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout>
-                            <Frame
-                                Margin="10"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                HeightRequest="100"
-                                BorderColor="Black">
-                                <Label Text="{Binding .}"/>
-                            </Frame>
-                        </StackLayout>
-                    </ViewCell>
-                    
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            
-        </ListView>
+    
+    <Grid
+        ColumnDefinitions="*,*"
+        ColumnSpacing="5"
         
-    </VerticalStackLayout>
+        RowDefinitions="*,Auto"
+        RowSpacing="1"
+        >
+        <Label Text="Your books" TextColor="Green" Padding="10" Margin="10"/>
+        <CollectionView 
+            Grid.ColumnSpan ="2"
+            ItemsSource="{Binding ReadBooks}"
+            SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Frame HeightRequest="100" Style="{StaticResource CardView}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:LibraryPageViewModel}}}"
+                                    CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
+                            <!--Add book image stuff here later-->
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+    
 </ContentPage>
