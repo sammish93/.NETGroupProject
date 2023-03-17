@@ -129,6 +129,13 @@
           ContentTemplate="{DataTemplate view:MainPage}"/>
     </ShellItem>
 
+    <ShellItem Title="Signup" 
+               
+               Route="signup">
+        <ShellContent
+          ContentTemplate="{DataTemplate view:SignupPage}"/>
+    </ShellItem>
+
 
     <!--
     <ShellItem Route="login" x:Name="MyLogin">

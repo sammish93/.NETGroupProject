@@ -114,7 +114,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         private async Task SignupAsync()
         {
-            await Shell.Current.GoToAsync(nameof(SignupPage));
+            await Shell.Current.GoToAsync("///signup");
         }
 
   

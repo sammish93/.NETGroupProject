@@ -4,10 +4,36 @@
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.LibraryPage"
              Title="LibraryPage"
              BackgroundColor="White">
-    <Grid>
-        <Label Text="Books List" TextColor="Black"/>
-        <CarouselView>
+    <VerticalStackLayout>
+        <Label Text="Your books" TextColor="Black" Margin="10" FontSize="16"/>
+        <ListView HasUnevenRows="True">
+            <ListView.ItemsSource>
+                <!--change the type to book?-->
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>First book</x:String>
+                    <x:String>second book</x:String>
+                    <x:String>First book</x:String>
+                </x:Array>
+            </ListView.ItemsSource>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <Frame
+                                Margin="10"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                HeightRequest="100"
+                                BorderColor="Black">
+                                <Label Text="{Binding .}"/>
+                            </Frame>
+                        </StackLayout>
+                    </ViewCell>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
             
-        </CarouselView>
-    </Grid>
+        </ListView>
+        
+    </VerticalStackLayout>
 </ContentPage>
