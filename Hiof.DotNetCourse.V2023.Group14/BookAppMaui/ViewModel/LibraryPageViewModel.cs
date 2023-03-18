@@ -11,7 +11,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
-    internal class LibraryPageViewModel : BaseViewModel
+    public class LibraryPageViewModel : BaseViewModel
     {
 
         private readonly HttpClient _httpClient = new HttpClient();
