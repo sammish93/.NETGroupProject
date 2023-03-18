@@ -45,7 +45,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter E-Mail"
-                   Text=""
+                   Text="{Binding Email, Mode=TwoWay}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
@@ -67,7 +67,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter Password"
-                   Text=""
+                   Text="{Binding Password, Mode=TwoWay}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
