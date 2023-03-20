@@ -252,7 +252,7 @@
 
                 <Label 
                     Grid.Row="0"
-                    Text="{Binding Path='LoggedInUser.UserName', StringFormat='Recent Comments for {0}'}"
+                    Text="{Binding Path='LoggedInUser.UserName', StringFormat='Recent Comments for {0}:'}"
                     VerticalOptions="Center" 
                     HorizontalOptions="Start"
                     TextColor="Black"
