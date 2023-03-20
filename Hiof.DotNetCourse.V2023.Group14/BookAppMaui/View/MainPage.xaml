@@ -81,14 +81,14 @@
 
             <Label 
             Grid.Row="2"
-            Text="Recent books read:"
+            Text="Books recently added to your library:"
             VerticalOptions="Center" 
             HorizontalOptions="Start"
             Padding="5"
             TextColor="Black"
             BackgroundColor="Green"/>
 
-            <CollectionView ItemsSource="{Binding Books}"
+            <CollectionView ItemsSource="{Binding RecentlyReadBooks}"
                         ItemsLayout="HorizontalList"
                         Grid.Row="3"
                         BackgroundColor="Green">
@@ -135,7 +135,7 @@
                 TextColor="Black"
                 BackgroundColor="Green"/>
 
-            <CollectionView ItemsSource="{Binding Books}"
+            <CollectionView ItemsSource="{Binding NearbyUsers}"
                         ItemsLayout="HorizontalList"
                         Grid.Row="5"
                         BackgroundColor="Green">
@@ -151,10 +151,10 @@
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0"
-                                Source="{Binding ImageLinks[thumbnail]}"
+                                Source="portrait.png"
                                 Aspect="AspectFit"/>
                             <Label Grid.Row="1"
-                               Text="{Binding Title}"
+                               Text="{Binding UserName}"
                                FontAttributes="Bold"
                                LineBreakMode="CharacterWrap"
                                HorizontalOptions="Center" 
@@ -162,7 +162,7 @@
                                HorizontalTextAlignment="Center" 
                                VerticalTextAlignment="Center"/>
                             <Label Grid.Row="2"
-                               Text="{Binding Authors[0]}"
+                               Text="{Binding FirstName}"
                                LineBreakMode="CharacterWrap"
                                FontAttributes="Italic"
                                HorizontalOptions="Center" 

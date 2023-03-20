@@ -22,6 +22,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
             if (model != null)
             {
                 await model.PopulateBooks();
+                await model.PopulateRecentlyReadBooks();
+                await model.PopulateNearbyUsers();
             }
 
             base.OnAppearing();

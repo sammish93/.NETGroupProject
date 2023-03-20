@@ -35,6 +35,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             Books = books;
         }
 
+
         // Blank constructor needed for APICommunicatorService.V1BookController.
         public V1BooksDto()
         {
