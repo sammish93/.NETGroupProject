@@ -7,7 +7,7 @@
     xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="MyAppShell"
-    BackgroundColor="White"
+    BackgroundColor="Red"
     FlyoutBackgroundColor="BlanchedAlmond"
     TitleColor="SaddleBrown"
     ForegroundColor="SaddleBrown" Padding="10,0,0,0">
@@ -76,6 +76,7 @@
                     CornerRadius="50"
                     Source="messages.png"
                     HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                    Command="{Binding MessagesButtonCommand}"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"/>
             <ImageButton 
@@ -83,6 +84,7 @@
                     Grid.Row="1"
                     CornerRadius="50"
                     HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                    Command="{Binding ProfileButtonCommand}"
                     Source="default_display_picture.png"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"/>
@@ -128,12 +130,7 @@
         <ShellContent
           ContentTemplate="{DataTemplate view:MainPage}"/>
     </ShellItem>
-    <ShellItem Title="Signup" 
-               FlyoutItemIsVisible="False"
-               Route="signup">
-        <ShellContent
-          ContentTemplate="{DataTemplate view:SignupPage}"/>
-    </ShellItem>
+
 
     <ShellItem Title="Signup" 
                Route="signup"
@@ -179,7 +176,7 @@
                 Icon="messages.png">
         <ShellContent
                  ContentTemplate="{DataTemplate view:Page2}"
-                 Route="account"
+                 Route="messages"
                  Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
 

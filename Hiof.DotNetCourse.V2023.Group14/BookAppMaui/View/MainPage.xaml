@@ -8,56 +8,322 @@
         <BackButtonBehavior IsVisible="False"/>
     </Shell.BackButtonBehavior>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
+    <Grid
+        Margin="5"
+        ColumnSpacing="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
 
-        <CollectionView ItemsSource="{Binding Books}"
-                ItemsLayout="HorizontalList">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="3*" />
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70" />
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Row="0"
-                       Source="{Binding ImageLinks[thumbnail]}"
-                       Aspect="AspectFill"
-                       HeightRequest="60"
-                       WidthRequest="60" />
-                        <Label Grid.Row="1"
-                       Text="{Binding Title}"
-                       FontAttributes="Bold"
-                       LineBreakMode="TailTruncation"
-                       HorizontalOptions="Start" />
-                        <Label Grid.Row="2"
-                       Text="{Binding Authors[0]}"
-                       LineBreakMode="TailTruncation"
-                       FontAttributes="Italic"
-                       HorizontalOptions="End" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <Grid
+            Grid.Column="0"
+            RowSpacing="5"
+            ColumnSpacing="0"
+            Padding="5"
+            BackgroundColor="LightGreen">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
 
-        <Label 
-            Text=""
+
+            <Label 
+            Grid.Row="0"
+            Text="Books recommended based on your current library:"
             VerticalOptions="Center" 
-            HorizontalOptions="Center"
-            TextColor="Black"/>
-        <Label 
-            Grid.Row="1"
-            Text="Welcome to .NET MAUI!"
+            HorizontalOptions="Start"
+            Padding="5"
+            TextColor="Black"
+            BackgroundColor="Green"/>
+
+            <CollectionView ItemsSource="{Binding Books}"
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="1"
+                        BackgroundColor="Green">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0"
+                               Source="{Binding ImageLinks[thumbnail]}"
+                               Aspect="AspectFit"/>
+                            <Label Grid.Row="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                            <Label Grid.Row="2"
+                               Text="{Binding Authors[0]}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label 
+            Grid.Row="2"
+            Text="Recent books read:"
             VerticalOptions="Center" 
-            HorizontalOptions="Center"
-            TextColor="Black"/>
+            HorizontalOptions="Start"
+            Padding="5"
+            TextColor="Black"
+            BackgroundColor="Green"/>
+
+            <CollectionView ItemsSource="{Binding Books}"
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="3"
+                        BackgroundColor="Green">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0"
+                                Source="{Binding ImageLinks[thumbnail]}"
+                                Aspect="AspectFit"/>
+                            <Label Grid.Row="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                            <Label Grid.Row="2"
+                               Text="{Binding Authors[0]}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label 
+                Grid.Row="4"
+                Text="Hot singles in your area (Users in the same city):"
+                VerticalOptions="Center" 
+                HorizontalOptions="Start"
+                Padding="5"
+                TextColor="Black"
+                BackgroundColor="Green"/>
+
+            <CollectionView ItemsSource="{Binding Books}"
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="5"
+                        BackgroundColor="Green">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0"
+                                Source="{Binding ImageLinks[thumbnail]}"
+                                Aspect="AspectFit"/>
+                            <Label Grid.Row="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                            <Label Grid.Row="2"
+                               Text="{Binding Authors[0]}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+        
+        <Grid
+            Grid.Column="1"
+            BackgroundColor="LightBlue"
+            RowSpacing="5"
+            ColumnSpacing="0"
+            Padding="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+
+            <StackLayout
+                BackgroundColor="DarkBlue"
+                Grid.Row="0">
+                <CarouselView ItemsSource="{Binding Books}"
+                              IndicatorView="indicatorView"
+                              HeightRequest="100">
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                  HeightRequest="100">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image
+                                       Source="{Binding ImageLinks[thumbnail]}"
+                                       Aspect="AspectFit"
+                                       HeightRequest="150"
+                                       Grid.Column="0"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2*"/>
+                                        <RowDefinition Height="1*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Column="0"
+                                       Grid.Row="0"
+                                       Text="{Binding Title}"
+                                       FontAttributes="Bold"
+                                       LineBreakMode="CharacterWrap"
+                                       HorizontalOptions="Center" 
+                                       FontSize="11" 
+                                       HorizontalTextAlignment="Center" 
+                                       VerticalTextAlignment="Center"/>
+                                    <Label Grid.Column="1"
+                                       Grid.Row="1"
+                                       Text="{Binding Authors[0]}"
+                                       LineBreakMode="CharacterWrap"
+                                       FontAttributes="Italic"
+                                       HorizontalOptions="Center" 
+                                       FontSize="12" 
+                                       HorizontalTextAlignment="Center"/>
+                                </Grid>
+
+                            </Grid>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+                <IndicatorView x:Name="indicatorView"
+                   IndicatorColor="LightGray"
+                   SelectedIndicatorColor="DarkGray"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="End"/>
+            </StackLayout>
+
+
+            <Grid 
+                Grid.Row="1"
+                BackgroundColor="DarkBlue"
+                RowSpacing="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Label 
+                    Grid.Row="0"
+                    Text="{Binding Path='LoggedInUser.UserName', StringFormat='Recent Comments for {0}'}"
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Start"
+                    TextColor="Black"
+                    BackgroundColor="LightCoral"/>
+
+                <CollectionView ItemsSource="{Binding Books}"
+                                ItemsLayout="VerticalList"
+                                Grid.Row="1"
+                                BackgroundColor="LightCoral">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                RowSpacing="5"
+                                ColumnSpacing="5"
+                                Margin="5"
+                                BackgroundColor="Orange">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image 
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    WidthRequest="30"
+                                    HeightRequest="30"
+                                    Source="portrait.png"
+                                    Aspect="AspectFit"
+                                    VerticalOptions="Start"/>
+                                <Label 
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Text="Username"
+                                    LineBreakMode="CharacterWrap"
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Start" 
+                                    FontSize="20" 
+                                    HorizontalTextAlignment="Start"/>
+                                <Label 
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    Text="{Binding Title}"
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Start" 
+                                    VerticalOptions="Center" 
+                                    FontSize="12" 
+                                    HorizontalTextAlignment="Center" 
+                                    VerticalTextAlignment="Start"/>
+                                <Label 
+                                    Grid.Column="1"
+                                    Grid.Row="2"
+                                    Text="{Binding Description}"
+                                    LineBreakMode="CharacterWrap"
+                                    FontAttributes="Italic"
+                                    HorizontalOptions="Start" 
+                                    FontSize="11" 
+                                    HorizontalTextAlignment="Start"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+            
+
+
+        </Grid>
     </Grid>
+    
 </ContentPage>

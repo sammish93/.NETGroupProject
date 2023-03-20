@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Net;
 using Microsoft.IdentityModel.Tokens;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -21,15 +22,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         public ObservableCollection<V1Book> Books { get; set; }
+        public V1User LoggedInUser { get; set; }
 
         public MainPageViewModel()
         {
             Books = new ObservableCollection<V1Book>();
+            LoggedInUser = App.LoggedInUser;
         }
 
-        public ICommand PopulateBooksCommand => new Command(async () => await populateBooks());
+        //public ICommand PopulateBooksCommand => new Command(async () => await populateBooks());
 
-        public async Task populateBooks()
+        public async Task PopulateBooks()
         {
             
             try
@@ -58,5 +61,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             }
         }
+
     }
 }
