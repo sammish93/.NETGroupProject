@@ -74,9 +74,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
 
                     var currentViewModel = Shell.Current.BindingContext as AppShellViewModel;
-                    currentViewModel.User = user;
                     App.LoggedInUser = user;
-                    //Shell.Current.BindingContext = new AppShellViewModel(user);
+                    Shell.Current.BindingContext = new AppShellViewModel(user);
                     await Shell.Current.GoToAsync("///home");
                 }
                 else

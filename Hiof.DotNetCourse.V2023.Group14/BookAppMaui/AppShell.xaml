@@ -62,6 +62,8 @@
                 x:Name="SearchBar"
                 Grid.Column="2"
                 Grid.Row="1"
+                SearchCommand="{Binding PerformSearch}"
+                SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
                 HeightRequest="{Binding Height, Source={x:Reference TitleRow}}"
                 WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
                 HorizontalOptions="End"
@@ -129,6 +131,12 @@
                Route="home">
         <ShellContent
           ContentTemplate="{DataTemplate view:MainPage}"/>
+    </ShellItem>
+
+    <ShellItem Title="Search Results" x:Name="MySearchPage"
+               Route="search">
+        <ShellContent
+          ContentTemplate="{DataTemplate view:SearchPage}"/>
     </ShellItem>
 
 

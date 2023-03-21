@@ -17,13 +17,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
         protected override async void OnAppearing()
         {
 
-            var model = BindingContext as MainPageViewModel;
+            var model = BindingContext as ViewModel.MainPageViewModel;
 
             if (model != null)
             {
-                //await model.PopulateBooks();
-                //await model.PopulateRecentlyReadBooks();
-                //await model.PopulateNearbyUsers();
                 await model.LoadAsync();
             }
 
