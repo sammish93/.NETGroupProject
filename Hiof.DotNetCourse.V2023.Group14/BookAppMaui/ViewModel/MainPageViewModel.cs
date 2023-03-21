@@ -25,8 +25,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public ObservableCollection<V1Book> Books { get; set; }
         public ObservableCollection<V1Book> RecentlyReadBooks { get; set; }
         public ObservableCollection<V1User> NearbyUsers { get; set; }
-        public double ReadingGoalSize { get; set; } = 12;
-        public double ReadingGoalTarget { get; set; } = 20;
+        public int ReadingGoalSize { get; set; } = 12;
+        public int ReadingGoalTarget { get; set; } = 20;
         private bool _isBusy;
         public V1User LoggedInUser { get; set; }
 

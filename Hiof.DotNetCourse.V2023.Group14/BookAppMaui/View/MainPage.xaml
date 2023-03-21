@@ -337,11 +337,11 @@
         </Grid>
 
         <ActivityIndicator 
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                IsRunning="{Binding IsBusy}"
-                Color="LightCoral"
-                Scale="3"/>
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            IsRunning="{Binding IsBusy}"
+            Color="LightCoral"
+            Scale="3"/>
         
     </Grid>
     
