@@ -1,4 +1,5 @@
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using System.Web;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
@@ -19,7 +20,7 @@ public partial class SearchPage : ContentPage
     public SearchPage()
 	{
 		InitializeComponent();
-        this.BindingContext = new SearchPageViewModel("charles dickens");
+        this.BindingContext = new SearchPageViewModel(App.LoggedInUser);
     }
 
     protected override async void OnAppearing()
@@ -30,9 +31,7 @@ public partial class SearchPage : ContentPage
 
         if (model != null)
         {
-            await model.LoadAsync("hello");
+            await model.LoadAsync(App.SearchQuery);
         }
     }
-
-
 }

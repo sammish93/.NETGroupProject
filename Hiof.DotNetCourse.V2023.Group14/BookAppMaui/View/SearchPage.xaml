@@ -21,7 +21,7 @@
         <Label 
             Grid.Row="0"
             BackgroundColor="LightGreen"
-            Text="{Binding QueryString}"
+            Text="Your search results"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 

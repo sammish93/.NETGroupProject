@@ -7,6 +7,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
     public partial class App : Application
     {
         public static V1User LoggedInUser { get; set; }
+        public static string SearchQuery { get; set; }
 
         public App()
         {

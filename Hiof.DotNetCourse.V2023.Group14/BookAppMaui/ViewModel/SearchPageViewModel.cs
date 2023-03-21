@@ -17,6 +17,8 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Web;
+using CommunityToolkit.Mvvm.Messaging;
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.Messages;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -29,6 +31,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public ObservableCollection<V1User> Users { get; set; }
         private bool _isBusy;
         public string QueryString { get; set; } = "oscar wilde";
+        public V1User User { get; set; }
 
 
         public bool IsBusy
@@ -41,12 +44,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public SearchPageViewModel(string query)
+        public SearchPageViewModel(V1User user)
         {
             BooksBasedOnTitle = new ObservableCollection<V1Book>();
             BooksBasedOnAuthor = new ObservableCollection<V1Book>();
             Users = new ObservableCollection<V1User>();
-            QueryString = query;
+            User = user;
         }
 
         public async Task PopulateBookTitleResults(string query)
@@ -147,13 +150,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task LoadAsync(string queryString)
+        public async Task LoadAsync(string searchQuery)
         {
             IsBusy = true;
 
-            await PopulateBookTitleResults(QueryString);
-            await PopulateBookAuthorResults(QueryString);
-            await PopulateUserResults(QueryString);
+            await PopulateBookTitleResults(searchQuery);
+            await PopulateBookAuthorResults(searchQuery);
+            await PopulateUserResults(searchQuery);
 
             IsBusy = false;
         }

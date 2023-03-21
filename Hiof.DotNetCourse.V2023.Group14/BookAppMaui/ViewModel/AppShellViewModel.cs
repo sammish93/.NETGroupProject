@@ -13,10 +13,12 @@ using System.Windows.Input;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CommunityToolkit.Mvvm.Messaging;
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.Messages;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
-    public class AppShellViewModel : BaseViewModel, INotifyPropertyChanged
+    public partial class AppShellViewModel : BaseViewModel, INotifyPropertyChanged
     {
         private V1User _user;
         private string _titleCurrentPage = "defaultTitle";
@@ -36,7 +38,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public AppShellViewModel()
         {
-
         }
 
         public AppShellViewModel(V1User user)
@@ -54,6 +55,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task NavigateToPage(string query)
         {
+            App.SearchQuery = query;
+            await Shell.Current.GoToAsync($"///home");
             await Shell.Current.GoToAsync($"///search?query={query}");
         }
         private async Task NavButtonAsync(string root)
