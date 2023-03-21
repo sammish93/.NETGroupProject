@@ -25,7 +25,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public ObservableCollection<V1Book> Books { get; set; }
         public ObservableCollection<V1Book> RecentlyReadBooks { get; set; }
         public ObservableCollection<V1User> NearbyUsers { get; set; }
+        public double ReadingGoalSize { get; set; } = 12;
+        public double ReadingGoalTarget { get; set; } = 20;
+        private bool _isBusy;
         public V1User LoggedInUser { get; set; }
+
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
 
         public MainPageViewModel()
         {
@@ -113,6 +126,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
 
             }
+            finally
+            {
+            }
         }
 
         public async Task PopulateNearbyUsers()
@@ -141,5 +157,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public async Task LoadAsync()
+        {
+            IsBusy = true;
+            await PopulateBooks();
+            await PopulateRecentlyReadBooks();
+            await PopulateNearbyUsers();
+            IsBusy = false;
+        }
     }
 }

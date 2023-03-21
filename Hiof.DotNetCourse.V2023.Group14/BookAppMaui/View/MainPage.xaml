@@ -2,12 +2,21 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.MainPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="Home"
              BackgroundColor="FloralWhite">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False"/>
     </Shell.BackButtonBehavior>
 
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:MultiMathExpressionConverter x:Key="MultiMathExpressionConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    
     <Grid
         Margin="5"
         ColumnSpacing="5">
@@ -183,62 +192,66 @@
             Padding="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="6*"/>
             </Grid.RowDefinitions>
 
-            <StackLayout
-                BackgroundColor="DarkBlue"
-                Grid.Row="0">
-                <CarouselView ItemsSource="{Binding Books}"
-                              IndicatorView="indicatorView"
-                              HeightRequest="100">
-                    <CarouselView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid
-                                  HeightRequest="100">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                </Grid.ColumnDefinitions>
-                                <Image
-                                       Source="{Binding ImageLinks[thumbnail]}"
-                                       Aspect="AspectFit"
-                                       HeightRequest="150"
-                                       Grid.Column="0"/>
-                                <Grid Grid.Column="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="2*"/>
-                                        <RowDefinition Height="1*"/>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Column="0"
-                                       Grid.Row="0"
-                                       Text="{Binding Title}"
-                                       FontAttributes="Bold"
-                                       LineBreakMode="CharacterWrap"
-                                       HorizontalOptions="Center" 
-                                       FontSize="11" 
-                                       HorizontalTextAlignment="Center" 
-                                       VerticalTextAlignment="Center"/>
-                                    <Label Grid.Column="1"
-                                       Grid.Row="1"
-                                       Text="{Binding Authors[0]}"
-                                       LineBreakMode="CharacterWrap"
-                                       FontAttributes="Italic"
-                                       HorizontalOptions="Center" 
-                                       FontSize="12" 
-                                       HorizontalTextAlignment="Center"/>
-                                </Grid>
 
-                            </Grid>
-                        </DataTemplate>
-                    </CarouselView.ItemTemplate>
-                </CarouselView>
-                <IndicatorView x:Name="indicatorView"
-                   IndicatorColor="LightGray"
-                   SelectedIndicatorColor="DarkGray"
-                   HorizontalOptions="Center" 
-                   VerticalOptions="End"/>
-            </StackLayout>
+            <Grid
+                Grid.Row="0"
+                BackgroundColor="LightCoral"
+                ColumnSpacing="5"
+                Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="book_alt.png"
+                       Aspect="AspectFit"
+                       Grid.Column="0"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Text="Your current reading goal"
+                           FontAttributes="Bold"
+                           LineBreakMode="CharacterWrap"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontSize="11" 
+                           HorizontalTextAlignment="Center" 
+                           VerticalTextAlignment="Center"/>
+                    <Label Grid.Column="1"
+                           Grid.Row="1"
+                           LineBreakMode="CharacterWrap"
+                           FontAttributes="Italic"
+                           HorizontalOptions="Center" 
+                           FontSize="12" 
+                           HorizontalTextAlignment="Center">
+                        <Label.Text>
+                            <MultiBinding StringFormat="You have read {0} out of {1} books! Great job.">
+                                <Binding Path="ReadingGoalSize"/>
+                                <Binding Path="ReadingGoalTarget"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
+                    <ProgressBar 
+                           Grid.Row="2"
+                           ProgressColor="Orange">
+                        <ProgressBar.Progress>
+                            <MultiBinding Converter='{StaticResource MultiMathExpressionConverter}' ConverterParameter='x0 / x1'>
+                                <Binding Path="ReadingGoalSize" />
+                                <Binding Path="ReadingGoalTarget" />
+                            </MultiBinding>
+                        </ProgressBar.Progress>
+                    </ProgressBar>
+                </Grid>
+                
+            </Grid>
+                       
 
 
             <Grid 
@@ -320,10 +333,17 @@
                 </CollectionView>
 
             </Grid>
-            
-
-
+           
         </Grid>
+
+        <ActivityIndicator 
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                IsRunning="{Binding IsBusy}"
+                Color="LightCoral"
+                Scale="3"/>
+        
     </Grid>
+    
     
 </ContentPage>
