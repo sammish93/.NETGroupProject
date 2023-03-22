@@ -70,7 +70,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 foreach (V1Book book in bookSearch.Books)
                 {
                     if (book.IndustryIdentifiers == null
-                        || (book.IndustryIdentifiers["ISBN_10"].IsNullOrEmpty() && book.IndustryIdentifiers["ISBN_13"].IsNullOrEmpty()))
+                        || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
                     {
                         continue;
                     }
@@ -106,7 +106,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 foreach (V1Book book in bookSearch.Books)
                 {
                     if (book.IndustryIdentifiers == null
-                        || (book.IndustryIdentifiers["ISBN_10"].IsNullOrEmpty() && book.IndustryIdentifiers["ISBN_13"].IsNullOrEmpty()))
+                        || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
                     {
                         continue;
                     }

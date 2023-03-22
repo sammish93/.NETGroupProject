@@ -118,7 +118,8 @@
     </Shell.FlyoutHeaderTemplate>
 
 
-    <ShellItem Title="Login" x:Name="MyLogin"
+    <ShellItem Title="Login" 
+               x:Name="MyLogin"
                Icon="home.png"
                Route="login"
                FlyoutItemIsVisible="False">
@@ -126,15 +127,18 @@
           ContentTemplate="{DataTemplate view:LogInPage}"/>
     </ShellItem>
     
-    <ShellItem Title="Home" x:Name="MyHomePage"
+    <ShellItem Title="Home" 
+               x:Name="MyHomePage"
                Icon="home.png"
                Route="home">
         <ShellContent
           ContentTemplate="{DataTemplate view:MainPage}"/>
     </ShellItem>
 
-    <ShellItem Title="Search Results" x:Name="MySearchPage"
-               Route="search">
+    <ShellItem Title="Search Results" 
+               x:Name="MySearchPage"
+               Route="search"
+               FlyoutItemIsVisible="False">
         <ShellContent
           ContentTemplate="{DataTemplate view:SearchPage}"/>
     </ShellItem>
