@@ -18,7 +18,6 @@ using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Web;
 using CommunityToolkit.Mvvm.Messaging;
-using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.Messages;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -44,12 +43,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public SearchPageViewModel(V1User user)
+        public SearchPageViewModel()
         {
             BooksBasedOnTitle = new ObservableCollection<V1Book>();
             BooksBasedOnAuthor = new ObservableCollection<V1Book>();
             Users = new ObservableCollection<V1User>();
-            User = user;
+            User = App.LoggedInUser;
         }
 
         public async Task PopulateBookTitleResults(string query)
