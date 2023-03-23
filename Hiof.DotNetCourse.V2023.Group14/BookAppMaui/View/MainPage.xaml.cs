@@ -27,5 +27,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
             base.OnAppearing();
         }
 
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            dynamicColumn.WidthRequest = width;
+            dynamicColumn.HeightRequest = height;
+        }
+
     }
 }

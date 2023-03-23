@@ -19,6 +19,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         {
             var window = base.CreateWindow(activationState);
 
+            // This code makes the GUI fixed to specific dimensions
+            /*
             const int newWidth = 1024;
             const int newHeight = 768;
 
@@ -32,6 +34,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 
             window.MinimumHeight = newHeight;
             window.MaximumWidth = newWidth;
+            */
 
             return window;
         }
