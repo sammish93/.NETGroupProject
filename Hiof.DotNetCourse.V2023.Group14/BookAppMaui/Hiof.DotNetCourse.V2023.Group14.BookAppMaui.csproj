@@ -85,6 +85,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\TemplatePage.xaml.cs">
+	    <DependentUpon>TemplatePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\SearchPage.xaml.cs">
 	    <DependentUpon>SearchPage.xaml</DependentUpon>
 	  </Compile>

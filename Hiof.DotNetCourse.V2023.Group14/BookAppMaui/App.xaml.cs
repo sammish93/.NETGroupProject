@@ -6,6 +6,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 {
     public partial class App : Application
     {
+        // Static variables used to pass data to ViewModels. 
+        // Use these to when you need to use a value in your onPageAppearing().
+        // MAUI doesn't have a way of retrieving a query (e.g. example?query=queryexample) from a route before calling a ContentPage constructor yet. 
         public static V1User LoggedInUser { get; set; }
         public static string SearchQuery { get; set; }
 

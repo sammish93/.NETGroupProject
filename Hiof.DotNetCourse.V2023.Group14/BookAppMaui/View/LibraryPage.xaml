@@ -5,7 +5,10 @@
              Title="LibraryPage"
              BackgroundColor="White">
     <VerticalStackLayout>
-        <Label Text="Your books" TextColor="Black" Margin="10" FontSize="16"/>
+        <Label Text="Your books"
+               TextColor="Black"
+               Margin="10"
+               FontSize="16" />
         <ListView HasUnevenRows="True">
             <ListView.ItemsSource>
                 <!--change the type to book?-->
@@ -19,21 +22,20 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout>
-                            <Frame
-                                Margin="10"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                HeightRequest="100"
-                                BorderColor="Black">
-                                <Label Text="{Binding .}"/>
+                            <Frame Margin="10"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   HeightRequest="100"
+                                   BorderColor="Black">
+                                <Label Text="{Binding .}" />
                             </Frame>
                         </StackLayout>
                     </ViewCell>
-                    
+
                 </DataTemplate>
             </ListView.ItemTemplate>
-            
+
         </ListView>
-        
+
     </VerticalStackLayout>
 </ContentPage>

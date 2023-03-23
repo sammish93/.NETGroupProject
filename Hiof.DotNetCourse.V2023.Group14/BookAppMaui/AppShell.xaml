@@ -1,95 +1,88 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui"
-    xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:Name="MyAppShell"
-    BackgroundColor="Red"
-    FlyoutBackgroundColor="BlanchedAlmond"
-    TitleColor="SaddleBrown"
-    ForegroundColor="SaddleBrown" Padding="10,0,0,0">
+<Shell x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui"
+       xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
+       xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+       x:Name="MyAppShell"
+       BackgroundColor="Red"
+       FlyoutBackgroundColor="BlanchedAlmond"
+       TitleColor="SaddleBrown"
+       ForegroundColor="SaddleBrown"
+       Padding="10,0,0,0">
 
     <!--MAUI Community Toolkit-->
     <Shell.Resources>
         <ResourceDictionary>
-            <toolkit:MathExpressionConverter x:Key="MathExpressionConverter"/>
+            <toolkit:MathExpressionConverter x:Key="MathExpressionConverter" />
         </ResourceDictionary>
     </Shell.Resources>
 
     <Shell.TitleView>
         <Grid ColumnSpacing="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="1*"
-                                  x:Name="TitleColumn"/>
+                                  x:Name="TitleColumn" />
                 <ColumnDefinition Width="5*"
-                                  x:Name="SearchColumn"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
+                                  x:Name="SearchColumn" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition 
-                    Height="1*"/>
-                <RowDefinition 
-                    Height="1*"
-                    x:Name="TitleRow"/>
-                <RowDefinition 
-                    Height="1*"/>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*"
+                               x:Name="TitleRow" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <ImageButton 
-                    Grid.Column="0"
-                    Grid.Row="1"
-                    CornerRadius="50"
-                    HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
-                    Command="{Binding HomeButtonCommand}"
-                    Source="home.png"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"/>
-            <Label 
-                Grid.Column="1"
-                Grid.Row="1"
-                Text="{Binding TitleCurrentPage}"
-                TextColor="White"
-                FontAttributes="Bold"
-                HorizontalOptions="Start"
-                HorizontalTextAlignment="Center"
-                VerticalTextAlignment="Center" 
-                FontAutoScalingEnabled="True"/>
-            <SearchBar
-                x:Name="SearchBar"
-                Grid.Column="2"
-                Grid.Row="1"
-                SearchCommand="{Binding PerformSearch}"
-                SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
-                HeightRequest="{Binding Height, Source={x:Reference TitleRow}}"
-                WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
-                HorizontalOptions="End"
-                Placeholder="Search"
-                PlaceholderColor="Red"
-                BackgroundColor="White"
-                TextColor="Red"
-                VerticalOptions="Center" FontAutoScalingEnabled="True"/>
-            <ImageButton 
-                    Grid.Column="3"
-                    Grid.Row="1"
-                    CornerRadius="50"
-                    Source="messages.png"
-                    HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
-                    Command="{Binding MessagesButtonCommand}"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"/>
-            <ImageButton 
-                    Grid.Column="4"
-                    Grid.Row="1"
-                    CornerRadius="50"
-                    HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
-                    Command="{Binding ProfileButtonCommand}"
-                    Source="default_display_picture.png"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"/>
+            <ImageButton Grid.Column="0"
+                         Grid.Row="1"
+                         CornerRadius="50"
+                         HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                         Command="{Binding HomeButtonCommand}"
+                         Source="home.png"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" />
+            <Label Grid.Column="1"
+                   Grid.Row="1"
+                   Text="{Binding TitleCurrentPage}"
+                   TextColor="White"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Start"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   FontAutoScalingEnabled="True" />
+            <SearchBar x:Name="SearchBar"
+                       Grid.Column="2"
+                       Grid.Row="1"
+                       SearchCommand="{Binding PerformSearch}"
+                       SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
+                       HeightRequest="{Binding Height, Source={x:Reference TitleRow}}"
+                       WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
+                       HorizontalOptions="End"
+                       Placeholder="Search"
+                       PlaceholderColor="Red"
+                       BackgroundColor="White"
+                       TextColor="Red"
+                       VerticalOptions="Center"
+                       FontAutoScalingEnabled="True" />
+            <ImageButton Grid.Column="3"
+                         Grid.Row="1"
+                         CornerRadius="50"
+                         Source="messages.png"
+                         HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                         Command="{Binding MessagesButtonCommand}"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" />
+            <ImageButton Grid.Column="4"
+                         Grid.Row="1"
+                         CornerRadius="50"
+                         HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                         Command="{Binding ProfileButtonCommand}"
+                         Source="default_display_picture.png"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" />
         </Grid>
     </Shell.TitleView>
 
@@ -97,8 +90,15 @@
         <DataTemplate>
             <Grid BackgroundColor="SandyBrown"
                   HeightRequest="150">
-                <Frame CornerRadius="50" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" VerticalOptions="Start"  Margin="10" IsClippedToBounds="True">
-                    <Image x:Name="DisplayPicture" Source="default_display_picture.png" ></Image>
+                <Frame CornerRadius="50"
+                       HeightRequest="100"
+                       WidthRequest="100"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Start"
+                       Margin="10"
+                       IsClippedToBounds="True">
+                    <Image x:Name="DisplayPicture"
+                           Source="default_display_picture.png"></Image>
                 </Frame>
                 <Label TextColor="SaddleBrown"
                        FontAttributes="Bold"
@@ -108,8 +108,8 @@
                        Padding="10">
                     <Label.Text>
                         <MultiBinding StringFormat="Hello, {0} {1}!">
-                            <Binding Path="User.FirstName"/>
-                            <Binding Path="User.LastName"/>
+                            <Binding Path="User.FirstName" />
+                            <Binding Path="User.LastName" />
                         </MultiBinding>
                     </Label.Text>
                 </Label>
@@ -118,37 +118,33 @@
     </Shell.FlyoutHeaderTemplate>
 
 
-    <ShellItem Title="Login" 
+    <ShellItem Title="Login"
                x:Name="MyLogin"
                Icon="home.png"
                Route="login"
                FlyoutItemIsVisible="False">
-        <ShellContent
-          ContentTemplate="{DataTemplate view:LogInPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate view:LogInPage}" />
     </ShellItem>
-    
-    <ShellItem Title="Home" 
+
+    <ShellItem Title="Home"
                x:Name="MyHomePage"
                Icon="home.png"
                Route="home">
-        <ShellContent
-          ContentTemplate="{DataTemplate view:MainPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate view:MainPage}" />
     </ShellItem>
 
-    <ShellItem Title="Search Results" 
+    <ShellItem Title="Search Results"
                x:Name="MySearchPage"
                Route="search"
                FlyoutItemIsVisible="False">
-        <ShellContent
-          ContentTemplate="{DataTemplate view:SearchPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate view:SearchPage}" />
     </ShellItem>
 
 
-    <ShellItem Title="Signup" 
+    <ShellItem Title="Signup"
                Route="signup"
                FlyoutItemIsVisible="False">
-        <ShellContent
-          ContentTemplate="{DataTemplate view:SignupPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate view:SignupPage}" />
     </ShellItem>
 
 
@@ -170,42 +166,37 @@
     <!--Add icons in the flyout items-->
     <FlyoutItem Title="Library"
                 Icon="book_alt.png">
-        <ShellContent
-                 ContentTemplate="{DataTemplate view:LibraryPage}"
-                 Route="library"
-                 Shell.FlyoutBehavior="Flyout"/>
+        <ShellContent ContentTemplate="{DataTemplate view:LibraryPage}"
+                      Route="library"
+                      Shell.FlyoutBehavior="Flyout" />
     </FlyoutItem>
 
     <FlyoutItem Title="Marketplace"
                 Icon="shop.png">
-        <ShellContent
-                 ContentTemplate="{DataTemplate view:Page2}"
-                 Route="marketplace"
-                 Shell.FlyoutBehavior="Flyout"/>
+        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}"
+                      Route="marketplace"
+                      Shell.FlyoutBehavior="Flyout" />
     </FlyoutItem>
 
     <FlyoutItem Title="Messages"
                 Icon="messages.png">
-        <ShellContent
-                 ContentTemplate="{DataTemplate view:Page2}"
-                 Route="messages"
-                 Shell.FlyoutBehavior="Flyout"/>
+        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}"
+                      Route="messages"
+                      Shell.FlyoutBehavior="Flyout" />
     </FlyoutItem>
 
     <FlyoutItem Title="Profile"
                 Icon="portrait.png">
-        <ShellContent
-                 ContentTemplate="{DataTemplate view:Page2}"
-                 Route="profile"
-                 Shell.FlyoutBehavior="Flyout"/>
+        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}"
+                      Route="profile"
+                      Shell.FlyoutBehavior="Flyout" />
     </FlyoutItem>
 
     <FlyoutItem Title="Settings"
                 Icon="settings.png">
-        <ShellContent
-                 ContentTemplate="{DataTemplate view:Page2}"
-                 Route="settings"
-                 Shell.FlyoutBehavior="Flyout"/>
+        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}"
+                      Route="settings"
+                      Shell.FlyoutBehavior="Flyout" />
     </FlyoutItem>
 
 
@@ -219,7 +210,7 @@
                        FontSize="14"
                        Margin="3"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center"/>
+                       VerticalTextAlignment="Center" />
             </Grid>
         </DataTemplate>
     </Shell.FlyoutFooterTemplate>

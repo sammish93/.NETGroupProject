@@ -9,78 +9,79 @@
              BackgroundColor="White"
              x:Name="Login"
              Shell.NavBarIsVisible="False">
-    
-    <VerticalStackLayout
-        Spacing="25" 
-            Padding="30,0" 
-            VerticalOptions="Center">
-        <Image
-            Source="books_icon.png"
-            BackgroundColor="White"
-            Margin="1"
-            HeightRequest="70" WidthRequest="70"
-            />
-        <StackLayout
-            Grid.Row ="2"
-            >
+
+    <VerticalStackLayout Spacing="25"
+                         Padding="30,0"
+                         VerticalOptions="Center">
+        <Image Source="books_icon.png"
+               BackgroundColor="White"
+               Margin="1"
+               HeightRequest="70"
+               WidthRequest="70" />
+        <StackLayout Grid.Row="2">
             <Border Stroke="Black"
                     StrokeThickness="1"
                     StrokeShape="Rectangle "
                     Background="white"
-                    HeightRequest="50" WidthRequest="200"
-                   
+                    HeightRequest="50"
+                    WidthRequest="200"
                     Padding="1"
                     Margin="5"
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter username"
-                   Text="{Binding Username}"
-                   TextColor="Black"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   IsTextPredictionEnabled="True"    
-               
-            />
+                       Text="{Binding Username}"
+                       TextColor="Black"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       IsTextPredictionEnabled="True" />
             </Border>
             <Border Stroke="Black"
                     StrokeThickness="1"
                     StrokeShape="Rectangle 40,0,0,40"
                     Background="white"
-                    HeightRequest="50" WidthRequest="200"
+                    HeightRequest="50"
+                    WidthRequest="200"
                     Padding="1"
                     Margin="5"
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter Password"
-                   Text="{Binding Password}"
-                   
-                   TextColor="Black"
-                   MaxLength="20"
-                   IsPassword="True"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-            />
+                       Text="{Binding Password}"
+                       TextColor="Black"
+                       MaxLength="20"
+                       IsPassword="True"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" />
             </Border>
             <StackLayout>
 
-                <Label Text="Login automatically" TextColor="Black" HorizontalOptions="Center" />
-                <CheckBox x:Name="CheckBox1" IsChecked="False" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="Center" />
+                <Label Text="Login automatically"
+                       TextColor="Black"
+                       HorizontalOptions="Center" />
+                <CheckBox x:Name="CheckBox1"
+                          IsChecked="False"
+                          CheckedChanged="CheckBox_CheckedChanged"
+                          HorizontalOptions="Center" />
 
             </StackLayout>
-            
+
             <Button Text="Log In"
                     Command="{Binding LoginCommand}"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    BackgroundColor="White"
-                    
-             />
+                    BackgroundColor="White" />
         </StackLayout>
-        <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
-            <Label Text="Don't have account?" TextColor="Gray" TextDecorations="Underline" />
-            <Button Text="Signup here!" Command="{Binding SignupCommand}" />
-            
+        <StackLayout Orientation="Horizontal"
+                     Spacing="5"
+                     HorizontalOptions="Center">
+            <Label Text="Don't have account?"
+                   TextColor="Gray"
+                   TextDecorations="Underline" />
+            <Button Text="Signup here!"
+                    Command="{Binding SignupCommand}" />
+
         </StackLayout>
 
     </VerticalStackLayout>

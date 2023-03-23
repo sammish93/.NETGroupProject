@@ -34,4 +34,11 @@ public partial class SearchPage : ContentPage
             await model.LoadAsync(App.SearchQuery);
         }
     }
+
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+        dynamicColumn.WidthRequest = width;
+        dynamicColumn.HeightRequest = height;
+    }
 }
