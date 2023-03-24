@@ -94,8 +94,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 }
                 else
                 {
-                    Debug.WriteLine("Error " + response.StatusCode + ": " + await response.Content.ReadAsStringAsync());
-                    Debug.WriteLine(response.Headers);
+                    
                 }
 
 
