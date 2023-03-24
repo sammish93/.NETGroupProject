@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.SearchPage"
+             Title="SearchPage">
+
+    <Grid BackgroundColor="LightCoral"
+          Margin="5"
+          RowSpacing="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Label 
+            Grid.Row="0"
+            BackgroundColor="LightGreen"
+            Text="Your search results"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Label 
+            Grid.Row="1"
+            BackgroundColor="LightGreen"
+            Text="Books matching your search:"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <CollectionView ItemsSource="{Binding BooksBasedOnTitle}"
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="2"
+                        BackgroundColor="Green">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Row="0"
+                               Source="{Binding ImageLinks[thumbnail]}"
+                               Aspect="AspectFit"/>
+                        <Label Grid.Row="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                        <Label Grid.Row="2"
+                               Text="{Binding Authors[0]}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label 
+            Grid.Row="3"
+            BackgroundColor="LightGreen"
+            Text="Authors matching your search:"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <CollectionView ItemsSource="{Binding BooksBasedOnAuthor}"
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="4"
+                        BackgroundColor="Green">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Row="0"
+                               Source="{Binding ImageLinks[thumbnail]}"
+                               Aspect="AspectFit"/>
+                        <Label Grid.Row="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                        <Label Grid.Row="2"
+                               Text="{Binding Authors[0]}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label 
+            Grid.Row="5"
+            BackgroundColor="LightGreen"
+            Text="Users matching your search:"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <CollectionView ItemsSource="{Binding Users}"
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="6"
+                        BackgroundColor="Green">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Row="0"
+                                Source="portrait.png"
+                                Aspect="AspectFit"/>
+                        <Label Grid.Row="1"
+                               Text="{Binding UserName}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                        <Label Grid.Row="2"
+                               Text="{Binding FirstName}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+        <ActivityIndicator 
+            Grid.Row="0"
+            Grid.RowSpan="7"
+            IsRunning="{Binding IsBusy}"
+            Color="LightCoral"
+            Scale="3"/>
+        
+    </Grid>
+
+</ContentPage>

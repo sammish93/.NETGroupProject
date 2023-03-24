@@ -7,7 +7,7 @@
     xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="MyAppShell"
-    BackgroundColor="White"
+    BackgroundColor="Red"
     FlyoutBackgroundColor="BlanchedAlmond"
     TitleColor="SaddleBrown"
     ForegroundColor="SaddleBrown" Padding="10,0,0,0">
@@ -62,6 +62,8 @@
                 x:Name="SearchBar"
                 Grid.Column="2"
                 Grid.Row="1"
+                SearchCommand="{Binding PerformSearch}"
+                SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
                 HeightRequest="{Binding Height, Source={x:Reference TitleRow}}"
                 WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
                 HorizontalOptions="End"
@@ -76,6 +78,7 @@
                     CornerRadius="50"
                     Source="messages.png"
                     HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                    Command="{Binding MessagesButtonCommand}"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"/>
             <ImageButton 
@@ -83,6 +86,7 @@
                     Grid.Row="1"
                     CornerRadius="50"
                     HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
+                    Command="{Binding ProfileButtonCommand}"
                     Source="default_display_picture.png"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"/>
@@ -114,7 +118,8 @@
     </Shell.FlyoutHeaderTemplate>
 
 
-    <ShellItem Title="Login" x:Name="MyLogin"
+    <ShellItem Title="Login" 
+               x:Name="MyLogin"
                Icon="home.png"
                Route="login"
                FlyoutItemIsVisible="False">
@@ -122,11 +127,20 @@
           ContentTemplate="{DataTemplate view:LogInPage}"/>
     </ShellItem>
     
-    <ShellItem Title="Home" x:Name="MyHomePage"
+    <ShellItem Title="Home" 
+               x:Name="MyHomePage"
                Icon="home.png"
                Route="home">
         <ShellContent
           ContentTemplate="{DataTemplate view:MainPage}"/>
+    </ShellItem>
+
+    <ShellItem Title="Search Results" 
+               x:Name="MySearchPage"
+               Route="search"
+               FlyoutItemIsVisible="False">
+        <ShellContent
+          ContentTemplate="{DataTemplate view:SearchPage}"/>
     </ShellItem>
 
 
@@ -174,7 +188,7 @@
                 Icon="messages.png">
         <ShellContent
                  ContentTemplate="{DataTemplate view:Page2}"
-                 Route="account"
+                 Route="messages"
                  Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
 

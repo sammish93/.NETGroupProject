@@ -15,20 +15,23 @@ using System.Net;
 using Microsoft.IdentityModel.Tokens;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
+using System.Web;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
-    public class MainPageViewModel : BaseViewModel
+    public class SearchPageViewModel : BaseViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
-        public ObservableCollection<V1Book> Books { get; set; }
-        public ObservableCollection<V1Book> RecentlyReadBooks { get; set; }
-        public ObservableCollection<V1User> NearbyUsers { get; set; }
-        public int ReadingGoalSize { get; set; } = 12;
-        public int ReadingGoalTarget { get; set; } = 20;
+        public ObservableCollection<V1Book> BooksBasedOnTitle { get; set; }
+        public ObservableCollection<V1Book> BooksBasedOnAuthor { get; set; }
+        public ObservableCollection<V1User> Users { get; set; }
         private bool _isBusy;
-        public V1User LoggedInUser { get; set; }
+        public string QueryString { get; set; } = "oscar wilde";
+        public V1User User { get; set; }
+
 
         public bool IsBusy
         {
@@ -40,24 +43,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public MainPageViewModel()
+        public SearchPageViewModel()
         {
-            Books = new ObservableCollection<V1Book>();
-            RecentlyReadBooks = new ObservableCollection<V1Book>();
-            NearbyUsers = new ObservableCollection<V1User>();
-            LoggedInUser = App.LoggedInUser;
+            BooksBasedOnTitle = new ObservableCollection<V1Book>();
+            BooksBasedOnAuthor = new ObservableCollection<V1Book>();
+            Users = new ObservableCollection<V1User>();
+            User = App.LoggedInUser;
         }
 
-        //public ICommand PopulateBooksCommand => new Command(async () => await populateBooks());
-
-        public async Task PopulateBooks()
+        public async Task PopulateBookTitleResults(string query)
         {
             
             try
             {
-                Books.Clear();
+                BooksBasedOnTitle.Clear();
 
-                string loginUrl = $"{_apiBaseUrl}/books/GetBookByCategory?subject=crime";
+                var queryReplaced = query;
+                queryReplaced.Replace(" ", "%20");
+                string loginUrl = $"{_apiBaseUrl}/books/GetByTitle?title={queryReplaced}&maxResults=40";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
                 responseMessage.EnsureSuccessStatusCode();
@@ -74,8 +77,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                     book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
                     book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                    Books.Add(book);
+                    BooksBasedOnTitle.Add(book);
                 }
+
             }
             catch (Exception ex)
             {
@@ -83,65 +87,47 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateRecentlyReadBooks()
+        public async Task PopulateBookAuthorResults(string query)
         {
 
             try
             {
-                RecentlyReadBooks.Clear();
+                BooksBasedOnAuthor.Clear();
 
-                string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={LoggedInUser.Id}";
+                var queryReplaced = query;
+                queryReplaced.Replace(" ", "%20");
+                string loginUrl = $"{_apiBaseUrl}/books/GetByAuthor?name={queryReplaced}&maxResults=40";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
                 responseMessage.EnsureSuccessStatusCode();
                 var json = await responseMessage.Content.ReadAsStringAsync();
-                V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
+                var bookSearch = new V1BooksDto(json);
 
-                foreach (V1LibraryEntry entry in library.Entries)
+                foreach (V1Book book in bookSearch.Books)
                 {
-                    string Isbn;
-                    if (entry.LibraryEntryISBN10 != null)
-                    {
-                        Isbn = entry.LibraryEntryISBN10;
-                    } else if (entry.LibraryEntryISBN13 != null)
-                    {
-                        Isbn = entry.LibraryEntryISBN13;
-                    } else
+                    if (book.IndustryIdentifiers == null
+                        || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
                     {
                         continue;
                     }
 
-                    var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
-
-                    using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
-                    responseMessageTwo.EnsureSuccessStatusCode();
-                    var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
-                    V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
-
-                    foreach (V1Book book in bookSearch.Books)
-                    {
-
-                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                        RecentlyReadBooks.Add(book);
-                    }
+                    book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                    book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                    BooksBasedOnAuthor.Add(book);
                 }
             }
             catch (Exception ex)
             {
 
             }
-            finally
-            {
-            }
         }
 
-        public async Task PopulateNearbyUsers()
+        public async Task PopulateUserResults(string query)
         {
 
             try
             {
-                NearbyUsers.Clear();
+                Users.Clear();
 
                 string loginUrl = $"{_apiBaseUrl}/users/GetAll";
 
@@ -154,8 +140,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 foreach (JObject userJson in jArrayUsers)
                 {
                     V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
-                    //var book = new V1Book(jObjectItem.ToString());
-                    NearbyUsers.Add(user);
+                    Users.Add(user);
                 }
             }
             catch (Exception ex)
@@ -164,12 +149,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task LoadAsync()
+        public async Task LoadAsync(string searchQuery)
         {
             IsBusy = true;
-            await PopulateBooks();
-            await PopulateRecentlyReadBooks();
-            await PopulateNearbyUsers();
+
+            await PopulateBookTitleResults(searchQuery);
+            await PopulateBookAuthorResults(searchQuery);
+            await PopulateUserResults(searchQuery);
+
             IsBusy = false;
         }
     }

@@ -12,6 +12,7 @@ using NuGet.Protocol;
 using System;
 using System.Collections;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 
@@ -108,6 +109,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
                     Console.WriteLine("No book found.");
                 }
             }
+
+
+            string loginUrl = $"https://localhost:7268/proxy/1.0/books/GetByAuthor?name=charles%20dickens&maxResults=40";
+
+            using HttpResponseMessage responseMessageTwo = await client.GetAsync(loginUrl);
+            responseMessageTwo.EnsureSuccessStatusCode();
+            var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
+            var bookSearchTwo = new V1BooksDto(jsonTwo);
+            foreach (V1Book book in bookSearchTwo.Books)
+            {
+                Console.WriteLine(book.Title);
+            }
+            
         }
     }
 }

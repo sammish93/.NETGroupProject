@@ -61,26 +61,43 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
                     }
                 }
             }
-            
             IndustryIdentifiers = industryIdentifiers;
 
             // Publication language.
-            Language = jsonObject.volumeInfo["language"];
+            var language = jsonObject.volumeInfo["language"];
+            if (language != null)
+            {
+                Language = language;
+            }
 
             // Book title.
-            Title = jsonObject.volumeInfo["title"];
+            var title = jsonObject.volumeInfo["title"];
+            if (title != null)
+            {
+                Title = title;
+            }
 
             // Authors as a List. One book can have several authors.
-            var jArrayAuthors = jsonObject.volumeInfo["authors"];
+            JArray jArrayAuthors = jsonObject.volumeInfo["authors"];
             var authors = new List<string>();
-            foreach (string author in jArrayAuthors)
+            if (jArrayAuthors.IsNullOrEmpty())
             {
-                authors.Add(author);
+                authors.Add("Unknown");
+            } else
+            {
+                foreach (string author in jArrayAuthors)
+                {
+                    authors.Add(author);
+                }
             }
             Authors = authors;
 
             // Publisher.
-            Publisher = jsonObject.volumeInfo["publisher"];
+            var publisher = jsonObject.volumeInfo["publisher"];
+            if (publisher != null)
+            {
+                Publisher = publisher;
+            }
 
             // Date of publish. DateOnly.Parse() requires both a year and a month. If only a year is supplied then "-01" is automatically added to the string.
             string dateBefore = jsonObject.volumeInfo["publishedDate"];
@@ -92,34 +109,64 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             {
                 dateBefore = dateBefore + "-01";
             } 
-            PublishedDate = DateOnly.Parse(dateBefore);
+            try
+            {
+                PublishedDate = DateOnly.Parse(dateBefore);
+            } catch (Exception ex)
+            {
+                PublishedDate = DateOnly.Parse("1900-01");
+            }
+            
 
             // Description.
-            Description = jsonObject.volumeInfo["description"];
+            var description = jsonObject.volumeInfo["description"];
+            if (description != null)
+            {
+                Description = description;
+            }
 
             // Page Count.
-            PageCount = jsonObject.volumeInfo["pageCount"];
+            var pageCount = jsonObject.volumeInfo["pageCount"];
+            if (pageCount == null)
+            {
+                PageCount = 1;
+            } else
+            {
+                PageCount = pageCount;
+            }
+            
 
             // Categories/Genres. One book can have several categories.
-            var jArrayCategories = jsonObject.volumeInfo["categories"];
+            JArray jArrayCategories = jsonObject.volumeInfo["categories"];
             var categories = new List<string>();
-            if (jArrayCategories != null)
+            if (jArrayCategories.IsNullOrEmpty())
+            {
+                categories.Add("Unknown");
+            } else
             {
                 foreach (string category in jArrayCategories)
                 {
                     categories.Add(category);
                 }
             }
-            
             Categories = categories;
 
             // Thumbnails for usage with the Gui.
             var jArrayImageLinks = jsonObject.volumeInfo["imageLinks"];
             var imageLinks = new Dictionary<string, string>();
-            string smallThumbnail = jArrayImageLinks.smallThumbnail;
-            string thumbnail = jArrayImageLinks.thumbnail;
-            imageLinks.Add("smallThumbnail", smallThumbnail);
-            imageLinks.Add("thumbnail", thumbnail);
+            if (jArrayImageLinks == null)
+            {
+                imageLinks.Add("smallThumbnail", "http://books.google.com/books/content?id=WU9iAAAAcAAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api");
+                imageLinks.Add("thumbnail", "http://books.google.com/books/content?id=WU9iAAAAcAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api");
+            } else
+            {
+                string smallThumbnail = jArrayImageLinks.smallThumbnail;
+                string thumbnail = jArrayImageLinks.thumbnail;
+                imageLinks.Add("smallThumbnail", smallThumbnail);
+                imageLinks.Add("thumbnail", thumbnail);
+            }
+
+
             ImageLinks = imageLinks;
         }
     }
