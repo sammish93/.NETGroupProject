@@ -1,4 +1,5 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Configuration;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
@@ -15,6 +16,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+
+            // Adding authentication and the extended ConfigureIdentity method.
+            builder.Services.AddAuthentication();
+            builder.Services.ConfigureIdentity();
+
+
             // Fetches the appsettings.json file to inject into a context.
             // Encrypt=False is a quick fix for a reintroduced bug in SQL Server 2022 - see https://stackoverflow.com/a/70850834 for more information.
             builder.Configuration.AddJsonFile("appsettings.json");
@@ -43,18 +50,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
                         mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
                     }
                 ));
-                builder.Services.AddDbContext<UserAccountContext>(options => options.UseMySql(
-                    connectionString,
-                    new MySqlServerVersion(new Version(8, 0, 32)),
-                    mysqlOptions =>
-                    {
-                        mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
-                    }
-                ));
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 // Development machines using Linux can do something here.
             }
+
+            // Just to test Microsoft.Identity
+            var connectIdentity = builder.Configuration.GetConnectionString("MySqlConnectionIdentity");
+
+            builder.Services.AddDbContext<UserIdentityContext>(o => o.UseMySql(
+                connectIdentity, new MySqlServerVersion(new Version(8, 0, 32)),
+                mysqlOptions => mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore)));
 
 
             builder.Services.AddEndpointsApiExplorer();
@@ -73,7 +79,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             
 
             app.UseHttpsRedirection();
-            
+
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.MapControllers();
