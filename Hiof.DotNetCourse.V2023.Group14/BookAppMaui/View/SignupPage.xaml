@@ -190,29 +190,7 @@
                    />
 
             </Border>
-            <!--Will change later to have a default value maybe-->
-            <Border Stroke="Black"
-                    StrokeThickness="1"
-                    StrokeShape="Rectangle "
-                    Background="white"
-                    HeightRequest="40" WidthRequest="300"
-                   
-                    Padding=".5"
-                    Margin="5"
-                    HorizontalOptions="Center">
-
-                <Entry Placeholder="User Role"
-                   Text=""
-                   TextColor="Black"
-                  
-                   HorizontalTextAlignment="Start"
-                   MaxLength="20"
-                   ClearButtonVisibility="WhileEditing"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   />
-
-            </Border>
+          
 
             <Button Text="Sign Up!" Command="{Binding SignUpCommand}"  BackgroundColor="Purple" TextColor="White" WidthRequest="100" HeightRequest="30"/>
 
