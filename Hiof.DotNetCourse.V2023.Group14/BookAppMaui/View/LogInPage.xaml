@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.LogInPage"
              xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
+             
              x:DataType="viewmodel:LoginViewModel"
              Shell.FlyoutBehavior="Disabled"
              Title="LogInPage"
