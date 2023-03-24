@@ -4,12 +4,15 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.SignupPage"
              xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
+             x:DataType="viewmodel:SignupPageViewModel"
              Title="SignupPage"
-            BackgroundColor="White"
-            
-             >
+             Shell.FlyoutBehavior="Disabled"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="Grey">
     <ScrollView>
-        <VerticalStackLayout>
+        <VerticalStackLayout
+            VerticalOptions="Center">
+            
 
             <Border Stroke="Black"
                     StrokeThickness="1"
@@ -22,7 +25,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter username"
-                   Text="{Binding UserName, Mode=TwoWay}"
+                   Text="{Binding UserName}"
                    x:Name="usernameEntry"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
@@ -45,7 +48,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter E-Mail"
-                   Text="{Binding Email, Mode=TwoWay}"
+                   Text="{Binding Email}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
@@ -67,7 +70,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter Password"
-                   Text="{Binding Password, Mode=TwoWay}"
+                   Text="{Binding Password}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
@@ -89,7 +92,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter First Name"
-                   Text=""
+                   Text="{Binding FirstName}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
@@ -111,7 +114,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter Last Name"
-                   Text=""
+                   Text="{Binding LastName}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
@@ -133,7 +136,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter Country"
-                   Text=""
+                   Text="{Binding Country}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
@@ -155,7 +158,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter City"
-                   Text=""
+                   Text="{Binding City}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
@@ -177,7 +180,7 @@
                     HorizontalOptions="Center">
 
                 <Entry Placeholder="Enter Language Preference"
-                   Text=""
+                   Text="{Binding Lang_Preference}"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    MaxLength="20"
@@ -187,30 +190,9 @@
                    />
 
             </Border>
-            <!--Will change later to have a default value maybe-->
-            <Border Stroke="Black"
-                    StrokeThickness="1"
-                    StrokeShape="Rectangle "
-                    Background="white"
-                    HeightRequest="40" WidthRequest="300"
-                   
-                    Padding=".5"
-                    Margin="5"
-                    HorizontalOptions="Center">
+          
 
-                <Entry Placeholder="User Role"
-                   Text=""
-                   TextColor="Black"
-                   HorizontalTextAlignment="Start"
-                   MaxLength="20"
-                   ClearButtonVisibility="WhileEditing"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   />
-
-            </Border>
-
-            <Button Text="Sign Up!"  BackgroundColor="Purple" TextColor="White" WidthRequest="100" HeightRequest="30"/>
+            <Button Text="Sign Up!" Command="{Binding SignUpCommand}"  BackgroundColor="Purple" TextColor="White" WidthRequest="100" HeightRequest="30"/>
 
         </VerticalStackLayout>
 

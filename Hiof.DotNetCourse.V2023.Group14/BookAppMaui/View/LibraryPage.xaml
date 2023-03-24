@@ -6,34 +6,142 @@
              xmlns:model="clr-namespace:Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;assembly=Hiof.DotNetCourse.V2023.Group14.ClassLibrary"
              Title="LibraryPage"
              BackgroundColor="White">
-    
+
     <Grid
-        ColumnDefinitions="*,*"
-        ColumnSpacing="5"
-        
-        RowDefinitions="*,Auto"
-        RowSpacing="1"
-        >
-        <Label Text="Your books" TextColor="Green" Padding="10" Margin="10"/>
-        <CollectionView 
-            Grid.ColumnSpan ="2"
-            ItemsSource="{Binding ReadBooks}"
-            SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10">
-                        <Frame HeightRequest="100" Style="{StaticResource CardView}">
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer 
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:LibraryPageViewModel}}}"
-                                    CommandParameter="{Binding .}"/>
-                            </Frame.GestureRecognizers>
-                            <!--Add book image stuff here later-->
-                        </Frame>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            Margin="0"
+        ColumnSpacing="5">
+      
+
+        <Grid
+            Grid.Column="0"
+            RowSpacing="5"
+            ColumnSpacing="0"
+            Padding="5"
+            BackgroundColor="LightGreen">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Text="Current read" TextColor="Green" Padding="10" Margin="10"/>
+            <CollectionView 
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="1"
+                        BackgroundColor="Violet">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0"
+                                Source="{Binding ImageLinks[thumbnail]}"
+                                Aspect="AspectFit"/>
+                            <Label Grid.Row="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                            <Label Grid.Row="2"
+                               Text="{Binding Authors[0]}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label Grid.Row="2" Text="To be read" TextColor="Green" Padding="10" Margin="10"/>
+            <CollectionView 
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="3"
+                        BackgroundColor="Violet">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0"
+                                Source="{Binding ImageLinks[thumbnail]}"
+                                Aspect="AspectFit"/>
+                            <Label Grid.Row="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                            <Label Grid.Row="2"
+                               Text="{Binding Authors[0]}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label Grid.Row="4" Text="Completed" TextColor="Green" Padding="10" Margin="10"/>
+            <CollectionView 
+                        ItemsLayout="HorizontalList"
+                        Grid.Row="5"
+                        BackgroundColor="Violet">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0"
+                                Source="{Binding ImageLinks[thumbnail]}"
+                                Aspect="AspectFit"/>
+                            <Label Grid.Row="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               LineBreakMode="CharacterWrap"
+                               HorizontalOptions="Center" 
+                               FontSize="11" 
+                               HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center"/>
+                            <Label Grid.Row="2"
+                               Text="{Binding Authors[0]}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+        </Grid>
     </Grid>
-    
 </ContentPage>

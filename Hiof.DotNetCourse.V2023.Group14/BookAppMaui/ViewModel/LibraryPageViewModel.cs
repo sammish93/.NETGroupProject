@@ -19,13 +19,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
        // public ObservableCollection<V1LibraryEntry> ReadBooks { get; set; }
 
-        private V1User _user;
-        private Guid _userId;
+        public V1User LoggedInUser { get; set; }
 
-        
-        public V1User User { get => _user; set => _user = value; }
-        public Guid UserId { get => _userId; set => _userId = value; }
+        public ObservableCollection<V1Book> ReadBooks { get; set; }
+        public ObservableCollection<V1Book> CurrentlyReadingBooks { get; set; }
 
+        public ObservableCollection<V1Book> FutureReads { get; set; }
 
         /*
         public LibraryPageViewModel()
