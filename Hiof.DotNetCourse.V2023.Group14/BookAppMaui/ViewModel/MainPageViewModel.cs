@@ -155,6 +155,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 {
                     V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
                     //var book = new V1Book(jObjectItem.ToString());
+
                     NearbyUsers.Add(user);
                 }
             }
@@ -162,6 +163,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
 
             }
+        }
+
+        public async Task NavigateToUserPage(V1User user)
+        {
+            App.SelectedUser = user;
+            await Shell.Current.GoToAsync($"///user?userid={user.Id}");
+        }
+
+        public async Task NavigateToBookPage(V1Book book)
+        {
+            App.SelectedBook = book;
+            string bookId = "";
+
+            if (book.IndustryIdentifiers["ISBN_13"] != null)
+            {
+                bookId = book.IndustryIdentifiers["ISBN_13"];
+            } else if (book.IndustryIdentifiers["ISBN_10"] != null)
+            {
+                bookId = book.IndustryIdentifiers["ISBN_10"];
+            }
+
+            await Shell.Current.GoToAsync($"///book?bookid={bookId}");
         }
 
         public async Task LoadAsync()

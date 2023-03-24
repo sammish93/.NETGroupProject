@@ -126,6 +126,12 @@
         <ShellContent ContentTemplate="{DataTemplate view:LogInPage}" />
     </ShellItem>
 
+    <ShellItem Title="Signup"
+               Route="signup"
+               FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate view:SignupPage}" />
+    </ShellItem>
+
     <ShellItem Title="Home"
                x:Name="MyHomePage"
                Icon="home.png"
@@ -140,12 +146,19 @@
         <ShellContent ContentTemplate="{DataTemplate view:SearchPage}" />
     </ShellItem>
 
-
-    <ShellItem Title="Signup"
-               Route="signup"
+    <ShellItem x:Name="MyUserPage"
+               Route="user"
                FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate view:SignupPage}" />
+        <ShellContent ContentTemplate="{DataTemplate view:UserPage}" />
     </ShellItem>
+
+    <ShellItem x:Name="MyBookPage"
+               Route="book"
+               FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate view:BookPage}" />
+    </ShellItem>
+
+
 
 
     <!--

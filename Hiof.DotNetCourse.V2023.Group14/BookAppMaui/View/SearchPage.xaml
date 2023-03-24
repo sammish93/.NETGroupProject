@@ -61,7 +61,9 @@
                     <CollectionView ItemsSource="{Binding BooksBasedOnTitle}"
                                     ItemsLayout="HorizontalList"
                                     Grid.Row="2"
-                                    BackgroundColor="Green">
+                                    BackgroundColor="Green"
+                                    SelectionMode="Single"
+                                    SelectionChanged="CollectionViewBook_SelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -72,10 +74,17 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="100" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.Row="0"
-                                           Source="{Binding ImageLinks[thumbnail]}"
-                                           Aspect="AspectFit" />
+                                    </Grid.ColumnDefinitions
+                                    <Frame HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           CornerRadius="5"
+                                           BackgroundColor="Coral"
+                                           Padding="0"
+                                           BorderColor="Transparent">
+                                        <Image Grid.Row="0"
+                                               Source="{Binding ImageLinks[thumbnail]}"
+                                               Aspect="AspectFit" />
+                                    </Frame>
                                     <Label Grid.Row="1"
                                            Text="{Binding Title}"
                                            FontAttributes="Bold"
@@ -105,7 +114,9 @@
                     <CollectionView ItemsSource="{Binding BooksBasedOnAuthor}"
                                     ItemsLayout="HorizontalList"
                                     Grid.Row="4"
-                                    BackgroundColor="Green">
+                                    BackgroundColor="Green"
+                                    SelectionMode="Single"
+                                    SelectionChanged="CollectionViewBook_SelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -117,9 +128,16 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="100" />
                                     </Grid.ColumnDefinitions>
-                                    <Image Grid.Row="0"
-                                           Source="{Binding ImageLinks[thumbnail]}"
-                                           Aspect="AspectFit" />
+                                    <Frame HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           CornerRadius="5"
+                                           BackgroundColor="Coral"
+                                           Padding="0"
+                                           BorderColor="Transparent">
+                                        <Image Grid.Row="0"
+                                               Source="{Binding ImageLinks[thumbnail]}"
+                                               Aspect="AspectFit" />
+                                    </Frame>
                                     <Label Grid.Row="1"
                                            Text="{Binding Title}"
                                            FontAttributes="Bold"
@@ -149,7 +167,9 @@
                     <CollectionView ItemsSource="{Binding Users}"
                                     ItemsLayout="HorizontalList"
                                     Grid.Row="6"
-                                    BackgroundColor="Green">
+                                    BackgroundColor="Green"
+                                    SelectionMode="Single"
+                                    SelectionChanged="CollectionViewUser_SelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">

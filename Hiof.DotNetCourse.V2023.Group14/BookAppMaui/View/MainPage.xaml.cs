@@ -1,5 +1,6 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
 {
@@ -34,5 +35,32 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
             dynamicColumn.HeightRequest = height;
         }
 
+        private async void CollectionViewUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var model = BindingContext as ViewModel.MainPageViewModel;
+
+            if (model != null)
+            {
+                if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
+                {
+                    V1User user = ((V1User)e.CurrentSelection.First());
+                    await model.NavigateToUserPage(user);
+                }
+            }
+        }
+
+        private async void CollectionViewBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var model = BindingContext as ViewModel.MainPageViewModel;
+
+            if (model != null)
+            {
+                if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
+                {
+                    V1Book book = ((V1Book)e.CurrentSelection.First());
+                    await model.NavigateToBookPage(book);
+                }
+            }
+        }
     }
 }

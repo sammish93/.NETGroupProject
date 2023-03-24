@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.TemplatePage"
-             Title="Template">
+             x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.UserPage"
+             Title="User Page">
 
     <!-- If the GUI is scaled to below 800x600 it is scrollable -->
     <ScrollView>
@@ -31,7 +31,7 @@
 
 
                 <!-- Insert your page here -->
-                <Label Text="Template Page"
+                <Label Text="{Binding SelectedUser.FirstName}"
                        FontSize="Large"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>

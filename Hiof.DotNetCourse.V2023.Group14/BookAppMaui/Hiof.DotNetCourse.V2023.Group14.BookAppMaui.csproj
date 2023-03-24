@@ -85,6 +85,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\BookPage.xaml.cs">
+	    <DependentUpon>BookPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\UserPage.xaml.cs">
+	    <DependentUpon>UserPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\TemplatePage.xaml.cs">
 	    <DependentUpon>TemplatePage.xaml</DependentUpon>
 	  </Compile>
@@ -110,6 +116,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\SignupPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\BookPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\UserPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
