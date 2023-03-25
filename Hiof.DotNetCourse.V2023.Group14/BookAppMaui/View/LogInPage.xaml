@@ -51,7 +51,7 @@
                 <Entry Placeholder="Enter Password"
                        Text="{Binding Password}"
                        TextColor="Black"
-                       MaxLength="20"
+                       MaxLength="25"
                        IsPassword="True"
                        VerticalOptions="Center"
                        HorizontalOptions="Center" />

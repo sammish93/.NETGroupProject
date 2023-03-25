@@ -10,16 +10,16 @@ public partial class LibraryPage : ContentPage
 		InitializeComponent();
 		this.BindingContext = new LibraryPageViewModel();
 	}
-	/*
+	
 	protected override async void OnAppearing()
 	{
 		var model = BindingContext as LibraryPageViewModel;
 
 		if(model != null )
 		{
-			await model.PopulateReadBooks();
+			await model.LoadAsync();
 		}
 		base.OnAppearing();
 	}
-	*/
+	
 }

@@ -28,6 +28,7 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Text="Current read" TextColor="Green" Padding="10" Margin="10"/>
             <CollectionView 
+                        
                         ItemsLayout="HorizontalList"
                         Grid.Row="1"
                         BackgroundColor="Violet">
@@ -42,9 +43,16 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Row="0"
-                                Source="{Binding ImageLinks[thumbnail]}"
-                                Aspect="AspectFit"/>
+                            <Frame HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               CornerRadius="5"
+                                               BackgroundColor="Coral"
+                                               Padding="0"
+                                               BorderColor="Transparent">
+                                <Image Grid.Row="0"
+                                                   Source="{Binding ImageLinks[thumbnail]}"
+                                                   Aspect="AspectFit" />
+                            </Frame>
                             <Label Grid.Row="1"
                                Text="{Binding Title}"
                                FontAttributes="Bold"
@@ -66,6 +74,7 @@
             </CollectionView>
             <Label Grid.Row="2" Text="To be read" TextColor="Green" Padding="10" Margin="10"/>
             <CollectionView 
+                        
                         ItemsLayout="HorizontalList"
                         Grid.Row="3"
                         BackgroundColor="Violet">
@@ -80,9 +89,16 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Row="0"
-                                Source="{Binding ImageLinks[thumbnail]}"
-                                Aspect="AspectFit"/>
+                            <Frame HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               CornerRadius="5"
+                                               BackgroundColor="Coral"
+                                               Padding="0"
+                                               BorderColor="Transparent">
+                                <Image Grid.Row="0"
+                                                   Source="{Binding ImageLinks[thumbnail]}"
+                                                   Aspect="AspectFit" />
+                            </Frame>
                             <Label Grid.Row="1"
                                Text="{Binding Title}"
                                FontAttributes="Bold"
@@ -104,7 +120,8 @@
             </CollectionView>
             <Label Grid.Row="4" Text="Completed" TextColor="Green" Padding="10" Margin="10"/>
             <CollectionView 
-                        ItemsLayout="HorizontalList"
+                        ItemsSource="{Binding ReadBooks}"
+                       ItemsLayout="HorizontalList"
                         Grid.Row="5"
                         BackgroundColor="Violet">
                 <CollectionView.ItemTemplate>
@@ -118,9 +135,16 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Row="0"
-                                Source="{Binding ImageLinks[thumbnail]}"
-                                Aspect="AspectFit"/>
+                            <Frame HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               CornerRadius="5"
+                                               BackgroundColor="Coral"
+                                               Padding="0"
+                                               BorderColor="Transparent">
+                                <Image Grid.Row="0"
+                                                   Source="{Binding ImageLinks[thumbnail]}"
+                                                   Aspect="AspectFit" />
+                            </Frame>
                             <Label Grid.Row="1"
                                Text="{Binding Title}"
                                FontAttributes="Bold"
