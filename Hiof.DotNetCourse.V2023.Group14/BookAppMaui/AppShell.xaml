@@ -61,12 +61,13 @@
                        HeightRequest="{Binding Height, Source={x:Reference TitleRow}}"
                        WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
                        HorizontalOptions="End"
-                       Placeholder="Search"
+                       Placeholder="Search for a book, author, or user here.."
                        PlaceholderColor="Red"
                        BackgroundColor="White"
                        TextColor="Red"
                        VerticalOptions="Center"
-                       FontAutoScalingEnabled="True" />
+                       FontAutoScalingEnabled="True"
+                       MinimumWidthRequest="100" />
             <ImageButton Grid.Column="3"
                          Grid.Row="1"
                          CornerRadius="50"

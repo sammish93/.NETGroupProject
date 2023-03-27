@@ -7,12 +7,12 @@ public partial class BookPage : ContentPage
 	public BookPage()
 	{
 		InitializeComponent();
-        BindingContext = new BookPageViewModel();
+        BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
 	}
 
     protected override async void OnAppearing()
     {
-        BindingContext = new BookPageViewModel();
+        BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
 
         base.OnAppearing();
     }

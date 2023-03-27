@@ -40,12 +40,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public MainPageViewModel()
+        public MainPageViewModel(V1User user)
         {
             Books = new ObservableCollection<V1Book>();
             RecentlyReadBooks = new ObservableCollection<V1Book>();
             NearbyUsers = new ObservableCollection<V1User>();
-            LoggedInUser = App.LoggedInUser;
+            LoggedInUser = user;
         }
 
         //public ICommand PopulateBooksCommand => new Command(async () => await populateBooks());

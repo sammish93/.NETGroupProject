@@ -40,10 +40,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public UserPageViewModel()
+        public UserPageViewModel(V1User loggedInUser, V1User selectedUser)
         {
-            User = App.LoggedInUser;
-            SelectedUser = App.SelectedUser;
+            User = loggedInUser;
+            SelectedUser = selectedUser;
         }
 
 
