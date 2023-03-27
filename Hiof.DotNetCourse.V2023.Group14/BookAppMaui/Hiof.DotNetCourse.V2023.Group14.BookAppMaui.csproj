@@ -81,7 +81,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj" />
+	  <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj">
+	    <ReferenceSourceTarget></ReferenceSourceTarget>
+	  </ProjectReference>
 	</ItemGroup>
 
 	<ItemGroup>
