@@ -26,6 +26,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public ObservableCollection<V1Book> CurrentlyReadingBooks { get; set; }
 
         public ObservableCollection<V1Book> FutureReads { get; set; }
+        
+
 
         public V1Book Book { get; set; }    
 
@@ -59,7 +61,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             try
             {
-               
+               ReadEntries.Clear();
 
                 string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={LoggedInUser.Id}";
 
@@ -103,10 +105,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                             book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
                             book.ImageLinks["thumbnail"].Replace("&", "&amp;");
                             
-                            e.Title = book.Title;
-                            e.MainAuthor = book.Authors[0];
-
-                            ReadBooks.Add(book);
+                            
 
                             
 

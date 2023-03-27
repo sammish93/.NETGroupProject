@@ -28,6 +28,7 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Text="Current read" TextColor="Green" Padding="10" Margin="10"/>
             <CollectionView 
+                        ItemsSource="{Binding Images}"
                         
                         ItemsLayout="HorizontalList"
                         Grid.Row="1"
@@ -49,7 +50,7 @@
                                                BackgroundColor="Coral"
                                                Padding="0"
                                                BorderColor="Transparent">
-                                <Image Grid.Row="0"
+                                <Image Grid.Row="0" 
                                                    Source="{Binding ImageLinks[thumbnail]}"
                                                    Aspect="AspectFit" />
                             </Frame>
