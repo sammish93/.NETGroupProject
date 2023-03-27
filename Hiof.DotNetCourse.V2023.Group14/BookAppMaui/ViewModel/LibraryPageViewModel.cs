@@ -27,6 +27,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ObservableCollection<V1Book> FutureReads { get; set; }
 
+        public V1Book Book { get; set; }    
+
         public ObservableCollection<V1LibraryEntry> ReadEntries { get; set; }
         private bool _isBusy;
         public bool IsBusy
@@ -46,6 +48,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             FutureReads = new ObservableCollection<V1Book>();
             CurrentlyReadingBooks = new ObservableCollection<V1Book>();
 
+
             ReadEntries = new ObservableCollection<V1LibraryEntry>();
 
 
@@ -56,9 +59,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             try
             {
-                ReadBooks.Clear();
-                FutureReads.Clear();
-                CurrentlyReadingBooks.Clear();
+               
 
                 string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={LoggedInUser.Id}";
 
@@ -72,39 +73,51 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 foreach (V1LibraryEntry entry in library.Entries)
                 {
                     ReadEntries.Add(entry);
-                    string Isbn;
-                    if (entry.LibraryEntryISBN10 != null)
+               
+
+                    foreach(V1LibraryEntry e in ReadEntries)
                     {
-                        Isbn = entry.LibraryEntryISBN10;
+                        string Isbn;
+                        if (e.LibraryEntryISBN10 != null)
+                        {
+                            Isbn = e.LibraryEntryISBN10;
+                        }
+                        else if (e.LibraryEntryISBN13 != null)
+                        {
+                            Isbn = e.LibraryEntryISBN13;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
+
+                        using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
+                        responseMessageTwo.EnsureSuccessStatusCode();
+                        var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
+                        V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
+
+                        foreach (V1Book book in bookSearch.Books)
+                        {
+
+                            book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                            book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                            
+                            e.Title = book.Title;
+                            e.MainAuthor = book.Authors[0];
+
+                            ReadBooks.Add(book);
+
+                            
+
+
+
+                        }
+
+
                     }
-                    else if (entry.LibraryEntryISBN13 != null)
-                    {
-                        Isbn = entry.LibraryEntryISBN13;
-                    }
-                    else
-                    {
-                        continue;
-                    }
 
-                    
 
-                    var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
-
-                    using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
-                    responseMessageTwo.EnsureSuccessStatusCode();
-                    var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
-                    V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
-
-                    foreach (V1Book book in bookSearch.Books)
-                    {
-
-                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                        ReadBooks.Add(book);
-                        
-                    }
-
-                  
                 }
             }
             catch (Exception ex)

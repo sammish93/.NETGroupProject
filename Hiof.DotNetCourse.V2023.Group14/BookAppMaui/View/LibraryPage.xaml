@@ -74,7 +74,7 @@
             </CollectionView>
             <Label Grid.Row="2" Text="To be read" TextColor="Green" Padding="10" Margin="10"/>
             <CollectionView 
-                        
+                        ItemsSource="{Binding ReadEntries}"
                         ItemsLayout="HorizontalList"
                         Grid.Row="3"
                         BackgroundColor="Violet">
@@ -83,6 +83,8 @@
                         <Grid Padding="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="3*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
@@ -99,6 +101,7 @@
                                                    Source="{Binding ImageLinks[thumbnail]}"
                                                    Aspect="AspectFit" />
                             </Frame>
+                            
                             <Label Grid.Row="1"
                                Text="{Binding Title}"
                                FontAttributes="Bold"
@@ -108,9 +111,24 @@
                                HorizontalTextAlignment="Center" 
                                VerticalTextAlignment="Center"/>
                             <Label Grid.Row="2"
-                               Text="{Binding Authors[0]}"
+                               Text="{Binding MainAuthor}"
                                LineBreakMode="CharacterWrap"
                                FontAttributes="Italic"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                            
+                            <Label Grid.Row="3"
+                               Text="{Binding Rating} "
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" 
+                               FontSize="12" 
+                               HorizontalTextAlignment="Center"/>
+                            <Label Grid.Row="4"
+                               Text="{Binding ReadingStatus}"
+                               LineBreakMode="CharacterWrap"
+                               FontAttributes="Bold"
                                HorizontalOptions="Center" 
                                FontSize="12" 
                                HorizontalTextAlignment="Center"/>
