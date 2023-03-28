@@ -77,7 +77,7 @@
                            AbsoluteLayout.LayoutBounds="170, 90, AutoSize, AutoSize"
                            ZIndex="2">
                         <Label.Text>
-                            <MultiBinding StringFormat=" {0}, {1} ">
+                            <MultiBinding StringFormat="From {0}, {1} ">
                                 <Binding Path="SelectedUser.City" />
                                 <Binding Path="SelectedUser.Country" />
                             </MultiBinding>
