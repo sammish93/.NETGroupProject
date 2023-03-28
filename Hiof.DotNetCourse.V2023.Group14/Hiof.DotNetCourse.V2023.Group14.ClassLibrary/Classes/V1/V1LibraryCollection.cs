@@ -22,5 +22,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public IList<V1LibraryEntry>? Entries { get; set; }
 
         public V1LibraryCollection() { }
+
+        public V1LibraryCollection(string jsonString) 
+        {
+            dynamic? jsonObject = JsonConvert.DeserializeObject(jsonString);
+
+            UserId = jsonObject.userId;
+
+            Items = jsonObject.items;
+
+            ItemsRead = jsonObject.itemsRead;
+
+            // Creates a V1Book object for each book item from the search result.
+            var libraryEntries = new List<V1LibraryEntry>();
+            var jArrayLibEntries = jsonObject.entries;
+            foreach (JObject jObjectItem in jArrayLibEntries)
+            {
+                var libEntry = new V1LibraryEntry(jObjectItem.ToString());
+                libraryEntries.Add(libEntry);
+            }
+            Entries = libraryEntries;
+        }
+
+        
     }
 }

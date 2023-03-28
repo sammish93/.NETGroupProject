@@ -167,8 +167,8 @@
 
                                 <Label Grid.Row="0"
                                        Grid.Column="0"
-                                       Text="Reading Status" 
-                                       HorizontalOptions="Center"/>
+                                       Text="Reading Status"
+                                       HorizontalOptions="Center" />
                                 <Label Grid.Row="0"
                                        Grid.Column="1"
                                        Text="Date Read"
@@ -192,8 +192,8 @@
                                             MinimumDate="01/01/1900"
                                             MaximumDate="12/31/2099"
                                             DateSelected="DatePicker_DateSelected"
-                                            HorizontalOptions="Center" 
-                                            BackgroundColor="White"/>
+                                            HorizontalOptions="Center"
+                                            BackgroundColor="White" />
 
                                 <Picker x:Name="pickerRating"
                                         Grid.Row="1"
@@ -205,13 +205,13 @@
                                         SelectedItem="{Binding SelectedRating}" />
 
                                 <Button Grid.Row="2"
-                                    Text="Add to library"
+                                        Text="Add to library"
                                         WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
                                         VerticalOptions="Start"
                                         HorizontalOptions="Start"
                                         Command="{Binding AddBookToLibraryCommand}" />
                             </Grid>
-                            
+
 
                         </Grid>
 
@@ -290,7 +290,7 @@
                 <!-- Set IsRunning to a {Binding chosenBinding} -->
                 <ActivityIndicator Grid.Column="0"
                                    Grid.ColumnSpan="2"
-                                   IsRunning="false"
+                                   IsRunning="{Binding IsBusy}"
                                    Color="LightCoral"
                                    Scale="3" />
 

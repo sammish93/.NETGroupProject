@@ -101,7 +101,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             SelectedDate = dateTime;
         }
 
-        public async Task LoadAsync(string searchQuery)
+        public async Task LoadAsync()
         {
             IsBusy = true;
 

@@ -28,6 +28,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private bool _isBusy;
         public V1User User { get; set; }
         public V1User SelectedUser { get; set; }
+        public V1LibraryCollection UserLibrary { get; set; }
+        public ObservableCollection<V1Book> UserBooks { get; set; }
 
 
         public bool IsBusy
@@ -44,13 +46,70 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             User = loggedInUser;
             SelectedUser = selectedUser;
+            UserBooks = new ObservableCollection<V1Book>();
         }
 
+        public async Task PopulateBooks()
+        {
 
-        public async Task LoadAsync(string searchQuery)
+            try
+            {
+                UserBooks.Clear();
+
+                string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={SelectedUser.Id}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+                V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
+                UserLibrary = library;
+                
+
+                foreach (V1LibraryEntry entry in library.Entries)
+                {
+                    string Isbn;
+                    if (entry.LibraryEntryISBN10 != null)
+                    {
+                        Isbn = entry.LibraryEntryISBN10;
+                    }
+                    else if (entry.LibraryEntryISBN13 != null)
+                    {
+                        Isbn = entry.LibraryEntryISBN13;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
+
+                    using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
+                    responseMessageTwo.EnsureSuccessStatusCode();
+                    var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
+                    V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
+
+                    foreach (V1Book book in bookSearch.Books)
+                    {
+
+                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                        UserBooks.Add(book);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+            }
+        }
+
+        public async Task LoadAsync()
         {
             IsBusy = true;
-
+            await PopulateBooks();
             IsBusy = false;
         }
     }

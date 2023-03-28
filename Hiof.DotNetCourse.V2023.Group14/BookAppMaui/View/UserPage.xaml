@@ -28,20 +28,215 @@
                   ColumnSpacing="5"
                   BackgroundColor="LightGreen">
 
+                <AbsoluteLayout VerticalOptions="Start"
+                                HorizontalOptions="Start"
+                                ZIndex="1">
+
+                    <Frame HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           CornerRadius="20"
+                           WidthRequest="150"
+                           HeightRequest="150"
+                           BackgroundColor="Green"
+                           Padding="0"
+                           BorderColor="Transparent"
+                           AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
+                           ZIndex="3">
+                        <Image Grid.Row="0"
+                               Source="portrait.png"
+                               Aspect="AspectFill"
+                                />
+                    </Frame>
+
+                    <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
+                             Color="CornflowerBlue"
+                             WidthRequest="{Binding Width}"
+                             HeightRequest="100"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Start"
+                             AbsoluteLayout.LayoutBounds="0, 25, AutoSize, AutoSize" />
+
+                    <Label FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           Text="{Binding SelectedUser.UserName}"
+                           MaximumWidthRequest="1200"
+                           LineBreakMode="TailTruncation"
+                           FontSize="Large"
+                           BackgroundColor="Coral"
+                           AbsoluteLayout.LayoutBounds="170, 35, AutoSize, AutoSize"
+                           ZIndex="2" />
+
+                    <Label HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           MaximumWidthRequest="1200"
+                           LineBreakMode="TailTruncation"
+                           FontSize="Small"
+                           FontAttributes="Italic"
+                           BackgroundColor="Coral"
+                           AbsoluteLayout.LayoutBounds="170, 90, AutoSize, AutoSize"
+                           ZIndex="2">
+                        <Label.Text>
+                            <MultiBinding StringFormat=" {0}, {1} ">
+                                <Binding Path="SelectedUser.City" />
+                                <Binding Path="SelectedUser.Country" />
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
+                </AbsoluteLayout>
 
 
-                <!-- Insert your page here -->
-                <Label Text="{Binding SelectedUser.FirstName}"
-                       FontSize="Large"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                <Grid x:Name="InsideDynamicColumn">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0"
+                          BackgroundColor="DarkBlue"
+                          HeightRequest="140" />
+
+                    <Grid Grid.Row="1"
+                          BackgroundColor="Orange"
+                          ColumnSpacing="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid x:Name="dynamicLeftColumn"
+                              Grid.Column="0"
+                              MaximumWidthRequest="450"
+                              MinimumHeightRequest="600"
+                              BackgroundColor="Coral">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" />
+
+                            <ScrollView Grid.Row="1"
+                                        Margin="5">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label FontSize="Micro">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="Name: {0} {1} ">
+                                                <Binding Path="SelectedUser.FirstName" />
+                                                <Binding Path="SelectedUser.LastName" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                    <Label Text="{Binding Path='SelectedUser.LastActive', StringFormat='Last Active: {0:dddd, dd MMMM yyyy a\\t h:mm tt}'}"
+                                           FontSize="Micro" />
+                                    <Label Text="{Binding Path='SelectedUser.LangPreference', StringFormat='Language Preference: {0}'}"
+                                           FontSize="Micro" />
+                                    <Label Text="{Binding Path='UserLibrary.Items', StringFormat='Number of Books in Library: {0}'}"
+                                           FontSize="Micro" />
+                                    <Label Text="{Binding Path='UserLibrary.ItemsRead', StringFormat='Number of Books Read in Library: {0}'}"
+                                           FontSize="Micro" />
+                                    <Label Text="Book Collection:"
+                                           FontSize="Micro" />
+                                    <ListView ItemsSource="{Binding UserBooks}"
+                                              Margin="5"
+                                              VerticalScrollBarVisibility="Never" />
+                                    <Label Text="Library Collection:"
+                                           FontSize="Micro" />
+                                    <ListView ItemsSource="{Binding UserLibrary.Entries}"
+                                              Margin="5"
+                                              VerticalScrollBarVisibility="Never" />
+
+                                </VerticalStackLayout>
 
 
+                            </ScrollView>
+
+                            <Button Grid.Row="3"
+                                    Text="Send a message"
+                                    WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
+                                    VerticalOptions="Start"
+                                    HorizontalOptions="Start" />
+
+
+                        </Grid>
+
+                        <Grid Grid.Column="2"
+                              BackgroundColor="Coral"
+                              RowSpacing="5"
+                              MaximumWidthRequest="910"
+                              MinimumHeightRequest="600">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0"
+                                   FontSize="Medium"
+                                   Text="Comments"
+                                   Padding="5"
+                                   BackgroundColor="DarkCyan" />
+
+                            <ScrollView Grid.Row="1">
+                                <Grid RowSpacing="5"
+                                      ColumnSpacing="5"
+                                      Padding="5"
+                                      BackgroundColor="DarkCyan">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="1*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Row="0"
+                                           Grid.Column="0"
+                                           WidthRequest="30"
+                                           HeightRequest="30"
+                                           Source="portrait.png"
+                                           Aspect="AspectFit"
+                                           VerticalOptions="Start" />
+                                    <Label Grid.Column="1"
+                                           Grid.Row="0"
+                                           Text="{Binding SelectedUser.UserName}"
+                                           LineBreakMode="CharacterWrap"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Start"
+                                           FontSize="Small"
+                                           HorizontalTextAlignment="Start" />
+                                    <Label Grid.Column="1"
+                                           Grid.Row="1"
+                                           Text="Title"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Start"
+                                           VerticalOptions="Center"
+                                           FontSize="Small"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Start" />
+                                    <Label Grid.Column="1"
+                                           Grid.Row="2"
+                                           Text="I love pickled onion flavour monster munch."
+                                           LineBreakMode="CharacterWrap"
+                                           FontAttributes="Italic"
+                                           HorizontalOptions="Start"
+                                           FontSize="Caption"
+                                           HorizontalTextAlignment="Start" />
+                                </Grid>
+                            </ScrollView>
+
+
+                        </Grid>
+
+                    </Grid>
+
+                </Grid>
 
                 <!-- Set IsRunning to a {Binding chosenBinding} -->
                 <ActivityIndicator Grid.Column="0"
                                    Grid.ColumnSpan="2"
-                                   IsRunning="false"
+                                   IsRunning="{Binding IsBusy}"
                                    Color="LightCoral"
                                    Scale="3" />
 
