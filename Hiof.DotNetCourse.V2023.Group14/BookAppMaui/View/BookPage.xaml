@@ -28,15 +28,264 @@
                   ColumnSpacing="5"
                   BackgroundColor="LightGreen">
 
+                <AbsoluteLayout VerticalOptions="Start"
+                                HorizontalOptions="Start"
+                                ZIndex="1">
+
+                    <Frame HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           CornerRadius="20"
+                           BackgroundColor="Coral"
+                           Padding="0"
+                           BorderColor="Transparent"
+                           AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
+                           ZIndex="3">
+                        <Image Grid.Row="0"
+                               Source="{Binding SelectedBook.ImageLinks[thumbnail]}"
+                               Aspect="AspectFit" />
+                    </Frame>
+
+                    <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
+                             Color="CornflowerBlue"
+                             WidthRequest="{Binding Width}"
+                             HeightRequest="100"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Start"
+                             AbsoluteLayout.LayoutBounds="0, 25, AutoSize, AutoSize" />
+
+                    <Label FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           Text="{Binding SelectedBook.Title}"
+                           MaximumWidthRequest="1200"
+                           LineBreakMode="TailTruncation"
+                           FontSize="Large"
+                           BackgroundColor="Coral"
+                           AbsoluteLayout.LayoutBounds="150, 35, AutoSize, AutoSize"
+                           ZIndex="2" />
+
+                    <Label HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           Text="{Binding SelectedBook.Authors[0]}"
+                           MaximumWidthRequest="1200"
+                           LineBreakMode="TailTruncation"
+                           FontSize="Small"
+                           FontAttributes="Italic"
+                           BackgroundColor="Coral"
+                           AbsoluteLayout.LayoutBounds="150, 90, AutoSize, AutoSize"
+                           ZIndex="2" />
+                </AbsoluteLayout>
 
 
-                <!-- Insert your page here -->
-                <Label Text="{Binding SelectedBook.Title}"
-                       FontSize="Large"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                <Grid x:Name="InsideDynamicColumn">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0"
+                          BackgroundColor="DarkBlue"
+                          HeightRequest="140" />
+
+                    <Grid Grid.Row="1"
+                          BackgroundColor="Orange"
+                          ColumnSpacing="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid x:Name="dynamicLeftColumn"
+                              Grid.Column="0"
+                              MaximumWidthRequest="450"
+                              MinimumHeightRequest="600"
+                              BackgroundColor="Coral">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0"
+                                   Text="{Binding Path='SelectedBook.IndustryIdentifiers[ISBN_10]', StringFormat='ISBN 10: {0}'}"
+                                   HorizontalOptions="End"
+                                   FontSize="Small"
+                                   BackgroundColor="Coral"
+                                   Margin="5" />
+                            <Label Grid.Row="1"
+                                   Text="{Binding Path='SelectedBook.IndustryIdentifiers[ISBN_13]', StringFormat='ISBN 13: {0}'}"
+                                   HorizontalOptions="End"
+                                   FontSize="Small"
+                                   Margin="5" />
+
+                            <ScrollView Grid.Row="2"
+                                        Margin="5">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="{Binding Path='SelectedBook.PageCount', StringFormat='Number of Pages: {0}'}"
+                                           FontSize="Micro" />
+                                    <Label Text="{Binding Path='SelectedBook.Language', StringFormat='Language: {0}'}"
+                                           FontSize="Micro" />
+                                    <Label Text="{Binding Path='SelectedBook.PublishedDate', StringFormat='Date of Publication: {0}'}"
+                                           FontSize="Micro" />
+                                    <Label Text="{Binding Path='SelectedBook.Publisher', StringFormat='Publisher: {0}'}"
+                                           FontSize="Micro" />
+                                    <Label Text="{Binding Path='SelectedBook.Authors.Count', StringFormat='Number of Authors: {0}'}"
+                                           FontSize="Micro" />
+                                    <ListView ItemsSource="{Binding SelectedBook.Authors}"
+                                              Margin="5"
+                                              VerticalScrollBarVisibility="Never" />
+                                    <Label Text="Categories:"
+                                           FontSize="Micro" />
+                                    <ListView ItemsSource="{Binding SelectedBook.Categories}"
+                                              Margin="5"
+                                              VerticalScrollBarVisibility="Never" />
+                                    <Label Text="Description:" />
+
+                                    <Label Text="{Binding SelectedBook.Description}"
+                                           FontSize="Micro" />
+
+                                </VerticalStackLayout>
 
 
+                            </ScrollView>
+
+                            <Grid Grid.Row="3"
+                                  HeightRequest="115"
+                                  WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
+                                  RowSpacing="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0"
+                                       Grid.Column="0"
+                                       Text="Reading Status" 
+                                       HorizontalOptions="Center"/>
+                                <Label Grid.Row="0"
+                                       Grid.Column="1"
+                                       Text="Date Read"
+                                       HorizontalOptions="Center" />
+                                <Label Grid.Row="0"
+                                       Grid.Column="2"
+                                       Text="Rating"
+                                       HorizontalOptions="Center" />
+
+                                <Picker x:Name="pickerReadingStatus"
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        HorizontalOptions="Center"
+                                        BackgroundColor="White"
+                                        ItemsSource="{Binding ReadingStatuses}"
+                                        ItemDisplayBinding="{Binding .}"
+                                        SelectedItem="{Binding SelectedReadingStatus}" />
+
+                                <DatePicker Grid.Row="1"
+                                            Grid.Column="1"
+                                            MinimumDate="01/01/1900"
+                                            MaximumDate="12/31/2099"
+                                            DateSelected="DatePicker_DateSelected"
+                                            HorizontalOptions="Center" 
+                                            BackgroundColor="White"/>
+
+                                <Picker x:Name="pickerRating"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        HorizontalOptions="Center"
+                                        BackgroundColor="White"
+                                        ItemsSource="{Binding Ratings}"
+                                        ItemDisplayBinding="{Binding .}"
+                                        SelectedItem="{Binding SelectedRating}" />
+
+                                <Button Grid.Row="2"
+                                    Text="Add to library"
+                                        WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
+                                        VerticalOptions="Start"
+                                        HorizontalOptions="Start"
+                                        Command="{Binding AddBookToLibraryCommand}" />
+                            </Grid>
+                            
+
+                        </Grid>
+
+                        <Grid Grid.Column="1"
+                              BackgroundColor="Coral"
+                              RowSpacing="5"
+                              MaximumWidthRequest="910"
+                              MinimumHeightRequest="600">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0"
+                                   FontSize="Medium"
+                                   Text="Comments"
+                                   Padding="5"
+                                   BackgroundColor="DarkCyan" />
+
+                            <ScrollView Grid.Row="1">
+                                <Grid RowSpacing="5"
+                                      ColumnSpacing="5"
+                                      Padding="5"
+                                      BackgroundColor="DarkCyan">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="1*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Row="0"
+                                           Grid.Column="0"
+                                           WidthRequest="30"
+                                           HeightRequest="30"
+                                           Source="portrait.png"
+                                           Aspect="AspectFit"
+                                           VerticalOptions="Start" />
+                                    <Label Grid.Column="1"
+                                           Grid.Row="0"
+                                           Text="Username"
+                                           LineBreakMode="CharacterWrap"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Start"
+                                           FontSize="Small"
+                                           HorizontalTextAlignment="Start" />
+                                    <Label Grid.Column="1"
+                                           Grid.Row="1"
+                                           Text="{Binding SelectedBook.Title}"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Start"
+                                           VerticalOptions="Center"
+                                           FontSize="Small"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Start" />
+                                    <Label Grid.Column="1"
+                                           Grid.Row="2"
+                                           Text="{Binding SelectedBook.Description}"
+                                           LineBreakMode="CharacterWrap"
+                                           FontAttributes="Italic"
+                                           HorizontalOptions="Start"
+                                           FontSize="Caption"
+                                           HorizontalTextAlignment="Start" />
+                                </Grid>
+                            </ScrollView>
+
+
+                        </Grid>
+
+                    </Grid>
+
+                </Grid>
 
                 <!-- Set IsRunning to a {Binding chosenBinding} -->
                 <ActivityIndicator Grid.Column="0"
