@@ -12,7 +12,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
     public class V1ReadingGoals
     {
         [Key]
-        [Column("id", TypeName = "char(36")]
+        [Column("id", TypeName = "char(36)")]
         public Guid Id { get; set; }
         [Required(ErrorMessage = "{0} is required")]
         [Column("user_id", TypeName = "nvarchar(36)")]
@@ -23,8 +23,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public DateTime GoalEndDate { get; set;}
         [Column("goal_target")]
         public int GoalTarget { get; set; }
-        [Column("curr_target")]
-        public int CurrentTarget { get; set; }
+        [Column("goal_curr")]
+        public int GoalCurrent { get; set; }
         [Column("last_updated", TypeName = "datetime")]
         public DateTime LastUpdated { get; set; }
 
@@ -35,7 +35,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             GoalStartDate = goalStartDate;
             GoalEndDate = goalEndDate;
             GoalTarget = goalTarget;
-            CurrentTarget = currentTarget;
+            GoalCurrent = currentTarget;
             LastUpdated = DateTime.UtcNow;
         }
 
