@@ -51,11 +51,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Messages\**" />
 	  <AndroidResource Remove="ModelView\**" />
+	  <Compile Remove="Messages\**" />
 	  <Compile Remove="ModelView\**" />
+	  <EmbeddedResource Remove="Messages\**" />
 	  <EmbeddedResource Remove="ModelView\**" />
+	  <MauiCss Remove="Messages\**" />
 	  <MauiCss Remove="ModelView\**" />
+	  <MauiXaml Remove="Messages\**" />
 	  <MauiXaml Remove="ModelView\**" />
+	  <None Remove="Messages\**" />
 	  <None Remove="ModelView\**" />
 	</ItemGroup>
 
@@ -130,10 +136,6 @@
 	  <MauiXaml Update="View\UserPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Messages\" />
 	</ItemGroup>
 
 </Project>
