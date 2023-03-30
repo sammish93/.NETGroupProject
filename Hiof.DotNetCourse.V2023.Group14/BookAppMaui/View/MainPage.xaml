@@ -13,6 +13,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:MultiMathExpressionConverter x:Key="MultiMathExpressionConverter" />
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -197,11 +198,18 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Grid.Row="0"
-                                               Source="portrait.png"
-                                               Aspect="AspectFit" />
+                                        <Frame HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               CornerRadius="15"
+                                               BackgroundColor="Coral"
+                                               Padding="0"
+                                               BorderColor="Transparent">
+                                            <Image Grid.Row="0"
+                                                   Source="{Binding DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                   Aspect="AspectFit" />
+                                        </Frame>
                                         <Label Grid.Row="1"
-                                               Text="{Binding UserName}"
+                                               Text="{Binding User.UserName}"
                                                FontAttributes="Bold"
                                                LineBreakMode="CharacterWrap"
                                                HorizontalOptions="Center"
@@ -209,7 +217,7 @@
                                                HorizontalTextAlignment="Center"
                                                VerticalTextAlignment="Center" />
                                         <Label Grid.Row="2"
-                                               Text="{Binding FirstName}"
+                                               Text="{Binding User.FirstName}"
                                                LineBreakMode="CharacterWrap"
                                                FontAttributes="Italic"
                                                HorizontalOptions="Center"

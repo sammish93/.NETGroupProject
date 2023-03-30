@@ -43,7 +43,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
             {
                 if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
                 {
-                    V1User user = ((V1User)e.CurrentSelection.First());
+                    V1User user = ((V1UserWithDisplayPicture)e.CurrentSelection.First()).User;
                     await model.NavigateToUserPage(user);
                 }
             }

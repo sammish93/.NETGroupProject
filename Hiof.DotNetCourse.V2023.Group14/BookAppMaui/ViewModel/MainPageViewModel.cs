@@ -25,7 +25,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         public ObservableCollection<V1Book> Books { get; set; }
         public ObservableCollection<V1Book> RecentlyReadBooks { get; set; }
-        public ObservableCollection<V1User> NearbyUsers { get; set; }
+        public ObservableCollection<V1UserWithDisplayPicture> NearbyUsers { get; set; }
         public int ReadingGoalSize { get; set; } = 12;
         public int ReadingGoalTarget { get; set; } = 20;
         private bool _isBusy;
@@ -45,7 +45,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             Books = new ObservableCollection<V1Book>();
             RecentlyReadBooks = new ObservableCollection<V1Book>();
-            NearbyUsers = new ObservableCollection<V1User>();
+            NearbyUsers = new ObservableCollection<V1UserWithDisplayPicture>();
             LoggedInUser = user;
         }
 
@@ -155,9 +155,27 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 foreach (JObject userJson in jArrayUsers)
                 {
                     V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
-                    //var book = new V1Book(jObjectItem.ToString());
 
-                    NearbyUsers.Add(user);
+                    V1UserWithDisplayPicture userWithDisplayPicture;
+
+
+                    string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                    HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                    if (resultDisplayPicture.IsSuccessStatusCode)
+                    {
+                        var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                        V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                    }
+                    else
+                    {
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, App.DefaultDisplayPicture);
+                    }
+
+                    NearbyUsers.Add(userWithDisplayPicture);
                 }
             }
             catch (Exception ex)
