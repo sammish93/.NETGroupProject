@@ -1,8 +1,8 @@
 ﻿using System;
 namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
 {
-	public class ProxySettings
-	{
+    public class ProxySettings
+    {
         // Url for login
         public string LoginVerification { get; set; }
 
@@ -32,6 +32,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string LibraryChangeRating { get; set; }
         public string LibraryChangeDateRead { get; set; }
         public string LibraryChangeReadingStatus { get; set; }
+
+        // Urls for icons
+        public string GetIconById { get; set; }
+        public string GetIconByName { get; set; }
+        public string AddIcon { get; set; }
+        public string UpdateIcon { get; set; }
+        public string DeleteIcon { get; set; }
     }
 }
 
