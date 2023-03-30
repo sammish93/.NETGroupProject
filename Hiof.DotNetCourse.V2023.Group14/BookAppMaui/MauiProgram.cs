@@ -22,9 +22,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 
 #if DEBUG
             builder.Logging.AddDebug();
-            builder.Services.AddSingleton<LoginViewModel>();
-
-            builder.Services.AddSingleton<LogInPage>();
 #endif
 
             return builder.Build();
