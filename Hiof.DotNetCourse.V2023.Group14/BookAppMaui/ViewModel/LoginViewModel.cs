@@ -11,14 +11,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Drawing;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
-        // NOTE !!!!!!!!!!! "https://localhost:7268/proxy/1.0" !!!!!!!! once login/verification is in the proxy
-        private readonly string _apiBaseUrl = "https://localhost:7021/api/1.0";
+        private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
 
         private string _username;
         private string _password;
@@ -55,7 +56,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             try
             {
-                string loginUrl = $"{_apiBaseUrl}/login/verification";
+                string loginUrl = $"{_apiBaseUrl}/login/Verification";
                 var requestBody = new { Username = Username, Password = Password };
                 var requestBodyJson = JsonConvert.SerializeObject(requestBody);
                 var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
@@ -66,7 +67,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 {
                     //Preferences.Set("UserIsLoggedIn", true);
-                    loginUrl = $"{_apiBaseUrl}/users/getUserByUserName?userName={Username}";
+                    loginUrl = $"{_apiBaseUrl}/users/getByName?name={Username}";
 
                     HttpResponseMessage result = await _httpClient.GetAsync(loginUrl);
                     var responseString = await result.Content.ReadAsStringAsync();
@@ -75,10 +76,32 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                     var currentViewModel = Shell.Current.BindingContext as AppShellViewModel;
                     App.LoggedInUser = user;
-                    Shell.Current.BindingContext = new AppShellViewModel(user);
+
+                    string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                    HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+
+                    var defaultDisplayPicture = System.Drawing.Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "/../../../../../Resources/Images/default_display_picture.png");
+                    ImageConverter converter = new ImageConverter();
+                    byte[] displayPictureInBytes = (byte[])converter.ConvertTo(defaultDisplayPicture, typeof(byte[]));
+                    App.DefaultDisplayPicture = displayPictureInBytes;
+                    App.SelectedUserDisplayPicture = displayPictureInBytes;
+
+                    if (resultDisplayPicture.IsSuccessStatusCode) 
+                    {
+                        var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                        V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                        App.UserDisplayPicture = displayPicture.DisplayPicture;
+                        Shell.Current.BindingContext = new AppShellViewModel(user, displayPicture.DisplayPicture);
+                    } else
+                    {
+                        Shell.Current.BindingContext = new AppShellViewModel(user, displayPictureInBytes);
+                    }
+
                     await Shell.Current.GoToAsync("///home");
-                }
-                else
+                } else
                 {
                     string content = await response.Content.ReadAsStringAsync();
 

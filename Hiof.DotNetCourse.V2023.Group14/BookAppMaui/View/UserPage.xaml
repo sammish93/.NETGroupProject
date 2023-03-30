@@ -2,7 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.UserPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="User Page">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <!-- If the GUI is scaled to below 800x600 it is scrollable -->
     <ScrollView>
@@ -43,9 +50,8 @@
                            AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
                            ZIndex="3">
                         <Image Grid.Row="0"
-                               Source="portrait.png"
-                               Aspect="AspectFill"
-                                />
+                               Source="{Binding SelectedUserDisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                               Aspect="AspectFill" />
                     </Frame>
 
                     <BoxView BindingContext="{x:Reference InsideDynamicColumn}"

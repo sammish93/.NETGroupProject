@@ -28,6 +28,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private bool _isBusy;
         public V1User User { get; set; }
         public V1User SelectedUser { get; set; }
+        public byte[] SelectedUserDisplayPicture { get; set; }
         public V1LibraryCollection UserLibrary { get; set; }
         public ObservableCollection<V1Book> UserBooks { get; set; }
 
@@ -42,11 +43,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public UserPageViewModel(V1User loggedInUser, V1User selectedUser)
+        public UserPageViewModel(V1User loggedInUser, V1User selectedUser, byte[] selectedUserDisplayPicture)
         {
             User = loggedInUser;
             SelectedUser = selectedUser;
             UserBooks = new ObservableCollection<V1Book>();
+            SelectedUserDisplayPicture = selectedUserDisplayPicture;
         }
 
         public async Task PopulateBooks()

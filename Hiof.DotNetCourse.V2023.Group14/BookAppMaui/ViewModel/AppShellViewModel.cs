@@ -21,6 +21,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
     {
         private V1User _user;
         private string _titleCurrentPage = "defaultTitle";
+        private byte[] _displayPicture;
 
 
         public V1User User
@@ -35,13 +36,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set => SetProperty(ref _titleCurrentPage, value);
         }
 
+        public byte[] DisplayPicture
+        {
+            get => _displayPicture;
+            set => SetProperty(ref _displayPicture, value);
+        }
+
         public AppShellViewModel()
         {
         }
 
-        public AppShellViewModel(V1User user)
+        public AppShellViewModel(V1User user, byte[] displayPicture)
         {
             User = user;
+            DisplayPicture = displayPicture;
         }
 
         public ICommand HomeButtonCommand => new Command(async () => await NavButtonAsync("///home"));

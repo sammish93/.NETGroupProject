@@ -16,6 +16,7 @@
     <Shell.Resources>
         <ResourceDictionary>
             <toolkit:MathExpressionConverter x:Key="MathExpressionConverter" />
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
         </ResourceDictionary>
     </Shell.Resources>
 
@@ -91,15 +92,17 @@
         <DataTemplate>
             <Grid BackgroundColor="SandyBrown"
                   HeightRequest="150">
-                <Frame CornerRadius="50"
+                <Frame HorizontalOptions="Center"
+                       VerticalOptions="Start"
+                       CornerRadius="50"
                        HeightRequest="100"
                        WidthRequest="100"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Start"
+                       BackgroundColor="White"
+                       Padding="0"
                        Margin="10"
-                       IsClippedToBounds="True">
-                    <Image x:Name="DisplayPicture"
-                           Source="default_display_picture.png"></Image>
+                       BorderColor="Transparent">
+                    <Image Source="{Binding DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                           Aspect="AspectFit" />
                 </Frame>
                 <Label TextColor="SaddleBrown"
                        FontAttributes="Bold"

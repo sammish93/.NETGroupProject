@@ -15,6 +15,7 @@ using System.Net;
 using Microsoft.IdentityModel.Tokens;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Newtonsoft.Json.Linq;
+using System.Drawing;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -168,7 +169,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public async Task NavigateToUserPage(V1User user)
         {
             App.SelectedUser = user;
+            await GetSelectedUserDisplayPicture(user.UserName);
             await Shell.Current.GoToAsync($"///user?userid={user.Id}");
+        }
+
+        public async Task GetSelectedUserDisplayPicture(string username)
+        {
+            string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={username}";
+            HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+            if (resultDisplayPicture.IsSuccessStatusCode)
+            {
+                var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                App.SelectedUserDisplayPicture = displayPicture.DisplayPicture;
+            } else
+            {
+                App.SelectedUserDisplayPicture = App.DefaultDisplayPicture;
+            }
         }
 
         public async Task NavigateToBookPage(V1Book book)
