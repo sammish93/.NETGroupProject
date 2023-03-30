@@ -1,17 +1,14 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
-using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Configuration;
+﻿using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Configuration;
 using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using System.Configuration;
-using System.Diagnostics.Metrics;
 using System.Runtime.InteropServices;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
 {
     public class ProgramUserAccount
     {
-        public static void Main(string[] args) 
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -36,12 +33,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
 
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(connectionString));
                 builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(connectionString));
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) 
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 // Connection string for MySQL-database (only for stian)
                 var connectionString = builder.Configuration.
                     GetConnectionString("MySqlConnectionString");
-                
+
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
                     connectionString,
                     new MySqlServerVersion(new Version(8, 0, 32)),
@@ -58,7 +56,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
                         mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
                     }
                 ));
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 // Development machines using Linux can do something here.
             }
@@ -73,18 +72,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            
+
 
             var app = builder.Build();
 
-            
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            
+
 
             app.UseHttpsRedirection();
 
@@ -93,7 +92,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService
             app.UseAuthorization();
 
             app.MapControllers();
-            
+
             app.Run();
 
 

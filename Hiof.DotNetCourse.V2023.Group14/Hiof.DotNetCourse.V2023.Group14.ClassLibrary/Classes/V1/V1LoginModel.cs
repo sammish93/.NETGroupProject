@@ -1,10 +1,5 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Diagnostics.Metrics;
 using System.Text.Json.Serialization;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1

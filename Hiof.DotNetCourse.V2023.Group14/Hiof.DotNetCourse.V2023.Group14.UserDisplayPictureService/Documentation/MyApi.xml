@@ -1,0 +1,62 @@
+﻿<?xml version="1.0"?>
+<doc>
+	<assembly>
+		<name>Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService</name>
+	</assembly>
+	<members>
+		<member name="M:Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers.V1DisplayPictureController.GetById(System.Guid)">
+			<summary>
+				Get an icon by its ID.
+			</summary>
+			<param name="id">The ID of the icon to retrieve.</param>
+			<response code="200">Returns an V1UserIcon object for the specified id</response>
+			<response code="400">Bad request error</response>
+			<response code="404">Not found error.</response>
+		</member>
+		<member name="M:Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers.V1DisplayPictureController.GetByUsername(System.String)">
+			<summary>
+				Gets the user icon for the specified username.
+			</summary>
+			<param name="username">The username of the user whose icon to retrieve.</param>
+			<response code="200">Returns an object of V1UserIcon for the specified username.</response>
+			<response code="400">Bad request error</response>
+			<response code="404">Not found error.</response>
+		</member>
+		<member name="M:Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers.V1DisplayPictureController.Add(Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1AddIconInputModel)">
+			<summary>
+				Endpoint to add a new user icon to the database.
+			</summary>
+			<param name="icon">
+				The user icon object containing the ID, username,
+				and display picture as a byte array.
+			</param>
+			<param name="file">The image file to be uploaded.</param>
+			<response code="200">Returns an Ok result if the upload was successful</response>
+			<response code="400">Bad request error with corresponding errormessage.</response>
+		</member>
+		<member name="M:Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers.V1DisplayPictureController.Update(Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1AddIconInputModel)">
+			<summary>
+				Updates a user icon with the provided V1UserIcon object and image file.
+			</summary>
+			<param name="icon">The V1UserIcon object to update.</param>
+			<param name="file">The image file to update the user icon with.</param>
+			<response code="200">An ActionResult indicating success of the update operation.</response>
+			<response code="400">Bad request error with corresponding errormessage.</response>
+		</member>
+		<member name="M:Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers.V1DisplayPictureController.Delete(System.Guid)">
+			<summary>
+				Deletes a user icon from the database based on the provided ID.
+			</summary>
+			<param name="id">The ID of the user icon to be deleted.</param>
+			<response code="200">An ActionResult indicating success or failure of the operation.</response>
+			<response code="400">Bad request error with corresponding errormessage.</response>
+		</member>
+		<member name="T:Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Services.V1UserIconService">
+			<summary>
+				V1UserIconService implements V1UserIcon interface. Concrete
+				implementation of the interface, that will connect to the database
+				and execute the different operations.
+			</summary>
+		</member>
+	</members>
+</doc>
