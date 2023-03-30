@@ -1,5 +1,6 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -68,6 +69,34 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public V1LibraryEntry()
         {
 
+        }
+
+        public V1LibraryEntry(string jsonString)
+        {
+            dynamic? jsonObject = JsonConvert.DeserializeObject(jsonString);
+
+            Id = jsonObject.id;
+
+            UserId = jsonObject.userId;
+
+            string? isbn10 = jsonObject.libraryEntryISBN10;
+            string? isbn13 = jsonObject.libraryEntryISBN13;
+
+            if (!isbn10.IsNullOrEmpty())
+            {
+                LibraryEntryISBN10 = isbn10;
+            }
+            if (!isbn13.IsNullOrEmpty())
+            {
+                LibraryEntryISBN13 = isbn13;
+            }
+
+            Title = jsonObject.title;
+            MainAuthor = jsonObject.mainAuthor;
+
+            Rating = jsonObject.rating;
+            DateRead = jsonObject.dateRead;
+            ReadingStatus = jsonObject.readingStatus;
         }
     }
 }

@@ -24,22 +24,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         protected override Window CreateWindow(IActivationState activationState)
         {
             var window = base.CreateWindow(activationState);
+            window.MinimumHeight = 600;
+            window.MinimumWidth = 800;
 
             // This code makes the GUI fixed to specific dimensions
             /*
             const int newWidth = 1024;
-            const int newHeight = 768;
-
-           
+            const int newHeight = 768
 
             window.Width = newWidth;
             window.Height = newHeight;
 
-            window.MinimumHeight = newHeight;
             window.MinimumWidth = newWidth;
 
             window.MinimumHeight = newHeight;
-            window.MaximumWidth = newWidth;
             */
 
             return window;

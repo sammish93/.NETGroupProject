@@ -12,9 +12,16 @@ public partial class UserPage : ContentPage
 
     protected override async void OnAppearing()
     {
+        base.OnAppearing();
+
         BindingContext = new UserPageViewModel(App.LoggedInUser, App.SelectedUser);
 
-        base.OnAppearing();
+        var model = BindingContext as ViewModel.UserPageViewModel;
+
+        if (model != null)
+        {
+            await model.LoadAsync();
+        }
     }
 
     protected override void OnSizeAllocated(double width, double height)
