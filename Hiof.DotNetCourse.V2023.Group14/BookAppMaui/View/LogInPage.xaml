@@ -62,8 +62,8 @@
                        VerticalOptions="Center"
                        HorizontalOptions="Center"
                        IsTextPredictionEnabled="True"
-                       WidthRequest="200" 
-                       HorizontalTextAlignment="Center"/>
+                       WidthRequest="200"
+                       HorizontalTextAlignment="Center" />
 
                 <Entry Grid.Row="3"
                        Placeholder="Enter Password"
@@ -107,15 +107,14 @@
                               CheckedChanged="CheckBox_CheckedChanged"
                               VerticalOptions="Center" />
                 </HorizontalStackLayout>
+
+                <!-- Set IsRunning to a {Binding chosenBinding} -->
+                <ActivityIndicator Grid.Row="7"
+                                   IsRunning="{Binding IsLoggingIn}"
+                                   Color="LightCoral"
+                                   Scale="2" 
+                                   TranslationY="-10"/>
             </Grid>
-
-            <!-- Set IsRunning to a {Binding chosenBinding} -->
-            <ActivityIndicator Grid.Column="0"
-                               Grid.ColumnSpan="2"
-                               IsRunning="{Binding IsLoggingIn}"
-                               Color="LightCoral"
-                               Scale="3" />
-
         </Grid>
     </Grid>
 </ContentPage>
