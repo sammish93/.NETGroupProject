@@ -87,6 +87,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.NETCore.Targets" Version="3.0.0" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="View\BookPage.xaml.cs">
 	    <DependentUpon>BookPage.xaml</DependentUpon>
 	  </Compile>
