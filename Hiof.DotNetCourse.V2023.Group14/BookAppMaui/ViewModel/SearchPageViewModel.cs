@@ -60,9 +60,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 var queryReplaced = query;
                 queryReplaced.Replace(" ", "%20");
-                string loginUrl = $"{_apiBaseUrl}/books/GetByTitle?title={queryReplaced}&maxResults=40";
+                string url = $"{_apiBaseUrl}/books/GetByTitle?title={queryReplaced}&maxResults=40";
 
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
                 responseMessage.EnsureSuccessStatusCode();
                 var json = await responseMessage.Content.ReadAsStringAsync();
                 var bookSearch = new V1BooksDto(json);
@@ -96,9 +96,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 var queryReplaced = query;
                 queryReplaced.Replace(" ", "%20");
-                string loginUrl = $"{_apiBaseUrl}/books/GetByAuthor?name={queryReplaced}&maxResults=40";
+                string url = $"{_apiBaseUrl}/books/GetByAuthor?name={queryReplaced}&maxResults=40";
 
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
                 responseMessage.EnsureSuccessStatusCode();
                 var json = await responseMessage.Content.ReadAsStringAsync();
                 var bookSearch = new V1BooksDto(json);
@@ -129,9 +129,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 Users.Clear();
 
-                string loginUrl = $"{_apiBaseUrl}/users/GetAll";
+                var queryReplaced = query;
+                queryReplaced.Replace(" ", "%20");
 
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                string url = $"{_apiBaseUrl}/users/GetUsersByName?name={queryReplaced}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
                 responseMessage.EnsureSuccessStatusCode();
                 var json = await responseMessage.Content.ReadAsStringAsync();
 

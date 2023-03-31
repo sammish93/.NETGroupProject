@@ -121,6 +121,40 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
 
         }
 
+        [HttpGet("getUsersByUserName")]
+
+        public async Task<ActionResult> GetUsersUserName(string userName)
+        {
+            var users = await _userAccountContext.Users.Where(x => x.UserName.Contains(userName)).ToListAsync();
+
+            if (users == null)
+            {
+                return NotFound("User doesn't exist.");
+            }
+            else
+            {
+                return Ok(users);
+            }
+
+        }
+
+        [HttpGet("getUsersByCity")]
+
+        public async Task<ActionResult> GetUsersByCity(string city)
+        {
+            var users = await _userAccountContext.Users.Where(x => x.City.Contains(city)).ToListAsync();
+
+            if (users == null)
+            {
+                return NotFound("User doesn't exist.");
+            }
+            else
+            {
+                return Ok(users);
+            }
+
+        }
+
         [HttpGet("getUserByEmail")]
 
         public async Task<ActionResult> GetUserByEmail(string email)

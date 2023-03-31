@@ -23,7 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
-        public ObservableCollection<V1Book> Books { get; set; }
+        public ObservableCollection<V1Book> HighestRatedBooks { get; set; }
         public ObservableCollection<V1Book> RecentlyReadBooks { get; set; }
         public ObservableCollection<V1UserWithDisplayPicture> NearbyUsers { get; set; }
         private bool _isBusy;
@@ -63,7 +63,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public MainPageViewModel(V1User user)
         {
-            Books = new ObservableCollection<V1Book>();
+            HighestRatedBooks = new ObservableCollection<V1Book>();
             RecentlyReadBooks = new ObservableCollection<V1Book>();
             NearbyUsers = new ObservableCollection<V1UserWithDisplayPicture>();
             LoggedInUser = user;
@@ -71,136 +71,164 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         //public ICommand PopulateBooksCommand => new Command(async () => await populateBooks());
 
-        public async Task PopulateBooks()
+        public async Task PopulateHighestRatedBooks()
         {
-            
-            try
+            if (HighestRatedBooks.IsNullOrEmpty() || App.IsUserLibraryAltered)
             {
-                Books.Clear();
-
-                string loginUrl = $"{_apiBaseUrl}/books/GetBookByCategory?subject=crime";
-
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                var bookSearch = new V1BooksDto(json);
-
-                foreach (V1Book book in bookSearch.Books)
+                try
                 {
-                    if (book.IndustryIdentifiers == null
-                        || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
+                    HighestRatedBooks.Clear();
+
+                    string url = $"{_apiBaseUrl}/libraries/GetUserHighestRatedBooks?userId={LoggedInUser.Id}&numberOfResults=10";
+
+                    using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+                    responseMessage.EnsureSuccessStatusCode();
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
+
+                    foreach (V1LibraryEntry entry in library.Entries)
                     {
-                        continue;
+                        string Isbn;
+                        if (entry.LibraryEntryISBN10 != null)
+                        {
+                            Isbn = entry.LibraryEntryISBN10;
+                        }
+                        else if (entry.LibraryEntryISBN13 != null)
+                        {
+                            Isbn = entry.LibraryEntryISBN13;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                        var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
+
+                        using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
+                        responseMessageTwo.EnsureSuccessStatusCode();
+                        var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
+                        V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
+
+                        foreach (V1Book book in bookSearch.Books)
+                        {
+
+                            book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                            book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                            HighestRatedBooks.Add(book);
+                        }
                     }
 
-                    book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                    book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                    Books.Add(book);
+                    App.IsUserLibraryAltered = false;
                 }
-            }
-            catch (Exception ex)
-            {
+                catch (Exception ex)
+                {
 
+                }
             }
         }
 
         public async Task PopulateRecentlyReadBooks()
         {
-
-            try
+            if (RecentlyReadBooks.IsNullOrEmpty() || App.IsUserLibraryAltered)
             {
-                RecentlyReadBooks.Clear();
-
-                string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={LoggedInUser.Id}";
-
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
-
-                foreach (V1LibraryEntry entry in library.Entries)
+                try
                 {
-                    string Isbn;
-                    if (entry.LibraryEntryISBN10 != null)
+                    RecentlyReadBooks.Clear();
+
+                    string url = $"{_apiBaseUrl}/libraries/GetUserMostRecentBooks?userId={LoggedInUser.Id}&numberOfResults=10";
+
+                    using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+                    responseMessage.EnsureSuccessStatusCode();
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
+
+                    foreach (V1LibraryEntry entry in library.Entries)
                     {
-                        Isbn = entry.LibraryEntryISBN10;
-                    } else if (entry.LibraryEntryISBN13 != null)
-                    {
-                        Isbn = entry.LibraryEntryISBN13;
-                    } else
-                    {
-                        continue;
+                        string Isbn;
+                        if (entry.LibraryEntryISBN10 != null)
+                        {
+                            Isbn = entry.LibraryEntryISBN10;
+                        }
+                        else if (entry.LibraryEntryISBN13 != null)
+                        {
+                            Isbn = entry.LibraryEntryISBN13;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                        var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
+
+                        using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
+                        responseMessageTwo.EnsureSuccessStatusCode();
+                        var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
+                        V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
+
+                        foreach (V1Book book in bookSearch.Books)
+                        {
+
+                            book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                            book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                            RecentlyReadBooks.Add(book);
+                        }
                     }
 
-                    var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
-
-                    using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
-                    responseMessageTwo.EnsureSuccessStatusCode();
-                    var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
-                    V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
-
-                    foreach (V1Book book in bookSearch.Books)
-                    {
-
-                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                        RecentlyReadBooks.Add(book);
-                    }
+                    App.IsUserLibraryAltered = false;
                 }
-            }
-            catch (Exception ex)
-            {
+                catch (Exception ex)
+                {
 
-            }
-            finally
-            {
+                }
             }
         }
 
         public async Task PopulateNearbyUsers()
         {
-
-            try
+            if (NearbyUsers.IsNullOrEmpty())
             {
-                NearbyUsers.Clear();
-
-                string loginUrl = $"{_apiBaseUrl}/users/GetAll";
-
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-
-                dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
-
-                foreach (JObject userJson in jArrayUsers)
+                try
                 {
-                    V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
+                    NearbyUsers.Clear();
 
-                    V1UserWithDisplayPicture userWithDisplayPicture;
+                    string loginUrl = $"{_apiBaseUrl}/users/GetUsersByCity?city={LoggedInUser.City}";
 
+                    using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                    responseMessage.EnsureSuccessStatusCode();
+                    var json = await responseMessage.Content.ReadAsStringAsync();
 
-                    string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
-                    HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+                    dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
 
-                    if (resultDisplayPicture.IsSuccessStatusCode)
+                    foreach (JObject userJson in jArrayUsers)
                     {
-                        var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+                        V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
 
-                        V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+                        V1UserWithDisplayPicture userWithDisplayPicture;
 
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+
+                        string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                        HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                        if (resultDisplayPicture.IsSuccessStatusCode)
+                        {
+                            var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                            V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                            userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                        }
+                        else
+                        {
+                            userWithDisplayPicture = new V1UserWithDisplayPicture(user, App.DefaultDisplayPicture);
+                        }
+
+                        NearbyUsers.Add(userWithDisplayPicture);
                     }
-                    else
-                    {
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, App.DefaultDisplayPicture);
-                    }
-
-                    NearbyUsers.Add(userWithDisplayPicture);
                 }
-            }
-            catch (Exception ex)
-            {
+                catch (Exception ex)
+                {
 
+                }
             }
         }
 
@@ -263,7 +291,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public async Task LoadAsync()
         {
             IsBusy = true;
-            await PopulateBooks();
+            await PopulateHighestRatedBooks();
             await PopulateRecentlyReadBooks();
             await PopulateNearbyUsers();
             IsBusy = false;

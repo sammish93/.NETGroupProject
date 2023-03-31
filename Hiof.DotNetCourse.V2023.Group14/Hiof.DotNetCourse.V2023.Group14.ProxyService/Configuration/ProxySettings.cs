@@ -10,6 +10,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string GetUsers { get; set; }
         public string GetUserById { get; set; }
         public string GetUserByName { get; set; }
+        public string GetUsersByName { get; set; }
+        public string GetUsersByCity { get; set; }
         public string GetUserByEmail { get; set; }
         public string CreateUserAccount { get; set; }
         public string UpdateUserAccount { get; set; }
@@ -27,6 +29,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string LibraryGetEntries { get; set; }
         public string LibraryGetEntry { get; set; }
         public string GetUserLibrary { get; set; }
+        public string GetUserMostRecentBooks { get; set; }
+        public string GetUserHighestRatedBooks { get; set; }
         public string LibraryDeleteEntry { get; set; }
         public string LibraryDeleteUserLibrary { get; set; }
         public string LibraryChangeRating { get; set; }

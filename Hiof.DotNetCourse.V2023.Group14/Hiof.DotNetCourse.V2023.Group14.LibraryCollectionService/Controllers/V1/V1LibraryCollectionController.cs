@@ -123,6 +123,102 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
             }
         }
 
+        // Returns the most recent books (by date read in descending order) from a user's library. The ReadingStatus enum is optional. If none is provided then all books will be included.
+        [HttpGet("GetUserMostRecentBooks")]
+        public async Task<IActionResult> GetUserMostRecentBooks(Guid userId, int numberOfResults, ReadingStatus? readingStatus)
+        {
+            List<V1LibraryEntry> libraries;
+            if (readingStatus != null)
+            {
+                libraries = await (from library in _libraryCollectionContext.LibraryEntries
+                                       where library.UserId == userId
+                                       where library.ReadingStatus == readingStatus
+                                       orderby library.DateRead descending
+                                       select library).ToListAsync();
+            } else
+            {
+                libraries = await (from library in _libraryCollectionContext.LibraryEntries
+                                       where library.UserId == userId
+                                       orderby library.DateRead descending
+                                       select library).ToListAsync();
+            }
+            
+
+            if (libraries.IsNullOrEmpty())
+            {
+                return NotFound("This user either does not exist, or has no entries in their library.");
+            }
+            else
+            {
+                int results = 0;
+                var libCollection = new V1LibraryCollection();
+                libCollection.UserId = userId;
+                libCollection.Entries = new List<V1LibraryEntry>();
+                libCollection.ItemsRead = 0;
+
+                foreach (var libEntry in libraries)
+                {
+                    if (results < numberOfResults)
+                    {
+                        if (libEntry.ReadingStatus == readingStatus)
+                        {
+                            libCollection.Entries.Add(libEntry);
+                            libCollection.ItemsRead++;
+                            results++;
+                        } else
+                        {
+                            libCollection.Entries.Add(libEntry);
+                            libCollection.ItemsRead++;
+                            results++;
+                        }
+                    }
+                }
+
+                libCollection.Items = libCollection.Entries.Count;
+
+                return Ok(libCollection);
+            }
+        }
+
+        // Returns the most recent books (by date read in descending order) from a user's library. The ReadingStatus enum is optional. If none is provided then all books will be included.
+        [HttpGet("GetUserHighestRatedBooks")]
+        public async Task<IActionResult> GetUserHighestRatedBooks(Guid userId, int numberOfResults)
+        {
+
+            var libraries = await (from library in _libraryCollectionContext.LibraryEntries
+                                where library.UserId == userId
+                                orderby library.Rating descending
+                                select library).ToListAsync();
+
+
+            if (libraries.IsNullOrEmpty())
+            {
+                return NotFound("This user either does not exist, or has no entries in their library.");
+            }
+            else
+            {
+                int results = 0;
+                var libCollection = new V1LibraryCollection();
+                libCollection.UserId = userId;
+                libCollection.Entries = new List<V1LibraryEntry>();
+                libCollection.ItemsRead = 0;
+
+                foreach (var libEntry in libraries)
+                {
+                    if (results < numberOfResults)
+                    {
+                            libCollection.Entries.Add(libEntry);
+                            libCollection.ItemsRead++;
+                            results++;
+                    }
+                }
+
+                libCollection.Items = libCollection.Entries.Count;
+
+                return Ok(libCollection);
+            }
+        }
+
         [HttpDelete("deleteEntry")]
         public async Task<ActionResult> DeleteEntry(Guid entryId)
         {

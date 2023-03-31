@@ -53,6 +53,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         public async Task<IActionResult> GetByName(string name)
             => await Proxy(_apiUrls.Value.GetUserByName + $"?userName={name}");
 
+        [HttpGet("users/[action]")]
+        public async Task<IActionResult> GetUsersByName(string name)
+            => await Proxy(_apiUrls.Value.GetUsersByName + $"?userName={name}");
+
+        [HttpGet("users/[action]")]
+        public async Task<IActionResult> GetUsersByCity(string city)
+           => await Proxy(_apiUrls.Value.GetUsersByCity + $"?city={city}");
 
         [HttpGet("users/[action]")]
         public async Task<IActionResult> GetByEmail(string email)
@@ -161,6 +168,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         [HttpGet("libraries/[action]")]
         public async Task<IActionResult> GetUserLibrary(Guid userId)
             => await Proxy(_apiUrls.Value.GetUserLibrary + $"?userId={userId}");
+
+        [HttpGet("libraries/[action]")]
+        public async Task<IActionResult> GetUserMostRecentBooks(Guid userId, int numberOfResults, ReadingStatus? readingStatus)
+        {
+            if (readingStatus != null)
+            {
+                return await Proxy(_apiUrls.Value.GetUserMostRecentBooks + $"?userId={userId}&numberOfResults={numberOfResults}&readingStatus={readingStatus}");
+            }
+            else
+            {
+                return await Proxy(_apiUrls.Value.GetUserMostRecentBooks + $"?userId={userId}&numberOfResults={numberOfResults}");
+            }
+
+        }
+
+        [HttpGet("libraries/[action]")]
+        public async Task<IActionResult> GetUserHighestRatedBooks(Guid userId, int numberOfResults)
+            => await Proxy(_apiUrls.Value.GetUserHighestRatedBooks + $"?userId={userId}&numberOfResults={numberOfResults}");
 
 
         [HttpDelete("libraries/[action]")]

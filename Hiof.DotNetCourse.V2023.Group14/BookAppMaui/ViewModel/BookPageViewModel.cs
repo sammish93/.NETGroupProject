@@ -91,6 +91,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
+                    App.IsUserLibraryAltered = true;
 
                 } else if (SelectedRating == 0)
                 {

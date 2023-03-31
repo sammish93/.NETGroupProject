@@ -71,7 +71,7 @@
                                TextColor="Black"
                                BackgroundColor="Green" />
 
-                        <CollectionView ItemsSource="{Binding Books}"
+                        <CollectionView ItemsSource="{Binding HighestRatedBooks}"
                                         ItemsLayout="HorizontalList"
                                         Grid.Row="1"
                                         BackgroundColor="Green"
