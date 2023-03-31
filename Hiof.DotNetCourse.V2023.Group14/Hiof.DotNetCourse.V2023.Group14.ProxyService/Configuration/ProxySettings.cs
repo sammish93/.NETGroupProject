@@ -39,6 +39,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string AddIcon { get; set; }
         public string UpdateIcon { get; set; }
         public string DeleteIcon { get; set; }
+
+        //Urls for readingGoals
+
+        public string CreateReadingGoal { get; set; }
+
+        public string GetAllGoals { get; set; }
+        public string GetGoalId { get; set; }
+        public string GetRecentGoal { get; set;}
+
+        public string IncrementReadingGoal { get; set; }
+        public string ModifyReadingGoal { get; set; }
+        public string DeleteReadingGoal { get; set; }
     }
 }
 

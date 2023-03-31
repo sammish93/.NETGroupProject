@@ -299,6 +299,75 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
         }
 
+        [HttpPost("goals/[action]")]
+        public async Task<IActionResult> CreateReadingGoal(V1ReadingGoals readingGoal)
+        {
+            var url = _apiUrls.Value.CreateReadingGoal;
+            using var content = SerializeToJsonString(readingGoal);
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok("New Reading goal added");
+            else
+                return BadRequest(response.RequestMessage);
+
+        }
+
+        [HttpGet("goals/[action]")]
+        public async Task<IActionResult> GetAllGoals([Required]Guid userId)
+            => await Proxy($"{_apiUrls.Value.GetAllGoals}?userId={userId}");
+
+        [HttpGet("goals/[action]")]
+        public async Task<IActionResult> GetGoalId([Required] Guid userId, DateTime GoalDate)
+            => await Proxy($"{_apiUrls.Value.GetGoalId}?userId={userId}&goalDate={GoalDate}");
+        [HttpGet("goals/[action]")]
+        public async Task<IActionResult> GetRecentGoal([Required] Guid userId)
+            => await Proxy($"{_apiUrls.Value.GetRecentGoal}?userId={userId}");
+
+        [HttpPut("goals/[action]")]
+
+        public async Task<IActionResult> IncrementReadingGoal(Guid id, int amount)
+        {
+            var url = $"{ _apiUrls.Value.IncrementReadingGoal}?id={id}&incrementAmount={amount}";
+            var content = new StringContent(amount.ToString(),  Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(url, content);
+
+            if(response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.RequestMessage);
+            
+        }
+
+        [HttpPut("goals/[action]")]
+
+        public async Task<IActionResult> ModifyReadingGoal(Guid id, V1ReadingGoals readingGoal)
+        {
+            var url = $"{_apiUrls.Value.ModifyReadingGoal}?id={id}";
+
+            using var content = SerializeToJsonString(readingGoal);
+            using var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.RequestMessage);
+        }
+
+        [HttpDelete("goals/[action]")]
+        public async Task<IActionResult> DeleteReadingGoal( Guid id)
+        {
+            var url = $"{_apiUrls.Value.DeleteReadingGoal}?id={id}";
+            var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.ReasonPhrase);
+
+
+        }
 
         // This is the method that executes the calls.
         private async Task<ContentResult> Proxy(string url)
