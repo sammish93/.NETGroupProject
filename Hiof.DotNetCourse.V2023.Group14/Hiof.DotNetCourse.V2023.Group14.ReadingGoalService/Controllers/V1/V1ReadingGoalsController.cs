@@ -19,7 +19,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult> CreateReadingGoal(Guid userId, V1ReadingGoals readingGoal)
+        public async Task<ActionResult> CreateReadingGoal(V1ReadingGoals readingGoal)
         {
             if (readingGoal != null)
             {
@@ -33,7 +33,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1
                     return BadRequest("You already have a reading goal during this time period!");
                 }
 
-                readingGoal.UserId = userId;
+                
 
                 await _readingGoalsContext.ReadingGoals.AddAsync(readingGoal);
                 await _readingGoalsContext.SaveChangesAsync();
@@ -45,7 +45,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1
         }
 
         [HttpGet]
-        [Route("getGoal")]
+        [Route("getGoalByUserId")]
         public async Task<ActionResult> GetGoalByUserId(Guid userId)
         {
             var goal = await (from goals in _readingGoalsContext.ReadingGoals
@@ -77,9 +77,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1
 
             return Ok(goal);
         }
+        [HttpGet]
+        [Route("getRecentGoals")]
+        public async Task<ActionResult> GetRecentReadingGoals(Guid userId)
+        {
+            var goal = await _readingGoalsContext.ReadingGoals
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.GoalEndDate.Date)
+                .FirstOrDefaultAsync();
 
-        [HttpPost]
-        [Route("increment")]
+            if(goal == null) 
+            {
+                return NotFound("No Goals Yet");
+            }
+            return Ok(goal);
+        }
+
+        [HttpPut]
+        [Route("incrementGoal")]
         public async Task<ActionResult> IncrementReadingGoal(Guid Id, int incrementAmount)
         {
             var goal = await _readingGoalsContext.ReadingGoals
@@ -100,7 +115,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1
         }
 
         [HttpPut]
-        [Route("modify/{id}")]
+        [Route("modify")]
         public async Task<ActionResult> ModifyReadingGoal(Guid id, V1ReadingGoals updatedReadingGoal)
         {
             var existingReadingGoal = await _readingGoalsContext.ReadingGoals.FindAsync(id);
@@ -122,7 +137,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1
         }
 
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("delete")]
         public async Task<ActionResult> DeleteReadingGoal(Guid id)
         {
             var existingReadingGoal = await _readingGoalsContext.ReadingGoals.FindAsync(id);
