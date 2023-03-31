@@ -24,15 +24,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1
             if (readingGoal != null)
             {
                 var existingReadingGoal = await _readingGoalsContext.ReadingGoals
-                    .Where(x => x.GoalStartDate.Date < readingGoal.GoalStartDate.Date && x.GoalEndDate.Date > readingGoal.GoalEndDate)
+                    .Where(x => (x.GoalStartDate.Date <= readingGoal.GoalStartDate.Date && x.GoalEndDate.Date >= readingGoal.GoalStartDate.Date)
+                    || (x.GoalStartDate.Date <= readingGoal.GoalEndDate.Date && x.GoalEndDate.Date >= readingGoal.GoalEndDate.Date))
                     .FirstOrDefaultAsync();
 
                 if (existingReadingGoal != null)
                 {
-                    return BadRequest("You already have a reading goal!");
+                    return BadRequest("You already have a reading goal during this time period!");
                 }
 
-                
                 readingGoal.UserId = userId;
 
                 await _readingGoalsContext.ReadingGoals.AddAsync(readingGoal);
