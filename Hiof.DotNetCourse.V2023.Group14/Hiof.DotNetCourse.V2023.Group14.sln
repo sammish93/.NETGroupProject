@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Gro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.ReadingGoalService", "Hiof.DotNetCourse.V2023.Group14.ReadingGoalService\Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.csproj", "{1BDD6D3D-2922-4529-8E80-49DE671E78AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService", "Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService\Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.csproj", "{49FEB901-F5DE-4586-9ECD-CF15E6BB9E9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService", "Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService\Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.csproj", "{49FEB901-F5DE-4586-9ECD-CF15E6BB9E9A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1CB3B2C6-7728-4F02-AAC1-3766559FFDEB} = {1CB3B2C6-7728-4F02-AAC1-3766559FFDEB}
 	EndProjectSection
