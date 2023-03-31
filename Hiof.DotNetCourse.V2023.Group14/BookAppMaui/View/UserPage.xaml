@@ -142,6 +142,11 @@
                                            FontSize="Micro" />
                                     <Label Text="{Binding Path='UserLibrary.ItemsRead', StringFormat='Number of Books Read in Library: {0}'}"
                                            FontSize="Micro" />
+                                    <Label Text="Reading Goals:"
+                                           FontSize="Micro" />
+                                    <ListView ItemsSource="{Binding UserReadingGoals}"
+                                              Margin="5"
+                                              VerticalScrollBarVisibility="Never" />
                                     <Label Text="Book Collection:"
                                            FontSize="Micro" />
                                     <ListView ItemsSource="{Binding UserBooks}"

@@ -271,33 +271,38 @@
                                    LineBreakMode="CharacterWrap"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"
-                                   FontSize="11"
+                                   FontSize="14"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center" />
-                            <Label Grid.Column="1"
-                                   Grid.Row="1"
-                                   LineBreakMode="CharacterWrap"
-                                   FontAttributes="Italic"
-                                   HorizontalOptions="Center"
-                                   FontSize="12"
-                                   HorizontalTextAlignment="Center">
-                                <Label.Text>
-                                    <MultiBinding StringFormat="You have read {0} out of {1} books! Great job.">
-                                        <Binding Path="ReadingGoalSize" />
-                                        <Binding Path="ReadingGoalTarget" />
-                                    </MultiBinding>
-                                </Label.Text>
-                            </Label>
+                            <VerticalStackLayout Grid.Column="0"
+                                                 Grid.Row="1">
+                                <Label Grid.Column="1"
+                                       Grid.Row="1"
+                                       LineBreakMode="CharacterWrap"
+                                       FontAttributes="Italic"
+                                       HorizontalOptions="Center"
+                                       FontSize="11"
+                                       HorizontalTextAlignment="Center">
+                                    <Label.Text>
+                                        <MultiBinding StringFormat="You have read {0} out of {1} books. Great job!">
+                                            <Binding Path="LoggedInUserRecentReadingGoal.GoalCurrent" />
+                                            <Binding Path="LoggedInUserRecentReadingGoal.GoalTarget" />
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                                <Label Grid.Row="2"
+                                       Grid.Column="1"
+                                       Text="{Binding Path='LoggedInUserRecentReadingGoal.GoalEndDate', StringFormat='End Date: {0:dddd, dd MMMM yyyy}'}"
+                                       LineBreakMode="CharacterWrap"
+                                       FontAttributes="Italic"
+                                       HorizontalOptions="Center"
+                                       FontSize="11"
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
                             <ProgressBar Grid.Row="2"
-                                         ProgressColor="Orange">
-                                <ProgressBar.Progress>
-                                    <MultiBinding Converter='{StaticResource MultiMathExpressionConverter}'
-                                                  ConverterParameter='x0 / x1'>
-                                        <Binding Path="ReadingGoalSize" />
-                                        <Binding Path="ReadingGoalTarget" />
-                                    </MultiBinding>
-                                </ProgressBar.Progress>
-                            </ProgressBar>
+                                         x:Name="progressBar"
+                                         ProgressColor="Orange"
+                                         Progress="0" />
                         </Grid>
 
                     </Grid>

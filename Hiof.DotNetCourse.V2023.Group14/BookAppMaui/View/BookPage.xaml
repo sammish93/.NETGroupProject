@@ -41,6 +41,7 @@
                            AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
                            ZIndex="3">
                         <Image Grid.Row="0"
+                               x:Name="bookThumbnail"
                                Source="{Binding SelectedBook.ImageLinks[thumbnail]}"
                                Aspect="AspectFit" />
                     </Frame>

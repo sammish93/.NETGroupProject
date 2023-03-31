@@ -16,6 +16,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         public static byte[] UserDisplayPicture { get; set; }
         public static byte[] DefaultDisplayPicture { get; set; }
         public static byte[] SelectedUserDisplayPicture { get; set; }
+        public static bool IsBookPageVisited { get; set; } = false;
 
 
         public App()

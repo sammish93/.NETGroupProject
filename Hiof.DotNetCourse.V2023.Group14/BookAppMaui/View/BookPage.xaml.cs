@@ -13,9 +13,9 @@ public partial class BookPage : ContentPage
 
     protected override async void OnAppearing()
     {
-        BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
-
         base.OnAppearing();
+
+        BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
     }
 
     protected override void OnSizeAllocated(double width, double height)

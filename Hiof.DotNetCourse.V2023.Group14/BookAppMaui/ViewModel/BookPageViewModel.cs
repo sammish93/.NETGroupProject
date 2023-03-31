@@ -29,13 +29,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private bool _isBusy;
         public V1User User { get; set; }
-        public V1Book SelectedBook { get; set; }
+        private V1Book _selectedBook;
         public ObservableCollection<ReadingStatus> ReadingStatuses { get; set; }
         public ReadingStatus SelectedReadingStatus { get; set; }
         public ObservableCollection<int> Ratings { get; set; }
         public int SelectedRating { get; set; }
         public DateTime SelectedDate { get; set; }
 
+        public V1Book SelectedBook
+        {
+            get => _selectedBook;
+            set
+            {
+                _selectedBook = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsBusy
         {

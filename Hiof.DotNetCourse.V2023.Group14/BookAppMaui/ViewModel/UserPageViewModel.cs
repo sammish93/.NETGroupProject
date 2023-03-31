@@ -29,8 +29,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public V1User User { get; set; }
         public V1User SelectedUser { get; set; }
         public byte[] SelectedUserDisplayPicture { get; set; }
-        public V1LibraryCollection UserLibrary { get; set; }
+        private V1LibraryCollection _userLibrary;
         public ObservableCollection<V1Book> UserBooks { get; set; }
+        public ObservableCollection<V1ReadingGoals> UserReadingGoals { get; set; }
 
 
         public bool IsBusy
@@ -43,11 +44,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public V1LibraryCollection UserLibrary
+        {
+            get => _userLibrary;
+            set
+            {
+                _userLibrary = value;
+                OnPropertyChanged();
+            }
+        }
+
         public UserPageViewModel(V1User loggedInUser, V1User selectedUser, byte[] selectedUserDisplayPicture)
         {
             User = loggedInUser;
             SelectedUser = selectedUser;
             UserBooks = new ObservableCollection<V1Book>();
+            UserReadingGoals = new ObservableCollection<V1ReadingGoals>();
             SelectedUserDisplayPicture = selectedUserDisplayPicture;
         }
 
@@ -108,10 +120,39 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public async Task PopulateReadingGoals()
+        {
+
+            try
+            {
+                UserReadingGoals.Clear();
+
+                string loginUrl = $"{_apiBaseUrl}/goals/GetAllGoals?userId={SelectedUser.Id}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+
+                dynamic? jArrayReadingGoals = JsonConvert.DeserializeObject(json);
+
+                foreach (JObject userJson in jArrayReadingGoals)
+                {
+                    V1ReadingGoals readingGoal = JsonConvert.DeserializeObject<V1ReadingGoals>(userJson.ToString());
+
+                    UserReadingGoals.Add(readingGoal);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         public async Task LoadAsync()
         {
             IsBusy = true;
             await PopulateBooks();
+            await PopulateReadingGoals();
             IsBusy = false;
         }
     }

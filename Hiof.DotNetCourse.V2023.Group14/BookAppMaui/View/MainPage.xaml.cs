@@ -22,6 +22,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
 
             if (model != null)
             {
+                await model.LoadProgressBarAsync();
+                var progressBar = this.FindByName<ProgressBar>("progressBar");
+                double progress = Convert.ToDouble(model.LoggedInUserRecentReadingGoal.GoalCurrent) / Convert.ToDouble(model.LoggedInUserRecentReadingGoal.GoalTarget);
+                await progressBar.ProgressTo(progress, 750, Easing.Linear);
                 await model.LoadAsync();
             }
 
