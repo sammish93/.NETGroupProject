@@ -1,7 +1,13 @@
 
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1;
 using Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+
 
 namespace ReadingGoals.Tests
 {
@@ -65,6 +71,7 @@ namespace ReadingGoals.Tests
         public async Task GetOkResponseOnCreateGoal()
         {
             var options = new DbContextOptionsBuilder<ReadingGoalsContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
         }
     }
 }
