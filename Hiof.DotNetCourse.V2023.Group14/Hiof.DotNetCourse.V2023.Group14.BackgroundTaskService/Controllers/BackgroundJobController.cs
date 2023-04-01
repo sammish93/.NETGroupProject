@@ -34,13 +34,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             return Ok(message);
         }
 
-        // TODO: This method is causing circular references and needs to be fixed.
         [HttpPost]
         [Route("UpdateCache/[action]")]
         public IActionResult StartJob()
         {
-            // This will make the job run every 5 minute.
-            RecurringJob.AddOrUpdate(() => UpdateCacheJob.Update(_dbContext), "*/5 * * * *");
+            UpdateCacheJob job = new UpdateCacheJob();
+           
+            // This will make the job run every hour on the first minute.
+            RecurringJob.AddOrUpdate(() => job.Update(), "0 * * * *");
 
             return Ok("Cache updating job is scheduled!");
         }
