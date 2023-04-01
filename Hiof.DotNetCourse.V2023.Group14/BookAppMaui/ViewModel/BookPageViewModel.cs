@@ -82,6 +82,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 string createLibEntryUrl = $"{_apiBaseUrl}/libraries/CreateEntry";
 
+                
+                if (SelectedReadingStatus == ReadingStatus.Completed)
+                {
+                    
+                    if (SelectedRating == 0)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Oops!", "You have forgotten to choose a rating.", "OK");
+                        return;
+                    }
+                }
+
                 var requestBody = new V1LibraryEntry(User, SelectedBook, SelectedRating, SelectedDate, SelectedReadingStatus);
 
                 var requestBodyJson = JsonConvert.SerializeObject(requestBody);
@@ -92,15 +103,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 {
                     await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
                     App.IsUserLibraryAltered = true;
-
-                } else if (SelectedRating == 0)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Oops!", "You have forgotton to choose a rating.", "OK");
-                } else
+                }
+                else
                 {
                     await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
