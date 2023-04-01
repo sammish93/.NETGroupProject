@@ -53,7 +53,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.Controllers.V1
                               select goals).ToListAsync();
             if (goal.IsNullOrEmpty())
             {
-                return NotFound("There are no readings for user or doesn't exist");
+                return NotFound("There are no existing readings!");
             }
             else
             {
