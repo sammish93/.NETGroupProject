@@ -11,6 +11,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -22,6 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public V1User LoggedInUser { get; set; } 
         public V1Book Book { get; set; }    
+        public ReadingStatus readingStatus { get; set; }
 
         public ObservableCollection<V1LibraryEntryWithImage> ReadEntries { get; set; }
         public ObservableCollection<V1LibraryEntryWithImage> ToBeRead { get; set; }
@@ -83,16 +85,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         entry.ReadingStatus,
                         imageUrl
                     );
-                    if (entry.ReadingStatus.Equals("Completed"))
-                    {
+                    if(entryWithImage.ReadingStatus == ReadingStatus.Completed)
                         ReadEntries.Add(entryWithImage);
-                    }else if (entry.ReadingStatus.Equals("ToRead"))
+                    else if(entryWithImage.ReadingStatus == ReadingStatus.ToRead)
                     {
                         ToBeRead.Add(entryWithImage);
-                    }else if (entry.ReadingStatus.Equals("Reading"))
+                    }
+                    else if(entryWithImage.ReadingStatus == ReadingStatus.Reading)
                     {
                         CurrentlyReading.Add(entryWithImage);
                     }
+                   
 
                     
                 }
