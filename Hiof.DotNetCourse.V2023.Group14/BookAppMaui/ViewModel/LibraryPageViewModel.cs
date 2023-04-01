@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
-
+using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
+using Microsoft.Maui.Controls;
+using System.Diagnostics;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -18,18 +20,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
 
-        public V1LibraryCollection userLibrary { get; set; }
-
-        public V1User LoggedInUser { get; set; }
-
-        public ObservableCollection<V1Book> ReadBooks { get; set; }
-       
-        
-
-
+        public V1User LoggedInUser { get; set; } 
         public V1Book Book { get; set; }    
 
-        public ObservableCollection<V1LibraryEntry> ReadEntries { get; set; }
+        public ObservableCollection<V1LibraryEntryWithImage> ReadEntries { get; set; }
+        public ObservableCollection<V1LibraryEntryWithImage> ToBeRead { get; set; }
+        public ObservableCollection<V1LibraryEntryWithImage> CurrentlyReading { get; set; }
         private bool _isBusy;
         public bool IsBusy
         {
@@ -44,21 +40,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public LibraryPageViewModel()
         {
             LoggedInUser = App.LoggedInUser;
-            ReadBooks = new ObservableCollection<V1Book>();
-            
-
-
-            ReadEntries = new ObservableCollection<V1LibraryEntry>();
-
+            ReadEntries = new ObservableCollection<V1LibraryEntryWithImage>();
+            ToBeRead = new ObservableCollection<V1LibraryEntryWithImage>();
+            CurrentlyReading = new ObservableCollection<V1LibraryEntryWithImage>();
 
         }
-
-
         public async Task PopulateBooks()
         {
             try
             {
-               ReadEntries.Clear();
+                ReadEntries.Clear();
+                ToBeRead.Clear();
+                CurrentlyReading.Clear();
 
                 string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={LoggedInUser.Id}";
 
@@ -67,63 +60,71 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 var json = await responseMessage.Content.ReadAsStringAsync();
                 V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
 
-                
-
                 foreach (V1LibraryEntry entry in library.Entries)
                 {
-                    ReadEntries.Add(entry);
-               
-
-                    foreach(V1LibraryEntry e in ReadEntries)
+                    string isbn = entry.LibraryEntryISBN10 ?? entry.LibraryEntryISBN13;
+                    if (string.IsNullOrEmpty(isbn))
                     {
-                        string Isbn;
-                        if (e.LibraryEntryISBN10 != null)
-                        {
-                            Isbn = e.LibraryEntryISBN10;
-                        }
-                        else if (e.LibraryEntryISBN13 != null)
-                        {
-                            Isbn = e.LibraryEntryISBN13;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                        var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
-
-                        using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
-                        responseMessageTwo.EnsureSuccessStatusCode();
-                        var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
-                        V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
-
-                        foreach (V1Book book in bookSearch.Books)
-                        {
-
-                            book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                            book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                            
-                            
-
-                            
-
-
-
-                        }
-
-
+                        continue;
                     }
 
+                    var book = await GetBookImageUrlAsync(isbn);
+                    if (book == null)
+                    {
+                        continue;
+                    }
 
+                    var imageUrl = book.ImageLinks["thumbnail"];
+                    var entryWithImage = new V1LibraryEntryWithImage(
+                        entry.Id,
+                        entry.Title,
+                        entry.MainAuthor,
+                        entry.Rating,
+                        entry.ReadingStatus,
+                        imageUrl
+                    );
+                    if (entry.ReadingStatus.Equals("Completed"))
+                    {
+                        ReadEntries.Add(entryWithImage);
+                    }else if (entry.ReadingStatus.Equals("ToRead"))
+                    {
+                        ToBeRead.Add(entryWithImage);
+                    }else if (entry.ReadingStatus.Equals("Reading"))
+                    {
+                        CurrentlyReading.Add(entryWithImage);
+                    }
+
+                    
                 }
             }
             catch (Exception ex)
             {
-
-            }
-            finally
-            {
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
+
+        private async Task<V1Book> GetBookImageUrlAsync(string isbn)
+        {
+            string loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={isbn}";
+
+            using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
+            responseMessageTwo.EnsureSuccessStatusCode();
+            var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
+            V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
+
+            foreach (V1Book book in bookSearch.Books)
+            {
+                if (book.ImageLinks != null && book.ImageLinks.ContainsKey("thumbnail"))
+                {
+                    return book;
+                }
+            }
+
+            return null;
+        }
+
+       
+
         public async Task LoadAsync()
         {
             IsBusy = true;
