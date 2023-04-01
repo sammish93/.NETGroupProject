@@ -23,9 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public V1User LoggedInUser { get; set; }
 
         public ObservableCollection<V1Book> ReadBooks { get; set; }
-        public ObservableCollection<V1Book> CurrentlyReadingBooks { get; set; }
-
-        public ObservableCollection<V1Book> FutureReads { get; set; }
+       
         
 
 
@@ -47,8 +45,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             LoggedInUser = App.LoggedInUser;
             ReadBooks = new ObservableCollection<V1Book>();
-            FutureReads = new ObservableCollection<V1Book>();
-            CurrentlyReadingBooks = new ObservableCollection<V1Book>();
+            
 
 
             ReadEntries = new ObservableCollection<V1LibraryEntry>();
