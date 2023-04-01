@@ -13,9 +13,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
     public class UpdateCacheJob
     {
         private readonly MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
-        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient;
 
-        public UpdateCacheJob() {}
+        public UpdateCacheJob(HttpClient client)
+        {
+            _httpClient = client;
+        }
 
         // Method that updates the cache with the users in the database.
         public async Task Update()

@@ -15,11 +15,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
     [Route("api/[controller]")]
     public class BackgroundJobController : ControllerBase
     {
-        private readonly UserAccountContext _dbContext;
+        // Dependency injection - must update the raport.
+        private readonly HttpClient _httpClient;
 
-        public BackgroundJobController(UserAccountContext context)
+        public BackgroundJobController(IHttpClientFactory httpClientFactory)
         {
-            _dbContext = context;
+            _httpClient = httpClientFactory.CreateClient();
         }
 
 
@@ -38,7 +39,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         [Route("UpdateCache/[action]")]
         public IActionResult StartJob()
         {
-            UpdateCacheJob job = new UpdateCacheJob();
+            UpdateCacheJob job = new UpdateCacheJob(_httpClient);
            
             // This will make the job run every hour on the first minute.
             RecurringJob.AddOrUpdate(() => job.Update(), "0 * * * *");
