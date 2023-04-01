@@ -60,6 +60,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             return Ok(message);
         }
 
+
         [HttpPost]
         [Route("InactiveUser/[action]")]
         public IActionResult Stop()

@@ -14,7 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 			_httpClient = client;
 		}
 
-		public async void CheckInactivity()
+		public async Task CheckInactivity()
 		{
             var inactiveTime = DateTime.Now.AddDays(-10);
             var response = await _httpClient.GetAsync("https://localhost:7021/api/1.0/users/getUsers");
