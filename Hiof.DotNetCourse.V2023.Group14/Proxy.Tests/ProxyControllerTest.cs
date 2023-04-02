@@ -76,9 +76,47 @@ public class ProxyControllerTest
 
 
     [Fact]
-    public async Task GetAll_ReturnsOkResult_WhenGetUsersSucceeds()
+    public async Task GetAll_ReturnsContentResult_WhenGetUsersSucceeds()
     {
-        
+        // Setup
+        var users = GetUserData();
+        var baseAddress = "https://localhost:7021/api/1.0/users/getUsers";
+
+        var mockHttp = new Mock<HttpMessageHandler>();
+        var mockHttpFactory = new Mock<IHttpClientFactory>();
+        var mockSettings = new Mock<IOptions<ProxySettings>>();
+
+        mockSettings.Setup(x => x.Value).Returns(new ProxySettings { GetUsers = baseAddress });
+
+        var httpClient = new HttpClient(mockHttp.Object)
+        {
+            BaseAddress = new Uri(baseAddress)
+        };
+
+        mockHttpFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+        // Mock the response with the test data
+        mockHttp.Protected().Setup<Task<HttpResponseMessage>>(
+            "SendAsync",
+            ItExpr.IsAny<HttpRequestMessage>(),
+            ItExpr.IsAny<CancellationToken>())
+        .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(JsonConvert.SerializeObject(users), Encoding.UTF8, "application/json")
+        });
+
+        var controller = new V1ProxyController(mockHttpFactory.Object, mockSettings.Object);
+
+        // Act
+        var result = await controller.GetAll();
+
+        // Assert
+        var contentResult = Assert.IsType<ContentResult>(result);
+        var returnedUsersJson = contentResult.Content;
+        var returnedUsers = JsonConvert.DeserializeObject<List<V1User>>(returnedUsersJson);
+        Assert.NotNull(returnedUsers);
+        Assert.Equal(users.Count, returnedUsers.Count);
+
     }
 
     private List<V1User> GetUserData()
