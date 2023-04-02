@@ -169,8 +169,8 @@ public class ProxyControllerTest
         var result = await _controller.GetById(id);
 
         var contentResult = Assert.IsType<ContentResult>(result);
-        var returnedUsersJson = contentResult.Content;
-        var returnedUser = JsonConvert.DeserializeObject<V1User>(returnedUsersJson);
+        var returnedJson = contentResult.Content;
+        var returnedUser = JsonConvert.DeserializeObject<V1User>(returnedJson);
 
         // Assert
         Assert.NotNull(returnedUser);
@@ -180,8 +180,36 @@ public class ProxyControllerTest
         Assert.Equal(user.UserName, returnedUser.UserName);
         Assert.Equal(user.Email, returnedUser.Email);
     }
+
+    [Fact]
+    public async Task GetById_ReturnsNotFound_WhenGetByIdFails()
+    {
+        // Arrange
+        var userList = GetUserData();
+
+        // Fake random id.
+        var id = Guid.Parse("3fa85f64-5717-4572-b3fc-2c863f66afb6"); 
+        var user = userList.FirstOrDefault(u => u.Id == id);
+        var url = "https://localhost:7021/api/1.0/users/getUserById";
+
+        SetupProxySettings(new ProxySettings { GetUserById = url });
+
+        _mockHttp.Protected().Setup<Task<HttpResponseMessage>>(
+            "SendAsync",
+            ItExpr.Is<HttpRequestMessage>(x => x.RequestUri != null && x.RequestUri.ToString().Contains(id.ToString())),
+            ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
+
+        // Act
+        var result = await _controller.GetById(id);
+
+        // Assert
+        Assert.IsType<NotFoundResult>(result);
+
+    }
     
 
+    // Dummy data used for testing.
     private List<V1User> GetUserData()
     {
         List<V1User> userData = new List<V1User>
