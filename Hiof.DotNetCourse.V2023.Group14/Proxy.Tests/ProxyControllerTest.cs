@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration;
 using Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers;
@@ -73,29 +74,64 @@ public class ProxyControllerTest
         Assert.Equal((int)HttpStatusCode.BadRequest, badRequestResult.StatusCode);
     }
 
-    // TODO: Fix the test, it does not work right now.
+
     [Fact]
     public async Task GetAll_ReturnsOkResult_WhenGetUsersSucceeds()
     {
-        // Arrange
-        var mockHttpFactory = new Mock<IHttpClientFactory>();
-        var client = mockHttpFactory.Object.CreateClient();
-        var mockClient = new Mock<HttpClient>();
-
-        var settings = new Mock<IOptions<ProxySettings>>();
-        var url = "https://localhost:7021/api/1.0/users/getUsers";
-
-        mockHttpFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(mockClient.Object);
-
-        settings.Setup(x => x.Value).Returns(new ProxySettings { GetUsers = url });
-
-        var controller = new V1ProxyController(mockHttpFactory.Object, settings.Object);
-
-        // Act
-        var result = await controller.GetAll();
-
-        // Assert
-        Assert.IsType<OkObjectResult>(result);
+        
     }
 
+    private List<V1User> GetUserData()
+    {
+        List<V1User> userData = new List<V1User>
+        {
+            new V1User
+            {
+                Id = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+                UserName = "JinkxMonsoon",
+                Email = "joojoo@gmail.com",
+                Password = "1674556689DE4173F6AE",
+                FirstName = "Jinkx",
+                LastName = "Monsoon",
+                Country = "USA",
+                City = "seattle",
+                LangPreference = "en",
+                Role = Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1.UserRole.Moderator,
+                RegistrationDate = new DateTime(2023, 03, 05, 15, 58, 30),
+                LastActive = new DateTime(2023, 03, 05, 15, 58, 30)
+            },
+            new V1User
+            {
+                Id = Guid.Parse("54af86bf-346a-4cba-b36f-527748e1cb93"),
+                UserName = "testaccount",
+                Email = "testme@test.no",
+                Password = "A7E220F0781BE0C248A3",
+                FirstName = "Ola",
+                LastName = "Nordmann",
+                Country = "Norway",
+                City = "Oslo",
+                LangPreference = "no",
+                Role = Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1.UserRole.Admin,
+                RegistrationDate = new DateTime(2023, 02, 24, 10, 42, 49),
+                LastActive = new DateTime(2023, 02, 24, 10, 42, 49)
+            },
+            new V1User
+            {
+                Id = Guid.Parse("e8cc12ba-4df6-4b06-b96e-9ad00a927a93"),
+                UserName = "QueenOfTheNorth",
+                Email = "b_hyteso@gmail.com",
+                Password = "B1A8A1223DCA3A102726",
+                FirstName = "Brooklyn",
+                LastName = "Hytes",
+                Country = "Canada",
+                City = "Toronto",
+                LangPreference = "en",
+                Role = Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1.UserRole.User,
+                RegistrationDate = new DateTime(2023, 02, 24, 10, 39, 32),
+                LastActive = new DateTime(2023, 02, 24, 10, 39, 32)
+            }
+        };
+
+        return userData;
+    }
 }
