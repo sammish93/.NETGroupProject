@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Text;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
@@ -394,9 +395,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
         }
 
-        // This is the method that executes the calls.
-        private async Task<ContentResult> Proxy(string url)
-            => Content(await _httpClient.GetStringAsync(url));
+        private async Task<IActionResult> Proxy(string url)
+        {
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Content(await response.Content.ReadAsStringAsync(), "application/json");
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+        }
 
 
         private static string ConcatUri(string search, string param, int? maxResults, string? langRestrict)

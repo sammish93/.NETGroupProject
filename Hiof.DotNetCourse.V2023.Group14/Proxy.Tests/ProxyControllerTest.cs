@@ -119,6 +119,43 @@ public class ProxyControllerTest
 
     }
 
+    [Fact]
+    public async Task GetAll_ReturnsNotFound_WhenGetAllFails()
+    {
+        // Arrange
+        List<V1User> users = new List<V1User>();
+        var baseAddress = "https://localhost:7021/api/1.0/users/getUsers";
+        var mockHttp = new Mock<HttpMessageHandler>();
+        var mockHttpFactory = new Mock<IHttpClientFactory>();
+        var mockSettings = new Mock<IOptions<ProxySettings>>();
+
+        mockSettings.Setup(x => x.Value).Returns(new ProxySettings { GetUsers = baseAddress });
+
+        var httpClient = new HttpClient(mockHttp.Object)
+        {
+            BaseAddress = new Uri(baseAddress)
+        };
+
+        mockHttpFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+        // Mock the response with the test data
+        mockHttp.Protected().Setup<Task<HttpResponseMessage>>(
+            "SendAsync",
+            ItExpr.IsAny<HttpRequestMessage>(),
+            ItExpr.IsAny<CancellationToken>())
+        .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound)
+        {
+            Content = new StringContent(JsonConvert.SerializeObject(users), Encoding.UTF8, "application/json")
+        });
+
+        var controller = new V1ProxyController(mockHttpFactory.Object, mockSettings.Object);
+
+        // Act
+        var result = await controller.GetAll();
+
+        Assert.IsType<NotFoundResult>(result);
+    }
+
     private List<V1User> GetUserData()
     {
         List<V1User> userData = new List<V1User>
