@@ -207,6 +207,40 @@ public class ProxyControllerTest
         Assert.IsType<NotFoundResult>(result);
 
     }
+
+    [Fact]
+    public async Task GetByName_ReturnsContentResult_WhenGetByNameSucceeds()
+    {
+        // Arrange
+        var userList = GetUserData();
+        var name = "testaccount";
+        var user = userList.FirstOrDefault(u => u.UserName == name);
+        var url = "https://localhost:7021/api/1.0/users/getUserByUserName";
+        SetupProxySettings(new ProxySettings { GetUserByName = url });
+
+        _mockHttp.Protected().Setup<Task<HttpResponseMessage>>(
+            "SendAsync",
+            ItExpr.Is<HttpRequestMessage>(
+                x => x.RequestUri != null && x.RequestUri.AbsoluteUri == $"{url}?userName={name}"),
+            ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json")
+            });
+
+        // Act
+        var result = await _controller.GetByName(name);
+
+        var contentResult = Assert.IsType<ContentResult>(result);
+        var returnedJson = contentResult.Content;
+        var returnedUser = JsonConvert.DeserializeObject<V1User>(returnedJson);
+
+        // Assert
+        Assert.NotNull(user);
+        Assert.NotNull(returnedUser);
+        Assert.Equal(user.UserName, returnedUser.UserName);
+        Assert.Equal(user.Id, returnedUser.Id);
+    }
     
 
     // Dummy data used for testing.
