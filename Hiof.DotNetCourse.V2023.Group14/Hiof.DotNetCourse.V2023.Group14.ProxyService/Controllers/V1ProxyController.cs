@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
@@ -344,8 +345,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             => await Proxy($"{_apiUrls.Value.GetAllGoals}?userId={userId}");
 
         [HttpGet("goals/[action]")]
-        public async Task<IActionResult> GetGoalId([Required] Guid userId, DateTime GoalDate)
-            => await Proxy($"{_apiUrls.Value.GetGoalId}?userId={userId}&goalDate={GoalDate}");
+        public async Task<IActionResult> GetGoalId([Required] Guid userId, DateTime goalDate)
+         => await Proxy($"{_apiUrls.Value.GetGoalId}?userId={userId}&goalDate={goalDate.ToString("yyyy/MM/dd")}");
+
         [HttpGet("goals/[action]")]
         public async Task<IActionResult> GetRecentGoal([Required] Guid userId)
             => await Proxy($"{_apiUrls.Value.GetRecentGoal}?userId={userId}");

@@ -20,6 +20,7 @@ using System.Web;
 using CommunityToolkit.Mvvm.Messaging;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using System.Diagnostics.Metrics;
+using System.Globalization;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -93,6 +94,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
                     App.IsUserLibraryAltered = true;
 
+                    if (SelectedReadingStatus == ReadingStatus.Completed) 
+                    {
+                        await UpdateReadingLibrary(User.Id, SelectedDate);
+                    }
+
                 } else if (SelectedRating == 0)
                 {
                     await Application.Current.MainPage.DisplayAlert("Oops!", "You have forgotton to choose a rating.", "OK");
@@ -110,6 +116,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             SelectedDate = dateTime;
         }
+
+        public async Task UpdateReadingLibrary(Guid userId, DateTime dateTime)
+        {
+            string url = $"{_apiBaseUrl}/goals/GetGoalId?userId={userId}&GoalDate={dateTime.ToString("yyyy/MM/dd")}";
+
+            HttpResponseMessage result = await _httpClient.GetAsync(url);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var libraryId = await result.Content.ReadAsStringAsync();
+
+                Guid libraryIdGuid = JsonConvert.DeserializeObject<Guid>(libraryId);
+
+                int amount = 1;
+                url = $"{_apiBaseUrl}/goals/IncrementReadingGoal?id={libraryIdGuid}&amount={amount}";
+                var jsonString = JsonConvert.SerializeObject(new { id = libraryIdGuid, amount });
+                var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync(url, httpContent);
+            }
+        }
+
+
 
         public async Task LoadAsync()
         {
