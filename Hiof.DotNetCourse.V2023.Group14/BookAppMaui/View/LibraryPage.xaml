@@ -212,15 +212,7 @@
 
             </CollectionView>
 
-            <ContentView  x:Name="DetailsView" IsVisible="False">
-                <StackLayout Padding="10">
-                    <Label Text="{Binding SelectedBook.Title}" FontSize="Large" TextColor="White" />
-                    <Label Text="{Binding SelectedBook.MainAuthor}" FontSize="Medium" TextColor="White" />
-                    <Label Text="{Binding SelectedBook.Rating}" FontSize="Medium" TextColor="White" />
-                    <Label Text="{Binding SelectedBook.ReadingStatus}" FontSize="Medium" TextColor="White" />
-
-                </StackLayout>
-            </ContentView>
+        
 
 
         </FlexLayout>

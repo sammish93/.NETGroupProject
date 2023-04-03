@@ -40,20 +40,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public bool IsVisible
-        {
-            get => _isVisible;
-            set
-            {
-                _isVisible = value;
-            }
-        }
-        public V1LibraryEntryWithImage SelectedEntry { get; set; }
-        public object DetailsView { get; private set; }
+      
 
         public LibraryPageViewModel()
         {
-            LoggedInUser = UserSingleton.Instance.GetUser();
+            LoggedInUser = UserSingleton.Instance.GetUser(true);
             ReadEntries = new ObservableCollection<V1LibraryEntryWithImage>();
             ToBeRead = new ObservableCollection<V1LibraryEntryWithImage>();
             CurrentlyReading = new ObservableCollection<V1LibraryEntryWithImage>();
@@ -139,7 +130,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             return null;
         }
-   
+
+
+
 
         public async Task LoadAsync()
         {

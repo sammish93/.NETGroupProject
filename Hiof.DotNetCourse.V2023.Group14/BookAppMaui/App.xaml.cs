@@ -13,6 +13,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         public static V1User SelectedUser { get; set; }
         public static string SearchQuery { get; set; }
         public static V1Book SelectedBook { get; set; }
+        public static V1LibraryEntryWithImage SelectedV1Library { get; set; } 
         public static byte[] UserDisplayPicture { get; set; }
         public static byte[] DefaultDisplayPicture { get; set; }
         public static byte[] SelectedUserDisplayPicture { get; set; }
