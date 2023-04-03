@@ -324,7 +324,7 @@
                                TextColor="Black"
                                BackgroundColor="LightCoral" />
 
-                        <CollectionView ItemsSource="{Binding Books}"
+                        <CollectionView ItemsSource="{Binding RecentlyReadBooks}"
                                         ItemsLayout="VerticalList"
                                         Grid.Row="1"
                                         BackgroundColor="LightCoral">

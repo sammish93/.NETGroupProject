@@ -9,7 +9,7 @@
              x:Name="Login"
              Shell.NavBarIsVisible="False">
 
-    <Grid>
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="auto" />
@@ -27,7 +27,7 @@
               MaximumWidthRequest="1366"
               MinimumWidthRequest="800"
               MinimumHeightRequest="600"
-              BackgroundColor="White">
+              BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
 
             <Grid Padding="5"
                   RowSpacing="5">
@@ -56,8 +56,9 @@
                        Grid.Row="2"
                        Placeholder="Enter username"
                        Text="{Binding Username}"
-                       TextColor="Black"
-                       BackgroundColor="Coral"
+                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        MaxLength="20"
                        VerticalOptions="Center"
                        HorizontalOptions="Center"
@@ -68,8 +69,9 @@
                 <Entry Grid.Row="3"
                        Placeholder="Enter Password"
                        Text="{Binding Password}"
-                       TextColor="Black"
-                       BackgroundColor="Coral"
+                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        MaxLength="25"
                        IsPassword="True"
                        VerticalOptions="Center"
@@ -80,12 +82,15 @@
                 <Button Grid.Row="5"
                         Text="Log In"
                         Command="{Binding LoginCommand}"
+                        TextColor="{AppThemeBinding Light={StaticResource IvoryBlack}, Dark={StaticResource IvoryBlack}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                         HorizontalOptions="Center"
                         WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}" />
 
 
                 <Label Grid.Row="7"
                        Text="Don't have an account?"
+                       TextColor="{AppThemeBinding Light={StaticResource IvoryBlack}, Dark={StaticResource IvoryBlack}}"
                        TextDecorations="Underline"
                        HorizontalOptions="Center"
                        VerticalOptions="End" />
@@ -93,6 +98,8 @@
                 <Button Grid.Row="8"
                         Text="Signup here!"
                         Command="{Binding SignupCommand}"
+                        TextColor="{AppThemeBinding Light={StaticResource IvoryBlack}, Dark={StaticResource IvoryBlack}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                         HorizontalOptions="Center"
                         WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}" />
 
@@ -100,10 +107,11 @@
                                        HorizontalOptions="Center"
                                        Margin="10">
                     <Label Text="Test Account"
-                           TextColor="Black"
+                           TextColor="{AppThemeBinding Light={StaticResource IvoryBlack}, Dark={StaticResource IvoryBlack}}"
                            VerticalOptions="Center" />
                     <CheckBox x:Name="CheckBox1"
                               IsChecked="False"
+                              Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                               CheckedChanged="CheckBox_CheckedChanged"
                               VerticalOptions="Center" />
                 </HorizontalStackLayout>
@@ -111,7 +119,7 @@
                 <!-- Set IsRunning to a {Binding chosenBinding} -->
                 <ActivityIndicator Grid.Row="7"
                                    IsRunning="{Binding IsLoggingIn}"
-                                   Color="LightCoral"
+                                   Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                    Scale="2" 
                                    TranslationY="-10"/>
             </Grid>
