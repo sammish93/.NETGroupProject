@@ -7,14 +7,14 @@ public partial class UserPage : ContentPage
 	public UserPage()
 	{
 		InitializeComponent();
-        BindingContext = new UserPageViewModel(App.LoggedInUser, App.SelectedUser, App.SelectedUserDisplayPicture);
+        BindingContext = new UserPageViewModel( App.SelectedUser, App.SelectedUserDisplayPicture);
 	}
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
 
-        BindingContext = new UserPageViewModel(App.LoggedInUser, App.SelectedUser, App.SelectedUserDisplayPicture);
+        BindingContext = new UserPageViewModel( App.SelectedUser, App.SelectedUserDisplayPicture);
 
         var model = BindingContext as ViewModel.UserPageViewModel;
 

@@ -54,9 +54,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public UserPageViewModel(V1User loggedInUser, V1User selectedUser, byte[] selectedUserDisplayPicture)
+        public UserPageViewModel( V1User selectedUser, byte[] selectedUserDisplayPicture)
         {
-            User = loggedInUser;
+            User = UserSingleton.Instance.GetUser();
             SelectedUser = selectedUser;
             UserBooks = new ObservableCollection<V1Book>();
             UserReadingGoals = new ObservableCollection<V1ReadingGoals>();

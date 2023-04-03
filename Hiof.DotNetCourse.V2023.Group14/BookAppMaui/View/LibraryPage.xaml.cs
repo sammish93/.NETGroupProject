@@ -21,5 +21,22 @@ public partial class LibraryPage : ContentPage
 		}
 		base.OnAppearing();
 	}
-	
-}
+    private void OnItemSelected(object sender, SelectionChangedEventArgs e)
+    {
+        // Check if an item is selected
+        if (e.CurrentSelection != null && e.CurrentSelection.Count > 0)
+        {
+            // Get the selected item
+            var selectedItem = e.CurrentSelection[0];
+           
+              
+                // Show or hide the details view based on whether a book is selected
+                DetailsView.IsVisible = selectedItem != null;
+            }
+
+            // Do something with the selected item
+            // For example, you can navigate to a new page and pass the selected item as a parameter
+            // Navigation.PushAsync(new MyPage(selectedItem));
+        }
+    }
+

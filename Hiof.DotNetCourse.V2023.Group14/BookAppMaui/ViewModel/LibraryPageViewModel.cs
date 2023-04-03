@@ -29,6 +29,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public ObservableCollection<V1LibraryEntryWithImage> ToBeRead { get; set; }
         public ObservableCollection<V1LibraryEntryWithImage> CurrentlyReading { get; set; }
         private bool _isBusy;
+        private bool _isVisible;
         public bool IsBusy
         {
             get => _isBusy;
@@ -39,9 +40,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                _isVisible = value;
+            }
+        }
+        public V1LibraryEntryWithImage SelectedEntry { get; set; }
+        public object DetailsView { get; private set; }
+
         public LibraryPageViewModel()
         {
-            LoggedInUser = App.LoggedInUser;
+            LoggedInUser = UserSingleton.Instance.GetUser();
             ReadEntries = new ObservableCollection<V1LibraryEntryWithImage>();
             ToBeRead = new ObservableCollection<V1LibraryEntryWithImage>();
             CurrentlyReading = new ObservableCollection<V1LibraryEntryWithImage>();
@@ -85,6 +97,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         entry.ReadingStatus,
                         imageUrl
                     );
+                    
+                    
                     if(entryWithImage.ReadingStatus == ReadingStatus.Completed)
                         ReadEntries.Add(entryWithImage);
                     else if(entryWithImage.ReadingStatus == ReadingStatus.ToRead)
@@ -125,8 +139,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             return null;
         }
-
-       
+   
 
         public async Task LoadAsync()
         {

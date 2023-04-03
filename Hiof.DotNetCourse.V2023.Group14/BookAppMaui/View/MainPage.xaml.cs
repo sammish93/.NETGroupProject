@@ -12,7 +12,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
         {
             InitializeComponent();
 
-            this.BindingContext = new MainPageViewModel(App.LoggedInUser);
+            this.BindingContext = new MainPageViewModel();
         }
 
         protected override async void OnAppearing()
