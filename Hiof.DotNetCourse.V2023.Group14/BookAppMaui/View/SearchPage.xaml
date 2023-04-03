@@ -22,7 +22,8 @@
                   MaximumWidthRequest="1366"
                   MinimumWidthRequest="800"
                   MinimumHeightRequest="600"
-                  BackgroundColor="LightCoral">
+                  Margin="5"
+                  BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -38,7 +39,6 @@
                       MinimumHeightRequest="600">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="1*" />
@@ -47,23 +47,22 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0"
-                           BackgroundColor="LightGreen"
-                           Text="Your search results"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Start" />
-
-                    <Label Grid.Row="1"
-                           BackgroundColor="LightGreen"
                            Text="Books matching your search:"
                            VerticalOptions="Center"
                            HorizontalOptions="Start" />
 
                     <CollectionView ItemsSource="{Binding BooksBasedOnTitle}"
                                     ItemsLayout="HorizontalList"
-                                    Grid.Row="2"
-                                    BackgroundColor="Green"
+                                    Grid.Row="1"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                                     SelectionMode="Single"
                                     SelectionChanged="CollectionViewBook_SelectionChanged">
+                        <CollectionView.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                    Radius="5"
+                                    Offset="0,5"
+                                    Opacity="0.3" />
+                        </CollectionView.Shadow>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -78,7 +77,7 @@
                                     <Frame HorizontalOptions="Center"
                                            VerticalOptions="Center"
                                            CornerRadius="5"
-                                           BackgroundColor="Coral"
+                                           BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                                            Padding="0"
                                            BorderColor="Transparent">
                                         <Image Grid.Row="0"
@@ -105,18 +104,23 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <Label Grid.Row="3"
-                           BackgroundColor="LightGreen"
+                    <Label Grid.Row="2"
                            Text="Authors matching your search:"
                            VerticalOptions="Center"
                            HorizontalOptions="Start" />
 
                     <CollectionView ItemsSource="{Binding BooksBasedOnAuthor}"
                                     ItemsLayout="HorizontalList"
-                                    Grid.Row="4"
-                                    BackgroundColor="Green"
+                                    Grid.Row="3"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                                     SelectionMode="Single"
                                     SelectionChanged="CollectionViewBook_SelectionChanged">
+                        <CollectionView.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                    Radius="5"
+                                    Offset="0,5"
+                                    Opacity="0.3" />
+                        </CollectionView.Shadow>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -131,7 +135,7 @@
                                     <Frame HorizontalOptions="Center"
                                            VerticalOptions="Center"
                                            CornerRadius="5"
-                                           BackgroundColor="Coral"
+                                           BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                                            Padding="0"
                                            BorderColor="Transparent">
                                         <Image Grid.Row="0"
@@ -158,18 +162,23 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <Label Grid.Row="5"
-                           BackgroundColor="LightGreen"
+                    <Label Grid.Row="4"
                            Text="Users matching your search:"
                            VerticalOptions="Center"
                            HorizontalOptions="Start" />
 
                     <CollectionView ItemsSource="{Binding Users}"
                                     ItemsLayout="HorizontalList"
-                                    Grid.Row="6"
-                                    BackgroundColor="Green"
+                                    Grid.Row="5"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                                     SelectionMode="Single"
                                     SelectionChanged="CollectionViewUser_SelectionChanged">
+                        <CollectionView.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                    Radius="5"
+                                    Offset="0,5"
+                                    Opacity="0.3" />
+                        </CollectionView.Shadow>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -209,7 +218,7 @@
                 <ActivityIndicator Grid.Row="0"
                                    Grid.RowSpan="7"
                                    IsRunning="{Binding IsBusy}"
-                                   Color="LightCoral"
+                                   Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                    Scale="3" />
             </Grid>
         </Grid>

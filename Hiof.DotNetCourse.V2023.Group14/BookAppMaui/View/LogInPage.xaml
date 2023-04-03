@@ -64,7 +64,14 @@
                        HorizontalOptions="Center"
                        IsTextPredictionEnabled="True"
                        WidthRequest="200"
-                       HorizontalTextAlignment="Center" />
+                       HorizontalTextAlignment="Center">
+                    <Entry.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                Radius="5"
+                                Offset="0,5"
+                                Opacity="0.3" />
+                    </Entry.Shadow>
+                </Entry>
 
                 <Entry Grid.Row="3"
                        Placeholder="Enter Password"
@@ -77,20 +84,34 @@
                        VerticalOptions="Center"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"
-                       WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}" />
+                       WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}">
+                    <Entry.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                Radius="5"
+                                Offset="0,5"
+                                Opacity="0.3" />
+                    </Entry.Shadow>
+                </Entry>
 
                 <Button Grid.Row="5"
                         Text="Log In"
                         Command="{Binding LoginCommand}"
-                        TextColor="{AppThemeBinding Light={StaticResource IvoryBlack}, Dark={StaticResource IvoryBlack}}"
+                        TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                         HorizontalOptions="Center"
-                        WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}" />
+                        WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}">
+                    <Button.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                Radius="5"
+                                Offset="0,5"
+                                Opacity="0.3" />
+                    </Button.Shadow>
+                </Button>
 
 
                 <Label Grid.Row="7"
                        Text="Don't have an account?"
-                       TextColor="{AppThemeBinding Light={StaticResource IvoryBlack}, Dark={StaticResource IvoryBlack}}"
+                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                        TextDecorations="Underline"
                        HorizontalOptions="Center"
                        VerticalOptions="End" />
@@ -98,16 +119,23 @@
                 <Button Grid.Row="8"
                         Text="Signup here!"
                         Command="{Binding SignupCommand}"
-                        TextColor="{AppThemeBinding Light={StaticResource IvoryBlack}, Dark={StaticResource IvoryBlack}}"
+                        TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                         HorizontalOptions="Center"
-                        WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}" />
+                        WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}">
+                    <Button.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                Radius="5"
+                                Offset="0,5"
+                                Opacity="0.3" />
+                    </Button.Shadow>
+                </Button>
 
                 <HorizontalStackLayout Grid.Row="9"
                                        HorizontalOptions="Center"
                                        Margin="10">
                     <Label Text="Test Account"
-                           TextColor="{AppThemeBinding Light={StaticResource IvoryBlack}, Dark={StaticResource IvoryBlack}}"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                            VerticalOptions="Center" />
                     <CheckBox x:Name="CheckBox1"
                               IsChecked="False"

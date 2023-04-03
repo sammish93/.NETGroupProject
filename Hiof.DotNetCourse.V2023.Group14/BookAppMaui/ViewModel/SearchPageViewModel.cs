@@ -29,7 +29,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public ObservableCollection<V1Book> BooksBasedOnAuthor { get; set; }
         public ObservableCollection<V1User> Users { get; set; }
         private bool _isBusy;
-        public string QueryString { get; set; } = "oscar wilde";
+        private string _queryString { get; set; } = "oscar wilde";
         public V1User User { get; set; }
 
 
@@ -39,6 +39,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+        public string QueryString
+        {
+            get => _queryString;
+            set
+            {
+                _queryString = value;
                 OnPropertyChanged();
             }
         }
