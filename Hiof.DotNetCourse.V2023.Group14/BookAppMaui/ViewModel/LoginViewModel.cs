@@ -93,6 +93,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                         V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
 
+                        user.LastActive = DateTime.Now;
+
+                        await UpdateUser(user);
+
                         App.UserDisplayPicture = displayPicture.DisplayPicture;
                         Shell.Current.BindingContext = new AppShellViewModel(user, displayPicture.DisplayPicture);
                     } else
@@ -127,6 +131,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 IsLoggingIn = false;
             }
         }
+
+        public async Task UpdateUser(V1User user)
+        {
+            var url = $"{_apiBaseUrl}/users/UpdateAccountById";
+
+            var jsonString = JsonConvert.SerializeObject(user);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(url, httpContent);
+        }
+
         public ICommand SignupCommand => new Command(async () => await SignupAsync());
 
         private async Task SignupAsync()
