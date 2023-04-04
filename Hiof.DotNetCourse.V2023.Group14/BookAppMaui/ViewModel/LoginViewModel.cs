@@ -75,7 +75,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
 
                     var currentViewModel = Shell.Current.BindingContext as AppShellViewModel;
-                    UserSingleton.Instance.SetUser(user);
+                    UserSingleton.Instance.SetUser(user, true);
                     
 
                     string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";

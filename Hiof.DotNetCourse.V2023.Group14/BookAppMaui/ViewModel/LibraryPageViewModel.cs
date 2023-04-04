@@ -12,6 +12,8 @@ using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Microsoft.Maui.Layouts;
+
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -25,11 +27,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public V1Book Book { get; set; }    
         public ReadingStatus readingStatus { get; set; }
 
+        private Button SaveButton;
+
         public ObservableCollection<V1LibraryEntryWithImage> ReadEntries { get; set; }
         public ObservableCollection<V1LibraryEntryWithImage> ToBeRead { get; set; }
         public ObservableCollection<V1LibraryEntryWithImage> CurrentlyReading { get; set; }
         private bool _isBusy;
         private bool _isVisible;
+
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => _isVisible = value;
+        }
         public bool IsBusy
         {
             get => _isBusy;
@@ -40,7 +50,32 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-      
+        private bool _isItemSelected;
+        public bool IsItemSelected
+        {
+            get => _isItemSelected;
+            set => SetProperty(ref _isItemSelected, value);
+        }
+
+        private V1LibraryEntryWithImage _selectedEntry;
+        public V1LibraryEntryWithImage SelectedEntry
+        {
+            get { return _selectedEntry; }
+            set
+            {
+                _selectedEntry = value;
+                OnPropertyChanged(nameof(SelectedEntry));
+                IsItemSelected = value != null;
+            }
+        }
+        private bool _onItemSelected;
+        public bool OnItemSelected
+        {
+            get => _onItemSelected;
+            set => SetProperty(ref _onItemSelected, value);
+        }
+
+
 
         public LibraryPageViewModel()
         {
@@ -80,15 +115,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     }
 
                     var imageUrl = book.ImageLinks["thumbnail"];
+                    
                     var entryWithImage = new V1LibraryEntryWithImage(
                         entry.Id,
                         entry.Title,
                         entry.MainAuthor,
                         entry.Rating,
                         entry.ReadingStatus,
+                        
                         imageUrl
                     );
-                    
+                    CurrentlyReading.Add(entryWithImage);
+                    /*
                     
                     if(entryWithImage.ReadingStatus == ReadingStatus.Completed)
                         ReadEntries.Add(entryWithImage);
@@ -100,7 +138,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     {
                         CurrentlyReading.Add(entryWithImage);
                     }
-                   
+                   */
 
                     
                 }
@@ -131,12 +169,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
-
+        private async void Changed()
+        {
+            IsItemSelected= true;
+        }
 
 
         public async Task LoadAsync()
         {
             IsBusy = true;
+            IsItemSelected = false;
+            IsVisible = false;
+            OnItemSelected = false;
             await PopulateBooks();
             
             IsBusy = false;

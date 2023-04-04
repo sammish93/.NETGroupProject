@@ -5,218 +5,98 @@
              xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
              xmlns:model="clr-namespace:Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;assembly=Hiof.DotNetCourse.V2023.Group14.ClassLibrary"
              Title="LibraryPage"
+             x:Name="libraryPage"
              BackgroundColor="White">
 
     <Grid
             Margin="0"
-        ColumnSpacing="5">
-        
-        
-
-
-        <FlexLayout Direction="Column" JustifyContent="Center" AlignItems="Center" AlignContent="Center">
+        ColumnSpacing="10">
+        <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Start" AlignItems="Center" FlexLayout.Grow="1" WidthRequest="500">
             <CollectionView 
-                        ItemsSource="{Binding CurrentlyReading}"
+        ItemsSource="{Binding CurrentlyReading}"
+        SelectionMode="Single"
+        SelectionChanged="OnItemSelected"
+        ItemsLayout="VerticalList"
+        Grid.Row="1"
+        BackgroundColor="Violet"
+        VerticalOptions="StartAndExpand"
+        HorizontalOptions="FillAndExpand"
+        FlexLayout.Basis="100%"
+        FlexLayout.Grow="1">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Grid Padding="20" ColumnSpacing="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image 
+                        Source="{Binding ImageSource}"
+                        Aspect="AspectFit"
+                        HeightRequest="100"
+                        WidthRequest="100" />
+                    <Grid Grid.Column="1" RowSpacing="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                        </Grid.ColumnDefinitions>
+                        <Label 
+                            Grid.Row="0"
+                            Text="{Binding Title}"
+                            FontAttributes="Bold"
+                            LineBreakMode="CharacterWrap"
+                            FontSize="14"
+                             />
+                        <Label
+                            Grid.Row="1"
+                            Text="{Binding MainAuthor}"
+                            LineBreakMode="CharacterWrap"
+                            FontAttributes="Italic"
+                            FontSize="12"
+                            Margin="0,5,0,0"
+                             />
+                         
+                                <Editor 
+                            Grid.Row="2"
+                            Text="{Binding Rating, Mode=TwoWay}"
+                            
+                            FontAttributes="Bold"
+                            FontSize="12"
+                            Margin="0,5,0,0"
+                            IsEnabled="False" />
+                        <Editor 
+                            Grid.Row="3"
+                            Text="{Binding ReadingStatus}"
+                            
+                            FontAttributes="Bold"
+                            FontSize="12"
+                            Margin="0,5,0,0"
+                            IsVisible="{Binding IsItemSelected}" />
+                                <StackLayout IsVisible="False">
+                                    <Button Text="Edit" Command="{Binding EditCommand}" />
+                                    <Button Text="Delete" Command="{Binding DeleteCommand}" />
+                                </StackLayout>
+                                
+                                
+                                
                         
-                        ItemsLayout="VerticalList"
-                        SelectionMode="Single"
-                        SelectionChanged="OnItemSelected"
-                        Grid.Row="1"
-                        BackgroundColor="Violet">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="20" ColumnSpacing="20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image 
-                Source="{Binding ImageSource}"
-                Aspect="AspectFit"
-                HeightRequest="100"
-                WidthRequest="100" />
-                            <Grid Grid.Column="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="160"/>
-                                </Grid.ColumnDefinitions>
-                                <Label 
-                    Grid.Row="0"
-                    Text="{Binding Title}"
-                    FontAttributes="Bold"
-                    LineBreakMode="CharacterWrap"
-                    FontSize="14"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="1"
-                    Text="{Binding MainAuthor}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Italic"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="2"
-                    Text="{Binding Rating}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Bold"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="3"
-                    Text="{Binding ReadingStatus}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Bold"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                              
-             
-                    
                             </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
-            <CollectionView 
-                        ItemsSource="{Binding ToBeRead}"
-                        SelectionMode="Single"
-                        SelectionChanged="OnItemSelected"
-                        ItemsLayout="VerticalList"
-                        Grid.Row="1"
-                        BackgroundColor="Violet">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="20" ColumnSpacing="20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image 
-                Source="{Binding ImageSource}"
-                Aspect="AspectFit"
-                HeightRequest="100"
-                WidthRequest="100" />
-                            <Grid Grid.Column="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="160"/>
-                                </Grid.ColumnDefinitions>
-                                <Label 
-                    Grid.Row="0"
-                    Text="{Binding Title}"
-                    FontAttributes="Bold"
-                    LineBreakMode="CharacterWrap"
-                    FontSize="14"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="1"
-                    Text="{Binding MainAuthor}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Italic"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="2"
-                    Text="{Binding Rating}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Bold"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="3"
-                    Text="{Binding ReadingStatus}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Bold"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                            </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
-            <CollectionView 
-                        ItemsSource="{Binding ReadEntries }"
-                        SelectionMode="Single"
-                        SelectionChanged="OnItemSelected"
-                        ItemsLayout="VerticalList"
-                        Grid.Row="1"
-                        BackgroundColor="Violet">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="20" ColumnSpacing="20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image 
-                Source="{Binding ImageSource}"
-                Aspect="AspectFit"
-                HeightRequest="100"
-                WidthRequest="100" />
-                            <Grid Grid.Column="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="160"/>
-                                </Grid.ColumnDefinitions>
-                                <Label 
-                    Grid.Row="0"
-                    Text="{Binding Title}"
-                    FontAttributes="Bold"
-                    LineBreakMode="CharacterWrap"
-                    FontSize="14"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="1"
-                    Text="{Binding MainAuthor}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Italic"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="2"
-                    Text="{Binding Rating}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Bold"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                                <Label 
-                    Grid.Row="3"
-                    Text="{Binding ReadingStatus}"
-                    LineBreakMode="CharacterWrap"
-                    FontAttributes="Bold"
-                    FontSize="12"
-                    Margin="0,5,0,0" />
-                            </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
-
-        
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</FlexLayout>
 
 
-        </FlexLayout>
 
-        
+
     </Grid>
 </ContentPage>

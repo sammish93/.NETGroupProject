@@ -10,7 +10,10 @@ public partial class LibraryPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = new LibraryPageViewModel();
+        
     }
+
+
 
     protected override async void OnAppearing()
     {
@@ -22,24 +25,15 @@ public partial class LibraryPage : ContentPage
         }
         base.OnAppearing();
     }
-    private void OnItemSelected(object sender, SelectionChangedEventArgs e)
+    private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        // Check if an item is selected
-        if (e.CurrentSelection != null && e.CurrentSelection.Count > 0)
+        var model = BindingContext as ViewModel.LibraryPageViewModel;
+
+        if (model != null && e.SelectedItem != null)
         {
-            // Get the selected item
-            var model = BindingContext as ViewModel.MainPageViewModel;
-
-            if (model != null)
-            {
-                if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
-                {
-                    V1LibraryEntryWithImage book = ((V1LibraryEntryWithImage)e.CurrentSelection.First());
-
-                   
-                }
-            }
+            model.IsItemSelected = true;
         }
-
     }
+
+
 }
