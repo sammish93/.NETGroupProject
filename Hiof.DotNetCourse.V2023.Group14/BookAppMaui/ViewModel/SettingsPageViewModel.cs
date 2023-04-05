@@ -12,6 +12,10 @@ using System.Windows.Input;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using System.Drawing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+using System.IO;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -20,7 +24,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private V1User _loggedInUser { get; set; }
-        private byte[] _selectedUserDisplayPicture { get; set; }
+        private byte[] _userDisplayPicture { get; set; }
         private string _username;
         private string _password;
         private string _email;
@@ -47,12 +51,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public byte[] SelectedUserDisplayPicture
+        public byte[] UserDisplayPicture
         {
-            get => _selectedUserDisplayPicture;
+            get => _userDisplayPicture;
             set
             {
-                _selectedUserDisplayPicture = value;
+                _userDisplayPicture = value;
                 OnPropertyChanged();
             }
         }
@@ -88,54 +92,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public string City { get => _city; set => SetProperty(ref _city, value); }
         public string Lang_Preference { get => _langpref; set => SetProperty(ref _langpref, value); }
 
-        public SettingsPageViewModel(V1User user)
+        public SettingsPageViewModel(V1User user, byte[] userDisplayPicture)
         {
             LoggedInUser = user;
+            UserDisplayPicture = userDisplayPicture;
         }
 
-        public ICommand SignUpCommand => new Command(async () => await SignupAsync());
-        public async Task SignupAsync()
-        {
-            try
-            {
-                IsBusy = true;
-
-                string signUpUrl = $"{_apiBaseUrl}/users/CreateUserAccount";
-                var requestBody = new V1User
-                {
-                    Id = Guid.NewGuid(),
-                    UserName = UserName,
-                    Email = Email,
-                    Password = Password,
-                    FirstName = FirstName,
-                    LastName = LastName,
-                    Country = Country,
-                    City = City,
-                    LangPreference = Lang_Preference,
-                    Role = UserRole.User,
-                    RegistrationDate = DateTime.UtcNow,
-                    LastActive = DateTime.UtcNow
-
-                };
-                var requestBodyJson = JsonConvert.SerializeObject(requestBody);
-                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
-
-                HttpResponseMessage response = await _httpClient.PostAsync(signUpUrl, requestContent);
-
-                IsBusy = false;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    await Shell.Current.GoToAsync("///login");
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-        }
-
+        public ICommand UploadImageCommand => new Command(async () => await FileSelector(PickOptions.Images, LoggedInUser));
         public ICommand SaveCommand => new Command(async () => await SaveAsync());
 
         private async Task SaveAsync()
@@ -208,12 +171,98 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             Country = user.Country;
             City = user.City;
             Lang_Preference = user.LangPreference;
-    }
+        }
+
+        public async Task GetUserDisplayPicture(V1User user)
+        {
+            string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+            HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+            if (resultDisplayPicture.IsSuccessStatusCode)
+            {
+                var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                UserDisplayPicture = displayPicture.DisplayPicture;
+            }
+            else
+            {
+                UserDisplayPicture = App.DefaultDisplayPicture;
+            }
+        }
+
+        public async Task<FileResult> FileSelector(PickOptions options, V1User user)
+        {
+            try
+            {
+                var result = await FilePicker.Default.PickAsync(options);
+                if (result != null)
+                {
+                    if (result.FileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
+                        result.FileName.EndsWith("png", StringComparison.OrdinalIgnoreCase))
+                    {
+                        using var stream = await result.OpenReadAsync();
+                        var newDisplayPicture = System.Drawing.Image.FromStream(stream);
+
+                        ImageConverter converter = new ImageConverter();
+                        byte[] displayPictureInBytes = (byte[])converter.ConvertTo(newDisplayPicture, typeof(byte[]));
+
+                        await UpdateDisplayPictureAsync(user, displayPictureInBytes);
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "The file is not a valid image.", "OK");
+            }
+
+            return null;
+        }
+
+        private async Task UpdateDisplayPictureAsync(V1User user, byte[] displayPicture)
+        {
+            try
+            {
+                IsBusy = true;
+
+                string url = $"{_apiBaseUrl}/icons/Update";
+
+                var icon = new V1UserIcon
+                {
+                    Id = Guid.Parse("12DC49DE-6224-4632-8E20-087A63E07BAF"),
+                    Username = user.UserName,
+                    DisplayPicture = displayPicture
+                };
+
+
+                var requestBodyJson = JsonConvert.SerializeObject(icon);
+                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync(url, requestContent);
+
+                IsBusy = false;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    UserDisplayPicture = displayPicture;
+                    await Application.Current.MainPage.DisplayAlert("Success", "The file is a valid image.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "The file is not a valid image.", "OK"); 
+                Debug.WriteLine(ex);
+            }
+        }
 
         public async Task LoadAsync(V1User user)
         {
             IsBusy = true;
             PopulateEntries(user);
+            await GetUserDisplayPicture(user);
             IsBusy = false;
         }
     }

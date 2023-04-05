@@ -41,7 +41,6 @@
                 <Grid.Shadow>
                     <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
                             Radius="10"
-                            
                             Offset="0,10"
                             Opacity="0.3" />
                 </Grid.Shadow>
@@ -110,7 +109,7 @@
                                                BorderColor="Transparent">
                                             <Image Grid.Row="0"
                                                    Source="{Binding ImageLinks[thumbnail]}"
-                                                   Aspect="AspectFit"/>
+                                                   Aspect="AspectFit" />
                                         </Frame>
                                         <Label Grid.Row="1"
                                                Text="{Binding Title}"
@@ -337,8 +336,6 @@
 
                     </Grid>
 
-
-
                     <Grid Grid.Row="1"
                           BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                           RowSpacing="5">
@@ -346,14 +343,14 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
-                        
+
 
                         <Label Grid.Row="0"
-                               Text="{Binding Path='LoggedInUser.UserName', StringFormat='Recent Comments for {0}:'}"
+                               Text="{Binding Path='LoggedInUser.UserName', StringFormat='Recent Comments for {0}'}"
                                VerticalOptions="Center"
-                               HorizontalOptions="Start"
-                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" 
-                               Margin="5"/>
+                               HorizontalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
+                               Margin="5" />
 
                         <CollectionView ItemsSource="{Binding RecentlyReadBooks}"
                                         ItemsLayout="VerticalList"
@@ -420,12 +417,7 @@
                                    IsRunning="{Binding IsBusy}"
                                    Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                    Scale="3" />
-
             </Grid>
-
-
         </Grid>
     </ScrollView>
-
-
 </ContentPage>

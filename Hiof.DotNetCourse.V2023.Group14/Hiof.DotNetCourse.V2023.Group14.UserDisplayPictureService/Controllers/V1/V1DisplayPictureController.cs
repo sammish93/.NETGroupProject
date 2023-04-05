@@ -1,7 +1,9 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Services;
+using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers;
 
@@ -11,11 +13,13 @@ public class V1DisplayPictureController : ControllerBase
 {
 
     private readonly V1UserIconService _userIconService;
+    private readonly UserIconContext _userIconContext;
 
 
-    public V1DisplayPictureController(V1UserIconService service)
+    public V1DisplayPictureController(V1UserIconService service, UserIconContext userIconContext)
     {
         _userIconService = service;
+        _userIconContext = userIconContext;
     }
 
     /// <summary>
@@ -139,7 +143,7 @@ public class V1DisplayPictureController : ControllerBase
     /// <response code="400">Bad request error with corresponding errormessage.</response>
     [HttpPut("[action]")]
     [Produces("application/json")]
-    public async Task<ActionResult> Update([FromForm] V1AddIconInputModel icon)
+    public async Task<ActionResult> UpdateFromForm([FromForm] V1AddIconInputModel icon)
     {
         if (icon.Id == Guid.Empty)
         {
@@ -184,6 +188,54 @@ public class V1DisplayPictureController : ControllerBase
 
         await _userIconService.Update(result);
         return Ok("User successfully updated!");
+    }
+
+    [HttpPut("[action]")]
+    [Produces("application/json")]
+    public async Task<ActionResult> Update(V1UserIcon icon)
+    {
+        if (icon.Id == Guid.Empty)
+        {
+            return BadRequest("ID parameter cannot be an empty guid!");
+        }
+
+        var nameSize = icon.Username.Length;
+
+        if (nameSize < 5 || nameSize > 15)
+        {
+            return BadRequest("Username length must be between 5 - 15 characters.");
+        }
+
+        var idSize = icon.Id.ToString().Length;
+
+        if (idSize > 36 || idSize <= 0)
+        {
+            string msg = "Id cannot be bigger or smaller than 36 characters ";
+            return BadRequest(msg);
+        }
+
+        if (icon.Username == null)
+        {
+            return BadRequest("Username parameter cannot be null!");
+        }
+
+        if (icon.Id.ToString() == null)
+        {
+            return BadRequest("ID parameter cannot be null!");
+        }
+
+        var entry = await _userIconContext.UserIcons.FirstOrDefaultAsync(l => l.Id == icon.Id);
+
+            if (entry == null)
+            {
+                return NotFound("An entry with the id '" + icon.Id + "' was not found.");
+            } else
+            {
+                entry.DisplayPicture = icon.DisplayPicture;
+                _userIconContext.SaveChanges();
+            }
+
+            return Ok();
     }
 
     /// <summary>

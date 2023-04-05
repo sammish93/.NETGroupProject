@@ -292,9 +292,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
         // TODO: Fix the bug in this mehtod.
         [HttpPut("icons/[action]")]
-        public async Task<IActionResult> Update([FromForm] V1AddIconInputModel icon)
+        public async Task<IActionResult> UpdateFromForm([FromForm] V1AddIconInputModel icon)
         {
-            var url = _apiUrls.Value.UpdateIcon;
+            var url = _apiUrls.Value.UpdateIconFromForm;
 
             using var content = new MultipartFormDataContent
             {
@@ -304,6 +304,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             };
 
             using var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok("Image successfully updated!");
+            else
+                return BadRequest("Could not update the image.");
+        }
+
+        [HttpPut("icons/[action]")]
+        public async Task<IActionResult> Update(V1UserIcon icon)
+        {
+            var url = _apiUrls.Value.UpdateIcon;
+
+
+            var requestBodyJson = JsonConvert.SerializeObject(icon);
+            var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(url, requestContent);
 
             if (response.IsSuccessStatusCode)
                 return Ok("Image successfully updated!");

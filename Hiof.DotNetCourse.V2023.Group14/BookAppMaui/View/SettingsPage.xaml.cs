@@ -7,7 +7,7 @@ public partial class SettingsPage : ContentPage
 	public SettingsPage()
 	{
 		InitializeComponent();
-		this.BindingContext = new SettingsPageViewModel(App.LoggedInUser);
+		this.BindingContext = new SettingsPageViewModel(App.LoggedInUser, App.UserDisplayPicture);
 	}
 
     protected override async void OnAppearing()

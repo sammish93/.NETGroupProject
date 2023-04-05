@@ -42,6 +42,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string GetIconByName { get; set; }
         public string AddIcon { get; set; }
         public string UpdateIcon { get; set; }
+        public string UpdateIconFromForm { get; set; }
         public string DeleteIcon { get; set; }
 
         //Urls for readingGoals
