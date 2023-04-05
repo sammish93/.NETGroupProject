@@ -57,8 +57,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-
-
         [Required(ErrorMessage = "{0} is required")]
         [StringLength(20, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
         [RegularExpression(@"^[a-zA-Z0-9]+$",
@@ -89,7 +87,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public string Country { get => _country; set => SetProperty(ref _country, value); }
         public string City { get => _city; set => SetProperty(ref _city, value); }
         public string Lang_Preference { get => _langpref; set => SetProperty(ref _langpref, value); }
-        //public UserRole userRole{ get => _userRole; set => SetProperty(ref _userRole, value);  }
+
+        public SettingsPageViewModel(V1User user)
+        {
+            LoggedInUser = user;
+        }
 
         public ICommand SignUpCommand => new Command(async () => await SignupAsync());
         public async Task SignupAsync()
@@ -134,11 +136,85 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand BackCommand => new Command(async () => await BackAsync());
+        public ICommand SaveCommand => new Command(async () => await SaveAsync());
 
-        private async Task BackAsync()
+        private async Task SaveAsync()
         {
-            await Shell.Current.GoToAsync("///login");
+            string content = "";
+            StringBuilder errorMessage = new StringBuilder();
+
+            try
+            {
+                IsBusy = true;
+
+                string url = $"{_apiBaseUrl}/users/UpdateAccountById";
+
+                var userChanged = new V1User
+                {
+                    Id = LoggedInUser.Id,
+                    UserName = UserName,
+                    Email = Email,
+                    Password = Password,
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    Country = Country,
+                    City = City,
+                    LangPreference = Lang_Preference,
+                    Role = LoggedInUser.Role,
+                    RegistrationDate = LoggedInUser.RegistrationDate,
+                    LastActive = LoggedInUser.LastActive
+
+                };
+                var requestBodyJson = JsonConvert.SerializeObject(userChanged);
+                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync(url, requestContent);
+
+                IsBusy = false;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    App.LoggedInUser = userChanged;
+                    App.IsUserLibraryAltered = true;
+                    await Application.Current.MainPage.DisplayAlert("Success!", "Your changes have been saved.", "OK");
+                    await Shell.Current.GoToAsync("///home");
+
+                } else
+                {
+                    content = await response.Content.ReadAsStringAsync();
+
+                    dynamic json = JsonConvert.DeserializeObject(content);
+
+                    foreach (var error in json.errors)
+                    {
+                        errorMessage.Append($"{error.Value[0]}\n");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(content, "Some of the fields you entered are of the incorrect format.", "OK");
+                Debug.WriteLine(ex);
+            }
+        }
+
+        private void PopulateEntries(V1User user)
+        {
+            UserName = user.UserName;
+            Password = user.Password;
+            Email = user.Email;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            Country = user.Country;
+            City = user.City;
+            Lang_Preference = user.LangPreference;
+    }
+
+        public async Task LoadAsync(V1User user)
+        {
+            IsBusy = true;
+            PopulateEntries(user);
+            IsBusy = false;
         }
     }
 }

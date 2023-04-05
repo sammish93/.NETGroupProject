@@ -7,6 +7,26 @@ public partial class SettingsPage : ContentPage
 	public SettingsPage()
 	{
 		InitializeComponent();
-		this.BindingContext = new SettingsPageViewModel();
+		this.BindingContext = new SettingsPageViewModel(App.LoggedInUser);
 	}
+
+    protected override async void OnAppearing()
+    {
+
+        var model = BindingContext as ViewModel.SettingsPageViewModel;
+
+        if (model != null)
+        {
+            await model.LoadAsync(App.LoggedInUser);
+        }
+
+        base.OnAppearing();
+    }
+
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+        dynamicColumn.WidthRequest = width;
+        dynamicColumn.HeightRequest = height;
+    }
 }

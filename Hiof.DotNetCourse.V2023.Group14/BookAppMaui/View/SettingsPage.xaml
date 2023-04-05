@@ -5,8 +5,7 @@
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.SettingsPage"
              xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
              x:DataType="viewmodel:SettingsPageViewModel"
-             Title="SettingsPage"
-             Shell.NavBarIsVisible="False">
+             Title="SettingsPage">
     <Grid x:Name="backgroundPage"
           BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
         <Grid.ColumnDefinitions>
@@ -49,16 +48,16 @@
                 </Grid.RowDefinitions>
 
                 <Entry Grid.Row="1"
-                   Placeholder="Enter username"
-                   Text="{Binding UserName}"
-                   x:Name="usernameEntry"
+                       Placeholder="Enter username"
+                       Text="{Binding UserName}"
+                       x:Name="usernameEntry"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        HorizontalTextAlignment="Center"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
                        WidthRequest="200">
                     <Entry.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
@@ -69,15 +68,15 @@
                 </Entry>
 
                 <Entry Grid.Row="2"
-                   Placeholder="Enter E-Mail"
-                   Text="{Binding Email}"
+                       Placeholder="Enter E-Mail"
+                       Text="{Binding Email}"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        HorizontalTextAlignment="Center"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
                        WidthRequest="200">
                     <Entry.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
@@ -88,17 +87,16 @@
                 </Entry>
 
                 <Entry Grid.Row="3"
-                   Placeholder="Enter Password"
-                   Text="{Binding Password}"
+                       Placeholder="Enter Password"
+                       Text="{Binding Password}"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        HorizontalTextAlignment="Center"
                        IsPassword="True"
-                   MaxLength="20"
-
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
                        WidthRequest="200">
                     <Entry.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
@@ -109,15 +107,15 @@
                 </Entry>
 
                 <Entry Grid.Row="4"
-                   Placeholder="Enter First Name"
-                   Text="{Binding FirstName}"
+                       Placeholder="Enter First Name"
+                       Text="{Binding FirstName}"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        HorizontalTextAlignment="Center"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
                        WidthRequest="200">
                     <Entry.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
@@ -128,15 +126,15 @@
                 </Entry>
 
                 <Entry Grid.Row="5"
-                   Placeholder="Enter Last Name"
-                   Text="{Binding LastName}"
+                       Placeholder="Enter Last Name"
+                       Text="{Binding LastName}"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        HorizontalTextAlignment="Center"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
                        WidthRequest="200">
                     <Entry.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
@@ -145,17 +143,17 @@
                                 Opacity="0.3" />
                     </Entry.Shadow>
                 </Entry>
-                
+
                 <Entry Grid.Row="6"
-                   Placeholder="Enter Country"
-                   Text="{Binding Country}"
+                       Placeholder="Enter Country"
+                       Text="{Binding Country}"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        HorizontalTextAlignment="Center"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
                        WidthRequest="200">
                     <Entry.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
@@ -166,15 +164,15 @@
                 </Entry>
 
                 <Entry Grid.Row="7"
-                   Placeholder="Enter City"
-                   Text="{Binding City}"
+                       Placeholder="Enter City"
+                       Text="{Binding City}"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        HorizontalTextAlignment="Center"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
                        WidthRequest="200">
                     <Entry.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
@@ -185,15 +183,15 @@
                 </Entry>
 
                 <Entry Grid.Row="8"
-                   Placeholder="Enter Language Preference"
-                   Text="{Binding Lang_Preference}"
+                       Placeholder="Enter Language Preference"
+                       Text="{Binding Lang_Preference}"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        HorizontalTextAlignment="Center"
-                   MaxLength="20"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
+                       MaxLength="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
                        WidthRequest="200">
                     <Entry.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
@@ -205,8 +203,8 @@
 
 
                 <Button Grid.Row="10"
-                        Text="Sign Up!"
-                        Command="{Binding SignUpCommand}"
+                        Text="Save changes"
+                        Command="{Binding SaveCommand}"
                         TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                         WidthRequest="200"

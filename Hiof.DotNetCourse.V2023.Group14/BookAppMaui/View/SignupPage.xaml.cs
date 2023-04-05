@@ -9,4 +9,11 @@ public partial class SignupPage : ContentPage
 		InitializeComponent();
 		this.BindingContext = new SignupPageViewModel();
 	}
+
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+        dynamicColumn.WidthRequest = width;
+        dynamicColumn.HeightRequest = height;
+    }
 }

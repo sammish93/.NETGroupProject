@@ -14,7 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 
             Routing.RegisterRoute(nameof(LogInPage), typeof(LogInPage));
 
-            this.BindingContext = new AppShellViewModel();
+            this.BindingContext = new AppShellViewModel(App.LoggedInUser, App.UserDisplayPicture);
 
         }
 
@@ -31,6 +31,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                 if (currentPage != null)
                 {
                     model.TitleCurrentPage = currentPage;
+                    model.User = App.LoggedInUser;
+                    model.DisplayPicture = App.UserDisplayPicture;
                 }
             }
 
