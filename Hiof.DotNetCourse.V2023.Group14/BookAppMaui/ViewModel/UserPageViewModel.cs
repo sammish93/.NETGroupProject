@@ -26,12 +26,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private bool _isBusy;
-        public V1User User { get; set; }
-        public V1User SelectedUser { get; set; }
-        public byte[] SelectedUserDisplayPicture { get; set; }
+        private V1User _user;
+        private V1User _selectedUser;
+        private byte[] _selectedUserDisplayPicture;
         private V1LibraryCollection _userLibrary;
-        public ObservableCollection<V1Book> UserBooks { get; set; }
-        public ObservableCollection<V1ReadingGoals> UserReadingGoals { get; set; }
+        private ObservableCollection<V1Book> _userBooks;
+        private ObservableCollection<V1ReadingGoals> _userReadingGoals;
 
 
         public bool IsBusy
@@ -50,6 +50,56 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _userLibrary = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public byte[] SelectedUserDisplayPicture
+        {
+            get => _selectedUserDisplayPicture;
+            set
+            {
+                _selectedUserDisplayPicture = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public V1User User
+        {
+            get => _user;
+            set
+            {
+                _user = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public V1User SelectedUser
+        {
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<V1Book> UserBooks
+        {
+            get => _userBooks;
+            set
+            {
+                _userBooks = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<V1ReadingGoals> UserReadingGoals
+        {
+            get => _userReadingGoals;
+            set
+            {
+                _userReadingGoals = value;
                 OnPropertyChanged();
             }
         }

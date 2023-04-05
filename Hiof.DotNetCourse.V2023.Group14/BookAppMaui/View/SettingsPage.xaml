@@ -2,11 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.SignupPage"
+             x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.SettingsPage"
              xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
-             x:DataType="viewmodel:SignupPageViewModel"
-             Title="SignupPage"
-             Shell.FlyoutBehavior="Disabled"
+             x:DataType="viewmodel:SettingsPageViewModel"
+             Title="SettingsPage"
              Shell.NavBarIsVisible="False">
     <Grid x:Name="backgroundPage"
           BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
@@ -208,21 +207,6 @@
                 <Button Grid.Row="10"
                         Text="Sign Up!"
                         Command="{Binding SignUpCommand}"
-                        TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                        WidthRequest="200"
-                        HeightRequest="30">
-                    <Button.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
-                                Radius="5"
-                                Offset="0,5"
-                                Opacity="0.3" />
-                    </Button.Shadow>
-                </Button>
-
-                <Button Grid.Row="12"
-                        Text="Go Back"
-                        Command="{Binding BackCommand}"
                         TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                         WidthRequest="200"
@@ -234,6 +218,7 @@
                                 Opacity="0.3" />
                     </Button.Shadow>
                 </Button>
+
 
                 <ActivityIndicator Grid.Row="9"
                                    IsRunning="{Binding IsBusy}"

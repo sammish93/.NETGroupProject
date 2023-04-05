@@ -29,13 +29,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private bool _isBusy;
-        public V1User User { get; set; }
+        private V1User _user;
         private V1Book _selectedBook;
-        public ObservableCollection<ReadingStatus> ReadingStatuses { get; set; }
-        public ReadingStatus SelectedReadingStatus { get; set; }
-        public ObservableCollection<int> Ratings { get; set; }
-        public int SelectedRating { get; set; }
-        public DateTime SelectedDate { get; set; }
+        private ObservableCollection<ReadingStatus> _readingStatuses;
+        private ReadingStatus _selectedReadingStatus;
+        private ObservableCollection<int> _ratings;
+        private int _selectedRating;
+        private DateTime _selectedDate;
+
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
 
         public V1Book SelectedBook
         {
@@ -47,12 +57,62 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public bool IsBusy
+        public V1User User
         {
-            get => _isBusy;
+            get => _user;
             set
             {
-                _isBusy = value;
+                _user = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<ReadingStatus> ReadingStatuses
+        {
+            get => _readingStatuses;
+            set
+            {
+                _readingStatuses = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ReadingStatus SelectedReadingStatus
+        {
+            get => _selectedReadingStatus;
+            set
+            {
+                _selectedReadingStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<int> Ratings
+        {
+            get => _ratings;
+            set
+            {
+                _ratings = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedRating
+        {
+            get => _selectedRating;
+            set
+            {
+                _selectedRating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
                 OnPropertyChanged();
             }
         }

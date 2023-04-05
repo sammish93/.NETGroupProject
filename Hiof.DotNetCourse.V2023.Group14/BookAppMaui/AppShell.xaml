@@ -211,7 +211,7 @@
                x:Name="MySettingsPage"
                Route="settings"
                FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}" />
+        <ShellContent ContentTemplate="{DataTemplate view:SettingsPage}" />
     </ShellItem>
 
     <!--Add menu items-->

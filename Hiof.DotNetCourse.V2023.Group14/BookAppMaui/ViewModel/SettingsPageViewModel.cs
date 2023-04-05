@@ -15,10 +15,12 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
-    public class SignupPageViewModel : BaseViewModel
+    public class SettingsPageViewModel : BaseViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
+        private V1User _loggedInUser { get; set; }
+        private byte[] _selectedUserDisplayPicture { get; set; }
         private string _username;
         private string _password;
         private string _email;
@@ -33,6 +35,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
+        }
+
+        public V1User LoggedInUser
+        {
+            get => _loggedInUser;
+            set
+            {
+                _loggedInUser = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public byte[] SelectedUserDisplayPicture
+        {
+            get => _selectedUserDisplayPicture;
+            set
+            {
+                _selectedUserDisplayPicture = value;
+                OnPropertyChanged();
+            }
         }
 
 
