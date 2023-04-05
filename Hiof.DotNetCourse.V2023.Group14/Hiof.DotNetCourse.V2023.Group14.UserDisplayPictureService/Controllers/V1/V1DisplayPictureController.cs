@@ -235,7 +235,7 @@ public class V1DisplayPictureController : ControllerBase
                 _userIconContext.SaveChanges();
             }
 
-            return Ok();
+        return Ok();
     }
 
     /// <summary>

@@ -99,7 +99,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
         public ICommand UploadImageCommand => new Command(async () => await FileSelector(PickOptions.Images, LoggedInUser));
-        public ICommand SaveCommand => new Command(async () => await SaveAsync());
+        public ICommand SaveCommand => new Command(async () =>
+        {
+            await UpdateDisplayPictureAsync(LoggedInUser, UserDisplayPicture);
+            await SaveAsync();
+        });
 
         private async Task SaveAsync()
         {
@@ -192,11 +196,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task<FileResult> FileSelector(PickOptions options, V1User user)
+        public async Task<FileResult> FileSelector(PickOptions pickOptions, V1User user)
         {
             try
             {
-                var result = await FilePicker.Default.PickAsync(options);
+                var result = await FilePicker.Default.PickAsync(pickOptions);
                 if (result != null)
                 {
                     if (result.FileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
@@ -208,7 +212,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         ImageConverter converter = new ImageConverter();
                         byte[] displayPictureInBytes = (byte[])converter.ConvertTo(newDisplayPicture, typeof(byte[]));
 
-                        await UpdateDisplayPictureAsync(user, displayPictureInBytes);
+                        UserDisplayPicture = displayPictureInBytes;
                     }
                 }
 
@@ -228,11 +232,25 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 IsBusy = true;
 
+                Guid id = new Guid();
+
+                string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                if (resultDisplayPicture.IsSuccessStatusCode)
+                {
+                    var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                    V1UserIcon picture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                    id = picture.Id;
+                }
+                    
                 string url = $"{_apiBaseUrl}/icons/Update";
 
                 var icon = new V1UserIcon
                 {
-                    Id = Guid.Parse("12DC49DE-6224-4632-8E20-087A63E07BAF"),
+                    Id = id,
                     Username = user.UserName,
                     DisplayPicture = displayPicture
                 };
@@ -248,7 +266,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     UserDisplayPicture = displayPicture;
-                    await Application.Current.MainPage.DisplayAlert("Success", "The file is a valid image.", "OK");
+                    App.UserDisplayPicture = displayPicture;
                 }
             }
             catch (Exception ex)
