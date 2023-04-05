@@ -9,7 +9,8 @@
              x:Name="Login"
              Shell.NavBarIsVisible="False">
 
-    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+    <Grid x:Name="backgroundPage"
+          BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="auto" />
@@ -27,6 +28,7 @@
               MaximumWidthRequest="1366"
               MinimumWidthRequest="800"
               MinimumHeightRequest="600"
+              HeightRequest="{Binding Source={x:Reference backgroundPage}, Path=Height}"
               BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
 
             <Grid Padding="5"
@@ -112,7 +114,6 @@
                 <Label Grid.Row="7"
                        Text="Don't have an account?"
                        TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
-                       TextDecorations="Underline"
                        HorizontalOptions="Center"
                        VerticalOptions="End" />
 
@@ -133,7 +134,7 @@
 
                 <HorizontalStackLayout Grid.Row="9"
                                        HorizontalOptions="Center"
-                                       Margin="10">
+                                       Margin="10" >
                     <Label Text="Test Account"
                            TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                            VerticalOptions="Center" />

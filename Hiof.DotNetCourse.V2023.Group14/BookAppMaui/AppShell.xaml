@@ -62,7 +62,7 @@
                        HorizontalOptions="End"
                        Placeholder="Search for a book, author, or user here.."
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource AlternatePrimaryLighter}}"
                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        CancelButtonColor="{AppThemeBinding Light={StaticResource AlternatePrimaryDarker}, Dark={StaticResource AlternatePrimaryDarker}}"
                        VerticalOptions="Center"
