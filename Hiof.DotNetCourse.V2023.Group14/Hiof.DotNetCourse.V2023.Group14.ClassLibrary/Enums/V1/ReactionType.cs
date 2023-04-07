@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 {
-	public enum V1Reactions
+	public enum ReactionType
 	{
 		THUMBSUP,
 		THUMBSDOWN,

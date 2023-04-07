@@ -1,16 +1,17 @@
 ﻿using System;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
+using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 {
 	public class V1MessagingService : V1IMessages
 	{
-        // TODO: Add an referance to an database context for the messaging service.
+        private readonly MessagingContext _context;
 
-		public V1MessagingService()
+		public V1MessagingService(MessagingContext context)
 		{
-            // TODO: Implement the instance via constructor injection.
+            _context = context;
 		}
 
         public Task AddMessageToConversation(Guid conversationId, Guid messageId, string message)
@@ -33,12 +34,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             throw new NotImplementedException();
         }
 
-        public Task<V1ConversationModel> GetByConversationId(Guid participantId)
+        public async Task<V1ConversationModel?> GetByConversationId(Guid participantId)
         {
-            throw new NotImplementedException();
+            return await _context.ConversationModel.FindAsync(participantId);
         }
 
-        public Task<IEnumerable<V1ConversationModel>> GetByParticipant(string participant)
+        public Task<V1ConversationModel?> GetByParticipant(string participant)
         {
             throw new NotImplementedException();
         }

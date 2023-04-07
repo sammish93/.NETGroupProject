@@ -8,9 +8,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 	/// </summary>
 	public interface V1IMessages
 	{
-		Task<IEnumerable<V1ConversationModel>> GetByParticipant(string participant);
+		Task<V1ConversationModel?> GetByParticipant(string participant);
 
-		Task<V1ConversationModel> GetByConversationId(Guid participantId);
+		Task<V1ConversationModel?> GetByConversationId(Guid participantId);
 
 		Task AddMessageToConversation(Guid conversationId, Guid messageId, string message);
 
