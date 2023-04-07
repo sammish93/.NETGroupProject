@@ -1,9 +1,11 @@
 ﻿using System;
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 {
+	/// <summary>
+	/// Model the represent the messages sent between users.
+	/// </summary>
 	public class V1Messages
 	{
-
 		public Guid MessageId { get; set; }
 
 		public string Sender { get; set; }
@@ -12,8 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 
 		public DateTime Date { get; set; }
 
-
-
+		public List<V1Reactions> Reactions { get; set; }
 
 	}
 }
