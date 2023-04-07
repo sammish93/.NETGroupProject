@@ -4,7 +4,7 @@
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.MainPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="Home"
-             BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+             BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Gray900Brush}}">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" />
     </Shell.BackButtonBehavior>
@@ -18,7 +18,7 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <Grid BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+        <Grid BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Gray900}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="auto" />
@@ -37,9 +37,9 @@
                   MinimumHeightRequest="600"
                   Padding="5"
                   ColumnSpacing="5"
-                  BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+                  BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Gray900}}">
                 <Grid.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray900}}"
                             Radius="10"
                             Offset="0,10"
                             Opacity="0.3" />
@@ -50,7 +50,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0"
-                      BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                      BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
                       MaximumWidthRequest="910">
 
                     <Grid.RowDefinitions>
@@ -76,16 +76,16 @@
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                Padding="5"
-                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" />
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OffWhite}}" />
 
                         <CollectionView ItemsSource="{Binding HighestRatedBooks}"
                                         ItemsLayout="HorizontalList"
                                         Grid.Row="1"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray500}}"
                                         SelectionMode="Single"
                                         SelectionChanged="CollectionViewBook_SelectionChanged">
                             <CollectionView.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
                                         Radius="5"
                                         Offset="0,5"
                                         Opacity="0.3" />
@@ -104,7 +104,7 @@
                                         <Frame HorizontalOptions="Center"
                                                VerticalOptions="Center"
                                                CornerRadius="5"
-                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray300}}"
                                                Padding="0"
                                                BorderColor="Transparent">
                                             <Image Grid.Row="0"
@@ -136,16 +136,16 @@
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                Padding="5"
-                               TextColor="Black" />
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OffWhite}}" />
 
                         <CollectionView ItemsSource="{Binding RecentlyReadBooks}"
                                         ItemsLayout="HorizontalList"
                                         Grid.Row="3"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray500}}"
                                         SelectionMode="Single"
                                         SelectionChanged="CollectionViewBook_SelectionChanged">
                             <CollectionView.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
                                         Radius="5"
                                         Offset="0,5"
                                         Opacity="0.3" />
@@ -164,7 +164,7 @@
                                         <Frame HorizontalOptions="Center"
                                                VerticalOptions="Center"
                                                CornerRadius="5"
-                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray400}}"
                                                Padding="0"
                                                BorderColor="Transparent">
                                             <Image Grid.Row="0"
@@ -196,16 +196,16 @@
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                Padding="5"
-                               TextColor="Black" />
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OffWhite}}" />
 
                         <CollectionView ItemsSource="{Binding NearbyUsers}"
                                         ItemsLayout="HorizontalList"
                                         Grid.Row="5"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray500}}"
                                         SelectionMode="Single"
                                         SelectionChanged="CollectionViewUser_SelectionChanged">
                             <CollectionView.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
                                         Radius="5"
                                         Offset="0,5"
                                         Opacity="0.3" />
@@ -224,7 +224,7 @@
                                         <Frame HorizontalOptions="Center"
                                                VerticalOptions="Center"
                                                CornerRadius="15"
-                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray300}}"
                                                Padding="0"
                                                BorderColor="Transparent">
                                             <Image Grid.Row="0"
@@ -257,7 +257,7 @@
                 </Grid>
 
                 <Grid Grid.Column="1"
-                      BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                      BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
                       RowSpacing="5"
                       ColumnSpacing="0"
                       MinimumHeightRequest="600"
@@ -269,7 +269,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0"
-                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray600}}"
                           ColumnSpacing="5"
                           Padding="5"
                           Margin="5">
@@ -285,7 +285,8 @@
                         </Grid.ColumnDefinitions>
                         <Image Source="book_alt.png"
                                Aspect="AspectFit"
-                               Grid.Column="0" />
+                               Grid.Column="0" 
+                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray300}}"/>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*" />
@@ -329,7 +330,7 @@
                             </VerticalStackLayout>
                             <ProgressBar Grid.Row="2"
                                          x:Name="progressBar"
-                                         ProgressColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                         ProgressColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray100}}"
                                          BackgroundColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Tertiary}}"
                                          Progress="0" />
                         </Grid>
@@ -337,7 +338,7 @@
                     </Grid>
 
                     <Grid Grid.Row="1"
-                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray500}}"
                           RowSpacing="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
@@ -349,19 +350,19 @@
                                Text="{Binding Path='LoggedInUser.UserName', StringFormat='Recent Comments for {0}'}"
                                VerticalOptions="Center"
                                HorizontalOptions="Center"
-                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OffWhite}}"
                                Margin="5" />
 
                         <CollectionView ItemsSource="{Binding RecentlyReadBooks}"
                                         ItemsLayout="VerticalList"
                                         Grid.Row="1"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}">
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid RowSpacing="5"
                                           ColumnSpacing="5"
                                           Margin="5"
-                                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray500}}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
