@@ -9,9 +9,6 @@ public class V1MessagingController : ControllerBase
 {
     private readonly V1MessagingService _messagingService;
 
-    // b9c9cc8a-cc79-4d67-8e24-4b4f4b31d0c1
-
-
     public V1MessagingController(V1MessagingService service)
     {
         _messagingService = service;
