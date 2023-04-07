@@ -7,7 +7,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
     /// <summary>
     /// Model the represent the messages sent between users.
     /// </summary>
-    [Table("user_messages", Schema = "dbo")]
+    [Table("messages", Schema = "dbo")]
     public class V1Messages
 	{
 		[Key]
@@ -19,6 +19,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 
 		public DateTime Date { get; set; }
 
+        [ForeignKey("ConversationId")]
         public Guid ConversationId { get; set; }
 
         public List<V1Reactions> Reactions { get; set; }
