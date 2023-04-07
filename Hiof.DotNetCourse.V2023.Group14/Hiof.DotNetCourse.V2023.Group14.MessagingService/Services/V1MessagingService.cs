@@ -9,39 +9,50 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 	{
         private readonly MessagingContext _context;
 
-		public V1MessagingService(MessagingContext context)
+        private readonly ILogger<V1MessagingService> _logger;
+
+		public V1MessagingService(MessagingContext context, ILogger<V1MessagingService> logger)
 		{
             _context = context;
+            _logger = logger;
 		}
 
         public async Task AddMessageToConversation(Guid conversationId, Guid messageId, string sender, string message)
         {
-            var conversation = await _context.ConversationModel.FindAsync(conversationId);
-
-            // If the conversation does not exists, create a new one
-            // with the gived id.
-            if (conversation == null)
+            try
             {
-                conversation = new V1ConversationModel
+                var conversation = await _context.ConversationModel.FindAsync(conversationId);
+
+                // If the conversation does not exists, create a new one
+                // with the gived id.
+                if (conversation == null)
                 {
-                    ConversationId = conversationId,
-                    Participants = new List<V1Participant>()
+                    conversation = new V1ConversationModel
+                    {
+                        ConversationId = conversationId,
+                        Participants = new List<V1Participant>()
+                    };
+                    _context.ConversationModel.Add(conversation);
+                }
+
+                var messageToAdd = new V1Messages
+                {
+                    MessageId = messageId,
+                    Sender = sender,
+                    Message = message,
+                    Date = DateTime.UtcNow,
+                    Reactions = new List<V1Reactions>()
                 };
-                _context.ConversationModel.Add(conversation);
+
+                // Add the message to the conversation
+                conversation.Messages.Add(messageToAdd);
+                await _context.SaveChangesAsync();
+
             }
-
-            var messageToAdd = new V1Messages
+            catch (Exception ex)
             {
-                MessageId = messageId,
-                Sender = sender,
-                Message = message,
-                Date = DateTime.UtcNow,
-                Reactions = new List<V1Reactions>()
-            };
-
-            // Add the message to the conversation
-            conversation.Messages.Add(messageToAdd);
-            await _context.SaveChangesAsync();
+                _logger.LogError(ex, "Could not add conversation to database.");
+            }
         }
 
         public async Task AddReactionToMessage(Guid messageId, V1Reactions reaction)
@@ -65,9 +76,31 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants)
+        public async Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants)
         {
-            throw new NotImplementedException();
+            // Create a new conversation
+            var conversation = new V1ConversationModel
+            {
+                ConversationId = conversationId,
+                Participants = new List<V1Participant>(),
+                Messages = new List<V1Messages>()
+            };
+
+            // Add participants to the participants table.
+            foreach (var participant in participants)
+            {
+                var newParticipant = new V1Participant
+                {
+                    Participant = participant,
+                    ConversationId = conversationId
+                };
+
+                conversation.Participants.Add(newParticipant);
+            }
+
+            await _context.ConversationModel.AddAsync(conversation);
+
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteConversation(Guid conversationId)

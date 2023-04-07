@@ -10,13 +10,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Data
 		{
 		}
 
-		public DbSet<V1ConversationModel> ConversationModel;
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<V1ConversationModel>()
+                .HasKey(c => c.ConversationId);
 
-		public DbSet<V1Messages> Messages;
+            base.OnModelCreating(modelBuilder);
+        }
 
-		public DbSet<V1Reactions> MessageReaction;
+        public DbSet<V1ConversationModel> ConversationModel { get; set; }
 
-		public DbSet<V1Participant> Participant;
+		public DbSet<V1Messages> Messages { get; set; }
+
+		public DbSet<V1Reactions> MessageReaction { get; set; }
+
+		public DbSet<V1Participant> Participant { get; set; }
 	}
 }
 
