@@ -21,7 +21,7 @@ public partial class SearchPage : ContentPage
     public SearchPage()
 	{
 		InitializeComponent();
-        this.BindingContext = new SearchPageViewModel();
+        this.BindingContext = new SearchPageViewModel(App.LoggedInUser);
     }
 
     protected override async void OnAppearing()

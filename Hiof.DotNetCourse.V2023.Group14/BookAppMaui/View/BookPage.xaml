@@ -26,7 +26,7 @@
                   MinimumHeightRequest="600"
                   Padding="5"
                   ColumnSpacing="5"
-                  BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+                  BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Black}}">
 
                 <AbsoluteLayout VerticalOptions="Start"
                                 HorizontalOptions="Start"
@@ -35,7 +35,7 @@
                     <Frame HorizontalOptions="Center"
                            VerticalOptions="Center"
                            CornerRadius="20"
-                           BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                           BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Black}}"
                            Padding="0"
                            BorderColor="Transparent"
                            AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
@@ -47,14 +47,14 @@
                     </Frame>
 
                     <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
-                             Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                             Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Black}}"
                              WidthRequest="{Binding Width}"
                              HeightRequest="100"
                              VerticalOptions="Center"
                              HorizontalOptions="Start"
                              AbsoluteLayout.LayoutBounds="0, 25, AutoSize, AutoSize">
                         <BoxView.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Black}}"
                                     Radius="5"
                                     Offset="0,5"
                                     Opacity="0.3" />
@@ -90,11 +90,11 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0"
-                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
                           HeightRequest="140" />
 
                     <Grid Grid.Row="1"
-                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
                           ColumnSpacing="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -105,7 +105,7 @@
                               Grid.Column="0"
                               MaximumWidthRequest="450"
                               MinimumHeightRequest="600"
-                              BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                              BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Black}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
@@ -187,7 +187,7 @@
                                         Grid.Row="1"
                                         Grid.Column="0"
                                         HorizontalOptions="Center"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray500}}"
                                         ItemsSource="{Binding ReadingStatuses}"
                                         ItemDisplayBinding="{Binding .}"
                                         SelectedItem="{Binding SelectedReadingStatus}" />
@@ -198,13 +198,13 @@
                                             MaximumDate="12/31/2099"
                                             DateSelected="DatePicker_DateSelected"
                                             HorizontalOptions="Center"
-                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"/>
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray500}}"/>
 
                                 <Picker x:Name="pickerRating"
                                         Grid.Row="1"
                                         Grid.Column="2"
                                         HorizontalOptions="Center"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray500}}"
                                         ItemsSource="{Binding Ratings}"
                                         ItemDisplayBinding="{Binding .}"
                                         SelectedItem="{Binding SelectedRating}" />
@@ -212,7 +212,7 @@
                                 <Button Grid.Row="2"
                                         Text="Add to library"
                                         WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray500}}"
                                         TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                                         VerticalOptions="Start"
                                         HorizontalOptions="Start"
@@ -223,7 +223,7 @@
                         </Grid>
 
                         <Grid Grid.Column="1"
-                              BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                              BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Black}}"
                               RowSpacing="5"
                               MaximumWidthRequest="910"
                               MinimumHeightRequest="600">
@@ -241,7 +241,7 @@
                                 <Grid RowSpacing="5"
                                       ColumnSpacing="5"
                                       Padding="5"
-                                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray600}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />

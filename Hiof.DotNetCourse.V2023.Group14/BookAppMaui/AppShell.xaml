@@ -6,8 +6,8 @@
        xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
        x:Name="MyAppShell"
-       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-       FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource Secondary}}"
+       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Black}}"
+       FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource Gray600}}"
        Padding="10,0,0,0">
 
     <!--MAUI Community Toolkit-->
@@ -61,9 +61,9 @@
                        WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
                        HorizontalOptions="End"
                        Placeholder="Search for a book, author, or user here.."
-                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource AlternatePrimaryLighter}}"
-                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray100}}"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource Gray600}}"
+                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray200}}"
                        CancelButtonColor="{AppThemeBinding Light={StaticResource AlternatePrimaryDarker}, Dark={StaticResource AlternatePrimaryDarker}}"
                        VerticalOptions="Center"
                        FontAutoScalingEnabled="True"

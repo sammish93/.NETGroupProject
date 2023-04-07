@@ -79,7 +79,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public LibraryPageViewModel()
         {
-            LoggedInUser = UserSingleton.Instance.GetUser(true);
+            LoggedInUser = App.LoggedInUser;
             ReadEntries = new ObservableCollection<V1LibraryEntryWithImage>();
             ToBeRead = new ObservableCollection<V1LibraryEntryWithImage>();
             CurrentlyReading = new ObservableCollection<V1LibraryEntryWithImage>();

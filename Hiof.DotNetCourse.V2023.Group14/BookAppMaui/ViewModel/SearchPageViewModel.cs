@@ -91,13 +91,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        public SearchPageViewModel()
+        public SearchPageViewModel(V1User user)
         {
             BooksBasedOnTitle = new ObservableCollection<V1Book>();
             BooksBasedOnAuthor = new ObservableCollection<V1Book>();
             Users = new ObservableCollection<V1User>();
-            User = UserSingleton.Instance.GetUser(true);
+            User = user;
         }
 
         public async Task PopulateBookTitleResults(string query)
