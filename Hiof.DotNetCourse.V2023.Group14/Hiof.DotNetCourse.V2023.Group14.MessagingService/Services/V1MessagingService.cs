@@ -57,6 +57,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 
         public async Task AddReactionToMessage(Guid messageId, V1Reactions reaction)
         {
+            // TODO: Check and handle exceptions.
+
             var message = await _context.Messages.FindAsync(messageId);
 
             if (message == null)
@@ -78,6 +80,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 
         public async Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants)
         {
+            // TODO: Check and handle exceptions.
+
             // Create a new conversation
             var conversation = new V1ConversationModel
             {
