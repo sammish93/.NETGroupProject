@@ -28,7 +28,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 var connectionString = configRoot
@@ -75,6 +74,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
             // Add the processing server as IHostedService
             services.AddHangfireServer(options => options.WorkerCount = 1);
+            services.AddHttpClient();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment env)

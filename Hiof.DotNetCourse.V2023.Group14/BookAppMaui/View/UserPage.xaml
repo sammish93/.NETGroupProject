@@ -13,7 +13,7 @@
 
     <!-- If the GUI is scaled to below 800x600 it is scrollable -->
     <ScrollView>
-        <Grid>
+        <Grid BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="auto" />
@@ -33,7 +33,7 @@
                   MinimumHeightRequest="600"
                   Padding="5"
                   ColumnSpacing="5"
-                  BackgroundColor="LightGreen">
+                  BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
 
                 <AbsoluteLayout VerticalOptions="Start"
                                 HorizontalOptions="Start"
@@ -44,7 +44,7 @@
                            CornerRadius="20"
                            WidthRequest="150"
                            HeightRequest="150"
-                           BackgroundColor="Green"
+                           BackgroundColor="Transparent"
                            Padding="0"
                            BorderColor="Transparent"
                            AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
@@ -55,12 +55,19 @@
                     </Frame>
 
                     <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
-                             Color="CornflowerBlue"
+                             Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                              WidthRequest="{Binding Width}"
                              HeightRequest="100"
                              VerticalOptions="Center"
                              HorizontalOptions="Start"
-                             AbsoluteLayout.LayoutBounds="0, 25, AutoSize, AutoSize" />
+                             AbsoluteLayout.LayoutBounds="0, 25, AutoSize, AutoSize">
+                        <BoxView.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                    Radius="5"
+                                    Offset="0,5"
+                                    Opacity="0.3" />
+                        </BoxView.Shadow>
+                    </BoxView>
 
                     <Label FontAttributes="Bold"
                            HorizontalTextAlignment="Center"
@@ -69,7 +76,6 @@
                            MaximumWidthRequest="1200"
                            LineBreakMode="TailTruncation"
                            FontSize="Large"
-                           BackgroundColor="Coral"
                            AbsoluteLayout.LayoutBounds="170, 35, AutoSize, AutoSize"
                            ZIndex="2" />
 
@@ -79,7 +85,6 @@
                            LineBreakMode="TailTruncation"
                            FontSize="Small"
                            FontAttributes="Italic"
-                           BackgroundColor="Coral"
                            AbsoluteLayout.LayoutBounds="170, 90, AutoSize, AutoSize"
                            ZIndex="2">
                         <Label.Text>
@@ -99,11 +104,11 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0"
-                          BackgroundColor="DarkBlue"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                           HeightRequest="140" />
 
                     <Grid Grid.Row="1"
-                          BackgroundColor="Orange"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                           ColumnSpacing="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -114,7 +119,7 @@
                               Grid.Column="0"
                               MaximumWidthRequest="450"
                               MinimumHeightRequest="600"
-                              BackgroundColor="Coral">
+                              BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="1*" />
@@ -167,13 +172,15 @@
                                     Text="Send a message"
                                     WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
                                     VerticalOptions="Start"
-                                    HorizontalOptions="Start" />
+                                    HorizontalOptions="Start"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
 
 
                         </Grid>
 
                         <Grid Grid.Column="2"
-                              BackgroundColor="Coral"
+                              BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                               RowSpacing="5"
                               MaximumWidthRequest="910"
                               MinimumHeightRequest="600">
@@ -185,14 +192,13 @@
                             <Label Grid.Row="0"
                                    FontSize="Medium"
                                    Text="Comments"
-                                   Padding="5"
-                                   BackgroundColor="DarkCyan" />
+                                   Padding="5" />
 
                             <ScrollView Grid.Row="1">
                                 <Grid RowSpacing="5"
                                       ColumnSpacing="5"
                                       Padding="5"
-                                      BackgroundColor="DarkCyan">
+                                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
@@ -248,7 +254,7 @@
                 <ActivityIndicator Grid.Column="0"
                                    Grid.ColumnSpan="2"
                                    IsRunning="{Binding IsBusy}"
-                                   Color="LightCoral"
+                                   Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                    Scale="3" />
 
             </Grid>

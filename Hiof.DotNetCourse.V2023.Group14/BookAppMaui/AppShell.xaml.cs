@@ -13,26 +13,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(LogInPage), typeof(LogInPage));
-            //Routing.RegisterRoute("home", typeof(MainPage));
-            //Routing.RegisterRoute(nameof(Page2), typeof(Page2));
 
-            this.BindingContext = new AppShellViewModel();
+            this.BindingContext = new AppShellViewModel(App.LoggedInUser, App.UserDisplayPicture);
 
-            
-            //Routing.RegisterRoute(nameof(LogInPage), typeof(LogInPage));
-            //Routing.RegisterRoute(nameof(SignupPage), typeof(SignupPage));
-            /*
-            var userSaveKey = Preferences.Get("UserIsLoggedIn", false);
-
-            if(userSaveKey == true)
-            {
-                MyAppShell.CurrentItem = MyHomePage;
-            }
-            else
-            {
-                MyAppShell.CurrentItem = MyLogin;
-            }
-            */
         }
 
         // Sets the Shell TitleView title to the current page title when it has been nagivated to.
@@ -48,6 +31,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                 if (currentPage != null)
                 {
                     model.TitleCurrentPage = currentPage;
+                    model.User = App.LoggedInUser;
+                    model.DisplayPicture = App.UserDisplayPicture;
                 }
             }
 

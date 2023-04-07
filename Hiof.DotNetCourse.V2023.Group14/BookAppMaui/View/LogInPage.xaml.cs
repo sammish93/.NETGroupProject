@@ -13,18 +13,18 @@ public partial class LogInPage : ContentPage
 
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-		
-		
-		
 		if(e.Value == true)
 		{
             LoginViewModel loginView = (LoginViewModel)this.BindingContext;
             loginView.Username = "JinkxMonsoon";
             loginView.Password = "Itismonsoonseason1!";
         }
-		
-			
-        
-		
+    }
+
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+        dynamicColumn.WidthRequest = width;
+        dynamicColumn.HeightRequest = height;
     }
 }

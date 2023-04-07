@@ -23,12 +23,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
-        public ObservableCollection<V1Book> HighestRatedBooks { get; set; }
-        public ObservableCollection<V1Book> RecentlyReadBooks { get; set; }
-        public ObservableCollection<V1UserWithDisplayPicture> NearbyUsers { get; set; }
+        private ObservableCollection<V1Book> _highestRatedBooks;
+        private ObservableCollection<V1Book> _recentlyReadBooks;
+        private ObservableCollection<V1UserWithDisplayPicture> _nearbyUsers;
         private bool _isBusy;
-        public V1User LoggedInUser { get; set; }
-        private V1ReadingGoals _loggedInUserRecentReadingGoal { get; set; }
+        private V1User _loggedInUser;
+        private V1ReadingGoals _loggedInUserRecentReadingGoal;
         private double _readingGoalProgress;
 
         public bool IsBusy
@@ -37,6 +37,46 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public V1User LoggedInUser
+        {
+            get => _loggedInUser;
+            set
+            {
+                _loggedInUser = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<V1Book> HighestRatedBooks
+        {
+            get => _highestRatedBooks;
+            set
+            {
+                _highestRatedBooks = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<V1Book> RecentlyReadBooks
+        {
+            get => _recentlyReadBooks;
+            set
+            {
+                _recentlyReadBooks = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<V1UserWithDisplayPicture> NearbyUsers
+        {
+            get => _nearbyUsers;
+            set
+            {
+                _nearbyUsers = value;
                 OnPropertyChanged();
             }
         }

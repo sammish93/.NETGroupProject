@@ -15,12 +15,11 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
-    public class SignupPageViewModel :BaseViewModel
+    public class SignupPageViewModel : BaseViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private string _username;
-
         private string _password;
         private string _email;
         private string _firstName;
@@ -28,21 +27,30 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private string _country;
         private string _city;
         private string _langpref;
-        //private UserRole _userRole;
+        private bool _isBusy;
+
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
 
 
-        
+
         [Required(ErrorMessage = "{0} is required")]
         [StringLength(20, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
         [RegularExpression(@"^[a-zA-Z0-9]+$",
         ErrorMessage = "Only alphanumeric characters in username")]
-        public string UserName {
+        public string UserName
+        {
             get => _username;
-            set => SetProperty(ref _username, value); }
+            set => SetProperty(ref _username, value);
+        }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]
-        public string Email {
+        public string Email
+        {
             get => _email;
             set => SetProperty(ref _email, value);
         }
@@ -56,7 +64,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
         public string FirstName { get => _firstName; set => SetProperty(ref _firstName, value); }
         public string LastName { get => _lastName; set => SetProperty(ref _lastName, value); }
-        public string Country { get => _country; set => SetProperty(ref _country, value);}
+        public string Country { get => _country; set => SetProperty(ref _country, value); }
         public string City { get => _city; set => SetProperty(ref _city, value); }
         public string Lang_Preference { get => _langpref; set => SetProperty(ref _langpref, value); }
         //public UserRole userRole{ get => _userRole; set => SetProperty(ref _userRole, value);  }
@@ -66,6 +74,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             try
             {
+                IsBusy = true;
+
                 string signUpUrl = $"{_apiBaseUrl}/users/CreateUserAccount";
                 var requestBody = new V1User
                 {
@@ -81,30 +91,32 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     Role = UserRole.User,
                     RegistrationDate = DateTime.UtcNow,
                     LastActive = DateTime.UtcNow
-                   
+
                 };
                 var requestBodyJson = JsonConvert.SerializeObject(requestBody);
                 var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = await _httpClient.PostAsync(signUpUrl, requestContent);
+
+                IsBusy = false;
+
                 if (response.IsSuccessStatusCode)
                 {
                     await Shell.Current.GoToAsync("///login");
-                    
-                }
-                else
-                {
-                    
-                }
 
-
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
-            
+        }
 
+        public ICommand BackCommand => new Command(async () => await BackAsync());
+
+        private async Task BackAsync()
+        {
+            await Shell.Current.GoToAsync("///login");
         }
     }
 }

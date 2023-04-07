@@ -15,11 +15,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
     [Route("api/[controller]")]
     public class BackgroundJobController : ControllerBase
     {
-        private readonly UserAccountContext _dbContext;
+        // Dependency injection - must update the raport.
+        private readonly HttpClient _httpClient;
 
-        public BackgroundJobController(UserAccountContext context)
+        public BackgroundJobController(IHttpClientFactory httpClientFactory)
         {
-            _dbContext = context;
+            _httpClient = httpClientFactory.CreateClient();
         }
 
 
@@ -34,13 +35,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             return Ok(message);
         }
 
-        // TODO: This method is causing circular references and needs to be fixed.
         [HttpPost]
         [Route("UpdateCache/[action]")]
         public IActionResult StartJob()
         {
-            // This will make the job run every 5 minute.
-            RecurringJob.AddOrUpdate(() => UpdateCacheJob.Update(_dbContext), "*/5 * * * *");
+            UpdateCacheJob job = new UpdateCacheJob(_httpClient);
+           
+            // This will make the job run every hour on the first minute.
+            RecurringJob.AddOrUpdate(() => job.Update(), "0 * * * *");
 
             return Ok("Cache updating job is scheduled!");
         }
@@ -49,12 +51,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         [Route("InactiveUser/[action]")]
         public IActionResult Start()
         {
+            InactiveUsers inactive = new InactiveUsers(_httpClient);
+
             // This will check the database for inactive users every day.
-            RecurringJob.AddOrUpdate(() => CheckInactivity(), Cron.Daily());
+            RecurringJob.AddOrUpdate(() => inactive.CheckInactivity(), Cron.Daily());
 
             var message = "Recurring job to check for inactive users daily is activated";
             return Ok(message);
         }
+
 
         [HttpPost]
         [Route("InactiveUser/[action]")]
@@ -64,39 +69,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             return Ok("InactiveUser-Job successfully stopped.");
         }
        
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        [HttpGet]
-        public void CheckInactivity()
-        {
-            var inactiveTime = DateTime.Now.AddDays(-10);
-            var inactiveUsers = _dbContext.Users.Where(u => u.LastActive < inactiveTime).ToList();
-            CreateMailToInactiveUsers(inactiveUsers);
-        }
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        [HttpGet]
-        public void CreateMailToInactiveUsers(List<V1User> inactiveUsers)
-        {
-            foreach (var user in inactiveUsers)
-            {
-                StringBuilder message = new StringBuilder();
-                message.Append($"\nUser {user.UserName} has been inactive for 10 days.");
-                message.Append("\nPlease log in to the service soon.");
-
-                var result = $"\nMail sent to: {user.Email}.";
-                var content = $"\nContent: {message}";
-                WriteResultToFile(result, content);
-            }
-
-        }
-
-        private static void WriteResultToFile(string result, string content)
-        {
-            using StreamWriter file = new("TextFile/log.txt", append: true);
-            file.Write(result + content);
-        }
-
         public static void SendWelcomeMail(string mail)
         {
             Console.WriteLine($"\nWelcome {mail} to the Book Application!");

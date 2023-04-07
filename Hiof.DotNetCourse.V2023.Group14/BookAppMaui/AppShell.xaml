@@ -6,10 +6,8 @@
        xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
        x:Name="MyAppShell"
-       BackgroundColor="Red"
-       FlyoutBackgroundColor="BlanchedAlmond"
-       TitleColor="SaddleBrown"
-       ForegroundColor="SaddleBrown"
+       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+       FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource Secondary}}"
        Padding="10,0,0,0">
 
     <!--MAUI Community Toolkit-->
@@ -48,12 +46,12 @@
             <Label Grid.Column="1"
                    Grid.Row="1"
                    Text="{Binding TitleCurrentPage}"
-                   TextColor="White"
+                   TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                    FontAttributes="Bold"
                    HorizontalOptions="Start"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"
-                   FontAutoScalingEnabled="True" />
+                   FontAutoScalingEnabled="True"/>
             <SearchBar x:Name="SearchBar"
                        Grid.Column="2"
                        Grid.Row="1"
@@ -63,9 +61,10 @@
                        WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
                        HorizontalOptions="End"
                        Placeholder="Search for a book, author, or user here.."
-                       PlaceholderColor="Red"
-                       BackgroundColor="White"
-                       TextColor="Red"
+                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource AlternatePrimaryLighter}}"
+                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       CancelButtonColor="{AppThemeBinding Light={StaticResource AlternatePrimaryDarker}, Dark={StaticResource AlternatePrimaryDarker}}"
                        VerticalOptions="Center"
                        FontAutoScalingEnabled="True"
                        MinimumWidthRequest="100" />
@@ -90,21 +89,21 @@
 
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
-            <Grid BackgroundColor="SandyBrown"
+            <Grid BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                   HeightRequest="150">
                 <Frame HorizontalOptions="Center"
                        VerticalOptions="Start"
                        CornerRadius="50"
                        HeightRequest="100"
                        WidthRequest="100"
-                       BackgroundColor="White"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                        Padding="0"
                        Margin="10"
                        BorderColor="Transparent">
                     <Image Source="{Binding DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                            Aspect="AspectFit" />
                 </Frame>
-                <Label TextColor="SaddleBrown"
+                <Label TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                        FontAttributes="Bold"
                        FontSize="20"
                        HorizontalTextAlignment="Center"
@@ -121,7 +120,29 @@
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
-
+    <Shell.MenuItemTemplate>
+        <DataTemplate>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0"
+                       Source="{Binding FlyoutIcon}"
+                       BackgroundColor="Transparent"
+                       Margin="15"
+                       HeightRequest="30" />
+                <Label Grid.Column="1"
+                       Text="{Binding Title}"
+                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.MenuItemTemplate>
+    
+    <!--Add routes-->
+    
     <ShellItem Title="Login"
                x:Name="MyLogin"
                Icon="home.png"
@@ -139,7 +160,8 @@
     <ShellItem Title="Home"
                x:Name="MyHomePage"
                Icon="home.png"
-               Route="home">
+               Route="home"
+               FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate view:MainPage}" />
     </ShellItem>
 
@@ -150,79 +172,81 @@
         <ShellContent ContentTemplate="{DataTemplate view:SearchPage}" />
     </ShellItem>
 
-    <ShellItem x:Name="MyUserPage"
+    <ShellItem Title="User"
+               x:Name="MyUserPage"
                Route="user"
                FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate view:UserPage}" />
     </ShellItem>
 
-    <ShellItem x:Name="MyBookPage"
+    <ShellItem Title="Book"
+               x:Name="MyBookPage"
                Route="book"
                FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate view:BookPage}" />
     </ShellItem>
 
-
-
-
-    <!--
-    <ShellItem Route="login" x:Name="MyLogin">
-        <ShellContent
-          Title="This is the Main Page"
-          ContentTemplate="{DataTemplate view:MainPage}"/>
+    <ShellItem Title="Library"
+               x:Name="MyLibraryPage"
+               Route="library"
+               FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate view:LibraryPage}" />
     </ShellItem>
 
-    
-    <ShellItem Route="signup" >
-        <ShellContent
-          Title="sign up"
-          ContentTemplate="{DataTemplate view:SignupPage }"/>
+    <ShellItem Title="Marketplace"
+               x:Name="MyMarketplacePage"
+               Route="marketplace"
+               FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}" />
     </ShellItem>
-    -->
 
-    <!--Add icons in the flyout items-->
-    <FlyoutItem Title="Library"
-                Icon="book_alt.png">
-        <ShellContent ContentTemplate="{DataTemplate view:LibraryPage}"
-                      Route="library"
-                      Shell.FlyoutBehavior="Flyout" />
-    </FlyoutItem>
+    <ShellItem Title="Messages"
+               x:Name="MyMessagesPage"
+               Route="messages"
+               FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}" />
+    </ShellItem>
 
-    <FlyoutItem Title="Marketplace"
-                Icon="shop.png">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}"
-                      Route="marketplace"
-                      Shell.FlyoutBehavior="Flyout" />
-    </FlyoutItem>
+    <ShellItem Title="Settings"
+               x:Name="MySettingsPage"
+               Route="settings"
+               FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate view:SettingsPage}" />
+    </ShellItem>
 
-    <FlyoutItem Title="Messages"
-                Icon="messages.png">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}"
-                      Route="messages"
-                      Shell.FlyoutBehavior="Flyout" />
-    </FlyoutItem>
+    <!--Add menu items-->
 
-    <FlyoutItem Title="Profile"
-                Icon="portrait.png">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}"
-                      Route="profile"
-                      Shell.FlyoutBehavior="Flyout" />
-    </FlyoutItem>
+    <MenuItem Text="Home"
+              IconImageSource="home.png" 
+              Command="{Binding HomeButtonCommand}"/>
 
-    <FlyoutItem Title="Settings"
-                Icon="settings.png">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}"
-                      Route="settings"
-                      Shell.FlyoutBehavior="Flyout" />
-    </FlyoutItem>
+    <MenuItem Text="Library"
+              IconImageSource="book_alt.png"
+              Command="{Binding LibraryCommand}" />
+
+    <MenuItem Text="Marketplace"
+              IconImageSource="shop.png"
+              Command="{Binding MarketplaceCommand}" />
+
+    <MenuItem Text="Messages"
+              IconImageSource="messages.png"
+              Command="{Binding MessagesButtonCommand}" />
+
+    <MenuItem Text="Profile"
+              IconImageSource="portrait.png"
+              Command="{Binding ProfileButtonCommand}"/>
+
+    <MenuItem Text="Settings"
+              IconImageSource="settings.png"
+              Command="{Binding SettingsCommand}" />
 
 
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>
-            <Grid BackgroundColor="SandyBrown"
+            <Grid BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                   HeightRequest="25">
                 <Label Text="{Binding Path='User.LastActive', StringFormat='Last Active: {0}'}"
-                       TextColor="SaddleBrown"
+                       TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                        FontAttributes="Bold"
                        FontSize="14"
                        Margin="3"

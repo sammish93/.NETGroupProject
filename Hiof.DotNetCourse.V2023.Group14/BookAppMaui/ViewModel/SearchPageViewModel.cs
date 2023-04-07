@@ -25,12 +25,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
-        public ObservableCollection<V1Book> BooksBasedOnTitle { get; set; }
-        public ObservableCollection<V1Book> BooksBasedOnAuthor { get; set; }
-        public ObservableCollection<V1User> Users { get; set; }
+        private ObservableCollection<V1Book> _booksBasedOnTitle;
+        private ObservableCollection<V1Book> _booksBasedOnAuthor;
+        private ObservableCollection<V1User> _users;
         private bool _isBusy;
-        public string QueryString { get; set; } = "oscar wilde";
-        public V1User User { get; set; }
+        private string _queryString;
+        private V1User _user;
 
 
         public bool IsBusy
@@ -39,6 +39,55 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+        public string QueryString
+        {
+            get => _queryString;
+            set
+            {
+                _queryString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<V1Book> BooksBasedOnTitle
+        {
+            get => _booksBasedOnTitle;
+            set
+            {
+                _booksBasedOnTitle = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<V1Book> BooksBasedOnAuthor
+        {
+            get => _booksBasedOnAuthor;
+            set
+            {
+                _booksBasedOnAuthor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<V1User> Users
+        {
+            get => _users;
+            set
+            {
+                _users = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public V1User User
+        {
+            get => _user;
+            set
+            {
+                _user = value;
                 OnPropertyChanged();
             }
         }

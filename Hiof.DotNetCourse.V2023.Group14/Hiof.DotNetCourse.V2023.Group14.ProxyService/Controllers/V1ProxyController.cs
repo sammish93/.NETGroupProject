@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Text;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
@@ -290,9 +292,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
         // TODO: Fix the bug in this mehtod.
         [HttpPut("icons/[action]")]
-        public async Task<IActionResult> Update([FromForm] V1AddIconInputModel icon)
+        public async Task<IActionResult> UpdateFromForm([FromForm] V1AddIconInputModel icon)
         {
-            var url = _apiUrls.Value.UpdateIcon;
+            var url = _apiUrls.Value.UpdateIconFromForm;
 
             using var content = new MultipartFormDataContent
             {
@@ -302,6 +304,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             };
 
             using var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok("Image successfully updated!");
+            else
+                return BadRequest("Could not update the image.");
+        }
+
+        [HttpPut("icons/[action]")]
+        public async Task<IActionResult> Update(V1UserIcon icon)
+        {
+            var url = _apiUrls.Value.UpdateIcon;
+
+
+            var requestBodyJson = JsonConvert.SerializeObject(icon);
+            var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(url, requestContent);
 
             if (response.IsSuccessStatusCode)
                 return Ok("Image successfully updated!");
@@ -343,8 +362,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             => await Proxy($"{_apiUrls.Value.GetAllGoals}?userId={userId}");
 
         [HttpGet("goals/[action]")]
-        public async Task<IActionResult> GetGoalId([Required] Guid userId, DateTime GoalDate)
-            => await Proxy($"{_apiUrls.Value.GetGoalId}?userId={userId}&goalDate={GoalDate}");
+        public async Task<IActionResult> GetGoalId([Required] Guid userId, DateTime goalDate)
+         => await Proxy($"{_apiUrls.Value.GetGoalId}?userId={userId}&goalDate={goalDate.ToString("yyyy/MM/dd")}");
+
         [HttpGet("goals/[action]")]
         public async Task<IActionResult> GetRecentGoal([Required] Guid userId)
             => await Proxy($"{_apiUrls.Value.GetRecentGoal}?userId={userId}");
@@ -394,9 +414,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
         }
 
-        // This is the method that executes the calls.
-        private async Task<ContentResult> Proxy(string url)
-            => Content(await _httpClient.GetStringAsync(url));
+        private async Task<IActionResult> Proxy(string url)
+        {
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Content(await response.Content.ReadAsStringAsync(), "application/json");
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+        }
 
 
         private static string ConcatUri(string search, string param, int? maxResults, string? langRestrict)

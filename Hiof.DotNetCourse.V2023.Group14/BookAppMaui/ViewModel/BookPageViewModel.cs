@@ -20,6 +20,7 @@ using System.Web;
 using CommunityToolkit.Mvvm.Messaging;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using System.Diagnostics.Metrics;
+using System.Globalization;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -28,23 +29,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private bool _isBusy;
-        public V1User User { get; set; }
+        private V1User _user;
         private V1Book _selectedBook;
-        public ObservableCollection<ReadingStatus> ReadingStatuses { get; set; }
-        public ReadingStatus SelectedReadingStatus { get; set; }
-        public ObservableCollection<int> Ratings { get; set; }
-        public int SelectedRating { get; set; }
-        public DateTime SelectedDate { get; set; }
-
-        public V1Book SelectedBook
-        {
-            get => _selectedBook;
-            set
-            {
-                _selectedBook = value;
-                OnPropertyChanged();
-            }
-        }
+        private ObservableCollection<ReadingStatus> _readingStatuses;
+        private ReadingStatus _selectedReadingStatus;
+        private ObservableCollection<int> _ratings;
+        private int _selectedRating;
+        private DateTime _selectedDate;
 
         public bool IsBusy
         {
@@ -56,9 +47,79 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public BookPageViewModel( V1Book book)
+        public V1Book SelectedBook
         {
-            User = UserSingleton.Instance.GetUser(true);
+            get => _selectedBook;
+            set
+            {
+                _selectedBook = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public V1User User
+        {
+            get => _user;
+            set
+            {
+                _user = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<ReadingStatus> ReadingStatuses
+        {
+            get => _readingStatuses;
+            set
+            {
+                _readingStatuses = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ReadingStatus SelectedReadingStatus
+        {
+            get => _selectedReadingStatus;
+            set
+            {
+                _selectedReadingStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<int> Ratings
+        {
+            get => _ratings;
+            set
+            {
+                _ratings = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedRating
+        {
+            get => _selectedRating;
+            set
+            {
+                _selectedRating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public BookPageViewModel(V1User user, V1Book book)
+        {
+            User = user;
             SelectedBook = book;
             ReadingStatuses = new ObservableCollection<ReadingStatus>();
             ReadingStatuses.Add(ReadingStatus.ToRead);
@@ -82,17 +143,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 string createLibEntryUrl = $"{_apiBaseUrl}/libraries/CreateEntry";
 
-                
-                if (SelectedReadingStatus == ReadingStatus.Completed)
-                {
-                    
-                    if (SelectedRating == 0)
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Oops!", "You have forgotten to choose a rating.", "OK");
-                        return;
-                    }
-                }
-
                 var requestBody = new V1LibraryEntry(User, SelectedBook, SelectedRating, SelectedDate, SelectedReadingStatus);
 
                 var requestBodyJson = JsonConvert.SerializeObject(requestBody);
@@ -103,13 +153,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 {
                     await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
                     App.IsUserLibraryAltered = true;
-                }
-                else
+
+                    if (SelectedReadingStatus == ReadingStatus.Completed) 
+                    {
+                        await UpdateReadingLibrary(User.Id, SelectedDate);
+                    }
+
+                } else if (SelectedRating == 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "You have forgotton to choose a rating.", "OK");
+                } else
                 {
                     await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
                 }
-            }
-            catch (Exception ex)
+            } catch(Exception ex)
             {
                 Debug.WriteLine(ex);
             }
@@ -119,6 +176,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             SelectedDate = dateTime;
         }
+
+        public async Task UpdateReadingLibrary(Guid userId, DateTime dateTime)
+        {
+            string url = $"{_apiBaseUrl}/goals/GetGoalId?userId={userId}&GoalDate={dateTime.ToString("yyyy/MM/dd")}";
+
+            HttpResponseMessage result = await _httpClient.GetAsync(url);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var libraryId = await result.Content.ReadAsStringAsync();
+
+                Guid libraryIdGuid = JsonConvert.DeserializeObject<Guid>(libraryId);
+
+                int amount = 1;
+                url = $"{_apiBaseUrl}/goals/IncrementReadingGoal?id={libraryIdGuid}&amount={amount}";
+                var jsonString = JsonConvert.SerializeObject(new { id = libraryIdGuid, amount });
+                var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync(url, httpContent);
+            }
+        }
+
+
 
         public async Task LoadAsync()
         {
