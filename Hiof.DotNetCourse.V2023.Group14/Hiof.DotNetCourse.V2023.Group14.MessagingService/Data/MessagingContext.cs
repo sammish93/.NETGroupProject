@@ -11,6 +11,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Data
 		}
 
 		public DbSet<V1ConversationModel> ConversationModel;
+
+		public DbSet<V1Messages> Messages;
+
+		public DbSet<V1Reactions> MessageReaction;
+
+		public DbSet<V1Participant> Participant;
 	}
 }
 

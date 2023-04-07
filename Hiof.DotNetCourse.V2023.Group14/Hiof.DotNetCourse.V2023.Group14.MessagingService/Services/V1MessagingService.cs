@@ -25,7 +25,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                 conversation = new V1ConversationModel
                 {
                     ConversationId = conversationId,
-                    Participants = new List<string>()
+                    Participants = new List<V1Participant>()
                 };
                 _context.ConversationModel.Add(conversation);
             }
@@ -44,9 +44,25 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task AddReactionToMessage(Guid messageId, V1Reactions reaction)
+        public async Task AddReactionToMessage(Guid messageId, V1Reactions reaction)
         {
-            throw new NotImplementedException();
+            var message = await _context.Messages.FindAsync(messageId);
+
+            if (message == null)
+            {
+                throw new ArgumentException("Message not found", nameof(messageId));
+            }
+
+            var reactionId = Guid.NewGuid();
+            var messageReaction = new V1Reactions
+            {
+                ReactionId = reactionId,
+                Type = reaction.Type,
+                MessageId = messageId
+            };
+
+            _context.MessageReaction.Add(messageReaction);
+            await _context.SaveChangesAsync();
         }
 
         public Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants)
