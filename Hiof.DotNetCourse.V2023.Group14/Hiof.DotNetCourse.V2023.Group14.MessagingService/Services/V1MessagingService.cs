@@ -14,7 +14,37 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             _context = context;
 		}
 
-        public Task AddMessageToConversation(Guid conversationId, Guid messageId, string message)
+        public async Task AddMessageToConversation(Guid conversationId, Guid messageId, string sender, string message)
+        {
+            var conversation = await _context.ConversationModel.FindAsync(conversationId);
+
+            // If the conversation does not exists, create a new one
+            // with the gived id.
+            if (conversation == null)
+            {
+                conversation = new V1ConversationModel
+                {
+                    ConversationId = conversationId,
+                    Participants = new List<string>()
+                };
+                _context.ConversationModel.Add(conversation);
+            }
+
+            var messageToAdd = new V1Messages
+            {
+                MessageId = messageId,
+                Sender = sender,
+                Message = message,
+                Date = DateTime.UtcNow,
+                Reactions = new List<V1Reactions>()
+            };
+
+            // Add the message to the conversation
+            conversation.Messages.Add(messageToAdd);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task AddReactionToMessage(Guid messageId, V1Reactions reaction)
         {
             throw new NotImplementedException();
         }
