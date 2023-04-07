@@ -1,11 +1,16 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 {
-	/// <summary>
-	/// Model the represent the messages sent between users.
-	/// </summary>
-	public class V1Messages
+    /// <summary>
+    /// Model the represent the messages sent between users.
+    /// </summary>
+    [Table("user_messages", Schema = "dbo")]
+    public class V1Messages
 	{
+		[Key]
 		public Guid MessageId { get; set; }
 
 		public string Sender { get; set; }
