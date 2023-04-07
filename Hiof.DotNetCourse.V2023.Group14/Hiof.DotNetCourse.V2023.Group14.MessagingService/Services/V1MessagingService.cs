@@ -6,8 +6,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 {
 	public class V1MessagingService : V1IMessages
 	{
+        // TODO: Add an referance to an database context for the messaging service.
+
 		public V1MessagingService()
 		{
+            // TODO: Implement the instance via constructor injection.
 		}
 
         public Task AddMessageToConversation(Guid conversationId, Guid messageId, string message)
