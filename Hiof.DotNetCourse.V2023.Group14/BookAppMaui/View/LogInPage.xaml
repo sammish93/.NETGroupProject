@@ -10,7 +10,7 @@
              Shell.NavBarIsVisible="False">
 
     <Grid x:Name="backgroundPage"
-          BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+          BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Black}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="auto" />
@@ -29,7 +29,7 @@
               MinimumWidthRequest="800"
               MinimumHeightRequest="600"
               HeightRequest="{Binding Source={x:Reference backgroundPage}, Path=Height}"
-              BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+              BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Gray900}}">
 
             <Grid Padding="5"
                   RowSpacing="5">
@@ -58,9 +58,9 @@
                        Grid.Row="2"
                        Placeholder="Enter username"
                        Text="{Binding Username}"
-                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
-                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource OffWhite}}"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray200}}"
+                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource OffWhite}}"
                        MaxLength="20"
                        VerticalOptions="Center"
                        HorizontalOptions="Center"
@@ -68,7 +68,7 @@
                        WidthRequest="200"
                        HorizontalTextAlignment="Center">
                     <Entry.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Black}}"
                                 Radius="5"
                                 Offset="0,5"
                                 Opacity="0.3" />
@@ -78,9 +78,9 @@
                 <Entry Grid.Row="3"
                        Placeholder="Enter Password"
                        Text="{Binding Password}"
-                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
-                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource OffWhite}}"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray200}}"
+                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource OffWhite}}"
                        MaxLength="25"
                        IsPassword="True"
                        VerticalOptions="Center"
@@ -88,7 +88,7 @@
                        HorizontalTextAlignment="Center"
                        WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}">
                     <Entry.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Black}}"
                                 Radius="5"
                                 Offset="0,5"
                                 Opacity="0.3" />
@@ -99,11 +99,11 @@
                         Text="Log In"
                         Command="{Binding LoginCommand}"
                         TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Blue}}"
                         HorizontalOptions="Center"
                         WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}">
                     <Button.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Black}}"
                                 Radius="5"
                                 Offset="0,5"
                                 Opacity="0.3" />
@@ -113,7 +113,7 @@
 
                 <Label Grid.Row="7"
                        Text="Don't have an account?"
-                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
+                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OffWhite}}"
                        HorizontalOptions="Center"
                        VerticalOptions="End" />
 
@@ -125,7 +125,7 @@
                         HorizontalOptions="Center"
                         WidthRequest="{Binding Source={x:Reference usernameEntry}, Path='Width'}">
                     <Button.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Black}}"
                                 Radius="5"
                                 Offset="0,5"
                                 Opacity="0.3" />
@@ -136,11 +136,11 @@
                                        HorizontalOptions="Center"
                                        Margin="10" >
                     <Label Text="Test Account"
-                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OffWhite}}"
                            VerticalOptions="Center" />
                     <CheckBox x:Name="CheckBox1"
                               IsChecked="False"
-                              Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                              Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Blue}}"
                               CheckedChanged="CheckBox_CheckedChanged"
                               VerticalOptions="Center" />
                 </HorizontalStackLayout>
@@ -148,7 +148,7 @@
                 <!-- Set IsRunning to a {Binding chosenBinding} -->
                 <ActivityIndicator Grid.Row="7"
                                    IsRunning="{Binding IsLoggingIn}"
-                                   Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                   Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Primary}}"
                                    Scale="2" 
                                    TranslationY="-10"/>
             </Grid>
