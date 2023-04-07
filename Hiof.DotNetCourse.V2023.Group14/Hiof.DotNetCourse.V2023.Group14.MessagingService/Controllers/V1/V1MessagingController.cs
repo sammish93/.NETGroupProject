@@ -3,8 +3,9 @@
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("messages/1.0")]
 public class V1MessagingController : ControllerBase
 {
+
 }
 
