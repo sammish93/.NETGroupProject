@@ -18,10 +18,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Data
 
             base.OnModelCreating(modelBuilder);
 
-            // Convert the enum to a String.
+            modelBuilder.Entity<V1Messages>()
+                .HasOne<V1ConversationModel>()
+                .WithMany(c => c.Messages)
+                .HasForeignKey(m => m.ConversationId)
+                .HasConstraintName("FK_messages_conversations");
+
             modelBuilder.Entity<V1Reactions>()
-                .Property(r => r.Type)
-                .HasConversion(new EnumToStringConverter<ReactionType>());
+                .HasOne<V1Messages>()
+                .WithMany(m => m.Reactions)
+                .HasForeignKey(m => m.MessageId)
+                .HasConstraintName("FK_reactions_messages");
         }
 
         public DbSet<V1ConversationModel> ConversationModel { get; set; }

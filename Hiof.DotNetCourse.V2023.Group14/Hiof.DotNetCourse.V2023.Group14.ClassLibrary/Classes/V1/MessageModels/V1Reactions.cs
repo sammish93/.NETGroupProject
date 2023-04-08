@@ -12,7 +12,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 
         public ReactionType Type { get; set; }
 
-        [ForeignKey("MessageId")]
         public Guid MessageId { get; set; }
     }
 }
