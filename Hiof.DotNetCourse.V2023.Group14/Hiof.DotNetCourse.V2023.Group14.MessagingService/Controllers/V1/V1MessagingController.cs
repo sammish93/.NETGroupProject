@@ -17,6 +17,30 @@ public class V1MessagingController : ControllerBase
         _messagingService = service;
     }
 
+    [HttpGet("[action]")]
+    public async Task<ActionResult> GetByConversationId(Guid id)
+    {
+        if (id.ToString() != null)
+        {
+            var conversation = await _messagingService.GetByConversationId(id);
+            if (conversation != null)
+            {
+                return Ok(conversation);
+            }
+            else
+            {
+                return NotFound($"Conversation with ID: {id}\ndoes not exists.");
+            }
+            
+        }
+        else
+        {
+            return BadRequest("Parameter ID cannot be null.");
+        }
+
+       
+    }
+
     [HttpPost("[action]")]
     public async Task<ActionResult> CreateNewConversation(Guid conversationId, [FromBody] IEnumerable<string> participants)
     {

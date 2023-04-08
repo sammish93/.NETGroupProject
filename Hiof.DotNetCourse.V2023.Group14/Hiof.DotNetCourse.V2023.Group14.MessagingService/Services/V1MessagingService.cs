@@ -169,9 +169,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             
         }
 
-        public async Task<V1ConversationModel?> GetByConversationId(Guid participantId)
+        public async Task<V1ConversationModel?> GetByConversationId(Guid conversationId)
         {
-            return await _context.ConversationModel.FindAsync(participantId);
+            try
+            {
+                return await _context.ConversationModel
+                    .Include(x => x.Participants)
+                    .Include(x => x.Messages)
+                    .FirstOrDefaultAsync(x => x.ConversationId == conversationId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not get the conversation from the database.");
+                return null;
+            }
+           
         }
 
         public Task<V1ConversationModel?> GetByParticipant(string participant)
