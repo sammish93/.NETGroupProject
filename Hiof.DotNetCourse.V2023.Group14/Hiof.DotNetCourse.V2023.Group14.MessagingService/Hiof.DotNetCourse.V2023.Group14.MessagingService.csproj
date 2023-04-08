@@ -21,11 +21,13 @@
     <None Remove="Controllers\V1\" />
     <None Remove="Data\" />
     <None Remove="Services\" />
+    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\V1\" />
     <Folder Include="Data\" />
     <Folder Include="Services\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj">

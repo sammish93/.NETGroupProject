@@ -1,6 +1,7 @@
 ﻿using System;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Data
 {
@@ -16,6 +17,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Data
                 .HasKey(c => c.ConversationId);
 
             base.OnModelCreating(modelBuilder);
+
+            // Convert the enum to a String.
+            modelBuilder.Entity<V1Reactions>()
+                .Property(r => r.Type)
+                .HasConversion(new EnumToStringConverter<ReactionType>());
         }
 
         public DbSet<V1ConversationModel> ConversationModel { get; set; }

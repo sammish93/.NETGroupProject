@@ -41,18 +41,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                     Message = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ConversationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    V1ConversationModelConversationId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    ConversationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_messages", x => x.MessageId);
                     table.ForeignKey(
-                        name: "FK_messages_conversations_V1ConversationModelConversationId",
-                        column: x => x.V1ConversationModelConversationId,
+                        name: "FK_messages_conversations_ConversationId",
+                        column: x => x.ConversationId,
                         principalSchema: "dbo",
                         principalTable: "conversations",
-                        principalColumn: "ConversationId");
+                        principalColumn: "ConversationId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -79,20 +79,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "message_reaction",
+                name: "message_reactions",
                 schema: "dbo",
                 columns: table => new
                 {
                     ReactionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    MessageId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Type = table.Column<int>(type: "int", nullable: false),
+                    MessageId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     V1MessagesMessageId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_message_reaction", x => x.ReactionId);
+                    table.PrimaryKey("PK_message_reactions", x => x.ReactionId);
                     table.ForeignKey(
-                        name: "FK_message_reaction_messages_V1MessagesMessageId",
+                        name: "FK_message_reactions_messages_V1MessagesMessageId",
                         column: x => x.V1MessagesMessageId,
                         principalSchema: "dbo",
                         principalTable: "messages",
@@ -101,16 +101,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_message_reaction_V1MessagesMessageId",
+                name: "IX_message_reactions_V1MessagesMessageId",
                 schema: "dbo",
-                table: "message_reaction",
+                table: "message_reactions",
                 column: "V1MessagesMessageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_messages_V1ConversationModelConversationId",
+                name: "IX_messages_ConversationId",
                 schema: "dbo",
                 table: "messages",
-                column: "V1ConversationModelConversationId");
+                column: "ConversationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_participants_ConversationId",
@@ -123,7 +123,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "message_reaction",
+                name: "message_reactions",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

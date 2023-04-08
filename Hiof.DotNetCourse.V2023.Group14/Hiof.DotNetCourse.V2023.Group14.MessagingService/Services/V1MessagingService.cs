@@ -60,27 +60,35 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             }
         }
 
-        public async Task AddReactionToMessage(Guid messageId, V1Reactions reaction)
+        public async Task AddReactionToMessage(Guid messageId, ReactionType reaction)
         {
-            // TODO: Check and handle exceptions.
-
-            var message = await _context.Messages.FindAsync(messageId);
-
-            if (message == null)
+            try
             {
-                throw new ArgumentException("Message not found", nameof(messageId));
+                var message = await _context.Messages
+                    .Include(x => x.Reactions)
+                    .FirstOrDefaultAsync(x => x.MessageId == messageId);
+
+                if (message == null)
+                {
+                    throw new ArgumentException("Message not found", nameof(messageId));
+                }
+
+                var messageReaction = new V1Reactions
+                {
+                    ReactionId = Guid.NewGuid(),
+                    MessageId = messageId,
+                    Type = reaction
+                };
+
+                message.Reactions.Add(messageReaction);
+                await _context.MessageReaction.AddAsync(messageReaction);
+                await _context.SaveChangesAsync();
             }
-
-            var reactionId = Guid.NewGuid();
-            var messageReaction = new V1Reactions
+            catch (Exception ex)
             {
-                ReactionId = reactionId,
-                Type = reaction.Type,
-                MessageId = messageId
-            };
-
-            _context.MessageReaction.Add(messageReaction);
-            await _context.SaveChangesAsync();
+                _logger.LogError(ex, "Could not add reaction to message.");
+            }
+            
         }
 
         public async Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants)

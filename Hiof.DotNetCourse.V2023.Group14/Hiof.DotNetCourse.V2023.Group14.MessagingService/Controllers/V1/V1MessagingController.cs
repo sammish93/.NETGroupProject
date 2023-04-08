@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Controllers;
 public class V1MessagingController : ControllerBase
 {
     private readonly V1MessagingService _messagingService;
+    private const int MESSAGE_MAX = 120;
 
     public V1MessagingController(V1MessagingService service)
     {
@@ -37,8 +39,6 @@ public class V1MessagingController : ControllerBase
 
     }
 
-    // TODO: Implement the rest of the methods from the V1MessagingService.
-
     [HttpPost("[action]")]
     public async Task<ActionResult> AddMessageToConveration([Required] Guid conversationId, string sender, string message)
     {
@@ -46,11 +46,24 @@ public class V1MessagingController : ControllerBase
         {
             return BadRequest("Sender and message fields cannot be empty!");
         }
+        else if (message.Length > MESSAGE_MAX)
+        {
+            return BadRequest("Message cannot be longer than 120 characters.");
+        }
         else
         {
             await _messagingService.AddMessageToConversation(conversationId, sender, message);
             return Ok("Message added successfully to the conversation!");
 
         }
+    }
+
+    [HttpPost("[action]")]
+    public async Task<ActionResult> AddReactionToMessage(Guid messageId, ReactionType reaction)
+    {
+
+        await _messagingService.AddReactionToMessage(messageId, reaction);
+        return Ok("Reaction added to message successfully!");
+
     }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 {
     [DbContext(typeof(MessagingContext))]
-    [Migration("20230408142523_NewMigration")]
-    partial class NewMigration
+    [Migration("20230408152119_AddEnumToStringConversion")]
+    partial class AddEnumToStringConversion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,7 +94,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 
                     b.HasIndex("V1MessagesMessageId");
 
-                    b.ToTable("message_reaction", "dbo");
+                    b.ToTable("message_reactions", "dbo");
                 });
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Messages", b =>

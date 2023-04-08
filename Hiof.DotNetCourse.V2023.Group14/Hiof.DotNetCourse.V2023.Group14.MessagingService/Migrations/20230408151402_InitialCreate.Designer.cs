@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 {
     [DbContext(typeof(MessagingContext))]
-    [Migration("20230407201844_InitialCreate")]
+    [Migration("20230408151402_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -53,12 +53,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("V1ConversationModelConversationId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("MessageId");
 
-                    b.HasIndex("V1ConversationModelConversationId");
+                    b.HasIndex("ConversationId");
 
                     b.ToTable("messages", "dbo");
                 });
@@ -97,14 +94,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 
                     b.HasIndex("V1MessagesMessageId");
 
-                    b.ToTable("message_reaction", "dbo");
+                    b.ToTable("message_reactions", "dbo");
                 });
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Messages", b =>
                 {
                     b.HasOne("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1ConversationModel", null)
                         .WithMany("Messages")
-                        .HasForeignKey("V1ConversationModelConversationId");
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Participant", b =>
