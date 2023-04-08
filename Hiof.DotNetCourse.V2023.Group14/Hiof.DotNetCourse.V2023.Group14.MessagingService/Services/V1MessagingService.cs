@@ -51,7 +51,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Could not add conversation to database.");
+                _logger.LogError(ex, "Could not add message to database.");
             }
         }
 
@@ -80,31 +80,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 
         public async Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants)
         {
-            // TODO: Check and handle exceptions.
-
-            // Create a new conversation
-            var conversation = new V1ConversationModel
+            try
             {
-                ConversationId = conversationId,
-                Participants = new List<V1Participant>(),
-                Messages = new List<V1Messages>()
-            };
-
-            // Add participants to the participants table.
-            foreach (var participant in participants)
-            {
-                var newParticipant = new V1Participant
+                // Create a new conversation
+                var conversation = new V1ConversationModel
                 {
-                    Participant = participant,
-                    ConversationId = conversationId
+                    ConversationId = conversationId,
+                    Participants = new List<V1Participant>(),
+                    Messages = new List<V1Messages>()
                 };
 
-                conversation.Participants.Add(newParticipant);
+                // Add participants to the participants table.
+                foreach (var participant in participants)
+                {
+                    var newParticipant = new V1Participant
+                    {
+                        Participant = participant,
+                        ConversationId = conversationId
+                    };
+
+                    conversation.Participants.Add(newParticipant);
+                }
+
+                await _context.ConversationModel.AddAsync(conversation);
+
+                await _context.SaveChangesAsync();
             }
-
-            await _context.ConversationModel.AddAsync(conversation);
-
-            await _context.SaveChangesAsync();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not add conversation to database.");
+            }
         }
 
         public Task DeleteConversation(Guid conversationId)

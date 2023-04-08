@@ -21,6 +21,10 @@ public class V1MessagingController : ControllerBase
         {
             return BadRequest("Conversation id cannot be empty!");
         }
+        else if (conversationId.ToString().Length < 36)
+        {
+            return BadRequest("Id must be at least 36 characters long.");
+        }
 
         if (participants == null || !participants.Any())
         {
