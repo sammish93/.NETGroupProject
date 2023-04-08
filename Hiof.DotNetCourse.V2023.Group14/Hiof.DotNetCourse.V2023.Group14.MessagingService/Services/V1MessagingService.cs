@@ -186,9 +186,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
            
         }
 
-        public Task<V1ConversationModel?> GetByParticipant(string participant)
+        public async Task<V1ConversationModel?> GetByParticipant(string participant)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.ConversationModel
+                    .Where(x => x.Participants.Any(p => p.Participant == participant))
+                    .Include(x => x.Participants)
+                    .Include(x => x.Messages)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Could not return conversation for participant: {participant}");
+                return null;
+            }
         }
 
         public Task UpdateExistingMessage(Guid conversationId, Guid messageId, string message)

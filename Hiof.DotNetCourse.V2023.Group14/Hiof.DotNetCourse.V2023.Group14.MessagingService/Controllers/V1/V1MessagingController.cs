@@ -31,14 +31,26 @@ public class V1MessagingController : ControllerBase
             {
                 return NotFound($"Conversation with ID: {id}\ndoes not exists.");
             }
-            
         }
         else
         {
             return BadRequest("Parameter ID cannot be null.");
         }
+    }
 
-       
+    [HttpGet("[action]")]
+    public async Task<ActionResult> GetByParticipant(string name)
+    {
+        var result = await _messagingService.GetByParticipant(name);
+        if (result != null)
+        {
+            return Ok(result);
+        }
+        else
+        {
+            return NotFound($"Participant: {name} does not exists.");
+        }
+        
     }
 
     [HttpPost("[action]")]

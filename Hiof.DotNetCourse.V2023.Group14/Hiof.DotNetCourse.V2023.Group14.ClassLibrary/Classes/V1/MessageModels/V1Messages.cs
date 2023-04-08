@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 {
@@ -21,6 +22,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 
         public List<V1Reactions> Reactions { get; set; }
 
+        [JsonIgnore]
         public Guid ConversationId { get; set; }
 
 	}
