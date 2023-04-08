@@ -61,9 +61,33 @@ public class V1MessagingController : ControllerBase
     [HttpPost("[action]")]
     public async Task<ActionResult> AddReactionToMessage(Guid messageId, ReactionType reaction)
     {
+        if (messageId == Guid.Empty)
+        {
+            return BadRequest("MessageId cannot be empty.");
+        }
+        else if (messageId.ToString().Length > 36)
+        {
+            return BadRequest("MessageId cannot be longer than 36 characters");
+        }
+        else
+        {
+            await _messagingService.AddReactionToMessage(messageId, reaction);
+            return Ok("Reaction added to message successfully!");
+        }
+    }
 
-        await _messagingService.AddReactionToMessage(messageId, reaction);
-        return Ok("Reaction added to message successfully!");
-
+    [HttpDelete("[action]")]
+    public async Task<ActionResult> DeleteConversation(Guid conversationId)
+    {
+        if (conversationId.ToString() != null)
+        {
+            await _messagingService.DeleteConversation(conversationId);
+            return Ok("Conversation successfully deleted!");
+        }
+        else
+        {
+            return BadRequest("ConversationId cannot be null");
+        }
+        
     }
 }

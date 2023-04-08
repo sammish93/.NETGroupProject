@@ -125,9 +125,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             }
         }
 
-        public Task DeleteConversation(Guid conversationId)
+        public async Task DeleteConversation(Guid conversationId)
         {
-            throw new NotImplementedException();
+            var conversation = await _context.ConversationModel.FindAsync(conversationId);
+            if (conversation != null)
+            {
+                _context.Remove(conversation);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Conversation with the ID does not exists");
+            }
         }
 
         public Task DeleteMessage(Guid conversationId, Guid messageId)

@@ -22,13 +22,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Data
                 .HasOne<V1ConversationModel>()
                 .WithMany(c => c.Messages)
                 .HasForeignKey(m => m.ConversationId)
-                .HasConstraintName("FK_messages_conversations");
+                .HasConstraintName("FK_messages_conversations")
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<V1Reactions>()
                 .HasOne<V1Messages>()
                 .WithMany(m => m.Reactions)
                 .HasForeignKey(m => m.MessageId)
-                .HasConstraintName("FK_reactions_messages");
+                .HasConstraintName("FK_reactions_messages")
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<V1ConversationModel> ConversationModel { get; set; }
