@@ -203,9 +203,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             }
         }
 
-        public Task UpdateExistingMessage(Guid conversationId, Guid messageId, string message)
+        public async Task UpdateMessage(Guid messageId, string message)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existing = await _context.Messages
+               .Where(m => m.MessageId == messageId)
+               .FirstOrDefaultAsync();
+
+                if (existing == null)
+                {
+                    throw new ArgumentException("Message with the ID does not exist");
+                }
+
+                existing.Message = message;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not update the message.");
+            }
         }
     }
 }

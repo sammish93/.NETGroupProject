@@ -112,6 +112,20 @@ public class V1MessagingController : ControllerBase
         }
     }
 
+    [HttpPut("[action]")]
+    public async Task<ActionResult> UpdateMessage(Guid messageId, string newMessage)
+    {
+        if (messageId.ToString() != null || newMessage != null)
+        {
+            await _messagingService.UpdateMessage(messageId, newMessage);
+            return Ok("Message successfully updated!");
+        }
+        else
+        {
+            return BadRequest("Id and message cannot be null.");
+        }
+    }
+
     [HttpDelete("[action]")]
     public async Task<ActionResult> DeleteConversation(Guid conversationId)
     {
