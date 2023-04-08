@@ -20,7 +20,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 
 		Task UpdateExistingMessage(Guid conversationId, Guid messageId, string message);
 
-		Task DeleteMessage(Guid conversationId, Guid messageId);
+		Task DeleteMessage(Guid messageId);
 
 		Task DeleteConversation(Guid conversationId);
 	}

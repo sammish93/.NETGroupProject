@@ -88,6 +88,20 @@ public class V1MessagingController : ControllerBase
         {
             return BadRequest("ConversationId cannot be null");
         }
-        
+    }
+
+    [HttpDelete("[action]")]
+    public async Task<ActionResult> DeleteMessage(Guid messageId)
+    {
+        if (messageId.ToString() != null)
+        {
+            await _messagingService.DeleteMessage(messageId);
+            return Ok("Message successfully deleted!");
+        }
+        else
+        {
+            return BadRequest("MessageId cannot be null");
+        }
+
     }
 }

@@ -127,21 +127,46 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 
         public async Task DeleteConversation(Guid conversationId)
         {
-            var conversation = await _context.ConversationModel.FindAsync(conversationId);
-            if (conversation != null)
+            try
             {
-                _context.Remove(conversation);
-                await _context.SaveChangesAsync();
+                var conversation = await _context.ConversationModel.FindAsync(conversationId);
+                if (conversation != null)
+                {
+                    _context.Remove(conversation);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new ArgumentException("Conversation with the ID does not exists");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                throw new ArgumentException("Conversation with the ID does not exists");
+                _logger.LogError(ex, "Could not delete the conversation.");
             }
+            
         }
 
-        public Task DeleteMessage(Guid conversationId, Guid messageId)
+        public async Task DeleteMessage(Guid messageId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var message = await _context.Messages.FindAsync(messageId);
+                if (message != null)
+                {
+                    _context.Remove(message);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new ArgumentException("Message with the ID does not exists.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not delete the message.");
+            }
+            
         }
 
         public async Task<V1ConversationModel?> GetByConversationId(Guid participantId)
