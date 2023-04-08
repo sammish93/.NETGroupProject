@@ -12,7 +12,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 
 		Task<V1ConversationModel?> GetByConversationId(Guid participantId);
 
-		Task AddMessageToConversation(Guid conversationId, Guid messageId, string sender, string message);
+		Task AddMessageToConversation(Guid conversationId, string sender, string message);
 
 		Task AddReactionToMessage(Guid messageId, V1Reactions reaction);
 

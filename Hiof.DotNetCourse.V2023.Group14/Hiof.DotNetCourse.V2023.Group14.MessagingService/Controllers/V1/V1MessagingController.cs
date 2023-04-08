@@ -1,4 +1,5 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.MessagingService.Services;
+﻿using System.ComponentModel.DataAnnotations;
+using Hiof.DotNetCourse.V2023.Group14.MessagingService.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Controllers;
@@ -37,5 +38,19 @@ public class V1MessagingController : ControllerBase
     }
 
     // TODO: Implement the rest of the methods from the V1MessagingService.
-}
 
+    [HttpPost("[action]")]
+    public async Task<ActionResult> AddMessageToConveration([Required] Guid conversationId, string sender, string message)
+    {
+        if (sender == null || message == null)
+        {
+            return BadRequest("Sender and message fields cannot be empty!");
+        }
+        else
+        {
+            await _messagingService.AddMessageToConversation(conversationId, sender, message);
+            return Ok("Message added successfully to the conversation!");
+
+        }
+    }
+}

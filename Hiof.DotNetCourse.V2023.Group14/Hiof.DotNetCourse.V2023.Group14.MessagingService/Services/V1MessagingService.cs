@@ -2,6 +2,7 @@
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 {
@@ -17,27 +18,30 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             _logger = logger;
 		}
 
-        public async Task AddMessageToConversation(Guid conversationId, Guid messageId, string sender, string message)
+        public async Task AddMessageToConversation(Guid conversationId, string sender, string message)
         {
             try
             {
-                var conversation = await _context.ConversationModel.FindAsync(conversationId);
+                var conversation = await _context.ConversationModel
+                    .Include(x => x.Messages)
+                    .FirstOrDefaultAsync(x => x.ConversationId == conversationId);
 
-                // If the conversation does not exists, create a new one
-                // with the gived id.
                 if (conversation == null)
                 {
+                    // Conversation not found, create new conversation
                     conversation = new V1ConversationModel
                     {
                         ConversationId = conversationId,
-                        Participants = new List<V1Participant>()
+                        Participants = new List<V1Participant>(),
+                        Messages = new List<V1Messages>()
                     };
-                    _context.ConversationModel.Add(conversation);
+
+                    await _context.ConversationModel.AddAsync(conversation);
                 }
 
                 var messageToAdd = new V1Messages
                 {
-                    MessageId = messageId,
+                    MessageId = Guid.NewGuid(),
                     Sender = sender,
                     Message = message,
                     Date = DateTime.UtcNow,
@@ -46,6 +50,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
 
                 // Add the message to the conversation
                 conversation.Messages.Add(messageToAdd);
+                await _context.Messages.AddAsync(messageToAdd);
                 await _context.SaveChangesAsync();
 
             }
