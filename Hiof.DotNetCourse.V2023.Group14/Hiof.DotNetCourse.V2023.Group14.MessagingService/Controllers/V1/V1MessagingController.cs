@@ -20,7 +20,7 @@ public class V1MessagingController : ControllerBase
     [HttpGet("[action]")]
     public async Task<ActionResult> GetByConversationId(Guid id)
     {
-        if (id.ToString() != null)
+        if (id.ToString() != null && !id.Equals(Guid.Empty))
         {
             var conversation = await _messagingService.GetByConversationId(id);
             if (conversation != null)
@@ -32,10 +32,8 @@ public class V1MessagingController : ControllerBase
                 return NotFound($"Conversation with ID: {id}\ndoes not exists.");
             }
         }
-        else
-        {
-            return BadRequest("Parameter ID cannot be null.");
-        }
+        return BadRequest("Parameter ID cannot be null.");
+
     }
 
     [HttpGet("[action]")]
