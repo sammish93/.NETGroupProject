@@ -176,4 +176,196 @@ public class MessagingControllerTest
         Assert.Equal("geir", geir?.Participant);
         Assert.Equal("lars", lars?.Participant);
     }
+
+    [Fact]
+    public async Task CreateNewConversation_ReturnsBadRequestObjectResult_OnEmptyId()
+    {
+        // Arrange
+        var id = Guid.Empty;
+        var controller = new V1MessagingController(_service);
+        List<string> participants = new List<string> { "geir", "lars" };
+
+        // Act
+        var result = await controller.CreateNewConversation(id, participants);
+
+        // Assert
+        var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, badRequest.StatusCode);
+
+    }
+
+    [Fact]
+    public async Task CreateNewConversation_ReturnsBadRequestObjectResult_WhenParticipantAreNull()
+    {
+        // Arrange
+        var id = new Guid("26c5b440-34bb-4ebf-9ad9-9eaab9d05be8");
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.CreateNewConversation(id, null);
+
+        // Assert
+        var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, badRequest.StatusCode);
+
+    }
+
+    [Fact]
+    public async Task CreateNewConversation_ReturnsBadRequestObjectResult_OnEmptyParticipantList()
+    {
+        // Arrange
+        var id = new Guid("26c5b440-34bb-4ebf-9ad9-9eaab9d05be8");
+        var controller = new V1MessagingController(_service);
+        List<string> participants = new List<string> { };
+
+        // Act
+        var result = await controller.CreateNewConversation(id, participants);
+
+        // Assert
+        var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, badRequest.StatusCode);
+
+    }
+
+
+    [Fact]
+    public async Task AddMessageToConversation_ReturnsOkObjectResult_WhenMessageAddedSuccessfully()
+    {
+        // Arrange
+        var id = new Guid("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+        var sender = "stian";
+        var message = "hello everyone!";
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.AddMessageToConveration(id, sender, message);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddMessageToConversation_ReturnsBadRequestObjectResult_WhenSenderIsNull()
+    {
+        // Arrange
+        var id = new Guid("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+        var message = "hello everyone!";
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.AddMessageToConveration(id, null, message);
+
+        // Assert
+        var okResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddMessageToConversation_ReturnsBadRequestObjectResult_WhenMessageIsNull()
+    {
+        // Arrange
+        var id = new Guid("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+        var sender = "stian";
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.AddMessageToConveration(id, sender, null);
+
+        // Assert
+        var okResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddMessageToConversation_ReturnsBadRequestObjectResult_WhenMessageLengthIsToBig()
+    {
+        // Arrange
+        var id = new Guid("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+        var sender = "stian";
+        var message = "";
+
+        // Message with a length of 130 characters. 
+        for (int i = 0; i < 130; i++)
+        {
+            message += "a";
+        }
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.AddMessageToConveration(id, sender, message);
+
+        // Assert
+        var okResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddReactionToMessage_ReturnsOkObjectResult_OnSuccess()
+    {
+        // Arrange
+        var id = Guid.Parse("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+        var reaction = ReactionType.ANGRY;
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.AddReactionToMessage(id, reaction);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddReactionToMessage_ReturnsBadRequestObjectResult_OnEmptyMessageId()
+    {
+        // Arrange
+        var id = Guid.Empty;
+        var reaction = ReactionType.ANGRY;
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.AddReactionToMessage(id, reaction);
+
+        // Assert
+        var okResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddReactionToMessage_AddsReactionToAMessage()
+    {
+
+        // Arrange
+        var id = Guid.Parse("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+
+        var messages = new V1Messages
+        {
+            MessageId = id,
+            Sender = "stian",
+            Message = "Heyhey",
+            Date = DateTime.UtcNow,
+            Reactions = new List<V1Reactions>(),
+            ConversationId = Guid.Parse("12c3b450-34bb-4ebf-9ad9-9eaab9d05be8")
+        };
+
+        var controller = new V1MessagingController(_service);
+
+        await _dbContext.AddAsync(messages);
+        await _dbContext.SaveChangesAsync();
+
+        // Act
+        var result = await controller.AddReactionToMessage(id, ReactionType.THUMBSUP);
+
+        // Assert
+        var message = await _dbContext.Messages.FindAsync(id);
+        Assert.NotNull(message);
+        Assert.Equal(ReactionType.THUMBSUP, message.Reactions[0].Type);
+    }
 }
