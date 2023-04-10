@@ -135,4 +135,45 @@ public class MessagingControllerTest
         var okResult = Assert.IsType<NotFoundObjectResult>(result);
         Assert.Equal(404, okResult.StatusCode);
     }
+
+    [Fact]
+    public async Task CreateNewConversation_ReturnsOkObjectResult_WhenNewConversationIsCreated()
+    {
+        // Arrange
+        var conversationId = new Guid("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+        var controller = new V1MessagingController(_service);
+
+        List<string> participants = new List<string> { "geir", "lars" };
+
+        // Act
+        var result = await controller.CreateNewConversation(conversationId, participants);
+
+        // Asserts
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task CheckIfCreateNewConversation_CreatesNewConversation()
+    {
+        // Arrange
+        var conversationId = new Guid("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+        var controller = new V1MessagingController(_service);
+
+        List<string> participants = new List<string> { "geir", "lars" };
+
+        // Act
+        var result = await controller.CreateNewConversation(conversationId, participants);
+
+        // Check if the conversation was actually created
+        var conversation = await _service.GetByConversationId(conversationId);
+        var geir = conversation?.Participants.Find(n => n.Participant.Equals("geir"));
+        var lars = conversation?.Participants.Find(n => n.Participant.Equals("lars"));
+
+        // Assert
+        Assert.NotNull(conversation);
+        Assert.Equal(conversationId, conversation.ConversationId);
+        Assert.Equal("geir", geir?.Participant);
+        Assert.Equal("lars", lars?.Participant);
+    }
 }
