@@ -10,6 +10,6 @@ using Moq;
 
 namespace MessagingTests;
 
-public class MessagingServiceTest
+public class MessagingControllerTest
 {
 }
