@@ -32,19 +32,22 @@
                                 HorizontalOptions="Start"
                                 ZIndex="1">
 
-                    <Frame HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           CornerRadius="20"
-                           BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
-                           Padding="0"
-                           BorderColor="Transparent"
-                           AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
-                           ZIndex="3">
-                        <Image Grid.Row="0"
+                    <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                            StrokeThickness="0"
+                            Background="Transparent"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
+                            ZIndex="3">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20,20,20,20" />
+                        </Border.StrokeShape>
+                            <Image Grid.Row="0"
                                x:Name="bookThumbnail"
                                Source="{Binding SelectedBook.ImageLinks[thumbnail]}"
-                               Aspect="AspectFit" />
-                    </Frame>
+                               Aspect="AspectFit"
+                               ZIndex="3" />
+                    </Border>
 
                     <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
                              Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"

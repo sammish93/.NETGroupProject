@@ -113,14 +113,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             SelectedUserDisplayPicture = selectedUserDisplayPicture;
         }
 
-        public async Task PopulateBooks()
+        public async Task PopulateBooks(V1User user)
         {
 
             try
             {
                 UserBooks.Clear();
 
-                string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={SelectedUser.Id}";
+                string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={user.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
                 responseMessage.EnsureSuccessStatusCode();
@@ -170,14 +170,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateReadingGoals()
+        public async Task PopulateReadingGoals(V1User user)
         {
 
             try
             {
                 UserReadingGoals.Clear();
 
-                string loginUrl = $"{_apiBaseUrl}/goals/GetAllGoals?userId={SelectedUser.Id}";
+                string loginUrl = $"{_apiBaseUrl}/goals/GetAllGoals?userId={user.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
                 responseMessage.EnsureSuccessStatusCode();
@@ -198,11 +198,31 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public async Task GetSelectedUserDisplayPicture(string username)
+        {
+            string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={username}";
+            HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+            if (resultDisplayPicture.IsSuccessStatusCode)
+            {
+                var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                SelectedUserDisplayPicture = displayPicture.DisplayPicture;
+            }
+            else
+            {
+                SelectedUserDisplayPicture = App.DefaultDisplayPicture;
+            }
+        }
+
         public async Task LoadAsync()
         {
             IsBusy = true;
-            await PopulateBooks();
-            await PopulateReadingGoals();
+            await GetSelectedUserDisplayPicture(SelectedUser.UserName);
+            await PopulateBooks(SelectedUser);
+            await PopulateReadingGoals(SelectedUser);
             IsBusy = false;
         }
     }

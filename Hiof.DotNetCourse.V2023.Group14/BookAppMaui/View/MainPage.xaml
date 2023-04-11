@@ -101,16 +101,18 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
-                                        <Frame HorizontalOptions="Center"
-                                               VerticalOptions="Center"
-                                               CornerRadius="5"
-                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                                               Padding="0"
-                                               BorderColor="Transparent">
+                                        <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                StrokeThickness="0"
+                                                Background="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="5,5,5,5" />
+                                            </Border.StrokeShape>
                                             <Image Grid.Row="0"
                                                    Source="{Binding ImageLinks[thumbnail]}"
                                                    Aspect="AspectFit" />
-                                        </Frame>
+                                        </Border>
                                         <Label Grid.Row="1"
                                                Text="{Binding Title}"
                                                FontAttributes="Bold"
@@ -161,16 +163,18 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
-                                        <Frame HorizontalOptions="Center"
-                                               VerticalOptions="Center"
-                                               CornerRadius="5"
-                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                                               Padding="0"
-                                               BorderColor="Transparent">
+                                        <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                StrokeThickness="0"
+                                                Background="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="5,5,5,5" />
+                                            </Border.StrokeShape>
                                             <Image Grid.Row="0"
                                                    Source="{Binding ImageLinks[thumbnail]}"
                                                    Aspect="AspectFit" />
-                                        </Frame>
+                                        </Border>
                                         <Label Grid.Row="1"
                                                Text="{Binding Title}"
                                                FontAttributes="Bold"
@@ -221,16 +225,18 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
-                                        <Frame HorizontalOptions="Center"
-                                               VerticalOptions="Center"
-                                               CornerRadius="15"
-                                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                                               Padding="0"
-                                               BorderColor="Transparent">
+                                        <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                StrokeThickness="0"
+                                                Background="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="15,15,15,15" />
+                                            </Border.StrokeShape>
                                             <Image Grid.Row="0"
                                                    Source="{Binding DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                                    Aspect="AspectFit" />
-                                        </Frame>
+                                        </Border>
                                         <Label Grid.Row="1"
                                                Text="{Binding User.UserName}"
                                                FontAttributes="Bold"
