@@ -208,7 +208,7 @@
                x:Name="MyMessagesPage"
                Route="messages"
                FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}" />
+        <ShellContent ContentTemplate="{DataTemplate view:MessagesPage}" />
     </ShellItem>
 
     <ShellItem Title="Settings"
