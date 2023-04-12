@@ -27,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private ObservableCollection<V1Book> _booksBasedOnTitle;
         private ObservableCollection<V1Book> _booksBasedOnAuthor;
-        private ObservableCollection<V1User> _users;
+        private ObservableCollection<V1UserWithDisplayPicture> _users;
         private bool _isBusy;
         private string _queryString;
         private V1User _user;
@@ -72,7 +72,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ObservableCollection<V1User> Users
+        public ObservableCollection<V1UserWithDisplayPicture> Users
         {
             get => _users;
             set
@@ -95,7 +95,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             BooksBasedOnTitle = new ObservableCollection<V1Book>();
             BooksBasedOnAuthor = new ObservableCollection<V1Book>();
-            Users = new ObservableCollection<V1User>();
+            Users = new ObservableCollection<V1UserWithDisplayPicture>();
             User = user;
         }
 
@@ -191,7 +191,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 foreach (JObject userJson in jArrayUsers)
                 {
                     V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
-                    Users.Add(user);
+                    V1UserWithDisplayPicture userWithDisplayPicture;
+
+
+                    string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                    HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                    if (resultDisplayPicture.IsSuccessStatusCode)
+                    {
+                        var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                        V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                    }
+                    else
+                    {
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, App.DefaultDisplayPicture);
+                    }
+
+                    Users.Add(userWithDisplayPicture);
                 }
             }
             catch (Exception ex)

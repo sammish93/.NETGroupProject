@@ -91,18 +91,22 @@
         <DataTemplate>
             <Grid BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                   HeightRequest="150">
-                <Frame HorizontalOptions="Center"
-                       VerticalOptions="Start"
-                       CornerRadius="50"
-                       HeightRequest="100"
-                       WidthRequest="100"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                       Padding="0"
-                       Margin="10"
-                       BorderColor="Transparent">
+
+                <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                        StrokeThickness="0"
+                        Background="Transparent"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        HeightRequest="100"
+                        WidthRequest="100"
+                        TranslationY="-10">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="100,100,100,100" />
+                    </Border.StrokeShape>
                     <Image Source="{Binding DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                           Aspect="AspectFit" />
-                </Frame>
+                           Aspect="AspectFit"/>
+                </Border>
+
                 <Label TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                        FontAttributes="Bold"
                        FontSize="20"
@@ -204,7 +208,7 @@
                x:Name="MyMessagesPage"
                Route="messages"
                FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}" />
+        <ShellContent ContentTemplate="{DataTemplate view:MessagesPage}" />
     </ShellItem>
 
     <ShellItem Title="Settings"

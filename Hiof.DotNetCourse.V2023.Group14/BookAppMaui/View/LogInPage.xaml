@@ -49,7 +49,7 @@
 
                 <Image Grid.Row="1"
                        Source="books_icon.png"
-                       BackgroundColor="White"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                        Margin="1"
                        HeightRequest="70"
                        WidthRequest="70" />

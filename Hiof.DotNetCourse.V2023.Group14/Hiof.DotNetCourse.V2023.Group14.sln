@@ -34,11 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.BookAppMaui", "BookAppMaui\Hiof.DotNetCourse.V2023.Group14.BookAppMaui.csproj", "{93AD4415-547C-4D97-A4F1-70F4BB81EB71}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1CB3B2C6-7728-4F02-AAC1-3766559FFDEB} = {1CB3B2C6-7728-4F02-AAC1-3766559FFDEB}
-		{CCC582B5-0240-4B6E-B94B-0634119F9FFC} = {CCC582B5-0240-4B6E-B94B-0634119F9FFC}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.BookAppMaui", "BookAppMaui\Hiof.DotNetCourse.V2023.Group14.BookAppMaui.csproj", "{93AD4415-547C-4D97-A4F1-70F4BB81EB71}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.ReadingGoalService", "Hiof.DotNetCourse.V2023.Group14.ReadingGoalService\Hiof.DotNetCourse.V2023.Group14.ReadingGoalService.csproj", "{1BDD6D3D-2922-4529-8E80-49DE671E78AC}"
 EndProject
@@ -50,6 +46,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadingGoals.Tests", "ReadingGoals.Tests\ReadingGoals.Tests.csproj", "{89702CF1-4FCD-480A-940F-86D798FAA8B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxy.Tests", "Proxy.Tests\Proxy.Tests.csproj", "{7E4BD866-ED07-41E6-8E2D-F9E2D01576FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hiof.DotNetCourse.V2023.Group14.MessagingService", "Hiof.DotNetCourse.V2023.Group14.MessagingService\Hiof.DotNetCourse.V2023.Group14.MessagingService.csproj", "{9106DDAB-FCEA-4F03-82A7-83070BFCFD09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingTests", "MessagingTests\MessagingTests.csproj", "{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +119,14 @@ Global
 		{7E4BD866-ED07-41E6-8E2D-F9E2D01576FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E4BD866-ED07-41E6-8E2D-F9E2D01576FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E4BD866-ED07-41E6-8E2D-F9E2D01576FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9106DDAB-FCEA-4F03-82A7-83070BFCFD09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9106DDAB-FCEA-4F03-82A7-83070BFCFD09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9106DDAB-FCEA-4F03-82A7-83070BFCFD09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9106DDAB-FCEA-4F03-82A7-83070BFCFD09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,6 +147,8 @@ Global
 		{49FEB901-F5DE-4586-9ECD-CF15E6BB9E9A} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 		{89702CF1-4FCD-480A-940F-86D798FAA8B9} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
 		{7E4BD866-ED07-41E6-8E2D-F9E2D01576FB} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
+		{9106DDAB-FCEA-4F03-82A7-83070BFCFD09} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
+		{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96890292-801C-4299-8C07-E008A6411CBF}

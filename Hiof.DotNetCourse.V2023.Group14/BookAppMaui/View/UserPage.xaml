@@ -39,6 +39,25 @@
                                 HorizontalOptions="Start"
                                 ZIndex="1">
 
+                    <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                            StrokeThickness="0"
+                            Background="Transparent"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            WidthRequest="150"
+                            HeightRequest="150"
+                            AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
+                            ZIndex="3">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20,20,20,20" />
+                        </Border.StrokeShape>
+                        <Image Grid.Row="0"
+                               x:Name="bookThumbnail"
+                               Source="{Binding SelectedUserDisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                               Aspect="AspectFit"
+                               ZIndex="3" />
+                    </Border>
+                    <!--
                     <Frame HorizontalOptions="Center"
                            VerticalOptions="Center"
                            CornerRadius="20"
@@ -53,6 +72,7 @@
                                Source="{Binding SelectedUserDisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                Aspect="AspectFill" />
                     </Frame>
+                    -->
 
                     <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
                              Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray500}}"
