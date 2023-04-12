@@ -64,26 +64,23 @@
                             Margin="0,5,0,0"
                              />
                          
-                                <Editor 
+                                <Label 
                             Grid.Row="2"
-                            Text="{Binding Rating, Mode=TwoWay}"
+                            Text="{Binding Rating}"
                             
                             FontAttributes="Bold"
                             FontSize="12"
                             Margin="0,5,0,0"
                             IsEnabled="False" />
-                        <Editor 
+                        <Label 
                             Grid.Row="3"
                             Text="{Binding ReadingStatus}"
                             
                             FontAttributes="Bold"
                             FontSize="12"
                             Margin="0,5,0,0"
-                            IsVisible="{Binding IsItemSelected}" />
-                                <StackLayout IsVisible="False">
-                                    <Button Text="Edit" Command="{Binding EditCommand}" />
-                                    <Button Text="Delete" Command="{Binding DeleteCommand}" />
-                                </StackLayout>
+                            />
+                               
                                 
                                 
                                 

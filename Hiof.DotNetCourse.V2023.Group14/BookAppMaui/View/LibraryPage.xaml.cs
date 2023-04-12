@@ -25,13 +25,16 @@ public partial class LibraryPage : ContentPage
         }
         base.OnAppearing();
     }
-    private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+    private void OnItemSelected(object sender, SelectionChangedEventArgs e)
     {
         var model = BindingContext as ViewModel.LibraryPageViewModel;
 
-        if (model != null && e.SelectedItem != null)
+        if (model != null)
         {
-            model.IsItemSelected = true;
+            if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
+            {
+                
+            }
         }
     }
 
