@@ -4,11 +4,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 
 public partial class UserPage : ContentPage
 {
-	public UserPage()
-	{
-		InitializeComponent();
+    public UserPage()
+    {
+        InitializeComponent();
         BindingContext = new UserPageViewModel(App.LoggedInUser, App.SelectedUser, App.SelectedUserDisplayPicture);
-	}
+    }
 
     protected override async void OnAppearing()
     {

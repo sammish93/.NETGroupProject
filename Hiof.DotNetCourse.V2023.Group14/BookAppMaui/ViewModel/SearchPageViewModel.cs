@@ -91,7 +91,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 OnPropertyChanged();
             }
         }
-
         public SearchPageViewModel(V1User user)
         {
             BooksBasedOnTitle = new ObservableCollection<V1Book>();

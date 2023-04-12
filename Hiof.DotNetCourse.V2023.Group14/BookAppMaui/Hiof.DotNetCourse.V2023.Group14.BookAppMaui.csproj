@@ -104,6 +104,9 @@
 	  <Compile Update="View\BookPage.xaml.cs">
 	    <DependentUpon>BookPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="View\MessagesPage.xaml.cs">
+	    <DependentUpon>MessagesPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\SettingsPage.xaml.cs">
 	    <DependentUpon>SettingsPage.xaml</DependentUpon>
 	  </Compile>
@@ -126,6 +129,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="NewPage1.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\MessagesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\SearchPage.xaml">

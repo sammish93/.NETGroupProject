@@ -57,21 +57,22 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
-
-                    <Frame Grid.Row="1"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           CornerRadius="8"
-                           WidthRequest="200"
-                           HeightRequest="200"
-                           BackgroundColor="Transparent"
-                           Padding="0"
-                           BorderColor="Transparent"
-                           AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize">
+                    
+                    <Border Grid.Row="1"
+                            Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                            StrokeThickness="0"
+                            Background="Transparent"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            HeightRequest="200"
+                            WidthRequest="200">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10,10,10,10" />
+                        </Border.StrokeShape>
                         <Image Grid.Row="1"
                                Source="{Binding UserDisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                Aspect="AspectFill" />
-                    </Frame>
+                    </Border>
 
                     <Button Grid.Row="2"
                             Text="Change Display Picture"

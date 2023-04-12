@@ -6,8 +6,8 @@
        xmlns:view="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View"
        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
        x:Name="MyAppShell"
-       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-       FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource Secondary}}"
+       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray600}}"
+       FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource Gray600}}"
        Padding="10,0,0,0">
 
     <!--MAUI Community Toolkit-->
@@ -61,9 +61,9 @@
                        WidthRequest="{Binding Width, Source={x:Reference SearchColumn}}"
                        HorizontalOptions="End"
                        Placeholder="Search for a book, author, or user here.."
-                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource AlternatePrimaryLighter}}"
-                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray100}}"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimaryLighter}, Dark={StaticResource Gray600}}"
+                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray200}}"
                        CancelButtonColor="{AppThemeBinding Light={StaticResource AlternatePrimaryDarker}, Dark={StaticResource AlternatePrimaryDarker}}"
                        VerticalOptions="Center"
                        FontAutoScalingEnabled="True"
@@ -91,18 +91,22 @@
         <DataTemplate>
             <Grid BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                   HeightRequest="150">
-                <Frame HorizontalOptions="Center"
-                       VerticalOptions="Start"
-                       CornerRadius="50"
-                       HeightRequest="100"
-                       WidthRequest="100"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                       Padding="0"
-                       Margin="10"
-                       BorderColor="Transparent">
+
+                <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                        StrokeThickness="0"
+                        Background="Transparent"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        HeightRequest="100"
+                        WidthRequest="100"
+                        TranslationY="-10">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="100,100,100,100" />
+                    </Border.StrokeShape>
                     <Image Source="{Binding DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                           Aspect="AspectFit" />
-                </Frame>
+                           Aspect="AspectFit"/>
+                </Border>
+
                 <Label TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                        FontAttributes="Bold"
                        FontSize="20"
@@ -204,7 +208,7 @@
                x:Name="MyMessagesPage"
                Route="messages"
                FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}" />
+        <ShellContent ContentTemplate="{DataTemplate view:MessagesPage}" />
     </ShellItem>
 
     <ShellItem Title="Settings"
