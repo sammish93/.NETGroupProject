@@ -163,8 +163,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
 
         [HttpGet("libraries/[action]")]
-        public async Task<IActionResult> GetEntry()
-            => await Proxy(_apiUrls.Value.LibraryGetEntry);
+        public async Task<IActionResult> GetEntry(Guid entryId)
+            => await Proxy(_apiUrls.Value.LibraryGetEntry + $"?entryId={entryId}");
 
 
         [HttpGet("libraries/[action]")]
