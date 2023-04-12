@@ -50,12 +50,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        private bool _isItemSelected;
-        public bool IsItemSelected
-        {
-            get => _isItemSelected;
-            set => SetProperty(ref _isItemSelected, value);
-        }
+    
 
         private V1LibraryEntryWithImage _selectedEntry;
         public V1LibraryEntryWithImage SelectedEntry
@@ -64,16 +59,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _selectedEntry = value;
-                OnPropertyChanged(nameof(SelectedEntry));
-                IsItemSelected = value != null;
+                OnPropertyChanged();
+                
             }
         }
-        private bool _onItemSelected;
-        public bool OnItemSelected
-        {
-            get => _onItemSelected;
-            set => SetProperty(ref _onItemSelected, value);
-        }
+     
 
 
 
@@ -169,18 +159,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
-        private async void Changed()
+        public async Task NavigateToBookPage(V1Book book)
         {
-            IsItemSelected= true;
-        }
+            App.SelectedBook= book;
 
+            
+        }
 
         public async Task LoadAsync()
         {
             IsBusy = true;
-            IsItemSelected = false;
+            
             IsVisible = false;
-            OnItemSelected = false;
+           
             await PopulateBooks();
             
             IsBusy = false;
