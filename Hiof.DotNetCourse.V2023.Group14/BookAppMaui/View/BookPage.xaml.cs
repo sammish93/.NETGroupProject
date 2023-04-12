@@ -8,14 +8,14 @@ public partial class BookPage : ContentPage
 	public BookPage()
 	{
 		InitializeComponent();
-        BindingContext = new BookPageViewModel(App.SelectedUser, App.SelectedBook);
+        BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
 	}
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
 
-        BindingContext = new BookPageViewModel(App.SelectedUser, App.SelectedBook);
+        BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
     }
 
     protected override void OnSizeAllocated(double width, double height)
