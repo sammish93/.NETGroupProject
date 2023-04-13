@@ -37,7 +37,8 @@
                        TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
                 
                 <CollectionView ItemsSource="{Binding CurrentlyReading}"
-                                
+                        SelectionMode="Single"
+                        SelectionChanged="OnItemSelected"        
                         Grid.Row="1"
                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
                     <CollectionView.ItemsLayout>
