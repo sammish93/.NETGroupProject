@@ -104,6 +104,8 @@
                        TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
 
                 <CollectionView ItemsSource="{Binding ToBeRead}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnItemSelected" 
                         Grid.Row="3"
                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
                     <CollectionView.ItemsLayout>
@@ -169,6 +171,8 @@
                        TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
 
                 <CollectionView ItemsSource="{Binding ReadEntries}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnItemSelected" 
                         Grid.Row="5"
                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
                     <CollectionView.ItemsLayout>

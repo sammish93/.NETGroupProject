@@ -18,6 +18,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         private static byte[] _selectedUserDisplayPicture;
         private static bool _isUserLibraryAltered = false;
 
+        private static V1LibraryEntryWithImage _selectedLibraryEntry;
+        public static V1LibraryEntryWithImage SelectedEntry
+        {
+            get => _selectedLibraryEntry;
+            set
+            {
+                _selectedLibraryEntry = value;
+            }
+        }
+
         public static V1User LoggedInUser
         {
             get => _loggedInUser;

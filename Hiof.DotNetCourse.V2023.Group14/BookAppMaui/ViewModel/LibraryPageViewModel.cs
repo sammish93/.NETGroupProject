@@ -23,8 +23,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
 
-        public V1User LoggedInUser { get; set; } 
-        public V1Book Book { get; set; }    
+        public V1User LoggedInUser { get; set; }
+        public V1Book Book { get; set; }
+        public V1LibraryEntryWithImage SelectedLibraryEntry { get; set; }
         public ReadingStatus readingStatus { get; set; }
 
         private Button SaveButton;
@@ -46,11 +47,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _isBusy = value;
-                
+
             }
         }
 
-    
+
 
         private V1LibraryEntryWithImage _selectedEntry;
         public V1LibraryEntryWithImage SelectedEntry
@@ -60,10 +61,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 _selectedEntry = value;
                 OnPropertyChanged();
-                
+
             }
         }
-     
+
 
 
 
@@ -73,6 +74,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             ReadEntries = new ObservableCollection<V1LibraryEntryWithImage>();
             ToBeRead = new ObservableCollection<V1LibraryEntryWithImage>();
             CurrentlyReading = new ObservableCollection<V1LibraryEntryWithImage>();
+            
 
         }
         public async Task PopulateBooks()
@@ -105,18 +107,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     }
 
                     var imageUrl = book.ImageLinks["thumbnail"];
-                    
+
                     var entryWithImage = new V1LibraryEntryWithImage(
                         entry.Id,
                         entry.Title,
                         entry.MainAuthor,
                         entry.Rating,
                         entry.ReadingStatus,
-                        
+
                         imageUrl
                     );
-                    CurrentlyReading.Add(entryWithImage);
-                    /*
                     
                     if(entryWithImage.ReadingStatus == ReadingStatus.Completed)
                         ReadEntries.Add(entryWithImage);
@@ -128,9 +128,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     {
                         CurrentlyReading.Add(entryWithImage);
                     }
-                   */
+                   
 
-                    
+
                 }
             }
             catch (Exception ex)
@@ -159,25 +159,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
-        public async Task NavigateToBookPage(V1Book book)
+        public async Task NavigateToLibraryEntryDetailPage(V1LibraryEntryWithImage entry)
         {
-            App.SelectedBook= book;
+            App.SelectedEntry = entry;
 
             
+
+            await Shell.Current.GoToAsync($"///entryDetail?entryid={entry.Id}");
         }
 
         public async Task LoadAsync()
         {
             IsBusy = true;
-            
+
             IsVisible = false;
-           
+
             await PopulateBooks();
-            
+
             IsBusy = false;
         }
     }
 }
-       
-    
-
