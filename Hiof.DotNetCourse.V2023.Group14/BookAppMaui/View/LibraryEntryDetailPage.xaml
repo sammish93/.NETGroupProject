@@ -195,6 +195,15 @@
                                         VerticalOptions="Center"
                                         HorizontalOptions="Center"
                                         Command="{Binding SaveChangesCommand}" />
+                                <Button Grid.Row="2"
+                                        Grid.Column="2"
+                                        Text="Delete"
+                                        
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="End"
+                                        Command="{Binding DeleteEntryCommand}" />
                             </Grid>
 
 

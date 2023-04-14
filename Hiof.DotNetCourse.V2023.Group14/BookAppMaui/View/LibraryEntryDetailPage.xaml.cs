@@ -17,7 +17,7 @@ public partial class LibraryEntryDetailPage : ContentPage
         BindingContext = new LibraryEntryDetailViewModel(App.LoggedInUser, App.SelectedEntry);
         int pageCount = Shell.Current.Navigation.NavigationStack.Count;
 
-        Debug.WriteLine(pageCount);
+        Debug.WriteLine("shell" + pageCount);
     }
 
     protected override void OnSizeAllocated(double width, double height)

@@ -165,7 +165,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             
 
-            await Shell.Current.GoToAsync($"///entryDetail?entryid={entry.Id}");
+            await Shell.Current.GoToAsync($"//entryDetail?entryid={entry.Id}");
         }
 
         public async Task LoadAsync()

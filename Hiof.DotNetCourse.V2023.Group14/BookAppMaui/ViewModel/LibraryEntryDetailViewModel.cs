@@ -166,6 +166,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
         public ICommand SaveChangesCommand => new Command(async () => await SaveChangesAsync());
+        public ICommand DeleteEntryCommand => new Command(async () => await DeleteEntryAsync());
         public async Task SaveChangesAsync()
         {
 
@@ -223,34 +224,42 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 Debug.WriteLine(ex);
             }
 
-            /*
+
+        }
+
+        public async Task DeleteEntryAsync()
+        {
             try
             {
-                string url = $"{_apiBaseUrl}/libraries/ChangeReadingStatus?entryId={SelectedEntry.Id}&readingStatus={SelectedReadingStatus}";
-                var jsonString = JsonConvert.SerializeObject(url);
-                var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                var response = await _httpClient.PutAsync(url, httpContent);
+                if (string.IsNullOrEmpty(_apiBaseUrl))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "API base URL is not set.", "OK");
+                    return;
+                }
 
+                if (SelectedEntry == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Selected entry is null.", "OK");
+                    return;
+                }
 
+                string deleteEntryUrl = $"{_apiBaseUrl}/libraries/DeleteEntry?entry={SelectedEntry.Id}";
+                var response = await _httpClient.DeleteAsync(deleteEntryUrl);
                 if (response.IsSuccessStatusCode)
                 {
-
-                    await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
-
-
+                    await Application.Current.MainPage.DisplayAlert("Success!", "Deleted successfully.", "OK");
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("nope", "meh", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to update.", "OK");
                 }
-
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-            }*/
-
+            }
         }
+
         private async Task BackAsync()
         {
             await Shell.Current.GoToAsync("///");
