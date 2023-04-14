@@ -29,6 +29,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private V1User _user;
         private V1User _selectedUser;
         private byte[] _selectedUserDisplayPicture;
+        private V1ReadingGoals _selectedUserRecentReadingGoal;
         private V1LibraryCollection _userLibrary;
         private ObservableCollection<V1Book> _userBooks;
         private ObservableCollection<V1ReadingGoals> _userReadingGoals;
@@ -60,6 +61,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _selectedUserDisplayPicture = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public V1ReadingGoals SelectedUserRecentReadingGoal
+        {
+            get => _selectedUserRecentReadingGoal;
+            set
+            {
+                _selectedUserRecentReadingGoal = value;
                 OnPropertyChanged();
             }
         }
@@ -120,14 +131,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 UserBooks.Clear();
 
-                string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={user.Id}";
+                string url = $"{_apiBaseUrl}/libraries/GetUserHighestRatedBooks?userId={user.Id}&numberOfResults=4";
 
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                string libraryUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={user.Id}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
                 responseMessage.EnsureSuccessStatusCode();
                 var json = await responseMessage.Content.ReadAsStringAsync();
                 V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
-                UserLibrary = library;
-                
+
+                using HttpResponseMessage responseMessageLibrary = await _httpClient.GetAsync(libraryUrl);
+                responseMessageLibrary.EnsureSuccessStatusCode();
+                var jsonLibrary = await responseMessageLibrary.Content.ReadAsStringAsync();
+                V1LibraryCollection libraryComplete = JsonConvert.DeserializeObject<V1LibraryCollection>(jsonLibrary);
+                UserLibrary = libraryComplete;
+
 
                 foreach (V1LibraryEntry entry in library.Entries)
                 {
@@ -189,7 +207,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 {
                     V1ReadingGoals readingGoal = JsonConvert.DeserializeObject<V1ReadingGoals>(userJson.ToString());
 
-                    UserReadingGoals.Add(readingGoal);
+                    if (readingGoal.Id != SelectedUserRecentReadingGoal.Id)
+                    {
+                        UserReadingGoals.Add(readingGoal);
+                    }
                 }
             }
             catch (Exception ex)
@@ -217,6 +238,38 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public async Task NavigateToBookPage(V1Book book)
+        {
+            App.SelectedBook = book;
+            string bookId = "";
+
+            if (book.IndustryIdentifiers["ISBN_13"] != null)
+            {
+                bookId = book.IndustryIdentifiers["ISBN_13"];
+            }
+            else if (book.IndustryIdentifiers["ISBN_10"] != null)
+            {
+                bookId = book.IndustryIdentifiers["ISBN_10"];
+            }
+
+            await Shell.Current.GoToAsync($"///book?bookid={bookId}");
+        }
+
+        public async Task GetMostRecentReadingGoal(V1User user)
+        {
+            string url = $"{_apiBaseUrl}/goals/GetRecentGoal?userId={user.Id}";
+            HttpResponseMessage result = await _httpClient.GetAsync(url);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var responseString = await result.Content.ReadAsStringAsync();
+
+                V1ReadingGoals readingGoal = JsonConvert.DeserializeObject<V1ReadingGoals>(responseString);
+
+                SelectedUserRecentReadingGoal = readingGoal;
+            }
+        }
+
         public async Task LoadAsync()
         {
             IsBusy = true;
@@ -224,6 +277,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await PopulateBooks(SelectedUser);
             await PopulateReadingGoals(SelectedUser);
             IsBusy = false;
+        }
+
+        public async Task LoadProgressBarAsync()
+        {
+            IsBusy = true;
+            await GetMostRecentReadingGoal(SelectedUser);
         }
     }
 }

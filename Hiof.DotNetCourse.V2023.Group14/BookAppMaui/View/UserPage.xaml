@@ -57,22 +57,6 @@
                                Aspect="AspectFit"
                                ZIndex="3" />
                     </Border>
-                    <!--
-                    <Frame HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           CornerRadius="20"
-                           WidthRequest="150"
-                           HeightRequest="150"
-                           BackgroundColor="Transparent"
-                           Padding="0"
-                           BorderColor="Transparent"
-                           AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
-                           ZIndex="3">
-                        <Image Grid.Row="0"
-                               Source="{Binding SelectedUserDisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                               Aspect="AspectFill" />
-                    </Frame>
-                    -->
 
                     <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
                              Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray500}}"
@@ -150,7 +134,8 @@
 
                             <ScrollView Grid.Row="1"
                                         Margin="5">
-                                <VerticalStackLayout Spacing="5">
+                                <VerticalStackLayout Spacing="10">
+                                    
                                     <Label FontSize="Micro">
                                         <Label.Text>
                                             <MultiBinding StringFormat="Name: {0} {1} ">
@@ -159,29 +144,152 @@
                                             </MultiBinding>
                                         </Label.Text>
                                     </Label>
+                                    
                                     <Label Text="{Binding Path='SelectedUser.LastActive', StringFormat='Last Active: {0:dddd, dd MMMM yyyy a\\t h:mm tt}'}"
                                            FontSize="Micro" />
-                                    <Label Text="{Binding Path='SelectedUser.LangPreference', StringFormat='Language Preference: {0}'}"
-                                           FontSize="Micro" />
+                                    
                                     <Label Text="{Binding Path='UserLibrary.Items', StringFormat='Number of Books in Library: {0}'}"
                                            FontSize="Micro" />
+                                    
                                     <Label Text="{Binding Path='UserLibrary.ItemsRead', StringFormat='Number of Books Read in Library: {0}'}"
                                            FontSize="Micro" />
+
+                                    <Label Text="Favourite Books:"
+                                           FontSize="Micro" />
+
+                                    <CollectionView ItemsSource="{Binding UserBooks}"
+                                                    ItemsLayout="HorizontalList"
+                                                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                                    SelectionMode="Single"
+                                                    SelectionChanged="CollectionViewBook_SelectionChanged">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="80" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                            StrokeThickness="0"
+                                                            Background="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                                                            HorizontalOptions="Center"
+                                                            VerticalOptions="Center">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="15" />
+                                                        </Border.StrokeShape>
+                                                        <Image Grid.Row="0"
+                                                               Source="{Binding ImageLinks[thumbnail]}"
+                                                               Aspect="AspectFit" />
+                                                    </Border>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+
                                     <Label Text="Reading Goals:"
                                            FontSize="Micro" />
-                                    <ListView ItemsSource="{Binding UserReadingGoals}"
-                                              Margin="5"
-                                              VerticalScrollBarVisibility="Never" />
-                                    <Label Text="Book Collection:"
-                                           FontSize="Micro" />
-                                    <ListView ItemsSource="{Binding UserBooks}"
-                                              Margin="5"
-                                              VerticalScrollBarVisibility="Never" />
-                                    <Label Text="Library Collection:"
-                                           FontSize="Micro" />
-                                    <ListView ItemsSource="{Binding UserLibrary.Entries}"
-                                              Margin="5"
-                                              VerticalScrollBarVisibility="Never" />
+
+                                    <Grid Grid.Row="0"
+                                          BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                          ColumnSpacing="5"
+                                          Padding="5"
+                                          MinimumHeightRequest="100">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2*" />
+                                            <RowDefinition Height="2*" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Column="0"
+                                               Grid.Row="0"
+                                               Text="Most recent reading goal"
+                                               FontAttributes="Bold"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               FontSize="14"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center" />
+                                        <VerticalStackLayout Grid.Column="0"
+                                                             Grid.Row="1">
+                                            <Label x:Name="mostRecentReadingGoalLabel"
+                                                   Grid.Column="1"
+                                                   Grid.Row="1"
+                                                   LineBreakMode="CharacterWrap"
+                                                   FontAttributes="Italic"
+                                                   HorizontalOptions="Center"
+                                                   FontSize="11"
+                                                   HorizontalTextAlignment="Center">
+                                                <Label.Text>
+                                                    <MultiBinding StringFormat="So far {0} has read {1} out of {2} books">
+                                                        <Binding Path="SelectedUser.UserName" />
+                                                        <Binding Path="SelectedUserRecentReadingGoal.GoalCurrent" />
+                                                        <Binding Path="SelectedUserRecentReadingGoal.GoalTarget" />
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
+                                            <Label Grid.Row="2"
+                                                   Grid.Column="1"
+                                                   Text="{Binding Path='SelectedUserRecentReadingGoal.GoalEndDate', StringFormat='End Date: {0:dddd, dd MMMM yyyy}'}"
+                                                   LineBreakMode="CharacterWrap"
+                                                   FontAttributes="Italic"
+                                                   HorizontalOptions="Center"
+                                                   FontSize="11"
+                                                   HorizontalTextAlignment="Center" />
+                                        </VerticalStackLayout>
+                                        <ProgressBar Grid.Row="2"
+                                                     x:Name="progressBar"
+                                                     ProgressColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                     BackgroundColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Tertiary}}"
+                                                     Progress="0" />
+                                    </Grid>
+                                    
+                                    <CollectionView ItemsSource="{Binding UserReadingGoals}"
+                                                    ItemsLayout="VerticalList"
+                                                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="1*" />
+                                                        <RowDefinition Height="1*" />
+                                                    </Grid.RowDefinitions>
+                                                    <Label Grid.Row="0"
+                                                           FontAttributes="Bold"
+                                                           LineBreakMode="CharacterWrap"
+                                                           HorizontalOptions="Center"
+                                                           VerticalOptions="End"
+                                                           FontSize="12"
+                                                           HorizontalTextAlignment="Center"
+                                                           VerticalTextAlignment="Center">
+                                                        <Label.Text>
+                                                            <MultiBinding StringFormat="From {0:ddd, d MMM yy} to {1:ddd, d MMM yy}">
+                                                                <Binding Path='GoalStartDate' />
+                                                                <Binding Path='GoalEndDate' />
+                                                            </MultiBinding>
+                                                        </Label.Text>
+                                                    </Label>
+                                                    <Label x:Name="mostRecentReadingGoalLabel"
+                                                           Grid.Row="1"
+                                                           LineBreakMode="CharacterWrap"
+                                                           FontAttributes="Italic"
+                                                           HorizontalOptions="Center"
+                                                           VerticalOptions="Center"
+                                                           FontSize="11"
+                                                           HorizontalTextAlignment="Center">
+                                                        <Label.Text>
+                                                            <MultiBinding StringFormat="Read {1} out of {2} books">
+                                                                <Binding Path="SelectedUser.UserName" />
+                                                                <Binding Path="GoalCurrent" />
+                                                                <Binding Path="GoalTarget" />
+                                                            </MultiBinding>
+                                                        </Label.Text>
+                                                    </Label>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
 
                                 </VerticalStackLayout>
 
@@ -190,9 +298,7 @@
 
                             <Button Grid.Row="3"
                                     Text="Send a message"
-                                    WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
                                     VerticalOptions="Start"
-                                    HorizontalOptions="Start"
                                     BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
                                     TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
 

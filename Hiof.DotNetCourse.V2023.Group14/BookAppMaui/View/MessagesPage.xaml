@@ -96,7 +96,7 @@
                                             WidthRequest="40"
                                             HeightRequest="40">
                                         <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="1" />
+                                            <RoundRectangle CornerRadius="5" />
                                         </Border.StrokeShape>
                                         <Image Grid.Row="0"
                                                Source="{Binding DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
