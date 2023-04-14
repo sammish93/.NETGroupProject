@@ -45,11 +45,11 @@
                       MinimumHeightRequest="600">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="1*" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="1*" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0"
@@ -98,13 +98,15 @@
                                            LineBreakMode="CharacterWrap"
                                            HorizontalOptions="Center"
                                            FontSize="11"
+                                           MaxLines="2"
                                            HorizontalTextAlignment="Center"
                                            VerticalTextAlignment="Center" />
                                     <Label Grid.Row="2"
                                            Text="{Binding Authors[0]}"
-                                           LineBreakMode="CharacterWrap"
+                                           LineBreakMode="TailTruncation"
                                            FontAttributes="Italic"
                                            HorizontalOptions="Center"
+                                           MaxLines="1"
                                            FontSize="12"
                                            HorizontalTextAlignment="Center" />
                                 </Grid>
@@ -158,13 +160,15 @@
                                            LineBreakMode="CharacterWrap"
                                            HorizontalOptions="Center"
                                            FontSize="11"
+                                           MaxLines="2"
                                            HorizontalTextAlignment="Center"
                                            VerticalTextAlignment="Center" />
                                     <Label Grid.Row="2"
                                            Text="{Binding Authors[0]}"
-                                           LineBreakMode="CharacterWrap"
+                                           LineBreakMode="TailTruncation"
                                            FontAttributes="Italic"
                                            HorizontalOptions="Center"
+                                           MaxLines="1"
                                            FontSize="12"
                                            HorizontalTextAlignment="Center" />
                                 </Grid>

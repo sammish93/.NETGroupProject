@@ -30,7 +30,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
-                builder.Services.AddDbContext<DbOrmTestClassContext>(options => options.UseSqlServer(dbConnectionStr));
                 builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))

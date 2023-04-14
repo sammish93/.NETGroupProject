@@ -63,11 +63,11 @@
                           Padding="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="1*" />
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="1*" />
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
 
@@ -119,13 +119,15 @@
                                                LineBreakMode="CharacterWrap"
                                                HorizontalOptions="Center"
                                                FontSize="11"
+                                               MaxLines="2"
                                                HorizontalTextAlignment="Center"
                                                VerticalTextAlignment="Center" />
                                         <Label Grid.Row="2"
                                                Text="{Binding Authors[0]}"
-                                               LineBreakMode="CharacterWrap"
+                                               LineBreakMode="TailTruncation"
                                                FontAttributes="Italic"
                                                HorizontalOptions="Center"
+                                               MaxLines="1"
                                                FontSize="12"
                                                HorizontalTextAlignment="Center" />
                                     </Grid>
@@ -181,13 +183,15 @@
                                                LineBreakMode="CharacterWrap"
                                                HorizontalOptions="Center"
                                                FontSize="11"
+                                               MaxLines="2"
                                                HorizontalTextAlignment="Center"
                                                VerticalTextAlignment="Center" />
                                         <Label Grid.Row="2"
                                                Text="{Binding Authors[0]}"
-                                               LineBreakMode="CharacterWrap"
+                                               LineBreakMode="TailTruncation"
                                                FontAttributes="Italic"
                                                HorizontalOptions="Center"
+                                               MaxLines="1"
                                                FontSize="12"
                                                HorizontalTextAlignment="Center" />
                                     </Grid>
@@ -196,7 +200,7 @@
                         </CollectionView>
 
                         <Label Grid.Row="4"
-                               Text="Hot singles in your area (Users in the same city):"
+                               Text="Nearby Users:"
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                Padding="5"
@@ -371,7 +375,7 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
-                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="auto" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto" />
@@ -404,7 +408,7 @@
                                         <Label Grid.Column="1"
                                                Grid.Row="2"
                                                Text="{Binding Description}"
-                                               LineBreakMode="CharacterWrap"
+                                               LineBreakMode="WordWrap"
                                                FontAttributes="Italic"
                                                HorizontalOptions="Start"
                                                FontSize="11"
