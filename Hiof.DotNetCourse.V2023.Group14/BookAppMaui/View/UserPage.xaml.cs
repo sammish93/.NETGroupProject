@@ -28,21 +28,30 @@ public partial class UserPage : ContentPage
             var pickerStartDate = this.FindByName<DatePicker>("pickerStartDate");
             var pickerEndDate = this.FindByName<DatePicker>("pickerEndDate");
             var entryGoalTarget = this.FindByName<Entry>("entryGoalTarget");
+            var labelStartDate = this.FindByName<Label>("labelStartDate");
+            var labelEndDate = this.FindByName<Label>("labelEndDate");
+            var labelGoalTarget = this.FindByName<Label>("labelGoalTarget");
 
             if (App.LoggedInUser.Id == App.SelectedUser.Id)
             {
+                messageButton.IsVisible = false;
                 readingGoalButton.IsVisible = true;
                 pickerStartDate.IsVisible = true;
                 pickerEndDate.IsVisible = true;
                 entryGoalTarget.IsVisible = true;
-                messageButton.IsVisible = false;
+                labelStartDate.IsVisible = true;
+                labelEndDate.IsVisible = true;
+                labelGoalTarget.IsVisible = true;
             } else
             {
-                messageButton.IsVisible = true;
                 readingGoalButton.IsVisible = false;
                 pickerStartDate.IsVisible = false;
                 pickerEndDate.IsVisible = false;
                 entryGoalTarget.IsVisible = false;
+                labelStartDate.IsVisible = false;
+                labelEndDate.IsVisible = false;
+                labelGoalTarget.IsVisible = false;
+                messageButton.IsVisible = true;
             }
 
             await model.LoadProgressBarAsync();

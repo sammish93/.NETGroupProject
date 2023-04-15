@@ -128,6 +128,7 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="1*" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
                             <Label Grid.Row="0" />
@@ -296,7 +297,7 @@
 
                             </ScrollView>
 
-                            <Grid Grid.Row="3"
+                            <Grid Grid.Row="2"
                                   HeightRequest="115"
                                   WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
                                   RowSpacing="5">
@@ -311,15 +312,21 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Row="0"
+                                <Label x:Name="labelStartDate"
+                                       IsVisible="false"
+                                       Grid.Row="0"
                                        Grid.Column="0"
                                        Text="Start Date"
                                        HorizontalOptions="Center" />
-                                <Label Grid.Row="0"
+                                <Label x:Name="labelEndDate"
+                                       IsVisible="false"
+                                       Grid.Row="0"
                                        Grid.Column="1"
                                        Text="End Date"
                                        HorizontalOptions="Center" />
-                                <Label Grid.Row="0"
+                                <Label x:Name="labelGoalTarget"
+                                       IsVisible="false"
+                                       Grid.Row="0"
                                        Grid.Column="2"
                                        Text="Target"
                                        HorizontalOptions="Center" />
@@ -355,15 +362,7 @@
                                        PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                        HorizontalTextAlignment="Center" />
 
-                                <Button x:Name="messageButton"
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="3"
-                                        IsVisible="false"
-                                        Text="Send a message"
-                                        VerticalOptions="Start"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
-                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+                                
 
                                 <Button x:Name="readingGoalButton"
                                         Grid.Row="2"
@@ -376,6 +375,14 @@
                                         BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
                                         TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
                             </Grid>
+
+                            <Button x:Name="messageButton"
+                                    Grid.Row="3"
+                                    IsVisible="false"
+                                    Text="Send a message"
+                                    VerticalOptions="Start"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
 
                         </Grid>
 
