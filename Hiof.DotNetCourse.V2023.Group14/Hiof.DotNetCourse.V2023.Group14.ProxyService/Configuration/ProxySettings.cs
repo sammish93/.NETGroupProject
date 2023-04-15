@@ -58,7 +58,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string DeleteReadingGoal { get; set; }
 
         // Urls for messaging service.
-
+        public string GetByConversationId { get; set; }
+        public string GetByParticipant { get; set; }
+        public string CreateNewConversation { get; set; }
+        public string AddMessageToConversation { get; set; }
+        public string UpdateMessage { get; set; }
+        public string DeleteConversation { get; set; }
+        public string DeleteMessage { get; set; }
     }
 }
 
