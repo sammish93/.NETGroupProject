@@ -25,15 +25,24 @@ public partial class UserPage : ContentPage
         {
             var messageButton = this.FindByName<Button>("messageButton");
             var readingGoalButton = this.FindByName<Button>("readingGoalButton");
+            var pickerStartDate = this.FindByName<DatePicker>("pickerStartDate");
+            var pickerEndDate = this.FindByName<DatePicker>("pickerEndDate");
+            var entryGoalTarget = this.FindByName<Entry>("entryGoalTarget");
 
             if (App.LoggedInUser.Id == App.SelectedUser.Id)
             {
                 readingGoalButton.IsVisible = true;
+                pickerStartDate.IsVisible = true;
+                pickerEndDate.IsVisible = true;
+                entryGoalTarget.IsVisible = true;
                 messageButton.IsVisible = false;
             } else
             {
                 messageButton.IsVisible = true;
                 readingGoalButton.IsVisible = false;
+                pickerStartDate.IsVisible = false;
+                pickerEndDate.IsVisible = false;
+                entryGoalTarget.IsVisible = false;
             }
 
             await model.LoadProgressBarAsync();
@@ -74,6 +83,26 @@ public partial class UserPage : ContentPage
                 V1Book book = ((V1Book)e.CurrentSelection.First());
                 await model.NavigateToBookPage(book);
             }
+        }
+    }
+
+    private void DatePicker_StartDateSelected(object sender, DateChangedEventArgs e)
+    {
+        var model = BindingContext as ViewModel.UserPageViewModel;
+
+        if (model != null)
+        {
+            model.UpdateStartDate(e.NewDate);
+        }
+    }
+
+    private void DatePicker_EndDateSelected(object sender, DateChangedEventArgs e)
+    {
+        var model = BindingContext as ViewModel.UserPageViewModel;
+
+        if (model != null)
+        {
+            model.UpdateEndDate(e.NewDate);
         }
     }
 }

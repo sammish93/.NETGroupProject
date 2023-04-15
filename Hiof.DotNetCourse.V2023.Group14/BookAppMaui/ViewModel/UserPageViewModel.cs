@@ -18,6 +18,8 @@ using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Web;
 using CommunityToolkit.Mvvm.Messaging;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using System.Diagnostics.Metrics;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -33,6 +35,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private V1LibraryCollection _userLibrary;
         private ObservableCollection<V1Book> _userBooks;
         private ObservableCollection<V1ReadingGoals> _userReadingGoals;
+        private DateTime _selectedStartDate;
+        private DateTime _selectedEndDate;
+        private string _goalTarget;
 
 
         public bool IsBusy
@@ -115,6 +120,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public DateTime SelectedStartDate
+        {
+            get => _selectedStartDate;
+            set
+            {
+                _selectedStartDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime SelectedEndDate
+        {
+            get => _selectedEndDate;
+            set
+            {
+                _selectedEndDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GoalTarget { get => _goalTarget; set => SetProperty(ref _goalTarget, value); }
+
         public UserPageViewModel(V1User loggedInUser, V1User selectedUser, byte[] selectedUserDisplayPicture)
         {
             User = loggedInUser;
@@ -122,6 +149,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             UserBooks = new ObservableCollection<V1Book>();
             UserReadingGoals = new ObservableCollection<V1ReadingGoals>();
             SelectedUserDisplayPicture = selectedUserDisplayPicture;
+
+            SelectedStartDate = DateTime.Now;
+            SelectedEndDate = DateTime.Now;
+            GoalTarget = "0";
         }
 
         public async Task PopulateBooks(V1User user)
@@ -267,6 +298,69 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 V1ReadingGoals readingGoal = JsonConvert.DeserializeObject<V1ReadingGoals>(responseString);
 
                 SelectedUserRecentReadingGoal = readingGoal;
+            }
+        }
+
+        public void UpdateStartDate(DateTime dateTime)
+        {
+            SelectedStartDate = dateTime;
+        }
+
+        public void UpdateEndDate(DateTime dateTime)
+        {
+            SelectedEndDate = dateTime;
+        }
+
+        public ICommand AddNewReadingGoalCommand => new Command(async () => await AddNewReadingGoalAsync());
+
+        private async Task AddNewReadingGoalAsync()
+        {
+            try
+            {
+                string createReadingGoalUrl = $"{_apiBaseUrl}/goals/CreateReadingGoal";
+
+                int goalTargetInt;
+
+                bool isParsed = int.TryParse(GoalTarget, out goalTargetInt);
+
+                if (isParsed)
+                {
+                    goalTargetInt = int.Parse(GoalTarget);
+
+                    if (GoalTarget.Equals("0"))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Oops!", "You have forgotten to choose a reading goal target.", "OK");
+                        return;
+                    } else
+                    {
+                        var requestBody = new V1ReadingGoals(User, SelectedStartDate, SelectedEndDate, goalTargetInt, 0);
+
+                        var requestBodyJson = JsonConvert.SerializeObject(requestBody);
+                        var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                        HttpResponseMessage response = await _httpClient.PostAsync(createReadingGoalUrl, requestContent);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Success!", "You have added a new reading goal.", "OK");
+                            App.IsUserLibraryAltered = true;
+                            await LoadProgressBarAsync();
+                            await PopulateReadingGoals(SelectedUser);
+                            IsBusy = false;
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Uh oh!", "You already have a reading goal during this time period.", "OK");
+                        }
+                    }
+                } else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "Only integers are accepted as valid reading goal targets.", "OK");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
 

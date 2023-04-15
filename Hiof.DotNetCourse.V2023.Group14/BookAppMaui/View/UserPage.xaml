@@ -296,22 +296,86 @@
 
                             </ScrollView>
 
-                            <Button x:Name="messageButton"
-                                    Grid.Row="3"
-                                    IsVisible="false"
-                                    Text="Send a message"
-                                    VerticalOptions="Start"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
-                                    TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+                            <Grid Grid.Row="3"
+                                  HeightRequest="115"
+                                  WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
+                                  RowSpacing="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
 
-                            <Button x:Name="readingGoalButton"
-                                    Grid.Row="3"
-                                    IsVisible="false"
-                                    Text="Add a new reading goal"
-                                    VerticalOptions="Start"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
-                                    TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+                                <Label Grid.Row="0"
+                                       Grid.Column="0"
+                                       Text="Start Date"
+                                       HorizontalOptions="Center" />
+                                <Label Grid.Row="0"
+                                       Grid.Column="1"
+                                       Text="End Date"
+                                       HorizontalOptions="Center" />
+                                <Label Grid.Row="0"
+                                       Grid.Column="2"
+                                       Text="Target"
+                                       HorizontalOptions="Center" />
 
+                                <DatePicker x:Name="pickerStartDate"
+                                            IsVisible="false"
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            MinimumDate="01/01/1900"
+                                            MaximumDate="12/31/2099"
+                                            DateSelected="DatePicker_StartDateSelected"
+                                            HorizontalOptions="Center"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
+
+                                <DatePicker x:Name="pickerEndDate"
+                                            IsVisible="false"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            MinimumDate="01/01/1900"
+                                            MaximumDate="12/31/2099"
+                                            DateSelected="DatePicker_EndDateSelected"
+                                            HorizontalOptions="Center"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
+
+                                <Entry x:Name="entryGoalTarget"
+                                       Text="{Binding GoalTarget}"
+                                       IsVisible="false"
+                                       Grid.Row="1"
+                                       Grid.Column="2"
+                                       HorizontalOptions="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                       PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                       HorizontalTextAlignment="Center" />
+
+                                <Button x:Name="messageButton"
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        IsVisible="false"
+                                        Text="Send a message"
+                                        VerticalOptions="Start"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+
+                                <Button x:Name="readingGoalButton"
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        IsVisible="false"
+                                        Text="Add a new reading goal"
+                                        VerticalOptions="Start"
+                                        Command="{Binding AddNewReadingGoalCommand}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+                            </Grid>
 
                         </Grid>
 
