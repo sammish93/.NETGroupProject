@@ -1,4 +1,5 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
+﻿using System.Diagnostics;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Controllers;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
@@ -6,6 +7,7 @@ using Hiof.DotNetCourse.V2023.Group14.MessagingService.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 
 namespace MessagingTests;
@@ -367,5 +369,187 @@ public class MessagingControllerTest
         var message = await _dbContext.Messages.FindAsync(id);
         Assert.NotNull(message);
         Assert.Equal(ReactionType.THUMBSUP, message.Reactions[0].Type);
+    }
+
+    [Fact]
+    public async Task UpdateMessage_ReturnsOkObjectResult_WhenValid()
+    {
+        // Arrange
+        var messageId = Guid.Parse("012774ff-2d50-4f61-985a-4aa5da5fd8c7");
+        var newMessage = "Hello World!";
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var updatedResult = await controller.UpdateMessage(messageId, newMessage);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(updatedResult);
+        Assert.Equal(200, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task UpdateMessage_ReturnsBadObjectResult_OnInvalidParameter()
+    {
+        // Arrange
+        var messageId = Guid.Parse("012774ff-2d50-4f61-985a-4aa5da5fd8c7");
+        string? newMessage = null;
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var updatedResult = await controller.UpdateMessage(messageId, newMessage);
+
+        // Assert
+        var badResult = Assert.IsType<BadRequestObjectResult>(updatedResult);
+        Assert.Equal(400, badResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task UpdateMessage_UpdatesMessage()
+    {
+        // Arrange
+        var messageId = Guid.Parse("012774ff-2d50-4f61-985a-4aa5da5fd8c7");
+        var newMessage = "Hello World!";
+
+        var message = new V1Messages
+        {
+            MessageId = messageId,
+            Sender = "sam",
+            Message = "nothing special",
+            Date = DateTime.UtcNow,
+            ConversationId = Guid.Parse("16c3b450-37fb-4ebf-9ed9-9eeab9d05be8")
+        };
+
+        await _dbContext.AddAsync(message);
+        await _dbContext.SaveChangesAsync();
+
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var updatedResult = await controller.UpdateMessage(messageId, newMessage);
+        var result = await _dbContext.Messages.FindAsync(messageId);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Hello World!", result.Message.ToString());
+
+    }
+
+    [Fact]
+    public async Task DeleteConversation_ReturnsOkObjectResult_OnSuccess()
+    {
+        // Arrange
+        var conversationId = Guid.Parse("16c3b450-38fb-4ebf-9ed9-9eeab9d05de8");
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.DeleteConversation(conversationId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+
+    }
+
+    [Fact]
+    public async Task DeleteConversation_ReturnsBadRequestObject_OnBadId()
+    {
+        // Arrange
+        Guid? conversationId = null;
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.DeleteConversation(conversationId ?? Guid.Empty);
+
+        // Assert
+        Assert.IsType<BadRequestObjectResult>(result);
+        var badRequestObjectResult = (BadRequestObjectResult)result;
+        Assert.Equal("ConversationId cannot be null", badRequestObjectResult.Value);
+    }
+
+    [Fact]
+    public async Task DeleteConversation_DeletesConversationWithRightId()
+    {
+        // Arrange
+        var conversationId = Guid.Parse("16c3b450-38fb-4ebf-9ed9-9eeab9d05de8");
+        var controller = new V1MessagingController(_service);
+
+        var conversation = new V1ConversationModel
+        {
+            ConversationId = conversationId
+        };
+
+        await _dbContext.ConversationModel.AddAsync(conversation);
+        await _dbContext.SaveChangesAsync();
+
+        // Check that it was actually added.
+        Assert.NotNull(await _dbContext.ConversationModel.FindAsync(conversationId));
+
+        // Act
+        var result = await controller.DeleteConversation(conversationId);
+        var deletedId = await _dbContext.ConversationModel.FindAsync(conversationId);
+
+        // Assert
+        Assert.Null(deletedId);
+    }
+
+    [Fact]
+    public async Task DeleteMessage_ReturnsOkObjectResult_OnSuccess()
+    {
+        // Arrange
+        var messageId = Guid.Parse("16c3b450-38fb-4ebf-9ed9-9eeab9d05de8");
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.DeleteMessage(messageId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task DeleteMessage_ReturnsBadObjectResult_OnFailure()
+    {
+        // Arrange
+        Guid? messageId = null;
+        var controller = new V1MessagingController(_service);
+
+        // Act
+        var result = await controller.DeleteMessage(messageId ?? Guid.Empty);
+
+        // Assert
+        var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, badResult.StatusCode);
+    }
+
+    [Fact]
+    public async Task DeleteMessage_DeletesMessage_WithRightId()
+    {
+        // Arrange
+        var messageId = Guid.Parse("16c3b450-38fb-4ebf-9ed9-9eeab9d05de8");
+        var controller = new V1MessagingController(_service);
+
+        var message = new V1Messages
+        {
+            MessageId = messageId,
+            Message = "hello test!",
+            Sender = "stian"
+        };
+
+        await _dbContext.Messages.AddAsync(message);
+        await _dbContext.SaveChangesAsync();
+
+        // Check that message was added.
+        Assert.NotNull(await _dbContext.Messages.FindAsync(messageId));
+
+        // Act
+        var result = await controller.DeleteMessage(messageId);
+
+        var deletedMessage = await _dbContext.Messages.FindAsync(messageId);
+
+        // Assert
+        Assert.Null(deletedMessage);
     }
 }

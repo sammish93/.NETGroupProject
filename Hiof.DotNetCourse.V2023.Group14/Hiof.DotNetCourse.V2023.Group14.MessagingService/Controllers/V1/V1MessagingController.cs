@@ -113,7 +113,7 @@ public class V1MessagingController : ControllerBase
     [HttpPut("[action]")]
     public async Task<ActionResult> UpdateMessage(Guid messageId, string newMessage)
     {
-        if (messageId.ToString() != null || newMessage != null)
+        if (messageId.ToString() != null && newMessage != null)
         {
             await _messagingService.UpdateMessage(messageId, newMessage);
             return Ok("Message successfully updated!");
@@ -127,7 +127,7 @@ public class V1MessagingController : ControllerBase
     [HttpDelete("[action]")]
     public async Task<ActionResult> DeleteConversation(Guid conversationId)
     {
-        if (conversationId.ToString() != null)
+        if (conversationId.ToString() != null && !conversationId.Equals(Guid.Empty))
         {
             await _messagingService.DeleteConversation(conversationId);
             return Ok("Conversation successfully deleted!");
@@ -141,7 +141,7 @@ public class V1MessagingController : ControllerBase
     [HttpDelete("[action]")]
     public async Task<ActionResult> DeleteMessage(Guid messageId)
     {
-        if (messageId.ToString() != null)
+        if (messageId.ToString() != null && !messageId.Equals(Guid.Empty))
         {
             await _messagingService.DeleteMessage(messageId);
             return Ok("Message successfully deleted!");
