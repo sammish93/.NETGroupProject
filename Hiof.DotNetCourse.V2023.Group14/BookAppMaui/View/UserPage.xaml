@@ -296,8 +296,18 @@
 
                             </ScrollView>
 
-                            <Button Grid.Row="3"
+                            <Button x:Name="messageButton"
+                                    Grid.Row="3"
+                                    IsVisible="false"
                                     Text="Send a message"
+                                    VerticalOptions="Start"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+
+                            <Button x:Name="readingGoalButton"
+                                    Grid.Row="3"
+                                    IsVisible="false"
+                                    Text="Add a new reading goal"
                                     VerticalOptions="Start"
                                     BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
                                     TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />

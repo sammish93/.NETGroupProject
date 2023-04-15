@@ -155,25 +155,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 }
 
-                var requestBody = new V1LibraryEntry(User, SelectedBook, rating, SelectedDate, SelectedReadingStatus);
+                bool isBookInLibraryResult = await isBookInLibrary(SelectedBook);
+                bool answer = false;
 
-                var requestBodyJson = JsonConvert.SerializeObject(requestBody);
-                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
-
-                HttpResponseMessage response = await _httpClient.PostAsync(createLibEntryUrl, requestContent);
-                if (response.IsSuccessStatusCode)
+                if (isBookInLibraryResult)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
-                    App.IsUserLibraryAltered = true;
-                    if(SelectedReadingStatus == ReadingStatus.Completed)
-                    {
-                        await UpdateReadingLibrary(User.Id, SelectedDate);
-                    }
-                    
+                    answer = await Application.Current.MainPage.DisplayAlert("This book is already in your library", "Would you like to add it an additional time?", "Yes", "No");
                 }
-                else
+
+                if (answer || !isBookInLibraryResult)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
+                    var requestBody = new V1LibraryEntry(User, SelectedBook, rating, SelectedDate, SelectedReadingStatus);
+
+                    var requestBodyJson = JsonConvert.SerializeObject(requestBody);
+                    var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await _httpClient.PostAsync(createLibEntryUrl, requestContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
+                        App.IsUserLibraryAltered = true;
+                        if (SelectedReadingStatus == ReadingStatus.Completed)
+                        {
+                            await UpdateReadingLibrary(User.Id, SelectedDate);
+                        }
+
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
+                    }
                 }
             }
             catch (Exception ex)
@@ -182,8 +193,34 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public async Task<bool> isBookInLibrary(V1Book book)
+        {
+            string isbn = "";
+            if (book.IndustryIdentifiers["ISBN_13"] != null)
+            {
+                isbn = book.IndustryIdentifiers["ISBN_13"];
+            } else if (book.IndustryIdentifiers["ISBN_10"] != null)
+            {
+                isbn = book.IndustryIdentifiers["ISBN_10"];
+            }
+            
+            string url = $"{_apiBaseUrl}/libraries/GetEntryFromSpecificUser?userId={User.Id}&isbn={isbn}";
 
+            HttpResponseMessage result = await _httpClient.GetAsync(url);
 
+            if (result.IsSuccessStatusCode)
+            {
+                var libraryEntry = await result.Content.ReadAsStringAsync();
+
+                if (!libraryEntry.IsNullOrEmpty()) 
+                { 
+                    return true; 
+                }
+                
+            }
+
+            return false;
+        }
 
         public void UpdateDate(DateTime dateTime)
         {

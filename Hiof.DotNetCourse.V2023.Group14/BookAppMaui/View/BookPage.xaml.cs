@@ -16,6 +16,22 @@ public partial class BookPage : ContentPage
         base.OnAppearing();
 
         BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
+
+        var addBookToLibraryButton = this.FindByName<Button>("addBookToLibraryButton");
+
+        var model = BindingContext as ViewModel.BookPageViewModel;
+
+        if (model != null)
+        {
+            if (await model.isBookInLibrary(App.SelectedBook))
+            {
+                addBookToLibraryButton.Text = "Add a re-read to library";
+            }
+            else
+            {
+                addBookToLibraryButton.Text = "Add to library";
+            }
+        }
     }
 
     protected override void OnSizeAllocated(double width, double height)

@@ -83,6 +83,7 @@
                            FontAttributes="Italic"
                            AbsoluteLayout.LayoutBounds="150, 90, AutoSize, AutoSize"
                            ZIndex="2" />
+
                 </AbsoluteLayout>
 
 
@@ -212,7 +213,8 @@
                                         ItemDisplayBinding="{Binding .}"
                                         SelectedItem="{Binding SelectedRating}" />
 
-                                <Button Grid.Row="2"
+                                <Button x:Name="addBookToLibraryButton"
+                                        Grid.Row="2"
                                         Text="Add to library"
                                         WidthRequest="{Binding Source={x:Reference dynamicLeftColumn}, Path='Width'}"
                                         BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"

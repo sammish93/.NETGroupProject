@@ -166,6 +166,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         public async Task<IActionResult> GetEntry(Guid entryId)
             => await Proxy(_apiUrls.Value.LibraryGetEntry + $"?entryId={entryId}");
 
+        [HttpGet("libraries/[action]")]
+        public async Task<IActionResult> GetEntryFromSpecificUser(Guid userId, String isbn)
+            => await Proxy(_apiUrls.Value.GetEntryFromSpecificUser + $"?userId={userId}&isbn={isbn}");
+
 
         [HttpGet("libraries/[action]")]
         public async Task<IActionResult> GetUserLibrary(Guid userId)

@@ -28,6 +28,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string LibraryEntry { get; set; }
         public string LibraryGetEntries { get; set; }
         public string LibraryGetEntry { get; set; }
+        public string GetEntryFromSpecificUser { get; set; }
         public string GetUserLibrary { get; set; }
         public string GetUserMostRecentBooks { get; set; }
         public string GetUserHighestRatedBooks { get; set; }

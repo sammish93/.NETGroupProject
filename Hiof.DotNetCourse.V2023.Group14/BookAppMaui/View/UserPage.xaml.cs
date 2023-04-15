@@ -23,6 +23,19 @@ public partial class UserPage : ContentPage
 
         if (model != null)
         {
+            var messageButton = this.FindByName<Button>("messageButton");
+            var readingGoalButton = this.FindByName<Button>("readingGoalButton");
+
+            if (App.LoggedInUser.Id == App.SelectedUser.Id)
+            {
+                readingGoalButton.IsVisible = true;
+                messageButton.IsVisible = false;
+            } else
+            {
+                messageButton.IsVisible = true;
+                readingGoalButton.IsVisible = false;
+            }
+
             await model.LoadProgressBarAsync();
             var progressBar = this.FindByName<ProgressBar>("progressBar");
 
