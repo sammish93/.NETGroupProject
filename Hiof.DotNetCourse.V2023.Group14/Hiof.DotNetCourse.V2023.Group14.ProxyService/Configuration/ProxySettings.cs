@@ -47,7 +47,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string DeleteIcon { get; set; }
 
         //Urls for readingGoals
-
         public string CreateReadingGoal { get; set; }
 
         public string GetAllGoals { get; set; }
@@ -57,6 +56,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string IncrementReadingGoal { get; set; }
         public string ModifyReadingGoal { get; set; }
         public string DeleteReadingGoal { get; set; }
+
+        // Urls for messaging service.
+
     }
 }
 
