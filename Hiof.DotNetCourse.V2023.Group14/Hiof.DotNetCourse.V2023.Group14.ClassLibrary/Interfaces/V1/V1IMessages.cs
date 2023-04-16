@@ -22,7 +22,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 
 		Task DeleteMessage(Guid messageId);
 
-		Task DeleteConversation(Guid conversationId);
+		Task<bool> DeleteConversation(Guid conversationId);
 	}
 }
 

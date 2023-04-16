@@ -503,6 +503,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         }
 
 
+        [HttpDelete("messages/[action]")]
+        public async Task<IActionResult> DeleteConversation(Guid conversationId)
+        {
+            var url = $"{_apiUrls.Value.DeleteConversation}?conversationId={conversationId}";
+            using var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
 
         private async Task<IActionResult> Proxy(string url)
         {

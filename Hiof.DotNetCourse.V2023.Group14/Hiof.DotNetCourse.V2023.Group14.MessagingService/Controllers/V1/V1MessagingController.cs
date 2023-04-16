@@ -152,16 +152,23 @@ public class V1MessagingController : ControllerBase
     }
 
     [HttpDelete("[action]")]
-    public async Task<ActionResult> DeleteConversation(Guid conversationId)
+    public async Task<IActionResult> DeleteConversation(Guid conversationId)
     {
-        if (conversationId.ToString() != null && !conversationId.Equals(Guid.Empty))
+        try
         {
-            await _messagingService.DeleteConversation(conversationId);
-            return Ok("Conversation successfully deleted!");
+            bool deleted = await _messagingService.DeleteConversation(conversationId);
+            if (deleted)
+            {
+                return Ok("Conversation successfully deleted!");
+            }
+            else
+            {
+                return BadRequest("Conversation with the ID does not exist");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            return BadRequest("ConversationId cannot be null");
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 

@@ -125,7 +125,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             }
         }
 
-        public async Task DeleteConversation(Guid conversationId)
+        public async Task<bool> DeleteConversation(Guid conversationId)
         {
             try
             {
@@ -133,7 +133,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                 if (conversation != null)
                 {
                     _context.Remove(conversation);
-                    await _context.SaveChangesAsync();
+                    var rowsAffected = await _context.SaveChangesAsync();
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("Failed to delete conversation.");
+                    }
+                    return true;
                 }
                 else
                 {
@@ -143,8 +148,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Could not delete the conversation.");
+                return false;
             }
-            
         }
 
         public async Task DeleteMessage(Guid messageId)
