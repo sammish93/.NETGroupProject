@@ -422,6 +422,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             => await Proxy($"{_apiUrls.Value.GetByConversationId}?id={conversationId}");
 
 
+        [HttpGet("messages/[action]")]
+        public async Task<IActionResult> GetByParticipant(string name)
+            => await Proxy($"{_apiUrls.Value.GetByParticipant}?name={name}");
+
+
 
         private async Task<IActionResult> Proxy(string url)
         {
