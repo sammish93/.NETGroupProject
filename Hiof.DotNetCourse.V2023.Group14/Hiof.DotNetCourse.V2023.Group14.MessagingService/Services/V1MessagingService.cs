@@ -152,7 +152,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             }
         }
 
-        public async Task DeleteMessage(Guid messageId)
+        public async Task<bool> DeleteMessage(Guid messageId)
         {
             try
             {
@@ -160,7 +160,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                 if (message != null)
                 {
                     _context.Remove(message);
-                    await _context.SaveChangesAsync();
+                    var rowsAffected = await _context.SaveChangesAsync();
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("Failed to delete message!");
+                    }
+                    return true;
                 }
                 else
                 {
@@ -170,6 +175,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Could not delete the message.");
+                return false;
             }
             
         }

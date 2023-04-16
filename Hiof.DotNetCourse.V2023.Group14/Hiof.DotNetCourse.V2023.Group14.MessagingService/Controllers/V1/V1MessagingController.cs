@@ -183,15 +183,25 @@ public class V1MessagingController : ControllerBase
     [HttpDelete("[action]")]
     public async Task<ActionResult> DeleteMessage(Guid messageId)
     {
-        if (messageId.ToString() != null && !messageId.Equals(Guid.Empty))
+        try
         {
-            await _messagingService.DeleteMessage(messageId);
-            return Ok("Message successfully deleted!");
+            bool detected = await _messagingService.DeleteMessage(messageId);
+            if (detected)
+            {
+                return Ok("Message successfully deleted!");
+            }
+            else if (messageId.Equals(Guid.Empty))
+            {
+                return BadRequest("Message id cannot be empty!");
+            }
+            else
+            {
+                return BadRequest("Message with the ID does not exists.");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            return BadRequest("MessageId cannot be null");
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
-
     }
 }

@@ -520,6 +520,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         }
 
 
+        [HttpDelete("messages/[action]")]
+        public async Task<IActionResult> DeleteMessage(Guid messageId)
+        {
+            var url = $"{_apiUrls.Value.DeleteMessage}?messageId={messageId}";
+            using var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
         private async Task<IActionResult> Proxy(string url)
         {
             var response = await _httpClient.GetAsync(url);
