@@ -55,7 +55,6 @@ public class V1MessagingController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex);
         }
-        
     }
 
     [HttpPost("[action]")]

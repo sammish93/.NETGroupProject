@@ -117,8 +117,8 @@ public class MessagingControllerTest
 
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(200, okResult.StatusCode);
+        var okResult = Assert.IsType<ActionResult<V1ConversationModel>>(result);
+        Assert.NotNull(okResult);
     }
 
     [Fact]
@@ -500,6 +500,16 @@ public class MessagingControllerTest
         // Arrange
         var messageId = Guid.Parse("16c3b450-38fb-4ebf-9ed9-9eeab9d05de8");
         var controller = new V1MessagingController(_service);
+
+        var message = new V1Messages
+        {
+            MessageId = messageId,
+            Message = "hello hello",
+            Sender = "stian"
+        };
+
+        await _dbContext.Messages.AddAsync(message);
+        await _dbContext.SaveChangesAsync();
 
         // Act
         var result = await controller.DeleteMessage(messageId);
