@@ -413,7 +413,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             if (response.IsSuccessStatusCode)
                 return Ok();
             else
-                return BadRequest(response.ReasonPhrase);
+                return BadRequest(await response.Content.ReadAsStringAsync());
         }
 
         // TODO: Implement Messaging Service.
@@ -425,6 +425,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         [HttpGet("messages/[action]")]
         public async Task<IActionResult> GetByParticipant(string name)
             => await Proxy($"{_apiUrls.Value.GetByParticipant}?name={name}");
+
 
         [HttpPost("messages/[action]")]
         public async Task<IActionResult> CreateNewConversation(Guid conversationId, [FromBody] IEnumerable<string> participants)
@@ -442,6 +443,25 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             {
                 var errorString = await response.Content.ReadAsStringAsync();
                 return BadRequest(errorString);
+            }
+        }
+
+
+        [HttpPost("messages/[action]")]
+        public async Task<IActionResult> AddMessageToConversation(Guid conversationId, string sender, [FromBody] string message)
+        {
+            var url = $"{_apiUrls.Value.AddMessageToConversation}?conversationId={conversationId}&sender={sender}";
+
+            using var content = SerializeToJsonString(message);
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
             }
         }
 

@@ -77,15 +77,27 @@ public class V1MessagingController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<ActionResult> AddMessageToConveration([Required] Guid conversationId, string sender, string message)
+    public async Task<ActionResult> AddMessageToConveration(Guid conversationId, string sender, [FromBody] string message)
     {
         if (sender == null || message == null)
         {
-            return BadRequest("Sender and message fields cannot be empty!");
+            return BadRequest("Sender and message fields cannot be null!");
+        }
+        else if (conversationId.Equals(Guid.Empty))
+        {
+            return BadRequest("Please enter a valid conversationId!");
         }
         else if (message.Length > MESSAGE_MAX)
         {
             return BadRequest("Message cannot be longer than 120 characters.");
+        }
+        else if (message.Equals(String.Empty))
+        {
+            return BadRequest("Please enter a message to send!");
+        }
+        else if (sender.Equals(String.Empty))
+        {
+            return BadRequest("Please enter the name of the sender!");
         }
         else
         {
