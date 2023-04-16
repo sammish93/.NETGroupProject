@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration;
@@ -453,6 +454,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             var url = $"{_apiUrls.Value.AddMessageToConversation}?conversationId={conversationId}&sender={sender}";
 
             using var content = SerializeToJsonString(message);
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        [HttpPost("messages/[action]")]
+        public async Task<IActionResult> AddReactionToMessage(Guid messageId, ReactionType reaction)
+        {
+            var url = $"{_apiUrls.Value.AddReactionToMessage}?messageId={messageId}&reaction={reaction}";
+            using var content = SerializeToJsonString(new { reaction });
             using var response = await _httpClient.PostAsync(url, content);
 
             if (response.IsSuccessStatusCode)

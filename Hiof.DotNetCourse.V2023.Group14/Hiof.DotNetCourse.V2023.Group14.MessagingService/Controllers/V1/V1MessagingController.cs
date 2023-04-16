@@ -118,6 +118,10 @@ public class V1MessagingController : ControllerBase
         {
             return BadRequest("MessageId cannot be longer than 36 characters");
         }
+        else if (!Enum.IsDefined(typeof(ReactionType), reaction))
+        {
+            return BadRequest("Invalid reaction type.");
+        }
         else
         {
             await _messagingService.AddReactionToMessage(messageId, reaction);
