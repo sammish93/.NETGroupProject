@@ -141,7 +141,7 @@ public class ProxyControllerTest
         var result = await _controller.GetAll();
 
         // Assert
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<NotFoundObjectResult>(result);
     }
 
 
@@ -204,7 +204,7 @@ public class ProxyControllerTest
         var result = await _controller.GetById(id);
 
         // Assert
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<NotFoundObjectResult>(result);
 
     }
 
