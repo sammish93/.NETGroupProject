@@ -132,14 +132,22 @@ public class V1MessagingController : ControllerBase
     [HttpPut("[action]")]
     public async Task<ActionResult> UpdateMessage(Guid messageId, string newMessage)
     {
-        if (messageId.ToString() != null && newMessage != null)
+        if (messageId.ToString() != null)
         {
             await _messagingService.UpdateMessage(messageId, newMessage);
             return Ok("Message successfully updated!");
         }
+        else if (messageId.Equals(Guid.Empty))
+        {
+            return BadRequest("Message id cannot be empty!");
+        }
+        else if (newMessage != null && newMessage.Equals(String.Empty))
+        {
+            return BadRequest("Please enter the updated message.");
+        }
         else
         {
-            return BadRequest("Id and message cannot be null.");
+            return BadRequest("Message id cannot be null.");
         }
     }
 

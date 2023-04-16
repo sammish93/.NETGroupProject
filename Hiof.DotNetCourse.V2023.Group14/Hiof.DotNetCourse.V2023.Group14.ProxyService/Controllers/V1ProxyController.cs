@@ -466,12 +466,31 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
+
         [HttpPost("messages/[action]")]
         public async Task<IActionResult> AddReactionToMessage(Guid messageId, ReactionType reaction)
         {
             var url = $"{_apiUrls.Value.AddReactionToMessage}?messageId={messageId}&reaction={reaction}";
             using var content = SerializeToJsonString(new { reaction });
             using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+
+        [HttpPut("messages/[action]")]
+        public async Task<IActionResult> UpdateMessage(Guid messageId, string newMessage)
+        {
+            var url = $"{_apiUrls.Value.UpdateMessage}?messageId={messageId}&newMessage={newMessage}";
+            using var content = SerializeToJsonString(new { newMessage });
+            using var response = await _httpClient.PutAsync(url, content);
 
             if (response.IsSuccessStatusCode)
             {
