@@ -211,11 +211,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
         {
             try
             {
-                return await _context.ConversationModel
-                    .Where(x => x.Participants.Any(p => p.Participant == participant))
-                    .Include(x => x.Participants)
-                    .Include(x => x.Messages)
-                    .FirstOrDefaultAsync();
+                var conversation = await _context.ConversationModel
+                    .Where(c => c.Participants.Any(p => p.Participant == participant))
+                    .Include(c => c.Participants)
+                    .Include(c => c.Messages)
+                    .SingleOrDefaultAsync();
+
+                if (conversation == null)
+                {
+                    throw new Exception($"Conversation with participant '{participant}' not found.");
+                }
+
+                return conversation;
             }
             catch (Exception ex)
             {

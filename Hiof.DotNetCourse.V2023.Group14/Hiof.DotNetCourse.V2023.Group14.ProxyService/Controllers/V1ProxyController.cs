@@ -546,7 +546,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                return NotFound();
+                return NotFound(await response.Content.ReadAsStringAsync());
             }
             else
             {

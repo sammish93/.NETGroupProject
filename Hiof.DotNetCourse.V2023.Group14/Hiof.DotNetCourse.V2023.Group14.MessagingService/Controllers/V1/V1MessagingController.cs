@@ -37,16 +37,23 @@ public class V1MessagingController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<ActionResult> GetByParticipant(string name)
+    public async Task<ActionResult<V1ConversationModel>> GetByParticipant(string name)
     {
-        var result = await _messagingService.GetByParticipant(name);
-        if (result != null)
+        try
         {
-            return Ok(result);
+            var result = await _messagingService.GetByParticipant(name);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound($"Participant: {name} does not exists.");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            return NotFound($"Participant: {name} does not exists.");
+            return StatusCode(StatusCodes.Status500InternalServerError, ex);
         }
         
     }
