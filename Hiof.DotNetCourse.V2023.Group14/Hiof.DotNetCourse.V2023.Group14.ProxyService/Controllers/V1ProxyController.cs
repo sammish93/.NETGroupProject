@@ -362,7 +362,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         }
 
         [HttpGet("goals/[action]")]
-        public async Task<IActionResult> GetAllGoals([Required]Guid userId)
+        public async Task<IActionResult> GetAllGoals([Required] Guid userId)
             => await Proxy($"{_apiUrls.Value.GetAllGoals}?userId={userId}");
 
         [HttpGet("goals/[action]")]
@@ -377,16 +377,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
         public async Task<IActionResult> IncrementReadingGoal(Guid id, int amount)
         {
-            var url = $"{ _apiUrls.Value.IncrementReadingGoal}?id={id}&incrementAmount={amount}";
-            var content = new StringContent(amount.ToString(),  Encoding.UTF8, "application/json");
+            var url = $"{_apiUrls.Value.IncrementReadingGoal}?id={id}&incrementAmount={amount}";
+            var content = new StringContent(amount.ToString(), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync(url, content);
 
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
                 return Ok();
             else
                 return BadRequest(response.RequestMessage);
-            
+
         }
 
         [HttpPut("goals/[action]")]
@@ -405,7 +405,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         }
 
         [HttpDelete("goals/[action]")]
-        public async Task<IActionResult> DeleteReadingGoal( Guid id)
+        public async Task<IActionResult> DeleteReadingGoal(Guid id)
         {
             var url = $"{_apiUrls.Value.DeleteReadingGoal}?id={id}";
             var response = await _httpClient.DeleteAsync(url);
@@ -417,6 +417,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         }
 
         // TODO: Implement Messaging Service.
+        [HttpGet("messages/[action]")]
+        public async Task<IActionResult> GetByConversationId(Guid conversationId)
+            => await Proxy($"{_apiUrls.Value.GetByConversationId}?id={conversationId}");
 
 
 
