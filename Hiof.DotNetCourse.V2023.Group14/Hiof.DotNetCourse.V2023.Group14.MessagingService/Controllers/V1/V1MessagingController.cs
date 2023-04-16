@@ -54,26 +54,33 @@ public class V1MessagingController : ControllerBase
     [HttpPost("[action]")]
     public async Task<ActionResult> CreateNewConversation(Guid conversationId, [FromBody] IEnumerable<string> participants)
     {
-        if (conversationId == Guid.Empty)
+        try
         {
-            return BadRequest("Conversation id cannot be empty!");
-        }
-        else if (conversationId.ToString().Length < 36)
-        {
-            return BadRequest("Id must be at least 36 characters long.");
-        }
+            if (conversationId == Guid.Empty || conversationId.ToString().Length < 36)
+            {
+                return BadRequest("Conversation id must be at least 36 characters long!");
+            }
 
-        if (participants == null)
-        {
-            return BadRequest("Please add participants to the conversation");
-        }
-        else if (!participants.Any())
-        {
-            return BadRequest("Please add at least one participant to the conversation");
-        }
+            if (!participants.Any() || participants.SequenceEqual(new[] { "string" }))
+            {
+                return BadRequest("Please add at least one participant to the conversation!");
+            }
 
-        await _messagingService.CreateNewConversation(conversationId, participants);
-        return Ok("New conversation successfully created!");
+            bool created = await _messagingService.CreateNewConversation(conversationId, participants);
+
+            if (created)
+            {
+                return Ok("New conversation successfully created!");
+            }
+            else
+            {
+                return BadRequest("ConversationId already exists, please provide another one!");
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
     [HttpPost("[action]")]

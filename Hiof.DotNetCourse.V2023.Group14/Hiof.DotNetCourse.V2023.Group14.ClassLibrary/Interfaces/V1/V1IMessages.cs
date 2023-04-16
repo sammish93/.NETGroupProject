@@ -16,7 +16,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 
 		Task AddReactionToMessage(Guid messageId, ReactionType reaction);
 
-		Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants);
+		Task<bool> CreateNewConversation(Guid conversationId, IEnumerable<string> participants);
 
 		Task<bool> UpdateMessage(Guid messageId, string message);
 

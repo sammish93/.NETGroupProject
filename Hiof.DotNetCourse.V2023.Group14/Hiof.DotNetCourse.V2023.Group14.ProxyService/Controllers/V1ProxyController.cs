@@ -417,7 +417,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
                 return BadRequest(await response.Content.ReadAsStringAsync());
         }
 
-        // TODO: Implement Messaging Service.
+
         [HttpGet("messages/[action]")]
         public async Task<IActionResult> GetByConversationId(Guid conversationId)
             => await Proxy($"{_apiUrls.Value.GetByConversationId}?id={conversationId}");

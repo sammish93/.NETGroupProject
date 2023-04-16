@@ -91,10 +91,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             
         }
 
-        public async Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants)
+        public async Task<bool> CreateNewConversation(Guid conversationId, IEnumerable<string> participants)
         {
             try
             {
+                bool existingConversation = await _context.ConversationModel.AnyAsync(x => x.ConversationId == conversationId);
+
+                if (existingConversation)
+                {
+                    throw new Exception("ConversationId already exists. Please provide another one!");
+                }
+
                 // Create a new conversation
                 var conversation = new V1ConversationModel
                 {
@@ -118,10 +125,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                 await _context.ConversationModel.AddAsync(conversation);
 
                 await _context.SaveChangesAsync();
+
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Could not add conversation to database.");
+                return false;
             }
         }
 
