@@ -204,7 +204,7 @@ public class MessagingControllerTest
         var controller = new V1MessagingController(_service);
 
         // Act
-        var result = await controller.CreateNewConversation(id, null);
+        var result = await controller.CreateNewConversation(id, new List<string>());
 
         // Assert
         var badRequest = Assert.IsType<BadRequestObjectResult>(result);
