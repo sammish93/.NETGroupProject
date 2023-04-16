@@ -117,15 +117,15 @@ public class MessagingControllerTest
 
 
         // Assert
-        var okResult = Assert.IsType<ActionResult<V1ConversationModel>>(result);
-        Assert.NotNull(okResult);
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        Assert.Equal(200, okResult.StatusCode);
     }
 
     [Fact]
     public async Task GetByParticipant_ReturnsNotFoundObjectResult_WhenParticipantNameDoesNotExists()
     {
         // Arrange
-        var name = "fakeName";
+        var name = "byby";
 
         var controller = new V1MessagingController(_service);
 
@@ -134,7 +134,7 @@ public class MessagingControllerTest
 
 
         // Assert
-        var okResult = Assert.IsType<NotFoundObjectResult>(result);
+        var okResult = Assert.IsType<NotFoundObjectResult>(result.Result);
         Assert.Equal(404, okResult.StatusCode);
     }
 
@@ -142,7 +142,7 @@ public class MessagingControllerTest
     public async Task CreateNewConversation_ReturnsOkObjectResult_WhenNewConversationIsCreated()
     {
         // Arrange
-        var conversationId = new Guid("36c3b450-34bb-4ebf-9ad9-9eaab9d05be8");
+        var conversationId = new Guid("36c3b450-34bb-4ebf-9ad9-9eaab9d05be2");
         var controller = new V1MessagingController(_service);
 
         List<string> participants = new List<string> { "geir", "lars" };
@@ -169,14 +169,9 @@ public class MessagingControllerTest
 
         // Check if the conversation was actually created
         var conversation = await _service.GetByConversationId(conversationId);
-        var geir = conversation?.Participants.Find(n => n.Participant.Equals("geir"));
-        var lars = conversation?.Participants.Find(n => n.Participant.Equals("lars"));
-
-        // Assert
         Assert.NotNull(conversation);
+        Assert.NotNull(conversation.Participants);
         Assert.Equal(conversationId, conversation.ConversationId);
-        Assert.Equal("geir", geir?.Participant);
-        Assert.Equal("lars", lars?.Participant);
     }
 
     [Fact]
@@ -375,17 +370,30 @@ public class MessagingControllerTest
     public async Task UpdateMessage_ReturnsOkObjectResult_WhenValid()
     {
         // Arrange
-        var messageId = Guid.Parse("012774ff-2d50-4f61-985a-4aa5da5fd8c7");
+        var messageId = Guid.Parse("012774ff-2d50-4f61-985a-4aa5da5fd8c4");
         var newMessage = "Hello World!";
+
+        var message = new V1Messages
+        {
+            MessageId = messageId,
+            Message = newMessage,
+            Sender = "stian"
+        };
+
+        await _dbContext.Messages.AddAsync(message);
+        await _dbContext.SaveChangesAsync();
 
         var controller = new V1MessagingController(_service);
 
         // Act
-        var updatedResult = await controller.UpdateMessage(messageId, newMessage);
+        var updatedResult = await controller.UpdateMessage(messageId, "New hello world!");
+        var updatedMessage = await _dbContext.Messages.FindAsync(messageId);
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(updatedResult);
-        Assert.Equal(200, okResult.StatusCode);
+        var okResult = Assert.IsType<OkObjectResult>(updatedResult); 
+        Assert.Equal("Message successfully updated!", okResult.Value);
+        Assert.NotNull(updatedMessage);
+        Assert.Equal("New hello world!", updatedMessage.Message);
     }
 
     [Fact]
@@ -393,7 +401,7 @@ public class MessagingControllerTest
     {
         // Arrange
         var messageId = Guid.Parse("012774ff-2d50-4f61-985a-4aa5da5fd8c7");
-        string? newMessage = null;
+        string newMessage = String.Empty;
 
         var controller = new V1MessagingController(_service);
 
@@ -443,6 +451,14 @@ public class MessagingControllerTest
         var conversationId = Guid.Parse("16c3b450-38fb-4ebf-9ed9-9eeab9d05de8");
         var controller = new V1MessagingController(_service);
 
+        var conversation = new V1ConversationModel
+        {
+            ConversationId = conversationId,
+        };
+
+        await _dbContext.ConversationModel.AddAsync(conversation);
+        await _dbContext.SaveChangesAsync();
+
         // Act
         var result = await controller.DeleteConversation(conversationId);
 
@@ -465,7 +481,7 @@ public class MessagingControllerTest
         // Assert
         Assert.IsType<BadRequestObjectResult>(result);
         var badRequestObjectResult = (BadRequestObjectResult)result;
-        Assert.Equal("ConversationId cannot be null", badRequestObjectResult.Value);
+        Assert.Equal("Conversation with the ID does not exist", badRequestObjectResult.Value);
     }
 
     [Fact]

@@ -62,12 +62,12 @@ public class V1MessagingController : ControllerBase
     {
         try
         {
-            if (conversationId == Guid.Empty || conversationId.ToString().Length < 36)
+            if (conversationId == Guid.Empty)
             {
-                return BadRequest("Conversation id must be at least 36 characters long!");
+                return BadRequest("Conversation id cannot be empty");
             }
 
-            if (!participants.Any() || participants.SequenceEqual(new[] { "string" }))
+            if (!participants.Any() || participants.Contains("string"))
             {
                 return BadRequest("Please add at least one participant to the conversation!");
             }
@@ -147,22 +147,24 @@ public class V1MessagingController : ControllerBase
     {
         try
         {
-            bool detected = await _messagingService.UpdateMessage(messageId, newMessage);
-            if (detected)
+            if (messageId == Guid.Empty)
+            {
+                return BadRequest("Message ID cannot be empty!");
+            }
+
+            if (string.IsNullOrWhiteSpace(newMessage))
+            {
+                return BadRequest("Updated message cannot be empty or null.");
+            }
+
+            bool isUpdated = await _messagingService.UpdateMessage(messageId, newMessage);
+            if (isUpdated)
             {
                 return Ok("Message successfully updated!");
             }
-            else if (messageId.Equals(Guid.Empty))
-            {
-                return BadRequest("Message id cannot be empty!"); 
-            }
-            else if (newMessage.Equals(String.Empty))
-            {
-                return BadRequest("Please enter the updated message.");
-            }
             else
             {
-                return BadRequest("Message with the ID does not exists.");
+                return NotFound($"Message with ID {messageId} does not exist.");
             }
         }
         catch (Exception ex)
