@@ -63,14 +63,17 @@ public class V1MessagingController : ControllerBase
             return BadRequest("Id must be at least 36 characters long.");
         }
 
-        if (participants == null || !participants.Any())
+        if (participants == null)
         {
             return BadRequest("Please add participants to the conversation");
+        }
+        else if (!participants.Any())
+        {
+            return BadRequest("Please add at least one participant to the conversation");
         }
 
         await _messagingService.CreateNewConversation(conversationId, participants);
         return Ok("New conversation successfully created!");
-
     }
 
     [HttpPost("[action]")]

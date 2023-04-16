@@ -426,6 +426,25 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         public async Task<IActionResult> GetByParticipant(string name)
             => await Proxy($"{_apiUrls.Value.GetByParticipant}?name={name}");
 
+        [HttpPost("messages/[action]")]
+        public async Task<IActionResult> CreateNewConversation(Guid conversationId, [FromBody] IEnumerable<string> participants)
+        {
+            var url = $"{_apiUrls.Value.CreateNewConversation}?conversationId={conversationId}";
+            using var content = SerializeToJsonString(participants);
+
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok("New conversation successfully created!");
+            }
+            else
+            {
+                var errorString = await response.Content.ReadAsStringAsync();
+                return BadRequest(errorString);
+            }
+        }
+
 
 
         private async Task<IActionResult> Proxy(string url)
