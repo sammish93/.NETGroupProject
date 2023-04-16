@@ -18,7 +18,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 
 		Task CreateNewConversation(Guid conversationId, IEnumerable<string> participants);
 
-		Task UpdateMessage(Guid messageId, string message);
+		Task<bool> UpdateMessage(Guid messageId, string message);
 
 		Task DeleteMessage(Guid messageId);
 

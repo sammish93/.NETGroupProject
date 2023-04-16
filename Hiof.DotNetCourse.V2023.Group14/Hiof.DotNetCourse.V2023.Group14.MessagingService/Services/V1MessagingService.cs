@@ -208,7 +208,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             }
         }
 
-        public async Task UpdateMessage(Guid messageId, string message)
+        public async Task<bool> UpdateMessage(Guid messageId, string message)
         {
             try
             {
@@ -222,11 +222,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                 }
 
                 existing.Message = message;
-                await _context.SaveChangesAsync();
+                var rowsAffected = await _context.SaveChangesAsync();
+                if (rowsAffected == 0)
+                {
+                    throw new Exception("Failed to update message.");
+                }
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Could not update the message.");
+                return false;
             }
         }
     }
