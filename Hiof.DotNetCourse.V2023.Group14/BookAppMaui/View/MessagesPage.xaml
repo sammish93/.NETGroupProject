@@ -73,21 +73,23 @@
                       BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                       Margin="5">
 
-                    <CollectionView ItemsSource="{Binding ConversationParticipants}"
+                    <CollectionView ItemsSource="{Binding SelectedConversation.Messages}"
                                     ItemsLayout="VerticalList">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid ColumnSpacing="10"
+                                      RowSpacing="5"
                                       Margin="5"
                                       BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="1*" />
+                                        <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
                                     <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                             StrokeThickness="0"
                                             Grid.Row="0"
@@ -99,13 +101,13 @@
                                             <RoundRectangle CornerRadius="5" />
                                         </Border.StrokeShape>
                                         <Image Grid.Row="0"
-                                               Source="{Binding DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                   Source="{Binding ParticipantsAsObjects[0].DisplayPicture , Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                                Aspect="AspectFit" />
                                     </Border>
                                     
                                     <Label Grid.Column="1"
                                            Grid.Row="0"
-                                           Text="{Binding User.UserName}"
+                                           Text="{Binding Conversation.ParticipantsAsObjects[0].UserName}"
                                            LineBreakMode="CharacterWrap"
                                            FontAttributes="Bold"
                                            HorizontalOptions="Start"
@@ -113,12 +115,20 @@
                                            HorizontalTextAlignment="Start" />
                                     <Label Grid.Column="1"
                                            Grid.Row="1"
-                                           Text="Here is my comment, blah blah."
+                                           Text="{Binding Message}"
                                            LineBreakMode="CharacterWrap"
                                            HorizontalOptions="Start"
                                            FontSize="14"
                                            HorizontalTextAlignment="Start" />
-                                </Grid>
+                                        <Label Grid.Column="1"
+                                               Grid.Row="2"
+                                               Text="{Binding Date, StringFormat='{0:ddd, MMM d, yyy, HH:mm:ss}'}"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="End"
+                                               FontAttributes="Italic"
+                                               FontSize="11"
+                                               HorizontalTextAlignment="Start" />
+                                    </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
@@ -131,9 +141,10 @@
                       BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                       Margin="5">
 
-                    <CollectionView ItemsSource="{Binding ConversationParticipants}"
+                    <CollectionView ItemsSource="{Binding Conversations}"
                                     ItemsLayout="VerticalList"
-                                    SelectionMode="Single">
+                                    SelectionMode="Single"
+                                    SelectionChanged="CollectionViewConversations_SelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid ColumnSpacing="10"
@@ -157,26 +168,26 @@
                                             <RoundRectangle CornerRadius="1" />
                                         </Border.StrokeShape>
                                         <Image Grid.Row="0"
-                                               Source="messages.png"
+                                               Source="{Binding ParticipantsAsObjects[0].DisplayPicture , Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                                Aspect="AspectFit" />
                                     </Border>
 
                                     <Label Grid.Column="1"
                                            Grid.Row="0"
-                                           Text="Conversation 1"
-                                           LineBreakMode="CharacterWrap"
+                                               Text="{Binding ParticipantsAsObjects[0].User.UserName}"
+                                           LineBreakMode="NoWrap"
                                            FontAttributes="Bold"
                                            HorizontalOptions="Start"
                                            FontSize="16"
                                            HorizontalTextAlignment="Start" />
-                                    <Label Grid.Column="1"
-                                           Grid.Row="1"
-                                           Text="{Binding User.UserName}"
-                                           LineBreakMode="CharacterWrap"
-                                           HorizontalOptions="Start"
-                                           FontSize="14"
-                                           HorizontalTextAlignment="Start" />
-                                </Grid>
+                                        <Label Grid.Column="1"
+                                               Grid.Row="1"
+                                               Text="{Binding LastMessage.Date, StringFormat='Last Message: {0:dd/mm/yy HH:mm:ss}'}"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Start"
+                                               FontSize="14"
+                                               HorizontalTextAlignment="Start" />
+                                    </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
@@ -197,9 +208,12 @@
                            Placeholder="Enter a message..."
                            Text="{Binding Message}"
                            x:Name="messageEntry"
-                           TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                           IsVisible="false"
+                           MaxLength="120"
+                           ClearButtonVisibility="WhileEditing"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                            BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                           PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                               PlaceholderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                            HorizontalTextAlignment="Start"
                            VerticalOptions="Center">
                         <Entry.Shadow>
@@ -213,6 +227,9 @@
                     <Button Grid.Column="1"
                             Text="Send message"
                             VerticalOptions="Start"
+                            x:Name="messageButton"
+                            IsVisible="false"
+                            Command="{Binding SendMessageCommand}"
                             BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                             TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
 

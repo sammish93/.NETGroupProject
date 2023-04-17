@@ -109,8 +109,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             LoggedInUser = user;
         }
 
-        //public ICommand PopulateBooksCommand => new Command(async () => await populateBooks());
-
         public async Task PopulateHighestRatedBooks()
         {
             if (HighestRatedBooks.IsNullOrEmpty() || App.IsUserLibraryAltered)

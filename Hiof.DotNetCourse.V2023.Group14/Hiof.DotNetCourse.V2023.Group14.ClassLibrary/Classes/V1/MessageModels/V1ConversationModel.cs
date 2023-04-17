@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
@@ -17,7 +18,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 
 		public List<V1Participant> Participants { get; set; }
 
+        [NotMapped]
+        public List<V1UserWithDisplayPicture>? ParticipantsAsObjects { get; set; }
+
         public List<V1Messages> Messages { get; set; }
+
+        [NotMapped]
+        public V1Messages? LastMessage { get; set; }
     }
 }
 
