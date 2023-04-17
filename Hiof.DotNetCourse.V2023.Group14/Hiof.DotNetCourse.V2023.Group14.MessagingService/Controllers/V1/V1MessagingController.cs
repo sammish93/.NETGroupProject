@@ -90,7 +90,7 @@ public class V1MessagingController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<ActionResult> AddMessageToConveration(Guid conversationId, string sender, [FromBody] string message)
+    public async Task<ActionResult> AddMessageToConversation(Guid conversationId, string sender, [FromBody] string message)
     {
         if (sender == null || message == null)
         {
