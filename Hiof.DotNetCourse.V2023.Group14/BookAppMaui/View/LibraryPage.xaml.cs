@@ -25,7 +25,7 @@ public partial class LibraryPage : ContentPage
         }
         base.OnAppearing();
     }
-    private void OnItemSelected(object sender, SelectionChangedEventArgs e)
+    private async void OnItemSelected(object sender, SelectionChangedEventArgs e)
     {
         var model = BindingContext as ViewModel.LibraryPageViewModel;
 
@@ -33,7 +33,8 @@ public partial class LibraryPage : ContentPage
         {
             if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
             {
-                
+                V1LibraryEntryWithImage entry = ((V1LibraryEntryWithImage)e.CurrentSelection.First());
+                await model.NavigateToLibraryEntryDetailPage(entry);
             }
         }
     }
