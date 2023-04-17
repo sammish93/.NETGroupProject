@@ -20,6 +20,7 @@ using System.Web;
 using CommunityToolkit.Mvvm.Messaging;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using System.Diagnostics.Metrics;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -362,6 +363,97 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 Debug.WriteLine(ex);
             }
+        }
+
+        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(App.LoggedInUser, SelectedUser));
+
+        private async Task SendMessageAsync(V1User userSender, V1User userRecipient)
+        {
+            try
+            {
+                bool isConversationExist = await GetExistingConversationAsync(userSender, userRecipient);
+
+                if (!isConversationExist)
+                {
+                    var conversationId = Guid.NewGuid();
+
+                    string url = $"{_apiBaseUrl}/messages/CreateNewConversation?conversationId={conversationId}";
+
+                    List<string> participants = new List<string>
+                {
+                    userSender.Id.ToString(),
+                    userRecipient.Id.ToString()
+                };
+
+                    var requestBodyJson = JsonConvert.SerializeObject(participants);
+                    var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await Shell.Current.GoToAsync("///messages");
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
+                    }
+                } else
+                {
+                    await Shell.Current.GoToAsync("///messages");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        private async Task<bool> GetExistingConversationAsync(V1User userSender, V1User userReceiver)
+        {
+            try
+            {
+                string url = $"{_apiBaseUrl}/messages/GetByParticipant?name={userSender.Id}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+
+                dynamic? jArrayConversations = JsonConvert.DeserializeObject(json);
+
+                foreach (JObject conversationsJson in jArrayConversations)
+                {
+                    V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
+
+                    bool includesSender = false;
+                    bool includesReceiver = false;
+
+                    foreach (V1Participant participant in conversation.Participants)
+                    {
+                        if (participant.Participant.Equals(userSender.Id.ToString()))
+                        {
+                            includesSender = true;
+                        } else if (participant.Participant.Equals(userReceiver.Id.ToString()))
+                        {
+                            includesReceiver = true;
+                        }
+                    }
+
+                    if (includesSender && includesReceiver)
+                    {
+                        return true;
+                    }
+
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return false;
         }
 
         public async Task LoadAsync()

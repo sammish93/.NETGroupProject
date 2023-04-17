@@ -381,6 +381,7 @@
                                     IsVisible="false"
                                     Text="Send a message"
                                     VerticalOptions="Start"
+                                    Command="{Binding SendMessageCommand}"
                                     BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource PrimaryDark}}"
                                     TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
 

@@ -207,7 +207,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
            
         }
 
-        public async Task<V1ConversationModel?> GetByParticipant(string participant)
+        public async Task<List<V1ConversationModel>?> GetByParticipant(string participant)
         {
             try
             {
@@ -215,7 +215,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                     .Where(c => c.Participants.Any(p => p.Participant == participant))
                     .Include(c => c.Participants)
                     .Include(c => c.Messages)
-                    .SingleOrDefaultAsync();
+                    .ToListAsync();
 
                 if (conversation == null)
                 {
@@ -257,6 +257,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                 _logger.LogError(ex, "Could not update the message.");
                 return false;
             }
+        }
+
+        Task<V1ConversationModel?> V1IMessages.GetByParticipant(string participant)
+        {
+            throw new NotImplementedException();
         }
     }
 }
