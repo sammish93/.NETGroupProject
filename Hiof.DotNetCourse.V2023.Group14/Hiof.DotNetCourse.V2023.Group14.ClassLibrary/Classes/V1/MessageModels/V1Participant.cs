@@ -14,6 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 
         [JsonIgnore]
         [ForeignKey("ConversationId")]
+        [Column("ConversationId", TypeName = "char(36)")]
         public Guid ConversationId { get; set; }
 	}
 }
