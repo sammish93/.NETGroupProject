@@ -12,7 +12,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
     public class V1ConversationModel
 	{
         [Key]
-		public Guid ConversationId { get; set; }
+        [Column("ConversationId", TypeName = "char(36)")]
+        public Guid ConversationId { get; set; }
 
 		public List<V1Participant> Participants { get; set; }
 

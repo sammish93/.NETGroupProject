@@ -3,6 +3,7 @@ using System;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,22 +12,25 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 {
     [DbContext(typeof(MessagingContext))]
-    [Migration("20230416124549_AddedIsReadField")]
-    partial class AddedIsReadField
+    [Migration("20230417062527_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1ConversationModel", b =>
                 {
-                    b.Property<Guid>("ConversationId")
+                    b.Property<string>("ConversationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("ConversationId");
 
                     b.HasKey("ConversationId");
 
@@ -35,26 +39,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Messages", b =>
                 {
-                    b.Property<Guid>("MessageId")
+                    b.Property<string>("MessageId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("MessageId");
 
-                    b.Property<Guid>("ConversationId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("ConversationId")
+                        .IsRequired()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("ConversationId");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sender")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isRead")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.HasKey("MessageId");
 
@@ -66,10 +73,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Participant", b =>
                 {
                     b.Property<string>("Participant")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("ConversationId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("ConversationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("ConversationId");
 
                     b.HasKey("Participant", "ConversationId");
 
@@ -80,12 +88,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Reactions", b =>
                 {
-                    b.Property<Guid>("ReactionId")
+                    b.Property<string>("ReactionId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("ReactionId");
 
-                    b.Property<Guid>("MessageId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("MessageId")
+                        .IsRequired()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("MessageId");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

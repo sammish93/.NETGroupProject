@@ -12,7 +12,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
     public class V1Messages
 	{
 		[Key]
-		public Guid MessageId { get; set; }
+        [Column("MessageId", TypeName = "char(36)")]
+        public Guid MessageId { get; set; }
 
 		public string Sender { get; set; }
 
@@ -25,6 +26,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
         public bool isRead { get; set; }
 
         [JsonIgnore]
+        [Column("ConversationId", TypeName = "char(36)")]
         public Guid ConversationId { get; set; }
 
 	}

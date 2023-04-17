@@ -14,34 +14,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
             migrationBuilder.EnsureSchema(
                 name: "dbo");
 
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateTable(
                 name: "conversations",
                 schema: "dbo",
                 columns: table => new
                 {
-                    ConversationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    ConversationId = table.Column<string>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_conversations", x => x.ConversationId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "messages",
                 schema: "dbo",
                 columns: table => new
                 {
-                    MessageId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Sender = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Message = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ConversationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    MessageId = table.Column<string>(type: "char(36)", nullable: false),
+                    Sender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isRead = table.Column<bool>(type: "bit", nullable: false),
+                    ConversationId = table.Column<string>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,17 +48,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                         principalTable: "conversations",
                         principalColumn: "ConversationId",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "participants",
                 schema: "dbo",
                 columns: table => new
                 {
-                    Participant = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ConversationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Participant = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ConversationId = table.Column<string>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,17 +68,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                         principalTable: "conversations",
                         principalColumn: "ConversationId",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "message_reactions",
                 schema: "dbo",
                 columns: table => new
                 {
-                    ReactionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ReactionId = table.Column<string>(type: "char(36)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    MessageId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    MessageId = table.Column<string>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,8 +89,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                         principalTable: "messages",
                         principalColumn: "MessageId",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_message_reactions_MessageId",
