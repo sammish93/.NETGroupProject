@@ -68,6 +68,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
                     var messageButton = this.FindByName<Button>("messageButton");
                     messageEntry.IsVisible = true;
                     messageButton.IsVisible = true;
+
+                    await model.UpdateIsRead(conversation.ConversationId, model.LoggedInUser.Id.ToString(), true);
                 }
             }
         }

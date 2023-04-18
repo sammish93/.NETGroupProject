@@ -290,6 +290,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             if (response.IsSuccessStatusCode)
             {
                 await PopulateConversationAsync(conversationId, LoggedInUser);
+                await UpdateIsRead(Guid.Parse(conversationId), sender, true);
+                foreach (V1UserWithDisplayPicture receiver in SelectedConversation.ParticipantsAsObjects)
+                {
+                    await UpdateIsRead(Guid.Parse(conversationId), receiver.User.Id.ToString(), false);
+                }
                 Message = "";
 
             } else
@@ -298,6 +303,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public async Task UpdateIsRead(Guid conversationId, string participantId, bool isRead)
+        {
+            string url = $"{_apiBaseUrl}/messages/UpdateIsRead?conversationId={conversationId}&participantId={participantId}&isRead={isRead}";
+
+            var requestContent = new StringContent(isRead.ToString(), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(url, requestContent);
+        }
         public async Task LoadAsync()
         {
             IsBusy = true;
