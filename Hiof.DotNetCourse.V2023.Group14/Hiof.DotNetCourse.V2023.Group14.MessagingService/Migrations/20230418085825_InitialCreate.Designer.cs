@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 {
     [DbContext(typeof(MessagingContext))]
-    [Migration("20230417062527_InitialCreate")]
+    [Migration("20230418085825_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -60,9 +60,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isRead")
-                        .HasColumnType("bit");
-
                     b.HasKey("MessageId");
 
                     b.HasIndex("ConversationId");
@@ -78,6 +75,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                     b.Property<string>("ConversationId")
                         .HasColumnType("char(36)")
                         .HasColumnName("ConversationId");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
 
                     b.HasKey("Participant", "ConversationId");
 

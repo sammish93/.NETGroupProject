@@ -26,8 +26,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
 
         public List<V1Reactions> Reactions { get; set; }
 
-        public bool isRead { get; set; }
-
         [JsonIgnore]
         [Column("ConversationId", TypeName = "char(36)")]
         public Guid ConversationId { get; set; }

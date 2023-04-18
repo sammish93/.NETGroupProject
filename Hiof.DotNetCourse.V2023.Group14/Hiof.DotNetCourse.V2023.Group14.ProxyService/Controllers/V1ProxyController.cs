@@ -502,6 +502,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
+        [HttpPut("messages/[action]")]
+        public async Task<IActionResult> UpdateIsRead(Guid conversationId, string participantId, bool isRead)
+        {
+            var url = $"{_apiUrls.Value.UpdateIsRead}?conversationId={conversationId}&participantId={participantId}&isRead={isRead}";
+            var content = new StringContent(isRead.ToString(), Encoding.UTF8, "application/json");
+            using var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
 
         [HttpDelete("messages/[action]")]
         public async Task<IActionResult> DeleteConversation(Guid conversationId)

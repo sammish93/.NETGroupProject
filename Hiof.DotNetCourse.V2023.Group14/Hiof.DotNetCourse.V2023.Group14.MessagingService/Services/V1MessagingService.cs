@@ -259,6 +259,32 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             }
         }
 
+        public async Task<bool> UpdateIsRead(Guid conversationId, string participantId, bool isRead)
+        {
+            try
+            {
+                var existing = await _context.Participant.Where(c => c.ConversationId == conversationId).Where(p => p.Participant == participantId).FirstOrDefaultAsync();                    
+
+                if (existing == null)
+                {
+                    throw new ArgumentException("Conversation with the ID does not exist");
+                }
+
+                existing.IsRead = isRead;
+                var rowsAffected = await _context.SaveChangesAsync();
+                if (rowsAffected == 0)
+                {
+                    throw new Exception("Failed to update message.");
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not update the message.");
+                return false;
+            }
+        }
+
         Task<V1ConversationModel?> V1IMessages.GetByParticipant(string participant)
         {
             throw new NotImplementedException();

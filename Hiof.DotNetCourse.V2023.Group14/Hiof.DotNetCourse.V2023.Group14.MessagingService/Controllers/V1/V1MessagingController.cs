@@ -174,6 +174,38 @@ public class V1MessagingController : ControllerBase
         
     }
 
+    [HttpPut("[action]")]
+    public async Task<ActionResult> UpdateIsRead(Guid conversationId, string participantId, bool isRead)
+    {
+        try
+        {
+            if (conversationId == Guid.Empty)
+            {
+                return BadRequest("Conversation ID cannot be empty!");
+            }
+
+            if (string.IsNullOrWhiteSpace(participantId))
+            {
+                return BadRequest("Participant ID cannot be empty or null.");
+            }
+
+            bool isUpdated = await _messagingService.UpdateIsRead(conversationId, participantId, isRead);
+            if (isUpdated)
+            {
+                return Ok("IsRead status successfully updated!");
+            }
+            else
+            {
+                return NotFound($"Conversation with ID {conversationId} does not exist.");
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+
+    }
+
     [HttpDelete("[action]")]
     public async Task<IActionResult> DeleteConversation(Guid conversationId)
     {
