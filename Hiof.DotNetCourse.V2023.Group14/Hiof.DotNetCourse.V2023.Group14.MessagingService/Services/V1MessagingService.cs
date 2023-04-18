@@ -196,7 +196,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             {
                 return await _context.ConversationModel
                     .Include(x => x.Participants)
-                    .Include(x => x.Messages)
+                    .Include(x => x.Messages.OrderBy(m => m.Date))
                     .FirstOrDefaultAsync(x => x.ConversationId == conversationId);
             }
             catch (Exception ex)
@@ -207,15 +207,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
            
         }
 
-        public async Task<V1ConversationModel?> GetByParticipant(string participant)
+        public async Task<List<V1ConversationModel>?> GetByParticipant(string participant)
         {
             try
             {
                 var conversation = await _context.ConversationModel
                     .Where(c => c.Participants.Any(p => p.Participant == participant))
                     .Include(c => c.Participants)
-                    .Include(c => c.Messages)
-                    .SingleOrDefaultAsync();
+                    .Include(c => c.Messages.OrderBy(m => m.Date))
+                    .ToListAsync();
 
                 if (conversation == null)
                 {
@@ -257,6 +257,37 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                 _logger.LogError(ex, "Could not update the message.");
                 return false;
             }
+        }
+
+        public async Task<bool> UpdateIsRead(Guid conversationId, string participantId, bool isRead)
+        {
+            try
+            {
+                var existing = await _context.Participant.Where(c => c.ConversationId == conversationId).Where(p => p.Participant == participantId).FirstOrDefaultAsync();                    
+
+                if (existing == null)
+                {
+                    throw new ArgumentException("Conversation with the ID does not exist");
+                }
+
+                existing.IsRead = isRead;
+                var rowsAffected = await _context.SaveChangesAsync();
+                if (rowsAffected == 0)
+                {
+                    throw new Exception("Failed to update message.");
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not update the message.");
+                return false;
+            }
+        }
+
+        Task<V1ConversationModel?> V1IMessages.GetByParticipant(string participant)
+        {
+            throw new NotImplementedException();
         }
     }
 }

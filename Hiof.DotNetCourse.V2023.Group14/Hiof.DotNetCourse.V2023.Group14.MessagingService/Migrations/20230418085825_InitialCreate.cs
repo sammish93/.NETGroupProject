@@ -35,7 +35,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                     Sender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isRead = table.Column<bool>(type: "bit", nullable: false),
                     ConversationId = table.Column<string>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
@@ -56,7 +55,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                 columns: table => new
                 {
                     Participant = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ConversationId = table.Column<string>(type: "char(36)", nullable: false)
+                    ConversationId = table.Column<string>(type: "char(36)", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

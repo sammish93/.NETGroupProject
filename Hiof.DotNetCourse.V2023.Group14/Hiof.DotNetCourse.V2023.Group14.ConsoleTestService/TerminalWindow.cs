@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
 {
@@ -121,7 +122,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             foreach (V1Book book in bookSearchTwo.Books)
             {
                 Console.WriteLine(book.Title);
-            }*/
+            }
 
             string url = $"https://localhost:7150/icons/1.0/Update";
 
@@ -137,6 +138,37 @@ namespace Hiof.DotNetCourse.V2023.Group14.ConsoleTestService
             var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
 
             var response = await client.PutAsync(url, requestContent);
+            */
+            async Task DoThis()
+            {
+
+                var conversationId = Guid.NewGuid();
+
+                string url = $"https://localhost:7268/proxy/1.0/messages/CreateNewConversation?conversationId={conversationId}";
+
+                List<string> participants = new List<string>
+                    {
+                        Guid.NewGuid().ToString(),
+                        Guid.NewGuid().ToString()
+                    };
+
+                var requestBody = new { conversationId, participants };
+
+                var requestBodyJson = JsonConvert.SerializeObject(participants);
+                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, requestContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("it worked");
+                } else
+                {
+                    Console.WriteLine("it didn't work");
+                }
+            } 
+
+            await DoThis();
+           
         }
     }
 }

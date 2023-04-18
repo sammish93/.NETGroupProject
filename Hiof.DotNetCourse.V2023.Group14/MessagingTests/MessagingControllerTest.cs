@@ -236,7 +236,7 @@ public class MessagingControllerTest
         var controller = new V1MessagingController(_service);
 
         // Act
-        var result = await controller.AddMessageToConveration(id, sender, message);
+        var result = await controller.AddMessageToConversation(id, sender, message);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
@@ -253,7 +253,7 @@ public class MessagingControllerTest
         var controller = new V1MessagingController(_service);
 
         // Act
-        var result = await controller.AddMessageToConveration(id, null, message);
+        var result = await controller.AddMessageToConversation(id, null, message);
 
         // Assert
         var okResult = Assert.IsType<BadRequestObjectResult>(result);
@@ -270,7 +270,7 @@ public class MessagingControllerTest
         var controller = new V1MessagingController(_service);
 
         // Act
-        var result = await controller.AddMessageToConveration(id, sender, null);
+        var result = await controller.AddMessageToConversation(id, sender, null);
 
         // Assert
         var okResult = Assert.IsType<BadRequestObjectResult>(result);
@@ -294,7 +294,7 @@ public class MessagingControllerTest
         var controller = new V1MessagingController(_service);
 
         // Act
-        var result = await controller.AddMessageToConveration(id, sender, message);
+        var result = await controller.AddMessageToConversation(id, sender, message);
 
         // Assert
         var okResult = Assert.IsType<BadRequestObjectResult>(result);
