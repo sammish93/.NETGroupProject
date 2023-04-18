@@ -37,17 +37,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
             dynamicColumn.HeightRequest = height;
         }
 
-        private void CollectionViewConversations_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void CollectionViewConversations_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var model = BindingContext as ViewModel.MessagesViewModel;
 
             if (model != null)
             {
+
                 if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
                 {
                     V1ConversationModel conversation = ((V1ConversationModel)e.CurrentSelection.First());
                     model.SelectedConversation = conversation;
-                    model.PopulateMessagesWithUserMetadataAsync(conversation);
+                    await model.PopulateConversationAsync(conversation.ConversationId.ToString(), model.LoggedInUser);
 
                     var conversationHeader = this.FindByName<Label>("conversationHeader");
                     var conversationSubHeader = this.FindByName<Label>("conversationSubHeader");
@@ -69,6 +70,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
                     messageButton.IsVisible = true;
                 }
             }
+        }
+
+        private void ScrollToBottomOfMessages()
+        {
+            var model = BindingContext as ViewModel.MessagesViewModel;
+
+            if (model != null)
+            {
+                var messagesCollectionView = this.FindByName<CollectionView>("messagesCollectionView");
+
+                messagesCollectionView.ScrollTo(model.SelectedConversation.Messages.Last(), animate: false);
+            }
+
+
         }
     }
 }

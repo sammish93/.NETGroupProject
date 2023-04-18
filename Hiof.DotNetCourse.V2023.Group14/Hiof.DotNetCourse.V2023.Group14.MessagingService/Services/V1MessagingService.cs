@@ -196,7 +196,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
             {
                 return await _context.ConversationModel
                     .Include(x => x.Participants)
-                    .Include(x => x.Messages)
+                    .Include(x => x.Messages.OrderBy(m => m.Date))
                     .FirstOrDefaultAsync(x => x.ConversationId == conversationId);
             }
             catch (Exception ex)
@@ -214,7 +214,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Services
                 var conversation = await _context.ConversationModel
                     .Where(c => c.Participants.Any(p => p.Participant == participant))
                     .Include(c => c.Participants)
-                    .Include(c => c.Messages)
+                    .Include(c => c.Messages.OrderBy(m => m.Date))
                     .ToListAsync();
 
                 if (conversation == null)

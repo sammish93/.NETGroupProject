@@ -157,8 +157,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 if (!conversation.Messages.IsNullOrEmpty())
                 {
-                    conversation.Messages.Reverse();
                     conversation.LastMessage = conversation.Messages.Last();
+                    conversation.Messages.Reverse();
                 }
                 
                 conversation.ParticipantsAsObjects = new List<V1UserWithDisplayPicture>();
@@ -191,8 +191,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             if (!conversation.Messages.IsNullOrEmpty())
             {
-                conversation.Messages.Reverse();
                 conversation.LastMessage = conversation.Messages.Last();
+                conversation.Messages.Reverse();
             }
 
             conversation.ParticipantsAsObjects = new List<V1UserWithDisplayPicture>();
@@ -290,20 +290,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             if (response.IsSuccessStatusCode)
             {
                 await PopulateConversationAsync(conversationId, LoggedInUser);
-
-                /*
-                var message = new V1Messages
-                {
-                    ConversationId = Guid.Parse(conversationId),
-                    Sender = sender,
-                    Message = Message,
-                    Date = DateTime.Now
-                };
-
                 Message = "";
 
-                SelectedConversation.Messages.Add(message);
-                */
             } else
             {
                 await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");

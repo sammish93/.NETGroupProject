@@ -4,7 +4,7 @@
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.MessagesPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="Messages"
-             BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" >
+             BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" />
     </Shell.BackButtonBehavior>
@@ -34,7 +34,7 @@
                   MinimumWidthRequest="800"
                   MinimumHeightRequest="600"
                   BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
-                
+
 
                 <Grid Grid.Row="1"
                       Margin="5"
@@ -49,78 +49,86 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Row="0"
-                      Grid.Column="0"
-                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                      Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="3*" />
-                        <RowDefinition Height="2*" />
-                    </Grid.RowDefinitions>
+                          Grid.Column="0"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                          Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
 
                         <Label Grid.Row="0"
                                x:Name="conversationHeader"
                                Text="Conversations"
                                FontAttributes="Bold"
-                               FontSize="Large" />
+                               FontSize="Large"
+                               Margin="5" />
                         <Label Grid.Row="1"
-                           x:Name="conversationSubHeader"
-                           Text="{Binding Conversations.Count, StringFormat='{0} conversations'}"
-                           FontAttributes="Italic"/>
+                               x:Name="conversationSubHeader"
+                               Text="{Binding Conversations.Count, StringFormat='{0} conversations'}"
+                               Margin="5"
+                               FontAttributes="Italic" />
+                    </Grid>
 
-                </Grid>
-                
-                <Grid Grid.Row="1"
-                      Grid.Column="0"
-                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                      Margin="5">
+                    <Grid Grid.Row="1"
+                          Grid.Column="0"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                          Margin="5">
 
-                    <CollectionView ItemsSource="{Binding SelectedConversation.Messages}"
-                                    ItemsLayout="VerticalList">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid ColumnSpacing="10"
-                                      RowSpacing="5"
-                                      Margin="5"
-                                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="1*" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
+                        <CollectionView ItemsSource="{Binding SelectedConversation.Messages}"
+                                        ItemsLayout="VerticalList"
+                                        x:Name="messagesCollectionView"
+                                        VerticalOptions="End"
+                                        FlowDirection="RightToLeft"
+                                        ItemsUpdatingScrollMode="KeepLastItemInView"
+                                        Rotation="180">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnSpacing="10"
+                                          RowSpacing="5"
+                                          Margin="5"
+                                          Rotation="180"
+                                          FlowDirection="LeftToRight"
+                                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
                                             <ColumnDefinition Width="1*" />
                                         </Grid.ColumnDefinitions>
-                                    <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                                            StrokeThickness="0"
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            Grid.RowSpan="2"
-                                            WidthRequest="40"
-                                            HeightRequest="40">
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="5" />
-                                        </Border.StrokeShape>
-                                        <Image Grid.Row="0"
+                                        <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                StrokeThickness="0"
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.RowSpan="2"
+                                                WidthRequest="40"
+                                                HeightRequest="40">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="5" />
+                                            </Border.StrokeShape>
+                                            <Image Grid.Row="0"
                                                    Source="{Binding SenderObject.DisplayPicture , Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                                               Aspect="AspectFit" />
-                                    </Border>
-                                    
-                                    <Label Grid.Column="1"
-                                           Grid.Row="0"
-                                           Text="{Binding SenderObject.User.UserName}"
-                                           LineBreakMode="CharacterWrap"
-                                           FontAttributes="Bold"
-                                           HorizontalOptions="Start"
-                                           FontSize="16"
-                                           HorizontalTextAlignment="Start" />
-                                    <Label Grid.Column="1"
-                                           Grid.Row="1"
-                                           Text="{Binding Message}"
-                                           LineBreakMode="CharacterWrap"
-                                           HorizontalOptions="Start"
-                                           FontSize="14"
-                                           HorizontalTextAlignment="Start" />
+                                                   Aspect="AspectFit" />
+                                        </Border>
+
+                                        <Label Grid.Column="1"
+                                               Grid.Row="0"
+                                               Text="{Binding SenderObject.User.UserName}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Start"
+                                               FontSize="16"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Column="1"
+                                               Grid.Row="1"
+                                               Text="{Binding Message}"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Start"
+                                               FontSize="14"
+                                               HorizontalTextAlignment="Start" />
                                         <Label Grid.Column="1"
                                                Grid.Row="2"
                                                Text="{Binding Date, StringFormat='{0:ddd, MMM d, yyy, HH:mm:ss}'}"
@@ -130,57 +138,57 @@
                                                FontSize="11"
                                                HorizontalTextAlignment="Start" />
                                     </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
 
-                </Grid>
+                    </Grid>
 
-                <Grid Grid.Row="0"
-                      Grid.RowSpan="2"
-                      Grid.Column="1"
-                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                      Margin="5">
+                    <Grid Grid.Row="0"
+                          Grid.RowSpan="2"
+                          Grid.Column="1"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                          Margin="5">
 
-                    <CollectionView ItemsSource="{Binding Conversations}"
-                                    ItemsLayout="VerticalList"
-                                    SelectionMode="Single"
-                                    SelectionChanged="CollectionViewConversations_SelectionChanged">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid ColumnSpacing="10"
-                                      Margin="5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                                            StrokeThickness="0"
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            Grid.RowSpan="2"
-                                            WidthRequest="40"
-                                            HeightRequest="40">
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="1" />
-                                        </Border.StrokeShape>
-                                        <Image Grid.Row="0"
-                                               Source="{Binding ParticipantsAsObjects[0].DisplayPicture , Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                                               Aspect="AspectFit" />
-                                    </Border>
+                        <CollectionView ItemsSource="{Binding Conversations}"
+                                        ItemsLayout="VerticalList"
+                                        SelectionMode="Single"
+                                        SelectionChanged="CollectionViewConversations_SelectionChanged">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnSpacing="10"
+                                          Margin="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                StrokeThickness="0"
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.RowSpan="2"
+                                                WidthRequest="40"
+                                                HeightRequest="40">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="1" />
+                                            </Border.StrokeShape>
+                                            <Image Grid.Row="0"
+                                                   Source="{Binding ParticipantsAsObjects[0].DisplayPicture , Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                   Aspect="AspectFit" />
+                                        </Border>
 
-                                    <Label Grid.Column="1"
-                                           Grid.Row="0"
+                                        <Label Grid.Column="1"
+                                               Grid.Row="0"
                                                Text="{Binding ParticipantsAsObjects[0].User.UserName}"
-                                           LineBreakMode="NoWrap"
-                                           FontAttributes="Bold"
-                                           HorizontalOptions="Start"
-                                           FontSize="16"
-                                           HorizontalTextAlignment="Start" />
+                                               LineBreakMode="NoWrap"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Start"
+                                               FontSize="16"
+                                               HorizontalTextAlignment="Start" />
                                         <Label Grid.Column="1"
                                                Grid.Row="1"
                                                Text="{Binding LastMessage.Date, StringFormat='Last Message: {0:dd/mm/yy HH:mm:ss}'}"
@@ -189,54 +197,55 @@
                                                FontSize="14"
                                                HorizontalTextAlignment="Start" />
                                     </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
 
-                </Grid>
+                    </Grid>
 
-                <Grid Grid.Row="2"
-                      Grid.Column="0"
-                      Grid.ColumnSpan="2"
-                      Margin="5"
-                      ColumnSpacing="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="2"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="5"
+                          ColumnSpacing="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
 
-                    <Entry Grid.Column="0"
-                           Placeholder="Enter a message..."
-                           Text="{Binding Message}"
-                           x:Name="messageEntry"
-                           IsVisible="false"
-                           MaxLength="120"
-                           ClearButtonVisibility="WhileEditing"
-                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
-                           BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                        <Entry Grid.Column="0"
+                               Placeholder="Enter a message..."
+                               Text="{Binding Message}"
+                               x:Name="messageEntry"
+                               IsVisible="false"
+                               MaxLength="120"
+                               ClearButtonVisibility="WhileEditing"
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
                                PlaceholderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
-                           HorizontalTextAlignment="Start"
-                           VerticalOptions="Center">
-                        <Entry.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
-                                    Radius="5"
-                                    Offset="0,5"
-                                    Opacity="0.3" />
-                        </Entry.Shadow>
-                    </Entry>
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               VerticalOptions="Center">
+                            <Entry.Shadow>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                        Radius="5"
+                                        Offset="0,5"
+                                        Opacity="0.3" />
+                            </Entry.Shadow>
+                        </Entry>
 
-                    <Button Grid.Column="1"
-                            Text="Send message"
-                            VerticalOptions="Start"
-                            x:Name="messageButton"
-                            IsVisible="false"
-                            Command="{Binding SendMessageCommand}"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                            TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+                        <Button Grid.Column="1"
+                                Text="Send message"
+                                VerticalOptions="Start"
+                                x:Name="messageButton"
+                                IsVisible="false"
+                                Command="{Binding SendMessageCommand}"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
 
 
 
-                </Grid>
+                    </Grid>
                 </Grid>
 
 
