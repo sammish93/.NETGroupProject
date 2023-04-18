@@ -16,6 +16,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.APICommunicatorService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Configure logging
+            builder.Logging.ClearProviders(); // Clear existing log providers
+            builder.Logging.AddConsole(); // Add console log provider
+            builder.Logging.AddDebug(); // Add debug log provider
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline. Running this program should open Swagger in your browser at https://localhost:<portNumber>/swagger/index.html.

@@ -13,6 +13,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ReadingGoalService
             var builder = WebApplication.CreateBuilder(args);
             builder.Configuration.AddJsonFile("appsettings.json");
 
+            // Configure logging
+            builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
 
             // Development purposes only! Those with Windows can use Microsoft SQL Server and those with mac can use MySQL.
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
