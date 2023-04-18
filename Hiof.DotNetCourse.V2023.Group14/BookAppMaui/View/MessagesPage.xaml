@@ -57,13 +57,14 @@
                         <RowDefinition Height="2*" />
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0"
-                           Text="Conversation Name"
-                           FontAttributes="Bold"
-                           FontSize="Large"/>
-
-                    <Label Grid.Row="1"
-                           Text="Participants"
+                        <Label Grid.Row="0"
+                               x:Name="conversationHeader"
+                               Text="Conversations"
+                               FontAttributes="Bold"
+                               FontSize="Large" />
+                        <Label Grid.Row="1"
+                           x:Name="conversationSubHeader"
+                           Text="{Binding Conversations.Count, StringFormat='{0} conversations'}"
                            FontAttributes="Italic"/>
 
                 </Grid>
@@ -101,13 +102,13 @@
                                             <RoundRectangle CornerRadius="5" />
                                         </Border.StrokeShape>
                                         <Image Grid.Row="0"
-                                                   Source="{Binding ParticipantsAsObjects[0].DisplayPicture , Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                   Source="{Binding SenderObject.DisplayPicture , Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                                Aspect="AspectFit" />
                                     </Border>
                                     
                                     <Label Grid.Column="1"
                                            Grid.Row="0"
-                                           Text="{Binding Conversation.ParticipantsAsObjects[0].UserName}"
+                                           Text="{Binding SenderObject.User.UserName}"
                                            LineBreakMode="CharacterWrap"
                                            FontAttributes="Bold"
                                            HorizontalOptions="Start"

@@ -2,6 +2,7 @@
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
 {
@@ -46,6 +47,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
                 {
                     V1ConversationModel conversation = ((V1ConversationModel)e.CurrentSelection.First());
                     model.SelectedConversation = conversation;
+                    model.PopulateMessagesWithUserMetadataAsync(conversation);
+
+                    var conversationHeader = this.FindByName<Label>("conversationHeader");
+                    var conversationSubHeader = this.FindByName<Label>("conversationSubHeader");
+
+                    StringBuilder sb = new StringBuilder("Conversation with");
+
+                    foreach (V1UserWithDisplayPicture user in conversation.ParticipantsAsObjects)
+                    {
+                        sb.Append(" " + user.User.UserName + ",");
+                    }
+                    sb.Length--;
+
+                    conversationHeader.Text = sb.ToString();
+                    conversationSubHeader.Text = conversation.Messages.Count + " messages";
 
                     var messageEntry = this.FindByName<Entry>("messageEntry");
                     var messageButton = this.FindByName<Button>("messageButton");

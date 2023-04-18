@@ -175,6 +175,40 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public async Task PopulateConversationAsync(string conversationId, V1User user)
+        {
+
+            string url = $"{_apiBaseUrl}/messages/GetByConversationId?conversationId={conversationId}";
+
+            using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+            responseMessage.EnsureSuccessStatusCode();
+            var json = await responseMessage.Content.ReadAsStringAsync();
+
+            dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
+
+
+            V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(json);
+
+            if (!conversation.Messages.IsNullOrEmpty())
+            {
+                conversation.Messages.Reverse();
+                conversation.LastMessage = conversation.Messages.Last();
+            }
+
+            conversation.ParticipantsAsObjects = new List<V1UserWithDisplayPicture>();
+
+            foreach (V1Participant participant in conversation.Participants)
+            {
+                if (!participant.Participant.Equals(user.Id.ToString()))
+                {
+                    conversation.ParticipantsAsObjects.Add(await GetUserWithDisplayPictureAsync(participant.Participant));
+                }
+            }
+
+            PopulateMessagesWithUserMetadataAsync(conversation);
+            SelectedConversation = conversation;
+        }
+
 
         public async Task<V1UserWithDisplayPicture> GetUserWithDisplayPictureAsync(String guidString)
         {
@@ -218,6 +252,31 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         return null;
         }
 
+        public void PopulateMessagesWithUserMetadataAsync(V1ConversationModel conversation)
+        {
+            var loggedInUser = new V1UserWithDisplayPicture(LoggedInUser, App.UserDisplayPicture);
+
+            if (!conversation.Messages.IsNullOrEmpty())
+            {
+                foreach (V1Messages message in conversation.Messages)
+                {
+                    foreach (V1UserWithDisplayPicture user in conversation.ParticipantsAsObjects)
+                    {
+                        if (message.Sender.Equals(loggedInUser.User.Id.ToString()))
+                        {
+                            message.SenderObject = loggedInUser;
+                            break;
+                        } else if (message.Sender.Equals(user.User.Id.ToString()))
+                        {
+                            message.SenderObject = user;
+                            break;
+                        }
+                    }
+                    
+                }
+            }
+        }
+
         public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(SelectedConversation.ConversationId.ToString(), LoggedInUser.Id.ToString()));
 
         public async Task SendMessageAsync(string conversationId, string sender)
@@ -230,6 +289,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
             if (response.IsSuccessStatusCode)
             {
+                await PopulateConversationAsync(conversationId, LoggedInUser);
+
+                /*
                 var message = new V1Messages
                 {
                     ConversationId = Guid.Parse(conversationId),
@@ -241,6 +303,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 Message = "";
 
                 SelectedConversation.Messages.Add(message);
+                */
             } else
             {
                 await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
