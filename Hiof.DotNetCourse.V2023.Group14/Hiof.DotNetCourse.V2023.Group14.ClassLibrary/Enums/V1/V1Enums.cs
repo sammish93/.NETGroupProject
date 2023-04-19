@@ -14,4 +14,9 @@
         ToRead,
         Reading
     }
+    public enum CommentType
+    {
+        User,
+        Book
+    }
 }
