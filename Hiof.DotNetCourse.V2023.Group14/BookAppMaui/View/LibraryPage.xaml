@@ -370,6 +370,7 @@
                                        HorizontalOptions="Center" />
                                 <DatePicker MinimumDate="01/01/1900"
                                             MaximumDate="12/31/2099"
+                                            Date="{Binding SelectedDate}"
                                             x:Name="entryDatePicker"
                                             HorizontalOptions="Center"
                                             DateSelected="entryDatePicker_DateSelected"

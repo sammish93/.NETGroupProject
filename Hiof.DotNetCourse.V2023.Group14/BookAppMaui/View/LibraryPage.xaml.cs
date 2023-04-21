@@ -68,7 +68,7 @@ public partial class LibraryPage : ContentPage
                 selectPromptLabel.IsVisible = false;
                 absoluteBanner.IsVisible = true;
                 model.PopulateSelectedEntryFields();
-                entryDatePicker.Date = model.SelectedDate;
+                entryDatePicker.Date = (DateTime)model.SelectedDate;
                 entryFormGrid.IsVisible = true;
             }
         }

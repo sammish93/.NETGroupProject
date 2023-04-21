@@ -33,10 +33,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private bool _isBusy;
 
         private ObservableCollection<ReadingStatus> _readingStatuses;
-        private ReadingStatus _selectedReadingStatus;
+        private ReadingStatus? _selectedReadingStatus;
         private ObservableCollection<int> _ratings;
-        private int _selectedRating;
-        private DateTime _selectedDate;
+        private int? _selectedRating;
+        private DateTime? _selectedDate;
 
         public bool IsBusy
         {
@@ -135,7 +135,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ReadingStatus SelectedReadingStatus
+        public ReadingStatus? SelectedReadingStatus
         {
             get => _selectedReadingStatus;
             set
@@ -165,7 +165,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public int SelectedRating
+        public int? SelectedRating
         {
             get => _selectedRating;
             set
@@ -176,7 +176,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
 
-        public DateTime SelectedDate
+        public DateTime? SelectedDate
         {
             get => _selectedDate;
             set
@@ -286,7 +286,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
         public ICommand SaveChangesCommand => new Command(async () => await SaveChangesAsync());
-        //public ICommand DeleteEntryCommand => new Command(async () => await DeleteEntryAsync());
+        public ICommand DeleteEntryCommand => new Command(async () => await DeleteEntryAsync());
 
         public async Task SaveChangesAsync()
         {
@@ -301,16 +301,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 HttpResponseMessage response = null;
 
 
-                if (SelectedReadingStatus.CompareTo(SelectedEntry.ReadingStatus) != 0)
+                if (SelectedReadingStatus?.CompareTo(SelectedEntry.ReadingStatus) != 0)
                 {
                     var jsonString = JsonConvert.SerializeObject(SelectedReadingStatus);
                     var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     response = await _httpClient.PutAsync(readingStatusUrl, httpContent);
 
-                    SelectedEntry.ReadingStatus = SelectedReadingStatus;
+                    SelectedEntry.ReadingStatus = (ReadingStatus)SelectedReadingStatus;
                 }
 
-                if (SelectedRating.CompareTo(SelectedEntry.Rating) != 0)
+                if (SelectedRating?.CompareTo(SelectedEntry.Rating) != 0)
                 {
                     var jsonString = JsonConvert.SerializeObject(SelectedRating);
                     var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -319,7 +319,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     SelectedEntry.Rating = SelectedRating;
                 }
 
-                if (SelectedDate.CompareTo(SelectedEntry.DateRead) != 0)
+                if (SelectedDate?.CompareTo(SelectedEntry.DateRead) != 0)
                 {
                     var jsonString = JsonConvert.SerializeObject(SelectedDate);
                     var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -341,6 +341,41 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 else
                 {
                     await Application.Current.MainPage.DisplayAlert("Oops!", "Your changes could not be saved.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public async Task DeleteEntryAsync()
+        {
+            try
+            {
+                if (SelectedEntry == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "You haven't selected an entry.", "OK");
+                    return;
+                } else
+                {
+                    string deleteEntryUrl = $"{_apiBaseUrl}/libraries/DeleteEntry?entry={SelectedEntry.Id}";
+                    var response = await _httpClient.DeleteAsync(deleteEntryUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Success!", "The entry has been deleted.", "OK");
+                        App.IsUserLibraryAltered = true;
+                        await LoadAsync();
+                        SelectedEntry = null;
+                        SelectedReadingStatus = null;
+                        SelectedDate = DateTime.Now;
+                        SelectedRating = null;
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Oops!", "This entry no longer exists.", "OK");
+                    }
                 }
             }
             catch (Exception ex)
