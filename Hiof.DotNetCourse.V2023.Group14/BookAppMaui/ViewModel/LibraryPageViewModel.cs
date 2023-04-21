@@ -31,6 +31,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private ObservableCollection<V1LibraryEntry> _currentlyReading { get; set; }
         private bool _isBusy;
 
+        private ObservableCollection<ReadingStatus> _readingStatuses;
+        private ReadingStatus _selectedReadingStatus;
+        private ObservableCollection<int> _ratings;
+        private int _selectedRating;
+        private DateTime _selectedDate;
+
         public bool IsBusy
         {
             get => _isBusy;
@@ -118,7 +124,66 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public ObservableCollection<ReadingStatus> ReadingStatuses
+        {
+            get => _readingStatuses;
+            set
+            {
+                _readingStatuses = value;
+                OnPropertyChanged();
+            }
+        }
 
+        public ReadingStatus SelectedReadingStatus
+        {
+            get => _selectedReadingStatus;
+            set
+            {
+                _selectedReadingStatus = value;
+                OnPropertyChanged();
+            }
+        }
+        private List<ReadingStatus> _readingStatusValues;
+
+        public List<ReadingStatus> ReadingStatusValues
+        {
+            get => _readingStatusValues;
+            set
+            {
+                _readingStatusValues = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<int> Ratings
+        {
+            get => _ratings;
+            set
+            {
+                _ratings = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedRating
+        {
+            get => _selectedRating;
+            set
+            {
+                _selectedRating = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         public LibraryPageViewModel()
@@ -128,8 +193,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             ToBeRead = new ObservableCollection<V1LibraryEntry>();
             CurrentlyReading = new ObservableCollection<V1LibraryEntry>();
 
+            SelectedDate = DateTime.Now;
 
+            ReadingStatusValues = new List<ReadingStatus>
+            {
+                ReadingStatus.Completed,
+                ReadingStatus.ToRead,
+                ReadingStatus.Reading
+            };
+
+            Ratings = new ObservableCollection<int>();
+            for (int i = 1; i <= 10; i++)
+            {
+                Ratings.Add(i);
+            }
         }
+
+
         public async Task GetUserLibrary(V1User user)
         {
             try
@@ -182,6 +262,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
 
             return null;
+        }
+
+        public void PopulateSelectedEntryFields()
+        {
+            SelectedReadingStatus = SelectedEntry.ReadingStatus;
+
+
+            if (SelectedEntry.Rating.HasValue)
+            {
+                SelectedRating = (int)SelectedEntry.Rating;
+            }
+
+            if (SelectedEntry.DateRead.HasValue)
+            {
+                SelectedDate = (DateTime)SelectedEntry.DateRead;
+            }
         }
 
         public async Task LoadAsync()

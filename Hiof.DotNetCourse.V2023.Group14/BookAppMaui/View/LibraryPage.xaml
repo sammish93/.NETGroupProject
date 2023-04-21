@@ -263,16 +263,158 @@
                     </Grid>
 
                     <Grid Grid.Column="1"
+                          x:Name="InsideDynamicColumn"
                           BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray600}}"
                           RowSpacing="5"
                           MaximumWidthRequest="910"
                           MinimumHeightRequest="600">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
 
-                        <Label Text="{Binding SelectedEntry.Title}" />
+                        <AbsoluteLayout x:Name="absoluteBanner"
+                                        IsVisible="false"
+                                        VerticalOptions="Start"
+                                        HorizontalOptions="Start"
+                                        ZIndex="1">
+
+                            <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                    StrokeThickness="0"
+                                    Background="Transparent"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
+                                    ZIndex="3">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="20" />
+                                </Border.StrokeShape>
+                                <Image Grid.Row="0"
+                                       x:Name="bookThumbnail"
+                                       Source="{Binding SelectedEntry.Thumbnail}"
+                                       Aspect="AspectFit"
+                                       ZIndex="3" />
+                            </Border>
+
+                            <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
+                                     Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray500}}"
+                                     WidthRequest="{Binding Width}"
+                                     HeightRequest="100"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="Start"
+                                     AbsoluteLayout.LayoutBounds="0, 25, AutoSize, AutoSize">
+                                <BoxView.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                            Radius="5"
+                                            Offset="0,5"
+                                            Opacity="0.3" />
+                                </BoxView.Shadow>
+                            </BoxView>
+
+                            <Label FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   Text="{Binding SelectedEntry.Title}"
+                                   MaximumWidthRequest="700"
+                                   LineBreakMode="TailTruncation"
+                                   FontSize="Large"
+                                   AbsoluteLayout.LayoutBounds="170, 35, AutoSize, AutoSize"
+                                   ZIndex="2" />
+
+                            <Label HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   MaximumWidthRequest="700"
+                                   Text="{Binding SelectedEntry.MainAuthor}"
+                                   LineBreakMode="TailTruncation"
+                                   FontSize="Small"
+                                   FontAttributes="Italic"
+                                   AbsoluteLayout.LayoutBounds="170, 90, AutoSize, AutoSize"
+                                   ZIndex="2" />
+
+                        </AbsoluteLayout>
+
+                        <Label Grid.Row="0"
+                               Grid.RowSpan="2"
+                               x:Name="selectPromptLabel"
+                               Text="Select a library entry to edit."
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                        <Grid Grid.Row="1"
+                              HeightRequest="115"
+                              RowSpacing="5"
+                              x:Name="entryFormGrid"
+                              IsVisible="false">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <HorizontalStackLayout Grid.Row="0"
+                                                   HorizontalOptions="Center">
+                                <Label Text="Reading Status"
+                                       HorizontalOptions="Center" />
+                                <Picker x:Name="pickerReadingStatus"
+                                        HorizontalOptions="Center"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                        ItemsSource="{Binding ReadingStatusValues}"
+                                        ItemDisplayBinding="{Binding .}"
+                                        SelectedItem="{Binding SelectedReadingStatus}" />
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Grid.Row="1"
+                                                   HorizontalOptions="Center">
+                                <Label Text="Date Read"
+                                       HorizontalOptions="Center" />
+                                <DatePicker MinimumDate="01/01/1900"
+                                            MaximumDate="12/31/2099"
+                                            x:Name="entryDatePicker"
+                                            HorizontalOptions="Center"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
+
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Grid.Row="2"
+                                                   HorizontalOptions="Center">
+                                <Label Text="Rating"
+                                       HorizontalOptions="Center" />
+                                <Picker x:Name="pickerRating"
+                                        HorizontalOptions="Center"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                        ItemsSource="{Binding Ratings}"
+                                        ItemDisplayBinding="{Binding .}"
+                                        SelectedItem="{Binding SelectedRating}" />
+                            </HorizontalStackLayout>
+                            
+                            <HorizontalStackLayout Grid.Row="3"
+                                                   HorizontalOptions="Center">
+                                <Button Text="Save"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        Command="{Binding SaveChangesCommand}" />
+                                <Button Text="Delete"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="End"
+                                        Command="{Binding DeleteEntryCommand}" />
+                            </HorizontalStackLayout>
+                            
+                            
+                            
+
+                            
+
+
+                            
+                            
+
+                            
+                        </Grid>
 
                     </Grid>
                 </Grid>

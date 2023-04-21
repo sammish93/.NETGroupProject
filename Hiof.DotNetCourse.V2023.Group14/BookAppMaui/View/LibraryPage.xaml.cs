@@ -59,6 +59,17 @@ public partial class LibraryPage : ContentPage
 
                 var entryWithImage = new V1LibraryEntryWithImage(entry, thumbnailUrl);
                 model.SelectedEntry = entryWithImage;
+
+                var absoluteBanner = this.FindByName<AbsoluteLayout>("absoluteBanner");
+                var selectPromptLabel = this.FindByName<Label>("selectPromptLabel");
+                var entryDatePicker = this.FindByName<DatePicker>("entryDatePicker");
+                var entryFormGrid = this.FindByName<Grid>("entryFormGrid");
+
+                selectPromptLabel.IsVisible = false;
+                absoluteBanner.IsVisible = true;
+                model.PopulateSelectedEntryFields();
+                entryDatePicker.Date = model.SelectedDate;
+                entryFormGrid.IsVisible = true;
             }
         }
     }
