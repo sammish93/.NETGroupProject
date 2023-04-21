@@ -125,4 +125,14 @@ public partial class LibraryPage : ContentPage
         collectionLibraryReading.IsVisible = false;
         collectionLibraryToRead.IsVisible = true;
     }
+
+    private void entryDatePicker_DateSelected(object sender, DateChangedEventArgs e)
+    {
+        var model = BindingContext as ViewModel.LibraryPageViewModel;
+
+        if (model != null)
+        {
+            model.UpdateDate(e.NewDate);
+        }
+    }
 }

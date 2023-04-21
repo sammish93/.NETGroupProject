@@ -155,8 +155,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                             HighestRatedBooks.Add(book);
                         }
                     }
-
-                    App.IsUserLibraryAltered = false;
                 }
                 catch (Exception ex)
                 {
@@ -211,8 +209,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                             RecentlyReadBooks.Add(book);
                         }
                     }
-
-                    App.IsUserLibraryAltered = false;
                 }
                 catch (Exception ex)
                 {
@@ -331,6 +327,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             IsBusy = true;
             await PopulateHighestRatedBooks();
             await PopulateRecentlyReadBooks();
+            App.IsUserLibraryAltered = false;
             await PopulateNearbyUsers();
             IsBusy = false;
         }

@@ -13,6 +13,7 @@ using Microsoft.Maui.Controls;
 using System.Diagnostics;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.Maui.Layouts;
+using Microsoft.Maui;
 
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
@@ -224,6 +225,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 CompleteLibrary = library;
 
+                ToBeRead.Clear();
+                CurrentlyReading.Clear();
+                ReadEntries.Clear();
+
                 foreach (V1LibraryEntry entry in library.Entries)
                 {
                     if (entry.ReadingStatus == ReadingStatus.Completed)
@@ -278,6 +283,75 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 SelectedDate = (DateTime)SelectedEntry.DateRead;
             }
+        }
+
+        public ICommand SaveChangesCommand => new Command(async () => await SaveChangesAsync());
+        //public ICommand DeleteEntryCommand => new Command(async () => await DeleteEntryAsync());
+
+        public async Task SaveChangesAsync()
+        {
+
+            try
+            {
+
+                string readingStatusUrl = $"{_apiBaseUrl}/libraries/ChangeReadingStatus?entryId={SelectedEntry.Id}&readingStatus={SelectedReadingStatus}";
+                string ratingUrl = $"{_apiBaseUrl}/libraries/ChangeRating?entryId={SelectedEntry.Id}&rating={SelectedRating}";
+                string dateUrl = $"{_apiBaseUrl}/libraries/ChangeDateRead?entryId={SelectedEntry.Id}&dateTime={SelectedDate}";
+
+                HttpResponseMessage response = null;
+
+
+                if (SelectedReadingStatus.CompareTo(SelectedEntry.ReadingStatus) != 0)
+                {
+                    var jsonString = JsonConvert.SerializeObject(SelectedReadingStatus);
+                    var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    response = await _httpClient.PutAsync(readingStatusUrl, httpContent);
+
+                    SelectedEntry.ReadingStatus = SelectedReadingStatus;
+                }
+
+                if (SelectedRating.CompareTo(SelectedEntry.Rating) != 0)
+                {
+                    var jsonString = JsonConvert.SerializeObject(SelectedRating);
+                    var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    response = await _httpClient.PutAsync(ratingUrl, httpContent);
+
+                    SelectedEntry.Rating = SelectedRating;
+                }
+
+                if (SelectedDate.CompareTo(SelectedEntry.DateRead) != 0)
+                {
+                    var jsonString = JsonConvert.SerializeObject(SelectedDate);
+                    var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    response = await _httpClient.PutAsync(dateUrl, httpContent);
+
+                    SelectedEntry.DateRead = SelectedDate;
+                }
+
+                if (response != null && response.IsSuccessStatusCode)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Success!", "Your changes have been saved.", "OK");
+                    App.IsUserLibraryAltered = true;
+                    await LoadAsync();
+
+                } else if (response == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "You haven't made any changes.", "OK");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "Your changes could not be saved.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public void UpdateDate(DateTime dateTime)
+        {
+            SelectedDate = dateTime;
         }
 
         public async Task LoadAsync()

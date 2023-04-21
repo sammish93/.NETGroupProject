@@ -372,6 +372,7 @@
                                             MaximumDate="12/31/2099"
                                             x:Name="entryDatePicker"
                                             HorizontalOptions="Center"
+                                            DateSelected="entryDatePicker_DateSelected"
                                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
 
                             </HorizontalStackLayout>
