@@ -217,12 +217,6 @@
                FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate view:SettingsPage}" />
     </ShellItem>
-    <ShellItem Title="Entry Detail"
-               x:Name="MyEntryPage"
-               Route="entryDetail"
-               FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate view:LibraryEntryDetailPage}" />
-    </ShellItem>
 
     <!--Add menu items-->
 
