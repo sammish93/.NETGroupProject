@@ -113,6 +113,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService.Controllers.V
         {
             var libraries = await (from library in _libraryCollectionContext.LibraryEntries
                             where library.UserId == userId
+                            orderby library.DateRead descending
                             select library).ToListAsync();
 
             if (libraries.IsNullOrEmpty())

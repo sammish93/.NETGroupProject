@@ -11,19 +11,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
     public class V1LibraryEntryWithImage : V1LibraryEntry
     {
         
-        public string ImageSource { get; set; }
-        public V1LibraryEntry Entry { get; }
-      
+        public string Thumbnail { get; set; }
 
-      
-        public V1LibraryEntryWithImage(Guid id, string title, string mainAuthor,int? rating, ReadingStatus readingStatus, string imageSource)
+
+        public V1LibraryEntryWithImage(V1LibraryEntry entry, string thumbnail)
         {
-            Id = id;
-            Title = title;
-            MainAuthor = mainAuthor;
-            Rating = rating;
-            ReadingStatus = readingStatus;
-            ImageSource = imageSource;
+            Id = entry.Id;
+            UserId = entry.UserId;
+            LibraryEntryISBN10 = entry.LibraryEntryISBN10;
+            LibraryEntryISBN13 = entry.LibraryEntryISBN13;
+            Title = entry.Title;
+            MainAuthor = entry.MainAuthor;
+            Rating = entry.Rating;
+            DateRead = entry.DateRead;
+            ReadingStatus = entry.ReadingStatus;
+
+            Thumbnail = thumbnail;
         }
 
     }

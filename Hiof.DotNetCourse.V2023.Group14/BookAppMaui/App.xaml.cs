@@ -17,14 +17,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         private static byte[] _defaultDisplayPicture;
         private static byte[] _selectedUserDisplayPicture;
         private static bool _isUserLibraryAltered = false;
+        private static V1LibraryEntryWithImage _selectedEntry;
 
-        private static V1LibraryEntryWithImage _selectedLibraryEntry;
         public static V1LibraryEntryWithImage SelectedEntry
         {
-            get => _selectedLibraryEntry;
+            get => _selectedEntry;
             set
             {
-                _selectedLibraryEntry = value;
+                _selectedEntry = value;
             }
         }
 
