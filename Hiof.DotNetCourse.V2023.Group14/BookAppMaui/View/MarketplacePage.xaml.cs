@@ -1,11 +1,39 @@
+using CommunityToolkit.Maui.Behaviors;
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Maui.Controls;
+using System.Timers;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 
 public partial class MarketplacePage : ContentPage
 {
+
+    private IDispatcherTimer _userTypingTimer;
+    private string _searchQuery;
+
+    public IDispatcherTimer UserTypingTimer
+    {
+        get => _userTypingTimer;
+        set
+        {
+            _userTypingTimer = value;
+
+        }
+    }
+
+    public string SearchQuery
+    {
+        get => _searchQuery;
+        set
+        {
+            _searchQuery = value;
+
+        }
+    }
+
+
     public MarketplacePage()
     {
         InitializeComponent();
@@ -33,7 +61,7 @@ public partial class MarketplacePage : ContentPage
         dynamicColumn.HeightRequest = height;
     }
 
-    private async void OnItemSelected(object sender, SelectionChangedEventArgs e)
+    private void OnItemSelected(object sender, SelectionChangedEventArgs e)
     {
         var model = BindingContext as ViewModel.MarketplacePageViewModel;
 
@@ -41,99 +69,56 @@ public partial class MarketplacePage : ContentPage
         {
             if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
             {
-                V1LibraryEntry entry = ((V1LibraryEntry)e.CurrentSelection.First());
+                V1Book book = ((V1Book)e.CurrentSelection.First());
 
-                string isbn = "";
-                if (!entry.LibraryEntryISBN13.IsNullOrEmpty()) 
-                {
-                    isbn = entry.LibraryEntryISBN13;
-                } else if (!entry.LibraryEntryISBN10.IsNullOrEmpty())
-                {
-                    isbn = entry.LibraryEntryISBN10;
-                }
-
-                string thumbnailUrl = "";
-
-                V1Book book = await model.GetBookWithEntryAsync(isbn);
-                thumbnailUrl = book.ImageLinks["thumbnail"];
-
-                var entryWithImage = new V1LibraryEntryWithImage(entry, thumbnailUrl);
-                model.SelectedEntry = entryWithImage;
-                model.SelectedEntryBook = book;
+                model.SelectedBook = book;
 
                 var absoluteBanner = this.FindByName<AbsoluteLayout>("absoluteBanner");
                 var selectPromptLabel = this.FindByName<Label>("selectPromptLabel");
-                var entryDatePicker = this.FindByName<DatePicker>("entryDatePicker");
-                var entryFormGrid = this.FindByName<Grid>("entryFormGrid");
+                var bookDisplayGrid = this.FindByName<Grid>("bookDisplayGrid");
 
                 selectPromptLabel.IsVisible = false;
                 absoluteBanner.IsVisible = true;
-                model.PopulateSelectedEntryFields();
-                entryDatePicker.Date = (DateTime)model.SelectedDate;
-                entryFormGrid.IsVisible = true;
+                bookDisplayGrid.IsVisible = true;
             }
         }
     }
 
-    private void RadioButtonAll_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var collectionLibraryAll = this.FindByName<CollectionView>("collectionLibraryAll");
-        var collectionLibraryRead = this.FindByName<CollectionView>("collectionLibraryRead");
-        var collectionLibraryReading = this.FindByName<CollectionView>("collectionLibraryReading");
-        var collectionLibraryToRead = this.FindByName<CollectionView>("collectionLibraryToRead");
+        if (UserTypingTimer == null)
+        {
+            UserTypingTimer = Application.Current.Dispatcher.CreateTimer();
+            UserTypingTimer.Interval = TimeSpan.FromMilliseconds(1000);
+            UserTypingTimer.Start();
+        }
 
-        collectionLibraryAll.IsVisible = true;
-        collectionLibraryRead.IsVisible = false;
-        collectionLibraryReading.IsVisible = false;
-        collectionLibraryToRead.IsVisible = false;
+        UserTypingTimer.Tick += (s, e) =>
+        {
+            OnTypingTimerElapsed(s, e);
+        };
     }
 
-    private void RadioButtonRead_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void OnTypingTimerElapsed(object sender, EventArgs e)
     {
-        var collectionLibraryAll = this.FindByName<CollectionView>("collectionLibraryAll");
-        var collectionLibraryRead = this.FindByName<CollectionView>("collectionLibraryRead");
-        var collectionLibraryReading = this.FindByName<CollectionView>("collectionLibraryReading");
-        var collectionLibraryToRead = this.FindByName<CollectionView>("collectionLibraryToRead");
+        var searchBar = this.FindByName<SearchBar>("searchBar");
 
-        collectionLibraryAll.IsVisible = false;
-        collectionLibraryRead.IsVisible = true;
-        collectionLibraryReading.IsVisible = false;
-        collectionLibraryToRead.IsVisible = false;
+        PerformSearch(searchBar.Text);
     }
 
-    private void RadioButtonReading_CheckedChanged(object sender, CheckedChangedEventArgs e)
-    {
-        var collectionLibraryAll = this.FindByName<CollectionView>("collectionLibraryAll");
-        var collectionLibraryRead = this.FindByName<CollectionView>("collectionLibraryRead");
-        var collectionLibraryReading = this.FindByName<CollectionView>("collectionLibraryReading");
-        var collectionLibraryToRead = this.FindByName<CollectionView>("collectionLibraryToRead");
-
-        collectionLibraryAll.IsVisible = false;
-        collectionLibraryRead.IsVisible = false;
-        collectionLibraryReading.IsVisible = true;
-        collectionLibraryToRead.IsVisible = false;
-    }
-
-    private void RadioButtonToRead_CheckedChanged(object sender, CheckedChangedEventArgs e)
-    {
-        var collectionLibraryAll = this.FindByName<CollectionView>("collectionLibraryAll");
-        var collectionLibraryRead = this.FindByName<CollectionView>("collectionLibraryRead");
-        var collectionLibraryReading = this.FindByName<CollectionView>("collectionLibraryReading");
-        var collectionLibraryToRead = this.FindByName<CollectionView>("collectionLibraryToRead");
-
-        collectionLibraryAll.IsVisible = false;
-        collectionLibraryRead.IsVisible = false;
-        collectionLibraryReading.IsVisible = false;
-        collectionLibraryToRead.IsVisible = true;
-    }
-
-    private void entryDatePicker_DateSelected(object sender, DateChangedEventArgs e)
+    private async void PerformSearch(string searchQuery)
     {
         var model = BindingContext as ViewModel.MarketplacePageViewModel;
 
         if (model != null)
         {
-            model.UpdateDate(e.NewDate);
+            if (searchQuery != null && !searchQuery.Equals(SearchQuery))
+            {
+                await model.GetBookSearch(searchQuery);
+                SearchQuery = searchQuery;
+            }
         }
     }
+
+
 }
