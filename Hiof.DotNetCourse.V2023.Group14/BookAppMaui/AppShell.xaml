@@ -201,7 +201,7 @@
                x:Name="MyMarketplacePage"
                Route="marketplace"
                FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate view:TemplatePage}" />
+        <ShellContent ContentTemplate="{DataTemplate view:MarketplacePage}" />
     </ShellItem>
 
     <ShellItem Title="Messages"
