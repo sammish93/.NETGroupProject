@@ -26,6 +26,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private V1User _loggedInUser { get; set; }
         private V1Book _book { get; set; }
         private V1LibraryEntryWithImage _selectedEntry;
+        private V1Book _selectedEntryBook;
         private V1LibraryCollection _completeLibrary { get; set; }
         private ObservableCollection<V1LibraryEntry> _readEntries { get; set; }
         private ObservableCollection<V1LibraryEntry> _toBeRead { get; set; }
@@ -76,6 +77,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _selectedEntry = value;
+                OnPropertyChanged();
+
+            }
+        }
+
+        public V1Book SelectedEntryBook
+        {
+            get { return _selectedEntryBook; }
+            set
+            {
+                _selectedEntryBook = value;
                 OnPropertyChanged();
 
             }
@@ -287,6 +299,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand SaveChangesCommand => new Command(async () => await SaveChangesAsync());
         public ICommand DeleteEntryCommand => new Command(async () => await DeleteEntryAsync());
+        public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPage(SelectedEntryBook));
 
         public async Task SaveChangesAsync()
         {
@@ -387,6 +400,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public void UpdateDate(DateTime dateTime)
         {
             SelectedDate = dateTime;
+        }
+
+        public async Task NavigateToBookPage(V1Book book)
+        {
+            App.SelectedBook = book;
+            string bookId = "";
+
+            if (book.IndustryIdentifiers["ISBN_13"] != null)
+            {
+                bookId = book.IndustryIdentifiers["ISBN_13"];
+            }
+            else if (book.IndustryIdentifiers["ISBN_10"] != null)
+            {
+                bookId = book.IndustryIdentifiers["ISBN_10"];
+            }
+
+            await Shell.Current.GoToAsync($"///book?bookid={bookId}");
         }
 
         public async Task LoadAsync()

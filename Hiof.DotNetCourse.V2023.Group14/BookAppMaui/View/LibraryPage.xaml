@@ -30,7 +30,7 @@
                   MinimumWidthRequest="800"
                   MinimumHeightRequest="600">
 
-                <Grid BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
+                <Grid BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Gray600}}"
                       ColumnSpacing="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
@@ -54,7 +54,7 @@
                             <RadioButton Content="All"
                                          GroupName="libraryFilter"
                                          IsChecked="true" 
-                                         CheckedChanged="RadioButtonAll_CheckedChanged" />
+                                         CheckedChanged="RadioButtonAll_CheckedChanged"/>
                             <RadioButton Content="Read"
                                          GroupName="libraryFilter"
                                          CheckedChanged="RadioButtonRead_CheckedChanged" />
@@ -269,7 +269,6 @@
                           MaximumWidthRequest="910"
                           MinimumHeightRequest="600">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
 
@@ -331,6 +330,21 @@
                                    AbsoluteLayout.LayoutBounds="170, 90, AutoSize, AutoSize"
                                    ZIndex="2" />
 
+                            <Button Text="More Information"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                    VerticalOptions="End"
+                                    HorizontalOptions="End"
+                                    Command="{Binding NavigateToBookPageCommand}"
+                                    AbsoluteLayout.LayoutBounds="150, 135, AutoSize, AutoSize">
+                                <Button.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                            Radius="5"
+                                            Offset="0,5"
+                                            Opacity="0.3" />
+                                </Button.Shadow>
+                            </Button>
+
                         </AbsoluteLayout>
 
                         <Label Grid.Row="0"
@@ -342,7 +356,7 @@
 
                         <Grid Grid.Row="1"
                               HeightRequest="115"
-                              RowSpacing="5"
+                              RowSpacing="10"
                               x:Name="entryFormGrid"
                               IsVisible="false">
                             <Grid.RowDefinitions>
@@ -352,72 +366,108 @@
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <HorizontalStackLayout Grid.Row="0"
-                                                   HorizontalOptions="Center">
+                            <VerticalStackLayout Grid.Row="0"
+                                                 HorizontalOptions="Center"
+                                                 Spacing="5">
                                 <Label Text="Reading Status"
-                                       HorizontalOptions="Center" />
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
                                 <Picker x:Name="pickerReadingStatus"
+                                        WidthRequest="135"
+                                        HorizontalTextAlignment="Center"
                                         HorizontalOptions="Center"
                                         BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                                         ItemsSource="{Binding ReadingStatusValues}"
                                         ItemDisplayBinding="{Binding .}"
-                                        SelectedItem="{Binding SelectedReadingStatus}" />
-                            </HorizontalStackLayout>
+                                        SelectedItem="{Binding SelectedReadingStatus}">
+                                    <Picker.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Picker.Shadow>
+                                </Picker>
+                            </VerticalStackLayout>
 
-                            <HorizontalStackLayout Grid.Row="1"
-                                                   HorizontalOptions="Center">
+                            <VerticalStackLayout Grid.Row="1"
+                                                 HorizontalOptions="Center"
+                                                 Spacing="5">
                                 <Label Text="Date Read"
-                                       HorizontalOptions="Center" />
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
                                 <DatePicker MinimumDate="01/01/1900"
                                             MaximumDate="12/31/2099"
+                                            WidthRequest="135"
                                             Date="{Binding SelectedDate}"
                                             x:Name="entryDatePicker"
                                             HorizontalOptions="Center"
                                             DateSelected="entryDatePicker_DateSelected"
-                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}">
+                                    <DatePicker.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </DatePicker.Shadow>
+                                </DatePicker>
 
-                            </HorizontalStackLayout>
+                            </VerticalStackLayout>
 
-                            <HorizontalStackLayout Grid.Row="2"
-                                                   HorizontalOptions="Center">
+                            <VerticalStackLayout Grid.Row="2"
+                                                 HorizontalOptions="Center"
+                                                 Spacing="5">
                                 <Label Text="Rating"
-                                       HorizontalOptions="Center" />
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
                                 <Picker x:Name="pickerRating"
+                                        WidthRequest="135"
+                                        HorizontalTextAlignment="Center"
                                         HorizontalOptions="Center"
                                         BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
                                         ItemsSource="{Binding Ratings}"
                                         ItemDisplayBinding="{Binding .}"
-                                        SelectedItem="{Binding SelectedRating}" />
-                            </HorizontalStackLayout>
-                            
+                                        SelectedItem="{Binding SelectedRating}">
+                                    <Picker.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Picker.Shadow>
+                                </Picker>
+                            </VerticalStackLayout>
+
                             <HorizontalStackLayout Grid.Row="3"
-                                                   HorizontalOptions="Center">
+                                                   HorizontalOptions="Center"
+                                                   Spacing="5">
                                 <Button Text="Save"
                                         BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                         TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                                         VerticalOptions="Center"
                                         HorizontalOptions="Center"
-                                        Command="{Binding SaveChangesCommand}" />
+                                        Command="{Binding SaveChangesCommand}">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
                                 <Button Text="Delete"
                                         BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                         TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                                         VerticalOptions="End"
                                         HorizontalOptions="End"
-                                        Command="{Binding DeleteEntryCommand}" />
+                                        Command="{Binding DeleteEntryCommand}">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
                             </HorizontalStackLayout>
-                            
-                            
-                            
 
-                            
-
-
-                            
-                            
-
-                            
                         </Grid>
-
                     </Grid>
                 </Grid>
 

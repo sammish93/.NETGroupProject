@@ -59,6 +59,7 @@ public partial class LibraryPage : ContentPage
 
                 var entryWithImage = new V1LibraryEntryWithImage(entry, thumbnailUrl);
                 model.SelectedEntry = entryWithImage;
+                model.SelectedEntryBook = book;
 
                 var absoluteBanner = this.FindByName<AbsoluteLayout>("absoluteBanner");
                 var selectPromptLabel = this.FindByName<Label>("selectPromptLabel");
