@@ -7,8 +7,8 @@ option csharp_namespace = "Hiof.DotNetCourse.V2023.Group14.CommentService";
 package comments;
 
 service CommentingService {
-	rpc CreateComment(CommentRequest) 
-	returns (CommentResponse){
+	rpc CreateComment(Comment) 
+	returns (GetCommentRequest){
 		option (google.api.http) = {
 			post: "/comments"
 			body: "*"
@@ -18,6 +18,22 @@ service CommentingService {
 	rpc GetComment(GetCommentRequest) returns (Comment){
 		option (google.api.http) = {
 			get: "/v1/comments/{id}"
+		};
+	}
+	rpc GetAllComments(Empty) returns (stream Comment){
+		option (google.api.http) = {
+			get: "/v1/comments"
+		};
+	}
+
+	rpc UpdateComment(UpdateCommentRequest) returns (CommentResponse){
+		option (google.api.http) = {
+			put: "/v1/comments/{id}"
+		};
+	}
+	rpc DeleteComment(DeleteCommentRequest) returns (DeleteCommentResponse){
+		option (google.api.http) = {
+			delete: "/v1/comments/{id}"
 		};
 	}
 }
@@ -53,4 +69,21 @@ message CommentResponse {
 
 message CommentReply {
   string message = 1;
+}
+message Empty{}
+
+message CommentList{
+	repeated Comment comments = 1;
+}
+
+message UpdateCommentRequest{
+	string id = 1;
+	string body = 2;
+}
+
+message DeleteCommentRequest{
+	string id = 1;
+}
+message DeleteCommentResponse{
+	bool success = 1;
 }
