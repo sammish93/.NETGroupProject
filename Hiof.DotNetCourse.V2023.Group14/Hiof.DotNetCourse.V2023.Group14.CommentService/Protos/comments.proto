@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+option csharp_namespace = "Hiof.DotNetCourse.V2023.Group14.CommentService";
+package comments;
+
+service CommentingService {
+	rpc CreateComment(CommentRequest) 
+	returns (CommentResponse){
+		option (google.api.http) = {
+			post: "/comments"
+			body: "*"
+		};
+	}	   
+
+	rpc GetComment(GetCommentRequest) returns (Comment){
+		option (google.api.http) = {
+			get: "/v1/comments/{id}"
+		};
+	}
+}
+
+message Comment {
+  string id = 1;
+  string body = 2;
+  google.protobuf.Timestamp created_at = 3;
+  int32 upvotes = 4;
+  string author_id = 5;
+  string parent_comment_id = 6;
+  CommentType comment_type = 7;
+  string ISBN10 = 8;
+  string ISBN13 = 9;
+  string user_id = 10;
+  repeated Comment replies = 11;
+  Comment parent_comment = 12;
+}
+
+enum CommentType {
+	USER = 0;
+	BOOK = 1;
+	REPLY = 2;
+}
+
+message GetCommentRequest {
+	string id = 1;
+}
+
+message CommentResponse {
+	Comment comment = 1;
+}
+
+message CommentReply {
+  string message = 1;
+}

@@ -17,6 +17,7 @@
     public enum CommentType
     {
         User,
-        Book
+        Book,
+        Reply
     }
 }
