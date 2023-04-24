@@ -14,6 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 		public decimal Price { get; set; }
 		public V1Currency Currency { get; set; }
 		public V1BookStatus Status { get; set; }
+		public Guid OwnerId { get; set; }
 		public DateTime dateCreated { get; set; }
 		public DateTime dateModified { get; set; }
 
