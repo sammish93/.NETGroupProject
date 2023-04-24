@@ -1,0 +1,12 @@
+trigger:
+- main
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- script: dotnet build Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln
+  displayName: 'Building the solution.'
+
+- script: dotnet test Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln
+  displayName: 'Running all tests currently in the repository.'
