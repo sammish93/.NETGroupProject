@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -10,7 +5,7 @@ pool:
   vmImage: windows-latest
 
 steps:
-- script: dotnet build
+- script: dotnet Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln --configuration $(buildConfiguration)
   displayName: 'Compile and build the solution.'
 
 - script: dotnete test
