@@ -8,7 +8,7 @@ steps:
 - script: dotnet build Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln
   displayName: 'Building the solution.'
 
-- script: dotnet test Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln --configuration $(buildConfiguration) --logger trx --results-directory $(Agent.TempDirectory)
+- script: dotnet test Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln --logger trx --results-directory $(Agent.TempDirectory)
   displayName: 'Running all tests currently in the repository.'
 
 - task: PublishTestResults@2
