@@ -8,5 +8,5 @@ steps:
 - script: dotnet build Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln
   displayName: 'Compile and build the solution.'
 
-- script: dotnet test
+- script: dotnet test Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln
   displayName: 'Runs all tests currently in the repository.'
