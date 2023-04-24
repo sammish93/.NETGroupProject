@@ -1,5 +1,6 @@
 ﻿using System;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data
@@ -10,7 +11,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data
 		{
 		}
 
-		public DbSet<V1MarketplacePost> MarketplacePost { get; set; }
+		public DbSet<V1MarketplaceUser> MarketplaceUser { get; set; }
 
 		public DbSet<V1MarketplaceBook> MarketplaceBooks { get; set; }
 	}
