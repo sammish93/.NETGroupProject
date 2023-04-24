@@ -6,19 +6,13 @@ pool:
 
 steps:
 - script: dotnet build Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln
-  displayName: 'Compile and build the solution.'
+  displayName: 'Building the solution.'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: 'Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln'
-    arguments: '--configuration $(buildConfiguration) --logger trx --results-directory $(Agent.TempDirectory)'
-    publishTestResults: true
-  displayName: 'Run all tests currently in the repository.'
-  continueOnError: true
+- script: dotnet test Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln --configuration $(buildConfiguration) --logger trx --results-directory $(Agent.TempDirectory)
+  displayName: 'Running all tests currently in the repository.'
 
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: '**/TEST-*.xml'
     failTaskOnFailedTests: true
-    testRunTitle: 'Verifying all tests passed' 
+    testRunTitle: 'Verifying all tests passed.' 
