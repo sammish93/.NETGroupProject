@@ -74,36 +74,49 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             try
             {
-                IsBusy = true;
+                bool answer = false;
+                answer = await Application.Current.MainPage.DisplayAlert("Our application stores personal information about our users." ,
+                    "We store information entered by each user on account registration, " +
+                    "as well as any comments or messages entered by users during use of the application. " +
+                    "Do you agree to the storage of information listed above?", "Agree", "Disagree");
 
-                string signUpUrl = $"{_apiBaseUrl}/users/CreateUserAccount";
-                var requestBody = new V1User
+                if (answer)
                 {
-                    Id = Guid.NewGuid(),
-                    UserName = UserName,
-                    Email = Email,
-                    Password = Password,
-                    FirstName = FirstName,
-                    LastName = LastName,
-                    Country = Country,
-                    City = City,
-                    LangPreference = Lang_Preference,
-                    Role = UserRole.User,
-                    RegistrationDate = DateTime.UtcNow,
-                    LastActive = DateTime.UtcNow
+                    IsBusy = true;
 
-                };
-                var requestBodyJson = JsonConvert.SerializeObject(requestBody);
-                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+                    string signUpUrl = $"{_apiBaseUrl}/users/CreateUserAccount";
+                    var requestBody = new V1User
+                    {
+                        Id = Guid.NewGuid(),
+                        UserName = UserName,
+                        Email = Email,
+                        Password = Password,
+                        FirstName = FirstName,
+                        LastName = LastName,
+                        Country = Country,
+                        City = City,
+                        LangPreference = Lang_Preference,
+                        Role = UserRole.User,
+                        RegistrationDate = DateTime.UtcNow,
+                        LastActive = DateTime.UtcNow
 
-                HttpResponseMessage response = await _httpClient.PostAsync(signUpUrl, requestContent);
+                    };
+                    var requestBodyJson = JsonConvert.SerializeObject(requestBody);
+                    var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
 
-                IsBusy = false;
+                    HttpResponseMessage response = await _httpClient.PostAsync(signUpUrl, requestContent);
 
-                if (response.IsSuccessStatusCode)
+                    IsBusy = false;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await Shell.Current.GoToAsync("///login");
+
+                    }
+                } else
                 {
-                    await Shell.Current.GoToAsync("///login");
-
+                    await Application.Current.MainPage.DisplayAlert("Uh oh!", "Sadly we cannot provide a functional service to our users without agreeing to the collection " +
+                        "of data. Functionality to provide users without accounts to access parts of our service is coming soon. Stay tuned!", "OK");
                 }
             }
             catch (Exception ex)
