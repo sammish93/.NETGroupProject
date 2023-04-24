@@ -4,9 +4,9 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
 	/// <summary>
-	/// Model class for the marketplace service.
+	/// Model class representing a book in the marketplace service.
 	/// </summary>
-	public class V1Marketplace
+	public class V1MarketplaceBook
 	{
 
 		public Guid Id { get; set; }
