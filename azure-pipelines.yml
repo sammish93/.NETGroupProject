@@ -13,6 +13,6 @@ steps:
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: 'Hiof.DotNetCourse.V2023.Group14/tests'
+    testResultsFiles: '**\*.trx'
     failTaskOnFailedTests: true
     testRunTitle: 'Verifying all tests passed.' 
