@@ -8,7 +8,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceMod
 	/// Model class representing a user in the marketplace and his/her´s posts.
 	/// </summary>
 	[Table("marketplace_posts", Schema="dbo")]
-	public class V1MarketplacePosts
+	public class V1MarketplaceUser
 	{
 		[Key]
 		[Column("OwnerId", TypeName= "char(36)")]
