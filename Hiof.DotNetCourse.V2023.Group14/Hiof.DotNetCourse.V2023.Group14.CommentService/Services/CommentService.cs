@@ -30,7 +30,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
         {
             _logger.LogInformation("GetComment method called with Id {Id}", request.Id);
 
-            var commentEntity = _context.Comments.FirstOrDefault(c => c.Id == Guid.Parse(request.Id));
+            var commentEntity = _context.Comments.Include(c => c.Replies).FirstOrDefault(c => c.Id == Guid.Parse(request.Id));
 
             if (commentEntity == null)
             {
@@ -52,8 +52,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 UserId = commentEntity.UserId?.ToString() ?? ""
             };
 
+            foreach (var replyEntity in commentEntity.Replies)
+            {
+                var reply = new Comment
+                {
+                    Id = replyEntity.Id.ToString(),
+                    Body = replyEntity.Body,
+                    CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(replyEntity.CreatedAt, DateTimeKind.Utc)),
+                    Upvotes = replyEntity.Upvotes ?? 0,
+                    AuthorId = replyEntity.AuthorId.ToString(),
+                    ParentCommentId = replyEntity.ParentCommentId?.ToString() ?? "",
+                    CommentType = (CommentType)replyEntity.CommentType,
+                    ISBN10 = replyEntity.ISBN10 ?? "",
+                    ISBN13 = replyEntity.ISBN13 ?? "",
+                    UserId = replyEntity.UserId?.ToString() ?? ""
+                };
+
+                response.Replies.Add(reply);
+            }
+
             return Task.FromResult(response);
         }
+
+
 
 
         public override async Task<CommentList> GetAllComments(Empty request, ServerCallContext context)
@@ -87,27 +108,27 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
         public override async Task<UpdateCommentResponse> UpdateComment(UpdateCommentRequest request, ServerCallContext context)
         {
-            // Check if request.Id is a valid GUID format
+            
             if (!Guid.TryParse(request.Id, out Guid commentId))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
             }
 
-            // Get the comment from the database
+            
             var comment = await _context.Comments.FindAsync(commentId);
 
-            // Throw an exception if the comment doesn't exist
+          
             if (comment == null)
             {
                 throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
             }
 
-            // Update the body and created_at fields and save changes
+            
             comment.Body = request.Body;
             comment.CreatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
-            // Return the updated comment
+            
             var response = new UpdateCommentResponse
             {
                 Id = comment.Id.ToString(),
@@ -167,7 +188,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
                 ISBN10 = request.ISBN10,
                 ISBN13 = request.ISBN13,
-                UserId = Guid.Parse(request.UserId)
+                
             };
 
             // Set ParentCommentId property to null if request.ParentCommentId is null
@@ -185,7 +206,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 }
                 commentEntity.ParentCommentId = parentCommentId;
             }
-
+            if (request.UserId == null || request.CommentType != CommentType.User)
+            {
+                commentEntity.UserId = null;
+            }
+            else
+            {
+                // Check if request.ParentCommentId is a valid GUID format
+                if (!Guid.TryParse(request.UserId, out Guid UserId))
+                {
+                    throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid parent comment id format"));
+                }
+                commentEntity.UserId = UserId;
+            }
 
             // Add the comment entity to the DbContext and save changes
             _context.Comments.Add(commentEntity);
