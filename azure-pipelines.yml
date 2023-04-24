@@ -13,6 +13,6 @@ steps:
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: '**/TEST-*.xml'
+    testResultsFiles: $(Agent.TempDirectory)
     failTaskOnFailedTests: true
     testRunTitle: 'Verifying all tests passed.' 
