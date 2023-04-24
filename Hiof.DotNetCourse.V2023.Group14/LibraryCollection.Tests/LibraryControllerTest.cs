@@ -120,7 +120,7 @@ namespace LibraryCollection.Tests
 
 
             Assert.IsType<OkObjectResult>(actionResult);
-            Assert.Equal(entry4.UserId.ToString(), userId);
+            Assert.Equal(entry5.UserId.ToString(), userId);
         }
 
         [Fact]
