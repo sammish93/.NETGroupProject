@@ -11,6 +11,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data
 		{
 		}
 
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<V1MarketplaceBook>()
+				.HasOne<V1MarketplaceUser>()
+				.WithMany(user => user.Posts)
+				.HasForeignKey(book => book.OwnerId)
+				.HasConstraintName("FK_marketplace_owner")
+				.OnDelete(DeleteBehavior.Cascade);
+		}
+
 		public DbSet<V1MarketplaceUser> MarketplaceUser { get; set; }
 
 		public DbSet<V1MarketplaceBook> MarketplaceBooks { get; set; }
