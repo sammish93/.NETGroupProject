@@ -25,8 +25,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
                 Currency = post.Currency,
                 Status = post.Status,
                 OwnerId = post.OwnerId,
-                DateCreated = new DateTime(),
-                DateModified = new DateTime()
+                DateCreated = DateTime.UtcNow,
+                DateModified = DateTime.UtcNow
             };
 
             // Find user with the given owner id
