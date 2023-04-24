@@ -8,13 +8,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 	/// </summary>
 	public interface V1IMarketplace
 	{
-		Task<V1Marketplace> GetAllPosts();
+		Task<V1MarketplaceBook> GetAllPosts();
 
-		Task<V1Marketplace> GetPostById(Guid id);
+		Task<V1MarketplaceBook> GetPostById(Guid id);
 
-		Task CreateNewPost(V1Marketplace post);
+		Task CreateNewPost(V1MarketplaceBook post);
 
-		Task UpdatePost(Guid id, V1Marketplace post);
+		Task UpdatePost(Guid id, V1MarketplaceBook post);
 
 		Task<bool> DeletePost(Guid id);
 	}
