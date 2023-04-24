@@ -2,6 +2,7 @@
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Controllers;
 
@@ -42,7 +43,7 @@ public class V1MessagingController : ControllerBase
         try
         {
             var result = await _messagingService.GetByParticipant(name);
-            if (result != null)
+            if (!result.IsNullOrEmpty())
             {
                 return Ok(result);
             }
