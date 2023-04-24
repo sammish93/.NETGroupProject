@@ -4,6 +4,8 @@ using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
+namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService;
+
 public class Program
 {
     public static void Main(string[] args)
