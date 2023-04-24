@@ -3,11 +3,13 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
+
+
 option csharp_namespace = "Hiof.DotNetCourse.V2023.Group14.CommentService";
 package comments;
 
 service CommentingService {
-	rpc CreateComment(Comment) 
+	rpc CreateComment(CreateCommentRequest) 
 	returns (GetCommentRequest){
 		option (google.api.http) = {
 			post: "/comments"
@@ -20,15 +22,17 @@ service CommentingService {
 			get: "/v1/comments/{id}"
 		};
 	}
-	rpc GetAllComments(Empty) returns (stream Comment){
+	
+	rpc GetAllComments(Empty) returns (CommentList){
 		option (google.api.http) = {
 			get: "/v1/comments"
 		};
 	}
+	
 
-	rpc UpdateComment(UpdateCommentRequest) returns (CommentResponse){
+	rpc UpdateComment(UpdateCommentRequest) returns (UpdateCommentResponse){
 		option (google.api.http) = {
-			put: "/v1/comments/{id}"
+			put: "/v1/comments/{id}/body"
 		};
 	}
 	rpc DeleteComment(DeleteCommentRequest) returns (DeleteCommentResponse){
@@ -36,6 +40,13 @@ service CommentingService {
 			delete: "/v1/comments/{id}"
 		};
 	}
+	rpc IncrementUpvotes(IncrementUpvotesRequest) returns (IncrementUpvotesResponse) {
+		option (google.api.http) = {
+			patch: "/v1/comments/{id}/upvotes"
+			body: "*"
+		};
+	}
+	
 }
 
 message Comment {
@@ -49,10 +60,23 @@ message Comment {
   string ISBN10 = 8;
   string ISBN13 = 9;
   string user_id = 10;
-  repeated Comment replies = 11;
-  Comment parent_comment = 12;
+  Comment parent_comment = 11;
+  repeated Comment replies = 12;
 }
 
+message CreateCommentRequest{
+  string id = 1;
+  string body = 2;
+  google.protobuf.Timestamp created_at = 3;
+  int32 upvotes = 4;
+  string author_id = 5;
+  string parent_comment_id = 6;
+  CommentType comment_type = 7;
+  string ISBN10 = 8;
+  string ISBN13 = 9;
+  string user_id = 10;
+
+}
 enum CommentType {
 	USER = 0;
 	BOOK = 1;
@@ -67,9 +91,12 @@ message CommentResponse {
 	Comment comment = 1;
 }
 
-message CommentReply {
-  string message = 1;
+message UpdateCommentResponse{
+	string id = 1;
+	string body = 2;
+	google.protobuf.Timestamp created_at = 3;
 }
+
 message Empty{}
 
 message CommentList{
@@ -79,11 +106,21 @@ message CommentList{
 message UpdateCommentRequest{
 	string id = 1;
 	string body = 2;
+	google.protobuf.Timestamp created_at = 3;
 }
 
 message DeleteCommentRequest{
 	string id = 1;
 }
 message DeleteCommentResponse{
-	bool success = 1;
+	string id = 1;
+}
+message IncrementUpvotesRequest {
+  string id = 1;
+  int32 upvotes = 2;
+}
+
+message IncrementUpvotesResponse {
+  string id = 1;
+  int32 upvotes = 2;
 }
