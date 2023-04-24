@@ -3,6 +3,7 @@ using System;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
 {
     [DbContext(typeof(MarketplaceContext))]
-    partial class MarketplaceContextModelSnapshot : ModelSnapshot
+    [Migration("20230424194355_FixForeignKey")]
+    partial class FixForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
