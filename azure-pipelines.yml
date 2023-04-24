@@ -5,7 +5,7 @@ pool:
   vmImage: windows-latest
 
 steps:
-- script: dotnet build Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln --configuration $(buildConfiguration)
+- script: dotnet build Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln
   displayName: 'Compile and build the solution.'
 
 - script: dotnete test
