@@ -109,16 +109,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             return null;
         }
 
-        public async Task<bool> UpdatePost(V1MarketplaceBookResponse post)
+        public async Task<bool> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
         {
-            var existingPost = await _context.MarketplaceBooks.FindAsync(post.Id);
+            var existingPost = await _context.MarketplaceBooks.FindAsync(postId);
             if (existingPost == null)
             {
                 return false;
             }
             else
             {
-                existingPost.Id = post.Id;
                 existingPost.Condition = post.Condition;
                 existingPost.Price = post.Price;
                 existingPost.Currency = post.Currency;

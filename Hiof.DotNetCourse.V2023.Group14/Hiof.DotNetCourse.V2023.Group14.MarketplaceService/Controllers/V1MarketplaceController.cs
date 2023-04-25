@@ -70,9 +70,9 @@ public class V1MarketplaceController : ControllerBase
 
     [HttpPut]
     [Route("[action]")]
-    public async Task<IActionResult> UpdatePost(V1MarketplaceBookResponse post)
+    public async Task<IActionResult> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
     {
-        var response = await _service.UpdatePost(post);
+        var response = await _service.UpdatePost(postId, post);
         if (response)
         {
             return Ok("Post successfully updated!");
