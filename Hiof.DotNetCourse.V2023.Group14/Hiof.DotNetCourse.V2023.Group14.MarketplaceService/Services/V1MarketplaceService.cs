@@ -52,9 +52,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             return true;
         }
 
-        public Task<bool> DeletePost(Guid id)
+        public async Task<bool> DeletePost(Guid postId)
         {
-            throw new NotImplementedException();
+            var post = await _context.MarketplaceBooks.FindAsync(postId);
+            if (post != null)
+            {
+                _context.Remove(post);
+                var rowsAffected = await _context.SaveChangesAsync();
+                if (rowsAffected == 0)
+                {
+                    throw new Exception("Failed to delete post!");
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public Task<V1MarketplaceBook> GetAllPosts()
