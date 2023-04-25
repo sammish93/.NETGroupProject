@@ -25,5 +25,6 @@
     <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.ClassLibrary\Hiof.DotNetCourse.V2023.Group14.ClassLibrary.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Hiof.DotNetCourse.V2023.Group14.CommentService\Hiof.DotNetCourse.V2023.Group14.CommentService.csproj" />
   </ItemGroup>
 </Project>

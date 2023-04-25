@@ -362,3 +362,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 .DS_Store
+/Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.ClassLibrary/Classes/V1/CommenServiceModels/V1Comments.cs

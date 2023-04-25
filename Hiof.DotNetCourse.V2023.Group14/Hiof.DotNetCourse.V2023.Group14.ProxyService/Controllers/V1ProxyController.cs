@@ -6,6 +6,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Hiof.DotNetCourse.V2023.Group14.CommentService;
 using Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -556,15 +557,65 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
         [HttpGet("comments/[action]")]
         public async Task<IActionResult> GetAllComments()
-          => await Proxy(_apiUrls.Value.GetAllComments);
+             => await Proxy(_apiUrls.Value.GetAllComments);
 
         [HttpGet("comments/[action]")]
         public async Task<IActionResult> GetCommentById(Guid id)
-         => await Proxy($"{_apiUrls.Value.GetCommentById}{id}");
+             => await Proxy($"{_apiUrls.Value.GetCommentById}{id}");
 
         [HttpGet("comments/[action]")]
-        public async Task<IActionResult> GetCommentByUserId(Guid id)
-        => await Proxy($"{_apiUrls.Value.GetCommentById}{id}");
+        public async Task<IActionResult> GetCommentsByUserId(Guid id)
+            => await Proxy($"{_apiUrls.Value.GetCommentsByUserId}{id}");
+
+        [HttpGet("comments/[action]")]
+        public async Task<IActionResult> GetCommentsByISBN(string isbn)
+             => await Proxy($"{_apiUrls.Value.GetCommentsByISBN}{isbn}");
+
+        [HttpPost("comments/[action]")]
+        public async Task<IActionResult> CreateComment(V1Comments comment)
+        {
+            var url = $"{_apiUrls.Value.CreateComment}{comment}";
+            using var content = SerializeToJsonString(new { comment});
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        [HttpDelete("comments/[action]")]
+        public async Task<IActionResult> DeleteComment(Guid commentId)
+        {
+            var url = $"{_apiUrls.Value.DeleteComment}{commentId}";
+            using var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+        [HttpPut("/v1/comments/{id}/body")]
+        public async Task<IActionResult> UpdateCommentBody(Guid id, [FromBody] UpdateCommentRequest request)
+        {
+            var response = await _commentServiceClient.UpdateCommentAsync(request);
+            if (response.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.ErrorMessage);
+            }
+        }
 
         private async Task<IActionResult> Proxy(string url)
         {

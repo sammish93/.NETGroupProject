@@ -1,9 +1,10 @@
 using System.Runtime.InteropServices;
-using Hiof.DotNetCourse.V2023.Group14.CommentService.Repositories;
+
 using Hiof.DotNetCourse.V2023.Group14.CommentService.Services;
 using Hiof.DotNetCourse.V2023.Group14.CommentService.Data;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,16 +39,31 @@ else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 {
     // Development machines using Linux can do something here.
 }
+
+
 // Add services to the container.
 
 builder.Services.AddGrpc().AddJsonTranscoding();
+builder.Services.AddGrpcReflection();
 
-builder.Services.AddGrpcSwagger().AddSwaggerGen();
+builder.Services.AddGrpcSwagger();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1",
+        new OpenApiInfo { Title = "gRPC transcoding", Version = "v1" });
+});
 
 
 
 var app = builder.Build();
-app.UseSwagger().UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CommentService"); });
+app.UseSwagger();
+app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CommentService"); });
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapGrpcReflectionService();
+}
 
 // Configure the HTTP request pipeline.
 
