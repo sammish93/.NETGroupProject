@@ -12,7 +12,7 @@ service CommentingService {
 	rpc CreateComment(CreateCommentRequest) 
 	returns (GetCommentRequest){
 		option (google.api.http) = {
-			post: "/comments"
+			post: "/v1/comments"
 			body: "*"
 		};
 	}	   
@@ -46,6 +46,17 @@ service CommentingService {
 			body: "*"
 		};
 	}
+	rpc GetCommentsByUserId(GetCommentsByUserIdRequest) returns (CommentFilteredResponse){
+		option (google.api.http) = {
+			get: "/v1/comments/user/{user_id}"
+		};
+	}
+
+	rpc GetCommentsByISBN(GetCommentsByISBNRequest) returns (CommentFilteredResponse) {
+	  option (google.api.http) = {
+		get: "/v1/comments/isbn/{isbn}"
+	  };
+	}
 	
 }
 
@@ -63,6 +74,11 @@ message Comment {
   Comment parent_comment = 11;
   repeated Comment replies = 12;
 }
+enum CommentType {
+	USER = 0;
+	BOOK = 1;
+	REPLY = 2;
+}
 
 message CreateCommentRequest{
   string id = 1;
@@ -77,14 +93,28 @@ message CreateCommentRequest{
   string user_id = 10;
 
 }
-enum CommentType {
-	USER = 0;
-	BOOK = 1;
-	REPLY = 2;
-}
 
 message GetCommentRequest {
 	string id = 1;
+}
+
+message GetCommentsByISBNRequest{
+	string isbn = 1;
+}
+
+message GetCommentsByUserIdRequest{
+	string user_id = 1;
+}
+
+message CommentFiltered{
+	string id = 1;
+	string body = 2;
+	google.protobuf.Timestamp created_at = 3;
+	int32 upvotes = 4;
+	string author_id = 5;
+}
+message CommentFilteredResponse{
+	repeated CommentFiltered response = 1;
 }
 
 message CommentResponse {
@@ -124,3 +154,4 @@ message IncrementUpvotesResponse {
   string id = 1;
   int32 upvotes = 2;
 }
+
