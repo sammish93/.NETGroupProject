@@ -27,12 +27,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 		[Column("Currency", TypeName = "varchar(50)")]
 		[EnumDataType(typeof(V1Currency))]
 		[JsonIgnore]
-		public V1Currency Currency { get; set; }
+        public V1Currency Currency { get; set; }
 
 		[Column("Status", TypeName = "varchar(50)")]
 		[EnumDataType(typeof(V1BookStatus))]
 		[JsonIgnore]
-		public V1BookStatus Status { get; set; }
+        public V1BookStatus Status { get; set; }
 
 		[ForeignKey("OwnerId")]
 		[Column("OwnerId", TypeName = "char(36)")]
