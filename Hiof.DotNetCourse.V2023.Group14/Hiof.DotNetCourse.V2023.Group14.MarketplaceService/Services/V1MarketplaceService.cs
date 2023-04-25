@@ -3,6 +3,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
 {
@@ -15,16 +16,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             _context = context;
         }
 
-        public async Task<bool> CreateNewPost(V1MarketplaceBook post)
+        public async Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post)
         {
             var newPost = new V1MarketplaceBook
             {
                 Id = Guid.NewGuid(),
                 Condition = post.Condition,
                 Price = post.Price,
-                Currency = post.Currency,
-                Status = post.Status,
-                OwnerId = post.OwnerId,
+                Currency = currency,
+                Status = status,
+                OwnerId = ownerId,
                 DateCreated = DateTime.UtcNow,
                 DateModified = DateTime.UtcNow
             };
