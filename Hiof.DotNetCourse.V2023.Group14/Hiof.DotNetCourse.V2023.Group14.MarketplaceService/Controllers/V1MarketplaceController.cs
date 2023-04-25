@@ -1,4 +1,5 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -64,6 +65,21 @@ public class V1MarketplaceController : ControllerBase
         else
         {
             return BadRequest("Could not add the post.");
+        }
+    }
+
+    [HttpPut]
+    [Route("[action]")]
+    public async Task<IActionResult> UpdatePost(V1MarketplaceBookResponse post)
+    {
+        var response = await _service.UpdatePost(post);
+        if (response)
+        {
+            return Ok("Post successfully updated!");
+        }
+        else
+        {
+            return NotFound("No post exists for the provided id");
         }
     }
 
