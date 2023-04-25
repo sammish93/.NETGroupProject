@@ -18,6 +18,21 @@ public class V1MarketplaceController : ControllerBase
         _service = service;
     }
 
+    [HttpGet]
+    [Route("[action]")]
+    public async Task<IActionResult> GetAllPosts()
+    {
+        var response = await _service.GetAllPosts();
+        if (response != null)
+        {
+            return Ok(response);
+        }
+        else
+        {
+            return NotFound("There are no posts currently in the marketplace.");
+        }
+    }
+
 
     [HttpPost]
     [Route("[action]")]

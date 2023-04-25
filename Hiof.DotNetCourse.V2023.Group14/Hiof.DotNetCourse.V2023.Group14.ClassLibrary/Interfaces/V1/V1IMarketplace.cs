@@ -1,5 +1,6 @@
 ﻿using System;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
@@ -9,7 +10,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 	/// </summary>
 	public interface V1IMarketplace
 	{
-		Task<V1MarketplaceBook> GetAllPosts();
+		Task<List<V1MarketplaceBookResponse>> GetAllPosts();
 
 		Task<V1MarketplaceBook> GetPostById(Guid id);
 

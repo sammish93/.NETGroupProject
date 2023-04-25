@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
 {
@@ -71,9 +72,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             }
         }
 
-        public Task<V1MarketplaceBook> GetAllPosts()
+        public async Task<List<V1MarketplaceBookResponse>> GetAllPosts()
         {
-            throw new NotImplementedException();
+            var postList = await _context.MarketplaceBooks.ToListAsync();
+            return postList.Select(post => new V1MarketplaceBookResponse
+            {
+                Id = post.Id,
+                Condition = post.Condition,
+                Price = post.Price,
+                Currency = post.Currency,
+                Status = post.Status,
+                OwnerId = post.OwnerId,
+                DateCreated = post.DateCreated,
+                DateModified = post.DateModified,
+
+            }).ToList();
         }
 
         public Task<V1MarketplaceBook> GetPostById(Guid id)
