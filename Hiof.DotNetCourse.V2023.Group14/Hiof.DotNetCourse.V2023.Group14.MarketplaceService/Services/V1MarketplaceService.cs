@@ -15,7 +15,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             _context = context;
         }
 
-        public async Task CreateNewPost(V1MarketplaceBook post)
+        public async Task<bool> CreateNewPost(V1MarketplaceBook post)
         {
             var newPost = new V1MarketplaceBook
             {
@@ -48,6 +48,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             user.Posts.Add(newPost);
             await _context.MarketplaceBooks.AddAsync(newPost);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public Task<bool> DeletePost(Guid id)

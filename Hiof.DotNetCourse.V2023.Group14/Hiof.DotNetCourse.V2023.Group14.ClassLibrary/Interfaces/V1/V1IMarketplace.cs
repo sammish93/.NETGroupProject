@@ -12,7 +12,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 
 		Task<V1MarketplaceBook> GetPostById(Guid id);
 
-		Task CreateNewPost(V1MarketplaceBook post);
+		Task<bool> CreateNewPost(V1MarketplaceBook post);
 
 		Task UpdatePost(Guid id, V1MarketplaceBook post);
 
