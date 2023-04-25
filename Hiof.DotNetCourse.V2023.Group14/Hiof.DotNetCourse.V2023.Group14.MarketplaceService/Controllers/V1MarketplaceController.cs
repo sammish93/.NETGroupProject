@@ -9,6 +9,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Controllers;
 [Route("marketplace/1.0")]
 public class V1MarketplaceController : ControllerBase
 {
+    // TODO: Implement logging in the API-service.
     private readonly ILogger<V1MarketplaceController> _logger;
     private readonly V1MarketplaceService _service;
 
@@ -31,6 +32,22 @@ public class V1MarketplaceController : ControllerBase
         {
             return NotFound("There are no posts currently in the marketplace.");
         }
+    }
+
+    [HttpGet]
+    [Route("[action]")]
+    public async Task<IActionResult> GetPostById(Guid postId)
+    {
+        var response = await _service.GetPostById(postId);
+        if (response == null)
+        {
+            return NotFound("No post has the provided id.");
+        }
+        else
+        {
+            return Ok(response);
+        }
+
     }
 
 
@@ -64,8 +81,6 @@ public class V1MarketplaceController : ControllerBase
             return NotFound("Provided id does not exist, please provide another one");
         }
     }
-
-
    
 }
 

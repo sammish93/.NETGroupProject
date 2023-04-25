@@ -89,9 +89,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             }).ToList();
         }
 
-        public Task<V1MarketplaceBook> GetPostById(Guid id)
+        public async Task<V1MarketplaceBookResponse?> GetPostById(Guid id)
         {
-            throw new NotImplementedException();
+            var post = await _context.MarketplaceBooks.FindAsync(id);
+            if (post != null)
+            {
+                return new V1MarketplaceBookResponse
+                {
+                    Id = post.Id,
+                    Condition = post.Condition,
+                    Price = post.Price,
+                    Currency = post.Currency,
+                    Status = post.Status,
+                    OwnerId = post.OwnerId,
+                    DateCreated = post.DateCreated,
+                    DateModified = post.DateModified
+                };
+            }
+            return null;
         }
 
         public Task UpdatePost(Guid id, V1MarketplaceBook post)

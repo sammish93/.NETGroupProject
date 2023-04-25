@@ -12,7 +12,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 	{
 		Task<List<V1MarketplaceBookResponse>> GetAllPosts();
 
-		Task<V1MarketplaceBook> GetPostById(Guid id);
+		Task<V1MarketplaceBookResponse?> GetPostById(Guid id);
 
 		Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post);
 
