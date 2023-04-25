@@ -67,6 +67,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string UpdateIsRead { get; set; }
         public string DeleteConversation { get; set; }
         public string DeleteMessage { get; set; }
+        // Urls for commenting service.
+        public string GetAllComments { get;  set; }
+        public string GetCommentById { get; set; }
+        public string GetCommentsByUserId { get; set; }
+        public string GetCommentsByISBN { get; set;}
+        public string CreateComment { get; set;}
+        public string DeleteComment { get; set;}
+        public string UpdateCommentBody { get; set;}
+        public string UpdateCommentUpvotes { get; set; }
+
     }
 }
 

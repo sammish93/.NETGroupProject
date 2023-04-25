@@ -553,6 +553,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
+
+        [HttpGet("comments/[action]")]
+        public async Task<IActionResult> GetAllComments()
+          => await Proxy(_apiUrls.Value.GetAllComments);
+
+        [HttpGet("comments/[action]")]
+        public async Task<IActionResult> GetCommentById(Guid id)
+         => await Proxy($"{_apiUrls.Value.GetCommentById}{id}");
+
+        [HttpGet("comments/[action]")]
+        public async Task<IActionResult> GetCommentByUserId(Guid id)
+        => await Proxy($"{_apiUrls.Value.GetCommentById}{id}");
+
         private async Task<IActionResult> Proxy(string url)
         {
             var response = await _httpClient.GetAsync(url);
