@@ -11,8 +11,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Controllers;
 [Route("marketplace/1.0")]
 public class V1MarketplaceController : ControllerBase
 {
-    // TODO: Implement logging in the API-service.
     // TODO: Write unit tests for the API.
+    // TODO: Implement logging in the API-service.
     private readonly ILogger<V1MarketplaceController> _logger;
     private readonly V1MarketplaceService _service;
 
@@ -26,13 +26,16 @@ public class V1MarketplaceController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> GetAllPosts()
     {
+        _logger.LogInformation("GetAllPosts: Featching all posts from the marketplace.");
         var response = await _service.GetAllPosts();
         if (response != null)
         {
+            _logger.LogInformation("GetAllPosts: Successfully featched all posts!");
             return Ok(response);
         }
         else
         {
+            _logger.LogWarning("GetAllPosts: No posts found in the marketplace.");
             return NotFound("There are no posts currently in the marketplace.");
         }
     }
