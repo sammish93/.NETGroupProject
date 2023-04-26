@@ -562,6 +562,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             => await Proxy(_apiUrls.Value.GetAllPosts);
 
 
+        [HttpGet]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> GetPostById(Guid id)
+            => await Proxy($"{_apiUrls.Value.GetPostById}?id={id}");
+
+
         private async Task<IActionResult> Proxy(string url)
         {
             var response = await _httpClient.GetAsync(url);
