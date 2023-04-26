@@ -553,6 +553,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
+
+        // TODO: Implement marketplace service to the proxy.
+
+
+
         private async Task<IActionResult> Proxy(string url)
         {
             var response = await _httpClient.GetAsync(url);
