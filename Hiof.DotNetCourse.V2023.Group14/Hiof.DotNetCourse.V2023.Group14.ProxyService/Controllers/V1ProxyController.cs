@@ -603,8 +603,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
             else
             {
-                return BadRequest(await response.Content.ReadAsStringAsync());
+                return NotFound(await response.Content.ReadAsStringAsync());
             }
+        }
+
+        [HttpDelete]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> DeletePost(Guid postId)
+        {
+            var url = $"{_apiUrls.Value.DeletePost}?postId={postId}";
+            var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return NotFound(await response.Content.ReadAsStringAsync());
+            }
+
         }
 
 
