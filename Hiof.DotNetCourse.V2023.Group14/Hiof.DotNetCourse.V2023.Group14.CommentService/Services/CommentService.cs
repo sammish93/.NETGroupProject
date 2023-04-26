@@ -107,38 +107,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
         }
 
 
-        public override async Task<UpdateCommentResponse> UpdateComment(UpdateCommentRequest request, ServerCallContext context)
-        {
-            
-            if (!Guid.TryParse(request.Id, out Guid commentId))
-            {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
-            }
-
-            
-            var comment = await _context.Comments.FindAsync(commentId);
-
-          
-            if (comment == null)
-            {
-                throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
-            }
-
-            
-            comment.Body = request.Body;
-            comment.CreatedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-
-            
-            var response = new UpdateCommentResponse
-            {
-                Id = comment.Id.ToString(),
-                Body = comment.Body,
-                CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(comment.CreatedAt, DateTimeKind.Utc))
-            };
-
-            return response;
-        }
+       
 
 
         public override async Task<DeleteCommentResponse> DeleteComment(DeleteCommentRequest request, ServerCallContext context)
@@ -169,63 +138,97 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
         public override async Task<GetCommentRequest> CreateComment(CreateCommentRequest request, ServerCallContext context)
         {
-            
-            if (!Guid.TryParse(request.Id, out Guid commentId))
+            _logger.LogInformation("Received CreateComment request with Id: {0}", request.Id);
+
+            Guid commentId;
+            if (!Guid.TryParse(request.Id, out commentId))
             {
+                _logger.LogError("Invalid comment id format: {0}", request.Id);
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
             }
 
-            
+            _logger.LogInformation("Parsed comment id: {0}", commentId);
+
+
             request.CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow);
 
-            
             var commentEntity = new V1Comments
             {
                 Id = commentId,
                 Body = request.Body,
                 CreatedAt = request.CreatedAt.ToDateTime(),
                 Upvotes = request.Upvotes,
-                AuthorId = Guid.Parse(request.AuthorId),
-                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
-                ISBN10 = request.ISBN10,
-                ISBN13 = request.ISBN13,
-                
+                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType
             };
 
-            
-            if (request.ParentCommentId == null || request.CommentType != CommentType.Reply)
+            try
             {
-                commentEntity.ParentCommentId = null;
+                commentEntity.AuthorId = Guid.Parse(request.AuthorId);
             }
-            else
+            catch (FormatException ex)
             {
-                
-                if (!Guid.TryParse(request.ParentCommentId, out Guid parentCommentId))
-                {
-                    throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid parent comment id format"));
-                }
-                commentEntity.ParentCommentId = parentCommentId;
+                var errorMsg = $"Failed to parse AuthorId '{request.AuthorId}' as a valid GUID.";
+                _logger.LogError(ex, errorMsg);
+                throw new RpcException(new Status(StatusCode.InvalidArgument, errorMsg));
             }
+
             if (request.UserId == null || request.CommentType != CommentType.User)
             {
                 commentEntity.UserId = null;
             }
             else
             {
-                
-                if (!Guid.TryParse(request.UserId, out Guid UserId))
+                try
                 {
-                    throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid parent comment id format"));
+                    commentEntity.UserId = Guid.Parse(request.UserId);
                 }
-                commentEntity.UserId = UserId;
+                catch (FormatException ex)
+                {
+                    var errorMsg = $"Failed to parse UserId '{request.UserId}' as a valid GUID.";
+                    _logger.LogError(ex, errorMsg);
+                    throw new RpcException(new Status(StatusCode.InvalidArgument, errorMsg));
+                }
             }
 
-            
             _context.Comments.Add(commentEntity);
             await _context.SaveChangesAsync();
 
-            
             var response = new GetCommentRequest { Id = commentEntity.Id.ToString() };
+            return response;
+        }
+
+
+
+        public override async Task<UpdateCommentResponse> UpdateComment(UpdateCommentRequest request, ServerCallContext context)
+        {
+
+            if (!Guid.TryParseExact(request.Id, "D", out Guid commentId))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
+            }
+
+
+            var comment = await _context.Comments.FindAsync(commentId);
+
+
+            if (comment == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
+            }
+
+
+            comment.Body = request.Body;
+            comment.CreatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+
+            var response = new UpdateCommentResponse
+            {
+                Id = comment.Id.ToString(),
+                Body = comment.Body,
+                CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(comment.CreatedAt, DateTimeKind.Utc))
+            };
+
             return response;
         }
 
@@ -247,14 +250,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             }
 
             
-            comment.Upvotes++;
+            comment.Upvotes ++;
             await _context.SaveChangesAsync();
 
             
             var response = new IncrementUpvotesResponse
             {
                 Id = comment.Id.ToString(),
-                Upvotes = comment.Upvotes ?? 0
+                Upvotes = (int)comment.Upvotes 
             };
 
             return response;

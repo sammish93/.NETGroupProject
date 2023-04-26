@@ -574,8 +574,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         [HttpPost("comments/[action]")]
         public async Task<IActionResult> CreateComment(V1Comments comment)
         {
-            var url = $"{_apiUrls.Value.CreateComment}{comment}";
-            using var content = SerializeToJsonString(new { comment});
+            var url = $"{_apiUrls.Value.CreateComment}";
+            using var content = SerializeToJsonString(comment);
             using var response = await _httpClient.PostAsync(url, content);
 
             if (response.IsSuccessStatusCode)
@@ -603,19 +603,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
                 return BadRequest(await response.Content.ReadAsStringAsync());
             }
         }
-        [HttpPut("/v1/comments/{id}/body")]
-        public async Task<IActionResult> UpdateCommentBody(Guid id, [FromBody] UpdateCommentRequest request)
+
+        [HttpPut("comments/[action]")]
+        public async Task<IActionResult> UpdateCommentBody(Guid id, string body)
         {
-            var response = await _commentServiceClient.UpdateCommentAsync(request);
-            if (response.IsSuccess)
-            {
+            var url = $"{_apiUrls.Value.UpdateCommentBody}{id}/body?body={body}";
+
+            using var content = SerializeToJsonString(body);
+            using var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
                 return Ok();
-            }
             else
-            {
-                return BadRequest(response.ErrorMessage);
-            }
+                return BadRequest(response.RequestMessage);
         }
+
+        [HttpPut("comments/[action]")]
+        public async Task<IActionResult> UpdateCommentUpvotes(Guid id, int upvotes)
+        {
+            var url = $"{_apiUrls.Value.UpdateCommentUpvotes}{id}/upvotes?upvotes={upvotes}";
+
+            using var content = SerializeToJsonString(upvotes);
+            using var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+            else
+                return BadRequest(response.RequestMessage);
+        }
+
+
 
         private async Task<IActionResult> Proxy(string url)
         {

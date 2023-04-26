@@ -31,9 +31,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         [Column("parent_comment_id", TypeName = "char(36)")]
         public Guid? ParentCommentId { get; set; }
 
-        public V1Comments ParentComment { get; set; }
+        public V1Comments? ParentComment { get; set; }
 
-        public List<V1Comments> Replies { get; set; }
+        public List<V1Comments>? Replies { get; set; }
 
         [Column("comment_type")]
         public CommentType CommentType { get; set; }
