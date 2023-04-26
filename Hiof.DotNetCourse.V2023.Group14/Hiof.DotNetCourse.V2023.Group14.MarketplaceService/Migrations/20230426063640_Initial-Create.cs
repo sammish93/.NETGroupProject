@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateMarketplaceTables : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,55 +14,49 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
             migrationBuilder.EnsureSchema(
                 name: "dbo");
 
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateTable(
                 name: "marketplace_posts",
                 schema: "dbo",
                 columns: table => new
                 {
-                    OwnerId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    OwnerId = table.Column<string>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_marketplace_posts", x => x.OwnerId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "marketplace_books",
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Condition = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Price = table.Column<decimal>(type: "decimal(3,2)", nullable: false),
-                    Currency = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<string>(type: "char(36)", nullable: false),
+                    Condition = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Currency = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Status = table.Column<string>(type: "varchar(50)", nullable: false),
+                    OwnerId = table.Column<string>(type: "char(36)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime", nullable: false),
-                    V1MarketplaceUserOwnerId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    DateModified = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_marketplace_books", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_marketplace_books_marketplace_posts_V1MarketplaceUserOwnerId",
-                        column: x => x.V1MarketplaceUserOwnerId,
+                        name: "FK_marketplace_owner",
+                        column: x => x.OwnerId,
                         principalSchema: "dbo",
                         principalTable: "marketplace_posts",
-                        principalColumn: "OwnerId");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
-                name: "IX_marketplace_books_V1MarketplaceUserOwnerId",
+                name: "IX_marketplace_books_OwnerId",
                 schema: "dbo",
                 table: "marketplace_books",
-                column: "V1MarketplaceUserOwnerId");
+                column: "OwnerId");
         }
 
         /// <inheritdoc />

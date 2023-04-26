@@ -3,6 +3,7 @@ using System;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -17,11 +18,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels.V1MarketplaceUser", b =>
                 {
-                    b.Property<Guid>("OwnerId")
+                    b.Property<string>("OwnerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("OwnerId");
@@ -33,7 +36,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1MarketplaceBook", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("Id");
@@ -56,7 +59,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("DateModified");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
                         .HasColumnType("char(36)")
                         .HasColumnName("OwnerId");
 
