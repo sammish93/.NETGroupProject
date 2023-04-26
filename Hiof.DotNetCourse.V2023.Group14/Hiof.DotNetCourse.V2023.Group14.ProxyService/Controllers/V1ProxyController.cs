@@ -557,9 +557,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
-
-        // TODO: Implement marketplace service to the proxy.
-
         [HttpGet]
         [Route("marketplace/[action]")]
         public async Task<IActionResult> GetAllPosts()
