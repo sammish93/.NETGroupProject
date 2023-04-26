@@ -83,6 +83,14 @@ public class V1MarketplaceController : ControllerBase
         var response = await _service.UpdatePost(postId, post);
         if (response)
         {
+            if (post.Condition.Equals("string"))
+            {
+                return BadRequest("Please write about the condition to the book.");
+            }
+            else if (post.Price == 0)
+            {
+                return BadRequest("Need to set a price one the book!");
+            }
             return Ok("Post successfully updated!");
         }
         else
