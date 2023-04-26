@@ -67,6 +67,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string UpdateIsRead { get; set; }
         public string DeleteConversation { get; set; }
         public string DeleteMessage { get; set; }
+
+        // Urls for marketplace service.
+        public string GetAllPosts { get; set; }
+        public string GetPostById { get; set; }
+        public string CreateNewPost { get; set; }
+        public string UpdatePost { get; set; }
+        public string DeletePost { get; set; }
     }
 }
 
