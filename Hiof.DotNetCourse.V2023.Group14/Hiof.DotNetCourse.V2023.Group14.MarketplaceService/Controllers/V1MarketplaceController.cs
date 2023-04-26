@@ -44,13 +44,16 @@ public class V1MarketplaceController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> GetPostById(Guid postId)
     {
+        _logger.LogInformation("GetPostById: Fetching post with ID {PostId}.", postId);
         var response = await _service.GetPostById(postId);
         if (response == null)
         {
+            _logger.LogWarning("GetPostById: No post found with ID {PostId}.", postId);
             return NotFound("No post has the provided id.");
         }
         else
         {
+            _logger.LogInformation("GetPostById: Successfully fetched post with ID {PostId}.", postId);
             return Ok(response);
         }
 
@@ -61,21 +64,26 @@ public class V1MarketplaceController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> CreateNewPost([Required] Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
     {
+        _logger.LogInformation("CreateNewPost: Creating a new post with owner ID {OwnerId}", ownerId);
         var newPost = await _service.CreateNewPost(ownerId, currency, status, post);
         if (newPost)
         {
             if (post.Condition.Equals("string"))
             {
+                _logger.LogWarning("CreateNewPost: Invalid book condition provided.");
                 return BadRequest("Please write about the condition to the book.");
             }
             else if (post.Price == 0)
             {
+                _logger.LogWarning("CreateNewPost: Price not set on the book");
                 return BadRequest("Need to set a price one the book!");
             }
+            _logger.LogInformation("CreateNewPost: New post successfully added with owner ID {OwnerId}", ownerId);
             return Ok("New post successfully added!");
         }
         else
         {
+            _logger.LogError("CreateNewPost: Failed to add new post with owner ID {ownerId}", ownerId);
             return BadRequest("Could not add the post.");
         }
     }
