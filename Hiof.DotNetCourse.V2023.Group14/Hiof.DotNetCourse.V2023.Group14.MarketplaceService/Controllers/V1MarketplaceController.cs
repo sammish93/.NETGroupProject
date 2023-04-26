@@ -1,4 +1,5 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+﻿using System.ComponentModel.DataAnnotations;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services;
@@ -54,12 +55,19 @@ public class V1MarketplaceController : ControllerBase
 
     [HttpPost]
     [Route("[action]")]
-    public async Task<IActionResult> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
+    public async Task<IActionResult> CreateNewPost([Required] Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
     {
-        // TODO: Need to add input validationnn.
         var newPost = await _service.CreateNewPost(ownerId, currency, status, post);
         if (newPost)
         {
+            if (post.Condition.Equals("string"))
+            {
+                return BadRequest("Please write about the condition to the book.");
+            }
+            else if (post.Price == 0)
+            {
+                return BadRequest("Need to set a price one the book!");
+            }
             return Ok("New post successfully added!");
         }
         else
