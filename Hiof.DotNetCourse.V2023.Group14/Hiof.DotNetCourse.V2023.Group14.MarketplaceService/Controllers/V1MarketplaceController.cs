@@ -56,7 +56,7 @@ public class V1MarketplaceController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
     {
-        // TODO: Need to add input validation.
+        // TODO: Need to add input validationnn.
         var newPost = await _service.CreateNewPost(ownerId, currency, status, post);
         if (newPost)
         {
