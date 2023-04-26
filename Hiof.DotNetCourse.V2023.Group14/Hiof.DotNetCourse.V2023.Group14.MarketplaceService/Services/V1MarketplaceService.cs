@@ -32,14 +32,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             };
 
             // Find user with the given owner id
-            var user = await _context.MarketplaceUser.FindAsync(post.OwnerId);
+            var user = await _context.MarketplaceUser
+                .Include(u => u.Posts)
+                .FirstOrDefaultAsync(u => u.OwnerId == ownerId);
 
             if (user == null)
             {
                 // Create new marketplace user
                 user = new V1MarketplaceUser
                 {
-                    OwnerId = post.OwnerId,
+                    OwnerId = ownerId,
                     Posts = new List<V1MarketplaceBook>()
                 };
                 // Add the new user to database. 
