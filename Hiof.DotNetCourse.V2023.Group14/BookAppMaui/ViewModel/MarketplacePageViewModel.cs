@@ -23,9 +23,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
-        private V1User _loggedInUser { get; set; }
+        private V1User _loggedInUser;
         private V1Book _selectedBook;
-        private ObservableCollection<V1Book> _bookSearch { get; set; }
+        private ObservableCollection<V1Book> _bookSearch;
+        private string _condition;
+        private decimal _price;
+        private ObservableCollection<V1Currency> _currencyValues;
+        private V1Currency _selectedCurrency;
         private bool _isBusy;
         private bool _isBuyAndSellButtonsVisible;
         private bool _isSellGridVisible;
@@ -105,6 +109,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public string Condition { get => _condition; set => SetProperty(ref _condition, value); }
+        public decimal Price { get => _price; set => SetProperty(ref _price, value); }
+
+        public ObservableCollection<V1Currency> CurrencyValues
+        {
+            get => _currencyValues;
+            set
+            {
+                _currencyValues = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public V1Currency SelectedCurrency
+        {
+            get => _selectedCurrency;
+            set
+            {
+                _selectedCurrency = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public MarketplacePageViewModel()
         {
@@ -113,6 +140,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             IsSellGridVisible = false;
             IsBuyGridVisible = false;
             BookSearch = new ObservableCollection<V1Book>();
+
+            CurrencyValues = new ObservableCollection<V1Currency>();
+            CurrencyValues.Add(V1Currency.EUR);
+            CurrencyValues.Add(V1Currency.NOK);
+            CurrencyValues.Add(V1Currency.SEK);
+            CurrencyValues.Add(V1Currency.USD);
         }
 
 
@@ -260,7 +293,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task Sell()
         {
-
             IsBuyAndSellButtonsVisible = false;
             IsSellGridVisible = true;
         }
@@ -270,9 +302,31 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task Buy()
         {
-
             IsBuyAndSellButtonsVisible = false;
             IsBuyGridVisible = true;
+        }
+
+        public ICommand CreateAdCommand => new Command(async () => await CreateAd());
+
+
+        public async Task CreateAd()
+        {
+
+            await Application.Current.MainPage.DisplayAlert("Success!", "You have successfully created an ad.", "OK");
+
+            IsSellGridVisible = false;
+            IsBuyGridVisible = true;
+
+        }
+
+        public ICommand BackCommand => new Command(async () => await Back());
+
+
+        public async Task Back()
+        {
+            IsBuyGridVisible = false;
+            IsSellGridVisible = false;
+            IsBuyAndSellButtonsVisible = true;
         }
 
         public async Task LoadAsync()

@@ -264,9 +264,108 @@
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
 
-                                <Label Text="{Binding SelectedBook.Authors[0]}"
-                                       LineBreakMode="TailTruncation"
-                                       FontSize="Medium" />
+                                <VerticalStackLayout Grid.Row="0"
+                                                     HorizontalOptions="Center"
+                                                     Spacing="5">
+                                    <Label Text="Price"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Entry Placeholder="Enter price..."
+                                               Text="{Binding Price}"
+                                               x:Name="priceEntry"
+                                               TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                               BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                               PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center"
+                                               WidthRequest="125">
+                                            <Entry.Shadow>
+                                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                                        Radius="5"
+                                                        Offset="0,5"
+                                                        Opacity="0.3" />
+                                            </Entry.Shadow>
+                                        </Entry>
+                                        <Picker x:Name="pickerCurrency"
+                                                WidthRequest="80"
+                                                HorizontalTextAlignment="Center"
+                                                VerticalTextAlignment="Center"
+                                                HorizontalOptions="Center"
+                                                BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                                ItemsSource="{Binding CurrencyValues}"
+                                                ItemDisplayBinding="{Binding .}"
+                                                SelectedItem="{Binding SelectedCurrency}">
+                                            <Picker.Shadow>
+                                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                        Radius="5"
+                                                        Offset="0,5"
+                                                        Opacity="0.3" />
+                                            </Picker.Shadow>
+                                        </Picker>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Row="1"
+                                                     HorizontalOptions="Center"
+                                                     Spacing="5">
+                                    <Label Text="Condition"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                    <Entry Placeholder="Enter condition..."
+                                           Text="{Binding Condition}"
+                                           x:Name="conditionEntry"
+                                           TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                           BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                           PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"
+                                           WidthRequest="205">
+                                        <Entry.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                                    Radius="5"
+                                                    Offset="0,5"
+                                                    Opacity="0.3" />
+                                        </Entry.Shadow>
+                                    </Entry>
+                                </VerticalStackLayout>
+
+                                <HorizontalStackLayout Grid.Row="3"
+                                                       HorizontalOptions="Center"
+                                                       Spacing="5">
+                                    <Button Text="Create Ad"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                            TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            WidthRequest="100"
+                                            Command="{Binding CreateAdCommand}">
+                                        <Button.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                    Radius="5"
+                                                    Offset="0,5"
+                                                    Opacity="0.3" />
+                                        </Button.Shadow>
+                                    </Button>
+                                    <Button Text="Back"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                            TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                            VerticalOptions="End"
+                                            HorizontalOptions="End"
+                                            WidthRequest="100"
+                                            Command="{Binding BackCommand}">
+                                        <Button.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                    Radius="5"
+                                                    Offset="0,5"
+                                                    Opacity="0.3" />
+                                        </Button.Shadow>
+                                    </Button>
+                                </HorizontalStackLayout>
 
                             </Grid>
 
