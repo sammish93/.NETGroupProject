@@ -10,6 +10,7 @@ using Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 {
@@ -566,6 +567,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         [Route("marketplace/[action]")]
         public async Task<IActionResult> GetPostById(Guid postId)
             => await Proxy($"{_apiUrls.Value.GetPostById}?postId={postId}");
+
+
+        [HttpPost]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
+        {
+            var url = $"{_apiUrls.Value.CreateNewPost}?ownerId={ownerId}&currency={currency}&status={status}";
+            using var content = SerializeToJsonString(post);
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+
+        }
 
 
         private async Task<IActionResult> Proxy(string url)
