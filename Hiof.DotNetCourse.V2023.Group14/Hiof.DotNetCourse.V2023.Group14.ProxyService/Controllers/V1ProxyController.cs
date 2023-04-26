@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text;
+using System.Threading;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
@@ -585,7 +587,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             {
                 return BadRequest(await response.Content.ReadAsStringAsync());
             }
+        }
 
+        [HttpPut]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
+        {
+            var url = $"{_apiUrls.Value.UpdatePost}?postId={postId}";
+            var content = SerializeToJsonString(post);
+            using var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
         }
 
 
