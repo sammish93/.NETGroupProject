@@ -14,8 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 
             Routing.RegisterRoute(nameof(LogInPage), typeof(LogInPage));
 
-            this.BindingContext = new AppShellViewModel(App.LoggedInUser, App.UserDisplayPicture);
-
+            this.BindingContext = new AppShellViewModel();
         }
 
         // Sets the Shell TitleView title to the current page title when it has been nagivated to.
@@ -31,8 +30,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                 if (currentPage != null)
                 {
                     model.TitleCurrentPage = currentPage;
-                    model.User = App.LoggedInUser;
-                    model.DisplayPicture = App.UserDisplayPicture;
+                    model.User = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser;
+                    model.DisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture;
                 }
             }
 

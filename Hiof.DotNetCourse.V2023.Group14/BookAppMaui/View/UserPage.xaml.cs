@@ -10,14 +10,14 @@ public partial class UserPage : ContentPage
     public UserPage()
     {
         InitializeComponent();
-        BindingContext = new UserPageViewModel(App.LoggedInUser, App.SelectedUser, App.SelectedUserDisplayPicture);
+        BindingContext = new UserPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture);
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
 
-        BindingContext = new UserPageViewModel(App.LoggedInUser, App.SelectedUser, App.SelectedUserDisplayPicture);
+        BindingContext = new UserPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture);
 
         var model = BindingContext as ViewModel.UserPageViewModel;
 
@@ -32,7 +32,7 @@ public partial class UserPage : ContentPage
             var labelEndDate = this.FindByName<Label>("labelEndDate");
             var labelGoalTarget = this.FindByName<Label>("labelGoalTarget");
 
-            if (App.LoggedInUser.Id == App.SelectedUser.Id)
+            if (Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id == Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser.Id)
             {
                 messageButton.IsVisible = false;
                 readingGoalButton.IsVisible = true;
@@ -65,7 +65,7 @@ public partial class UserPage : ContentPage
             } else
             {
                 var mostRecentReadingGoalLabel = this.FindByName<Label>("mostRecentReadingGoalLabel");
-                mostRecentReadingGoalLabel.Text = App.SelectedUser.UserName + " hasn't created a reading goal yet.";
+                mostRecentReadingGoalLabel.Text = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser.UserName + " hasn't created a reading goal yet.";
                 await progressBar.ProgressTo(0, 750, Easing.Linear);
             }
             

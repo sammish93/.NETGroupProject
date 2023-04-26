@@ -201,7 +201,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public LibraryPageViewModel()
         {
-            LoggedInUser = App.LoggedInUser;
+            LoggedInUser = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser;
             ReadEntries = new ObservableCollection<V1LibraryEntry>();
             ToBeRead = new ObservableCollection<V1LibraryEntry>();
             CurrentlyReading = new ObservableCollection<V1LibraryEntry>();
@@ -344,7 +344,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response != null && response.IsSuccessStatusCode)
                 {
                     await Application.Current.MainPage.DisplayAlert("Success!", "Your changes have been saved.", "OK");
-                    App.IsUserLibraryAltered = true;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
                     await LoadAsync();
 
                 } else if (response == null)
@@ -378,7 +378,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     if (response.IsSuccessStatusCode)
                     {
                         await Application.Current.MainPage.DisplayAlert("Success!", "The entry has been deleted.", "OK");
-                        App.IsUserLibraryAltered = true;
+                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
                         await LoadAsync();
                         SelectedEntry = null;
                         SelectedReadingStatus = null;
@@ -404,7 +404,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task NavigateToBookPage(V1Book book)
         {
-            App.SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)

@@ -127,7 +127,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     }
                     else
                     {
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, App.DefaultDisplayPicture);
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
                     }
 
                     ConversationParticipants.Add(userWithDisplayPicture);
@@ -240,7 +240,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 }
                 else
                 {
-                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, App.DefaultDisplayPicture);
+                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
                 }
 
             return userWithDisplayPicture;
@@ -254,7 +254,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public void PopulateMessagesWithUserMetadataAsync(V1ConversationModel conversation)
         {
-            var loggedInUser = new V1UserWithDisplayPicture(LoggedInUser, App.UserDisplayPicture);
+            var loggedInUser = new V1UserWithDisplayPicture(LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture);
 
             if (!conversation.Messages.IsNullOrEmpty())
             {

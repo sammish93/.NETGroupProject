@@ -44,6 +44,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set => SetProperty(ref _displayPicture, value);
         }
 
+        public AppShellViewModel()
+        {
+        }
+
         public AppShellViewModel(V1User user, byte[] displayPicture)
         {
             User = user;
@@ -63,14 +67,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task NavigateToSearchPage(string query)
         {
-            App.SearchQuery = query;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery = query;
             await Shell.Current.GoToAsync($"///home");
             await Shell.Current.GoToAsync($"///search?query={query}");
         }
 
         public async Task NavigateToUserPage(V1User user)
         {
-            App.SelectedUser = user;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
             await GetSelectedUserDisplayPicture(user.UserName);
             await Shell.Current.GoToAsync($"///user?userid={user.Id}");
         }
@@ -86,11 +90,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
 
-                App.SelectedUserDisplayPicture = displayPicture.DisplayPicture;
+                Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = displayPicture.DisplayPicture;
             }
             else
             {
-                App.SelectedUserDisplayPicture = App.DefaultDisplayPicture;
+                Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
             }
         }
 

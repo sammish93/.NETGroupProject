@@ -8,44 +8,99 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
     public class UserSingleton
     {
-        private static UserSingleton _instance;
         private V1User _loggedInUser;
         private V1User _selectedUser;
+        private string _searchQuery;
+        private V1Book _selectedBook;
+        private byte[] _userDisplayPicture;
+        private byte[] _defaultDisplayPicture;
+        private byte[] _selectedUserDisplayPicture;
+        private bool _isUserLibraryAltered = false;
+        private V1LibraryEntryWithImage _selectedEntry;
 
-        public static UserSingleton Instance
+        public V1LibraryEntryWithImage SelectedEntry
         {
-            get
+            get => _selectedEntry;
+            set
             {
-                if (_instance == null)
-                {
-                    _instance = new UserSingleton();
-                }
-                return _instance;
+                _selectedEntry = value;
             }
         }
 
-        public void SetUser(V1User user, bool setLoggedInUser)
+        public V1User LoggedInUser
         {
-            if (setLoggedInUser)
+            get => _loggedInUser;
+            set
             {
-                _loggedInUser = user;
+                _loggedInUser = value;
             }
-            else
-            {
-                _selectedUser = user;
-            }
-        }
-
-        public V1User GetUser(bool getLoggedInUser)
-        {
-            return getLoggedInUser ? _loggedInUser : _selectedUser;
         }
 
         public V1User SelectedUser
         {
-            get { return _selectedUser; }
-            set { _selectedUser = value; }
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+            }
         }
+
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+            }
+        }
+
+        public V1Book SelectedBook
+        {
+            get => _selectedBook;
+            set
+            {
+                _selectedBook = value;
+            }
+        }
+
+        public byte[] UserDisplayPicture
+        {
+            get => _userDisplayPicture;
+            set
+            {
+                _userDisplayPicture = value;
+            }
+        }
+
+        public byte[] DefaultDisplayPicture
+        {
+            get => _defaultDisplayPicture;
+            set
+            {
+                _defaultDisplayPicture = value;
+            }
+        }
+
+        public byte[] SelectedUserDisplayPicture
+        {
+            get => _selectedUserDisplayPicture;
+            set
+            {
+                _userDisplayPicture = value;
+            }
+        }
+
+        public bool IsUserLibraryAltered
+        {
+            get => _isUserLibraryAltered;
+            set
+            {
+                _isUserLibraryAltered = value;
+            }
+        }
+
+        public UserSingleton() { }
+
     }
 }
 

@@ -135,7 +135,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public MarketplacePageViewModel()
         {
-            LoggedInUser = App.LoggedInUser;
+            LoggedInUser = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser;
             IsBuyAndSellButtonsVisible = false;
             IsSellGridVisible = false;
             IsBuyGridVisible = false;
@@ -273,7 +273,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task NavigateToBookPage(V1Book book)
         {
-            App.SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)
