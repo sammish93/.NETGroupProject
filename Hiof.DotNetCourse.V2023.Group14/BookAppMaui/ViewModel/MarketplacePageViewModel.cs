@@ -27,6 +27,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private V1Book _selectedBook;
         private ObservableCollection<V1Book> _bookSearch { get; set; }
         private bool _isBusy;
+        private bool _isBuyAndSellButtonsVisible;
+        private bool _isSellGridVisible;
+        private bool _isBuyGridVisible;
 
 
         public bool IsBusy
@@ -35,6 +38,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _isBusy = value;
+
+            }
+        }
+
+        public bool IsBuyAndSellButtonsVisible
+        {
+            get => _isBuyAndSellButtonsVisible;
+            set
+            {
+                SetProperty(ref _isBuyAndSellButtonsVisible, value);
+
+            }
+        }
+
+        public bool IsSellGridVisible
+        {
+            get => _isSellGridVisible;
+            set
+            {
+                SetProperty(ref _isSellGridVisible, value);
+
+            }
+        }
+
+        public bool IsBuyGridVisible
+        {
+            get => _isBuyGridVisible;
+            set
+            {
+                SetProperty(ref _isBuyGridVisible, value);
 
             }
         }
@@ -76,7 +109,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public MarketplacePageViewModel()
         {
             LoggedInUser = App.LoggedInUser;
-
+            IsBuyAndSellButtonsVisible = false;
+            IsSellGridVisible = false;
+            IsBuyGridVisible = false;
             BookSearch = new ObservableCollection<V1Book>();
         }
 
@@ -218,6 +253,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
 
             await Shell.Current.GoToAsync($"///book?bookid={bookId}");
+        }
+
+        public ICommand SellCommand => new Command(async () => await Sell());
+
+
+        public async Task Sell()
+        {
+
+            IsBuyAndSellButtonsVisible = false;
+            IsSellGridVisible = true;
+        }
+
+        public ICommand BuyCommand => new Command(async () => await Buy());
+
+
+        public async Task Buy()
+        {
+
+            IsBuyAndSellButtonsVisible = false;
+            IsBuyGridVisible = true;
         }
 
         public async Task LoadAsync()

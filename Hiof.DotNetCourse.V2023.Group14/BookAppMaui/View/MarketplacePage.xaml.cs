@@ -80,6 +80,10 @@ public partial class MarketplacePage : ContentPage
                 selectPromptLabel.IsVisible = false;
                 absoluteBanner.IsVisible = true;
                 bookDisplayGrid.IsVisible = true;
+
+                model.IsSellGridVisible = false;
+                model.IsBuyGridVisible = false;
+                model.IsBuyAndSellButtonsVisible = true;
             }
         }
     }

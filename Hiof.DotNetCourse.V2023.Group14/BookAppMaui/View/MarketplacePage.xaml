@@ -54,15 +54,15 @@
                                    Placeholder="Search for a book..."
                                    TextChanged="SearchBar_TextChanged"
                                    PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Secondary}}"
-                                   BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"/>
+                                   BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
 
                         <HorizontalStackLayout Grid.Row="1"
                                                HorizontalOptions="Center">
                             <CheckBox x:Name="checkBox"
                                       VerticalOptions="Center"
-                                      Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"/>
-                            <Label Text="Items for sale" 
-                                   VerticalOptions="Center"/>
+                                      Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}" />
+                            <Label Text="Items for sale"
+                                   VerticalOptions="Center" />
                         </HorizontalStackLayout>
 
                         <CollectionView Grid.Row="2"
@@ -205,33 +205,97 @@
                         <Label Grid.Row="0"
                                Grid.RowSpan="2"
                                x:Name="selectPromptLabel"
-                               Text="Select a book for sale."
+                               Text="Select a book to buy or sell."
                                HorizontalOptions="Center"
-                               VerticalOptions="Center"/>
+                               VerticalOptions="Center" />
 
                         <Grid Grid.Row="1"
                               HeightRequest="115"
                               RowSpacing="10"
                               x:Name="bookDisplayGrid"
                               IsVisible="false">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
 
-                            
+                            <VerticalStackLayout x:Name="buyAndSellButtons"
+                                                 Spacing="10"
+                                                 IsVisible="{Binding IsBuyAndSellButtonsVisible}">
+                                <Button x:Name="buyButton"
+                                        Text="Buy"
+                                        WidthRequest="150"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="Center"
+                                        Command="{Binding BuyCommand}"
+                                        AbsoluteLayout.LayoutBounds="150, 135, AutoSize, AutoSize">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
+
+                                <Button x:Name="sellButton"
+                                        Text="Sell"
+                                        WidthRequest="150"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="Center"
+                                        Command="{Binding SellCommand}"
+                                        AbsoluteLayout.LayoutBounds="150, 135, AutoSize, AutoSize">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
+                            </VerticalStackLayout>
+
+                            <Grid HeightRequest="115"
+                                  RowSpacing="10"
+                                  x:Name="sellGrid"
+                                  IsVisible="{Binding IsSellGridVisible}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Text="{Binding SelectedBook.Authors[0]}"
+                                       LineBreakMode="TailTruncation"
+                                       FontSize="Medium" />
+
+                            </Grid>
+
+                            <Grid HeightRequest="115"
+                                  RowSpacing="10"
+                                  x:Name="buyGrid"
+                                  IsVisible="{Binding IsBuyGridVisible}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Text="{Binding SelectedBook.Title}"
+                                       LineBreakMode="TailTruncation"
+                                       FontSize="Medium" />
+
+                            </Grid>
 
                         </Grid>
                     </Grid>
-                </Grid>
 
-                <ActivityIndicator Grid.Column="0"
-                                   Grid.ColumnSpan="2"
-                                   IsRunning="{Binding IsBusy}"
-                                   Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray600}}"
-                                   Scale="3" />
+                    <ActivityIndicator Grid.Column="0"
+                                       Grid.ColumnSpan="2"
+                                       IsRunning="{Binding IsBusy}"
+                                       Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray600}}"
+                                       Scale="3" />
+                </Grid>
             </Grid>
         </Grid>
     </ScrollView>
