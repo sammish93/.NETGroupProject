@@ -92,25 +92,32 @@ public class V1MarketplaceController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
     {
+        _logger.LogInformation("UpdatePost: Updating post with ID {PostId}", postId);
         var response = await _service.UpdatePost(postId, post);
+
         if (response.Contains("Successfully updated the post!"))
         {
             if (post.Condition.Equals("string"))
             {
+                _logger.LogWarning("UpdatePost: Invalid book condition provided.");
                 return BadRequest("Please write about the condition to the book.");
             }
             else if (post.Price == 0)
             {
+                _logger.LogWarning("UpdatePost: Price not set on the book.");
                 return BadRequest("Need to set a price one the book!");
             }
+            _logger.LogInformation("UpdatePost: Successfully updated post with ID: {PostId}", postId);
             return Ok(response);
         }
         else if (response.Contains("Wrong ownerId, please provide the right one."))
         {
+            _logger.LogWarning("UpdatePost: Wrong owner ID provided for post ID {PostId}", postId);
             return BadRequest(response);
         }
         else
         {
+            _logger.LogError("UpdatePost: Failed to update the post with ID {PostId}", postId);
             return NotFound(response);
         }
     }
@@ -119,13 +126,16 @@ public class V1MarketplaceController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> DeletePost(Guid postId)
     {
+        _logger.LogInformation("DeletePost: Deleting post with ID {PostId}", postId);
         var response = await _service.DeletePost(postId);
         if (response)
         {
+            _logger.LogInformation("DeletePost: Successfully deleted post with ID {PostId}", postId);
             return Ok($"Post with id: {postId} - successfully deleted!");
         }
         else
         {
+            _logger.LogError("DeletePost: Failed to delete post with ID {PostId}. Provided ID does not exist.", postId);
             return NotFound("Provided id does not exist, please provide another one");
         }
     }
