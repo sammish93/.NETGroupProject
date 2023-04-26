@@ -20,6 +20,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
     [Route("proxy/1.0/")]
     public class V1ProxyController : ControllerBase
     {
+        // TODO: Implement logging in the Proxy service.
 
         private readonly HttpClient _httpClient;
         private readonly IOptions<ProxySettings> _apiUrls;

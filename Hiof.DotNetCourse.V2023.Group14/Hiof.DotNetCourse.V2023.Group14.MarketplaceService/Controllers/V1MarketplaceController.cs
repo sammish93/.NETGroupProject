@@ -12,7 +12,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Controllers;
 public class V1MarketplaceController : ControllerBase
 {
     // TODO: Write unit tests for the API.
-    // TODO: Implement logging in the API-service.
     private readonly ILogger<V1MarketplaceController> _logger;
     private readonly V1MarketplaceService _service;
 
