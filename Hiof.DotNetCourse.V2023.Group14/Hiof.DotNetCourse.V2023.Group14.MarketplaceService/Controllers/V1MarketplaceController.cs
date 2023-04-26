@@ -81,7 +81,7 @@ public class V1MarketplaceController : ControllerBase
     public async Task<IActionResult> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
     {
         var response = await _service.UpdatePost(postId, post);
-        if (response)
+        if (response.Contains("Successfully updated the post!"))
         {
             if (post.Condition.Equals("string"))
             {
@@ -91,11 +91,15 @@ public class V1MarketplaceController : ControllerBase
             {
                 return BadRequest("Need to set a price one the book!");
             }
-            return Ok("Post successfully updated!");
+            return Ok(response);
+        }
+        else if (response.Contains("Wrong ownerId, please provide the right one."))
+        {
+            return BadRequest(response);
         }
         else
         {
-            return NotFound("No post exists for the provided id");
+            return NotFound(response);
         }
     }
 

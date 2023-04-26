@@ -111,12 +111,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             return null;
         }
 
-        public async Task<bool> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
+        public async Task<string> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
         {
             var existingPost = await _context.MarketplaceBooks.FindAsync(postId);
             if (existingPost == null)
             {
-                return false;
+                return "The id does not exists, please provide a valid id.";
+            }
+            else if (existingPost.OwnerId != post.OwnerId)
+            {
+                return "Wrong ownerId, please provide the right one.";
             }
             else
             {
@@ -128,7 +132,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
                 existingPost.DateModified = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();
-                return true;
+                return "Successfully updated the post!";
             }
         }
     }
