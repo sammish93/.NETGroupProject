@@ -31,6 +31,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public Guid AuthorId { get; set; }
        
         [Column("parent_comment_id", TypeName = "char(36)")]
+        [JsonProperty("parentCommentId")]
         public Guid? ParentCommentId { get; set; }
 
         public V1Comments? ParentComment { get; set; }
