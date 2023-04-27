@@ -50,7 +50,7 @@ service CommentingService {
 	}
 	rpc DeleteComment(DeleteCommentRequest) returns (DeleteCommentResponse){
 		option (google.api.http) = {
-			delete: "/v1/comments/{id}"
+			delete: "/v1/delete_comment/{id}"
 		};
 	}
 	rpc IncrementUpvotes(IncrementUpvotesRequest) returns (IncrementUpvotesResponse) {
