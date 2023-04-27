@@ -574,8 +574,42 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         [HttpPost("comments/[action]")]
         public async Task<IActionResult> CreateComment(V1Comments comment)
         {
-            var url = $"{_apiUrls.Value.CreateComment}";
-            using var content = SerializeToJsonString(comment);
+            var url = _apiUrls.Value.CreateComment;
+            using var content = new StringContent(JsonConvert.SerializeObject(comment), Encoding.UTF8, "application/json");
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        [HttpPost("comments/[action]")]
+        public async Task<IActionResult> CreateBookComment(V1Comments comment)
+        {
+            var url = _apiUrls.Value.CreateBookComment;
+            using var content = new StringContent(JsonConvert.SerializeObject(comment), Encoding.UTF8, "application/json");
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        [HttpPost("comments/[action]")]
+        public async Task<IActionResult> CreateReplyComment(V1Comments comment)
+        {
+            var url = _apiUrls.Value.CreateReplyComment;
+            using var content = new StringContent(JsonConvert.SerializeObject(comment), Encoding.UTF8, "application/json");
             using var response = await _httpClient.PostAsync(url, content);
 
             if (response.IsSuccessStatusCode)

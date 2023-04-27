@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 {
@@ -136,65 +137,115 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             return response;
         }
 
+       
+
+        
         public override async Task<GetCommentRequest> CreateComment(CreateCommentRequest request, ServerCallContext context)
         {
-            _logger.LogInformation("Received CreateComment request with Id: {0}", request.Id);
-
-            Guid commentId;
-            if (!Guid.TryParse(request.Id, out commentId))
+            var comment = new V1Comments
             {
-                _logger.LogError("Invalid comment id format: {0}", request.Id);
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
-            }
-
-            _logger.LogInformation("Parsed comment id: {0}", commentId);
-
-
-            request.CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow);
-
-            var commentEntity = new V1Comments
-            {
-                Id = commentId,
+                Id = Guid.NewGuid(),
                 Body = request.Body,
-                CreatedAt = request.CreatedAt.ToDateTime(),
+                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
                 Upvotes = request.Upvotes,
-                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType
+                AuthorId = Guid.Parse(request.AuthorId),
+                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
+                UserId = Guid.Parse(request.UserId)
             };
 
             try
             {
-                commentEntity.AuthorId = Guid.Parse(request.AuthorId);
+                await _context.Comments.AddAsync(comment);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
             }
-            catch (FormatException ex)
+            catch (Exception ex)
             {
-                var errorMsg = $"Failed to parse AuthorId '{request.AuthorId}' as a valid GUID.";
-                _logger.LogError(ex, errorMsg);
-                throw new RpcException(new Status(StatusCode.InvalidArgument, errorMsg));
+                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
+                Debug.WriteLine(comment);
+                
+                throw;
             }
 
-            if (request.UserId == null || request.CommentType != CommentType.User)
+            var commentResponse = new GetCommentRequest
             {
-                commentEntity.UserId = null;
+                Id = comment.Id.ToString(),
+            };
+
+            return commentResponse;
+        }
+
+        public override async Task<GetCommentRequest> CreateBookComment(CreateBookCommentRequest request, ServerCallContext context)
+        {
+            var comment = new V1Comments
+            {
+                Id = Guid.NewGuid(),
+                Body = request.Body,
+                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
+                Upvotes = request.Upvotes,
+                AuthorId = Guid.Parse(request.AuthorId),
+                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
+                ISBN10 = request.ISBN10,
+                ISBN13= request.ISBN13,
+            };
+
+            try
+            {
+                await _context.Comments.AddAsync(comment);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    commentEntity.UserId = Guid.Parse(request.UserId);
-                }
-                catch (FormatException ex)
-                {
-                    var errorMsg = $"Failed to parse UserId '{request.UserId}' as a valid GUID.";
-                    _logger.LogError(ex, errorMsg);
-                    throw new RpcException(new Status(StatusCode.InvalidArgument, errorMsg));
-                }
+                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
+                Debug.WriteLine(comment);
+
+                throw;
             }
 
-            _context.Comments.Add(commentEntity);
-            await _context.SaveChangesAsync();
+            var commentResponse = new GetCommentRequest
+            {
+                Id = comment.Id.ToString(),
+            };
 
-            var response = new GetCommentRequest { Id = commentEntity.Id.ToString() };
-            return response;
+            return commentResponse;
+        }
+        public override async Task<GetCommentRequest> CreateReplyComment(CreateReplyCommentRequest request, ServerCallContext context)
+        {
+            var comment = new V1Comments
+            {
+                Id = Guid.NewGuid(),
+                Body = request.Body,
+                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
+                Upvotes = request.Upvotes,
+                AuthorId = Guid.Parse(request.AuthorId),
+                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
+                ParentCommentId = Guid.Parse(request.ParentCommentId)
+            };
+
+            try
+            {
+                await _context.Comments.AddAsync(comment);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
+                Debug.WriteLine(comment);
+
+                throw;
+            }
+
+            var commentResponse = new GetCommentRequest
+            {
+                Id = comment.Id.ToString(),
+            };
+
+            return commentResponse;
         }
 
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Newtonsoft.Json;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
@@ -13,6 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
     public class V1Comments
     {
         [Key]
+        [JsonProperty("id")]
         [Column("id", TypeName = "char(36)")]
         public Guid Id { get; set; }
 
@@ -24,7 +26,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 
         [Column("upvotes")]
         public int? Upvotes { get; set; }
-        
+        [JsonProperty("authorId")]
         [Column("author_id", TypeName = "char(36)")]
         public Guid AuthorId { get; set; }
        
@@ -45,6 +47,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public string? ISBN13 { get; set; }
 
         [Column("user_id", TypeName = "char(36)")]
+        [JsonProperty("userId")]
         public Guid? UserId { get; set; }
 
 

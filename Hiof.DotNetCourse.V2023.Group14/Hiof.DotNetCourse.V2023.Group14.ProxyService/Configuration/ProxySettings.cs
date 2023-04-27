@@ -73,6 +73,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string GetCommentsByUserId { get; set; }
         public string GetCommentsByISBN { get; set;}
         public string CreateComment { get; set;}
+        public string CreateBookComment { get; set;}
+        public string CreateReplyComment { get; set;}
         public string DeleteComment { get; set;}
         public string UpdateCommentBody { get; set;}
         public string UpdateCommentUpvotes { get; set; }

@@ -16,7 +16,20 @@ service CommentingService {
 			body:"*"
 		};
 	}	   
-
+	rpc CreateBookComment(CreateBookCommentRequest) 
+	returns (GetCommentRequest){
+		option (google.api.http) = {
+			post: "/v1/book_comments"
+			body:"*"
+		};
+	}
+	rpc CreateReplyComment(CreateReplyCommentRequest) 
+	returns (GetCommentRequest){
+		option (google.api.http) = {
+			post: "/v1/reply_comment"
+			body:"*"
+		};
+	}
 	rpc GetComment(GetCommentRequest) returns (Comment){
 		option (google.api.http) = {
 			get: "/v1/comments/{id}"
@@ -75,6 +88,25 @@ message Comment {
   Comment parent_comment = 11;
   repeated Comment replies = 12;
 }
+message CreateBookCommentRequest {
+  string id = 1;
+  string body = 2;
+  google.protobuf.Timestamp created_at = 3;
+  int32 upvotes = 4;
+  string author_id = 5;
+  CommentType comment_type = 6;
+  string ISBN10 = 7;
+  string ISBN13 = 8; 
+}
+message CreateReplyCommentRequest {
+  string id = 1;
+  string body = 2;
+  google.protobuf.Timestamp created_at = 3;
+  int32 upvotes = 4;
+  string author_id = 5;
+  CommentType comment_type = 6;
+  string parent_comment_id = 7;
+}
 enum CommentType {
 	USER = 0;
 	BOOK = 1;
@@ -87,24 +119,15 @@ message CreateCommentRequest{
   google.protobuf.Timestamp created_at = 3;
   int32 upvotes = 4;
   string author_id = 5;
-  
   CommentType comment_type = 7;
-  
-  string user_id = 10;
+
+  string user_id = 8;
 
 }
 
 
 message GetCommentRequest {
-  string id = 1;
-  string body = 2;
-  google.protobuf.Timestamp created_at = 3;
-  int32 upvotes = 4;
-  string author_id = 5;
-  
-  CommentType comment_type = 7;
-  
-  string user_id = 10;
+	string id = 1;
 }
 
 message GetCommentsByISBNRequest{
