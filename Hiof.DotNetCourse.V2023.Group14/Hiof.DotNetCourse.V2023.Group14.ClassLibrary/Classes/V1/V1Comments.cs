@@ -14,17 +14,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
     public class V1Comments
     {
         [Key]
-        [JsonProperty("id")]
+        
         [Column("id", TypeName = "char(36)")]
+        [JsonProperty("id")]
         public Guid Id { get; set; }
-
+        
         [Column("body", TypeName = "nvarchar(max)")]
+        [JsonProperty("body")]
         public string Body { get; set; }
 
+        
         [Column("created_at", TypeName = "datetime")]
+        [JsonProperty("createdAt")]
         public DateTime CreatedAt { get; set; }
-
+        
         [Column("upvotes")]
+        [JsonProperty("upvotes")]
         public int? Upvotes { get; set; }
         [JsonProperty("authorId")]
         [Column("author_id", TypeName = "char(36)")]
@@ -39,12 +44,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public List<V1Comments>? Replies { get; set; }
 
         [Column("comment_type")]
+        [JsonProperty("commentType")]
         public CommentType CommentType { get; set; }
-
         [Column("isbn_10")]
+        [JsonProperty("isbN10")]
+        
         public string? ISBN10 { get; set; }
 
         [Column("isbn_13")]
+        [JsonProperty("isbN13")]
         public string? ISBN13 { get; set; }
 
         [Column("user_id", TypeName = "char(36)")]
