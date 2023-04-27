@@ -108,38 +108,45 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
         }
 
 
-       
+
 
 
         public override async Task<DeleteCommentResponse> DeleteComment(DeleteCommentRequest request, ServerCallContext context)
         {
-            
             if (!Guid.TryParse(request.Id, out Guid commentId))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
             }
 
-            
             var commentEntity = await _context.Comments.FindAsync(commentId);
 
-            
             if (commentEntity == null)
             {
                 throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
             }
 
             
+            var children = await _context.Comments.Where(c => c.ParentCommentId == commentId).ToListAsync();
+            if (children.Any())
+            {
+                
+                foreach (var child in children)
+                {
+                    await DeleteComment(new DeleteCommentRequest { Id = child.Id.ToString() }, context);
+                }
+            }
+
             _context.Comments.Remove(commentEntity);
             await _context.SaveChangesAsync();
 
-           
             var response = new DeleteCommentResponse { Id = commentEntity.Id.ToString() };
             return response;
         }
 
-       
 
-        
+
+
+
         public override async Task<GetCommentRequest> CreateComment(CreateCommentRequest request, ServerCallContext context)
         {
             var comment = new V1Comments
@@ -159,6 +166,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 await _context.SaveChangesAsync();
 
                 _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
+                _logger.LogInformation($"Comment with ID {comment.Body} added successfully");
             }
             catch (Exception ex)
             {
@@ -185,7 +193,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
                 Upvotes = request.Upvotes,
                 AuthorId = Guid.Parse(request.AuthorId),
-                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
+                CommentType = ClassLibrary.Enums.V1.CommentType.Book,
                 ISBN10 = request.ISBN10,
                 ISBN13= request.ISBN13,
             };
@@ -221,7 +229,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
                 Upvotes = request.Upvotes,
                 AuthorId = Guid.Parse(request.AuthorId),
-                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
+                CommentType = ClassLibrary.Enums.V1.CommentType.Reply,
                 ParentCommentId = Guid.Parse(request.ParentCommentId)
             };
 
@@ -231,6 +239,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 await _context.SaveChangesAsync();
 
                 _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
+                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.CommentType);
             }
             catch (Exception ex)
             {
