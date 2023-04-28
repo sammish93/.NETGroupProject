@@ -32,12 +32,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
         {
             try
             {
-                var commentEntity = _context.Comments.Include(c => c.Replies).FirstOrDefault(c => c.Id == Guid.Parse(request.Id));
+                if (string.IsNullOrWhiteSpace(request.Id))
+                {
+                    throw new RpcException(new Status(StatusCode.InvalidArgument, "Comment ID must be provided."));
+                }
+
+                if (!Guid.TryParse(request.Id, out var commentId))
+                {
+                    throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment ID format."));
+                }
+
+                var commentEntity = _context.Comments.Include(c => c.Replies).FirstOrDefault(c => c.Id == commentId);
 
                 if (commentEntity == null)
                 {
-                    _logger.LogWarning("{StatusCode}Comment with ID {Id} not found", request.Id);
-                    
+                    _logger.LogWarning("{StatusCode}Comment with ID {Id} not found", StatusCode.NotFound, request.Id);
+
                     throw new RpcException(new Status(StatusCode.NotFound, $"Comment with ID '{request.Id}' not found."));
                 }
 
@@ -76,12 +86,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
                 return Task.FromResult(response);
             }
+            catch (RpcException)
+            {
+                throw; // rethrow any existing RpcException
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while handling GetComment request");
-                throw new RpcException(new Status(StatusCode.Internal, "An error occurred while handling the request"), ex.Message);
+                throw new RpcException(new Status(StatusCode.Internal, "An unexpected error occurred while processing the request."));
             }
         }
+
 
         public override async Task<CommentList> GetAllComments(Empty request, ServerCallContext context)
         {
@@ -115,7 +130,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while getting all comments.");
+                _logger.LogError("Error occurred while getting all comments.", ex.Message.ToString());
                 throw new RpcException(new Status(StatusCode.Internal, "Error occurred while getting all comments."));
             }
         }
@@ -123,7 +138,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
         public override async Task<CommentFilteredResponse> GetCommentsByUserId(GetCommentsByUserIdRequest request, ServerCallContext context)
         {
-            
+            if (string.IsNullOrWhiteSpace(request.UserId))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "User ID must be entered."));
+            }
             if (!Guid.TryParse(request.UserId, out Guid userId))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid user ID format"));
@@ -136,7 +154,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
             if (comments.Count == 0)
             {
-                throw new RpcException(new Status(StatusCode.NotFound, "No comments found for the given user ID"));
+                throw new RpcException(new Status(StatusCode.NotFound, $"No comments found for {userId}"));
             }
 
             var commentResponses = comments.Select(c => new CommentFiltered
@@ -200,11 +218,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
         public override async Task<CommentListedResponse> GetCommentsByAuthorId(GetCommentsByAuthorIdRequest request, ServerCallContext context)
         {
             _logger.LogInformation("GetCommentsByAuthorId is called");
-            var authorId = Guid.Parse(request.AuthorId);
-
-            if (!_context.Comments.Any(c => c.AuthorId == authorId))
+            if (string.IsNullOrWhiteSpace(request.AuthorId))
             {
-                throw new RpcException(new Status(StatusCode.NotFound, $"Comments with AuthorId '{request.AuthorId}' not found."));
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Author ID must be provided."));
+            }
+            if (!Guid.TryParse(request.AuthorId, out Guid authorId))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid author ID format"));
+            }
+            
+
+            if (!_context.Comments.Any(c => c.AuthorId == (authorId)))
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, $"no comments found for {request.AuthorId}"));
             }
 
             var comments = await _context.Comments
@@ -331,7 +357,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Either ISBN10 or ISBN13 must be provided."));
             }
-            if (request.AuthorId == null )
+            if (!string.IsNullOrEmpty(request.ISBN10) && !Regex.IsMatch(request.ISBN10, @"^\d{10}$"))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN must be 10 or 13 digits"));
+            }
+            if (!string.IsNullOrEmpty(request.ISBN13) && !Regex.IsMatch(request.ISBN13, @"^\d{13}$"))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN must be 10 or 13 digits"));
+            }
+            if (request.AuthorId == null)
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "The author ID is required."));
             }
@@ -357,15 +391,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
-
-
                 throw;
             }
 
             var commentResponse = new MessageResponse { Message = $"{comment.Id} added successfully!!" };
-
             return commentResponse;
         }
+
 
         public override async Task<MessageResponse> CreateReplyComment(CreateReplyCommentRequest request, ServerCallContext context)
         {
