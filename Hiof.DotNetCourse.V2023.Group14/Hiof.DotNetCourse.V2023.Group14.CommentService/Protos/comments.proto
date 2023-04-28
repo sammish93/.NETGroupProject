@@ -35,11 +35,26 @@ service CommentingService {
 			get: "/v1/comments/{id}"
 		};
 	}
-	
+	rpc GetCommentsByAuthorId(GetCommentsByAuthorIdRequest) returns (CommentListedResponse){
+		option (google.api.http) = {
+			get: "/v1/comments/author/{author_id}"
+		};
+	}
 	rpc GetAllComments(Empty) returns (CommentList){
 		option (google.api.http) = {
 			get: "/v1/comments"
 		};
+	}
+	rpc GetCommentsByUserId(GetCommentsByUserIdRequest) returns (CommentFilteredResponse){
+		option (google.api.http) = {
+			get: "/v1/comments/user/{user_id}"
+		};
+	}
+
+	rpc GetCommentsByISBN(GetCommentsByISBNRequest) returns (CommentFilteredResponse) {
+	  option (google.api.http) = {
+		get: "/v1/comments/isbn/{isbn}"
+	  };
 	}
 	
 
@@ -60,17 +75,7 @@ service CommentingService {
 			
 		};
 	}
-	rpc GetCommentsByUserId(GetCommentsByUserIdRequest) returns (CommentFilteredResponse){
-		option (google.api.http) = {
-			get: "/v1/comments/user/{user_id}"
-		};
-	}
 
-	rpc GetCommentsByISBN(GetCommentsByISBNRequest) returns (CommentFilteredResponse) {
-	  option (google.api.http) = {
-		get: "/v1/comments/isbn/{isbn}"
-	  };
-	}
 	
 }
 
@@ -87,6 +92,19 @@ message Comment {
   string user_id = 10;
   Comment parent_comment = 11;
   repeated Comment replies = 12;
+}
+message CommentTwo {
+  string id = 1;
+  string body = 2;
+  google.protobuf.Timestamp created_at = 3;
+  int32 upvotes = 4;
+ 
+  string parent_comment_id = 5;
+  CommentType comment_type = 6;
+  string ISBN10 = 7;
+  string ISBN13 = 8;
+  string user_id = 9;
+  
 }
 message CreateBookCommentRequest {
   string id = 1;
@@ -125,7 +143,9 @@ message CreateCommentRequest{
 
 }
 
-
+message GetCommentsByAuthorIdRequest{
+	string author_id = 1;
+}
 message GetCommentRequest {
 	string id = 1;
 }
@@ -136,6 +156,28 @@ message GetCommentsByISBNRequest{
 
 message GetCommentsByUserIdRequest{
 	string user_id = 1;
+}
+message UpdateCommentRequest{
+	string id = 1;
+	string body = 2;	
+}
+
+message DeleteCommentRequest{
+	string id = 1;
+}
+message DeleteCommentResponse{
+	string id = 1;
+}
+message IncrementUpvotesRequest {
+  string id = 1;
+  int32 upvotes = 2;
+ 
+}
+message Empty{}
+
+message IncrementUpvotesResponse {
+  string id = 1;
+  int32 upvotes = 2;
 }
 
 message CommentFiltered{
@@ -160,32 +202,13 @@ message UpdateCommentResponse{
 	
 }
 
-message Empty{}
+
 
 message CommentList{
 	repeated Comment comments = 1;
 }
 
-message UpdateCommentRequest{
-	string id = 1;
-	string body = 2;
-	
-}
-
-message DeleteCommentRequest{
-	string id = 1;
-}
-message DeleteCommentResponse{
-	string id = 1;
-}
-message IncrementUpvotesRequest {
-  string id = 1;
-  int32 upvotes = 2;
- 
-}
-
-message IncrementUpvotesResponse {
-  string id = 1;
-  int32 upvotes = 2;
+message CommentListedResponse{
+	repeated CommentTwo response = 1;
 }
 

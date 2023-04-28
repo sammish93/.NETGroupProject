@@ -571,6 +571,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         public async Task<IActionResult> GetCommentsByISBN(string isbn)
              => await Proxy($"{_apiUrls.Value.GetCommentsByISBN}{isbn}");
 
+        [HttpGet("comments/[action]")]
+        public async Task<IActionResult> GetCommentsByAuthorId(Guid authorId)
+             => await Proxy($"{_apiUrls.Value.GetCommentsByAuthorId}{authorId}");
+
         [HttpPost("comments/[action]")]
         public async Task<IActionResult> CreateComment(V1Comments comment)
         {
