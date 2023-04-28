@@ -471,7 +471,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
             var response = new MessageResponse
             {
-                Message = $"{comment.Id} was successfully updated. New comment is: {comment.Body}" ,
+                Message = $"Successfully updated! Updated comment is: {comment.Body}" ,
                 
             };
 
@@ -500,7 +500,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             await _context.SaveChangesAsync();
 
             
-            var response = new MessageResponse { Message = $"{comment.Id} upvotes were successfull incremented. New upvotes is: {comment.Upvotes}." };
+            var response = new MessageResponse { Message = $"Upvotes successfully incremented! Total upvotes is: {comment.Upvotes}." };
 
             return response;
         }
