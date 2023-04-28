@@ -17,10 +17,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
     {
         // Dependency injection - must update the raport.
         private readonly HttpClient _httpClient;
+        private readonly ILogger<BackgroundJobController> _logger;
 
-        public BackgroundJobController(IHttpClientFactory httpClientFactory)
+        public BackgroundJobController(IHttpClientFactory httpClientFactory, ILogger<BackgroundJobController> logger)
         {
             _httpClient = httpClientFactory.CreateClient();
+            _logger = logger;
         }
 
 
@@ -40,11 +42,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         public IActionResult StartJob()
         {
             UpdateCacheJob job = new UpdateCacheJob(_httpClient);
-           
-            // This will make the job run every hour on the first minute.
-            RecurringJob.AddOrUpdate(() => job.Update(), "0 * * * *");
-
-            return Ok("Cache updating job is scheduled!");
+            try
+            {
+                // This will make the job run every hour on the first minute.
+                RecurringJob.AddOrUpdate(() => job.Update(), "0 * * * *");
+                return Ok("Cache updating job is scheduled!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "Error: An Exception occurred!", ex.Message);
+                return StatusCode(500, "An error occurred while scheduling the cache updating job.");
+            }
         }
 
         [HttpPost]
