@@ -10,21 +10,21 @@ package comments;
 
 service CommentingService {
 	rpc CreateComment(CreateCommentRequest) 
-	returns (GetCommentRequest){
+	returns (MessageResponse){
 		option (google.api.http) = {
 			post: "/v1/comments"
 			body:"*"
 		};
 	}	   
 	rpc CreateBookComment(CreateBookCommentRequest) 
-	returns (GetCommentRequest){
+	returns (MessageResponse){
 		option (google.api.http) = {
 			post: "/v1/book_comments"
 			body:"*"
 		};
 	}
 	rpc CreateReplyComment(CreateReplyCommentRequest) 
-	returns (GetCommentRequest){
+	returns (MessageResponse){
 		option (google.api.http) = {
 			post: "/v1/reply_comment"
 			body:"*"
@@ -58,17 +58,17 @@ service CommentingService {
 	}
 	
 
-	rpc UpdateComment(UpdateCommentRequest) returns (UpdateCommentResponse){
+	rpc UpdateComment(UpdateCommentRequest) returns (MessageResponse){
 		option (google.api.http) = {
 			put: "/v1/comments/{id}/body"
 		};
 	}
-	rpc DeleteComment(DeleteCommentRequest) returns (DeleteCommentResponse){
+	rpc DeleteComment(DeleteCommentRequest) returns (MessageResponse){
 		option (google.api.http) = {
 			delete: "/v1/delete_comment/{id}"
 		};
 	}
-	rpc IncrementUpvotes(IncrementUpvotesRequest) returns (IncrementUpvotesResponse) {
+	rpc IncrementUpvotes(IncrementUpvotesRequest) returns (MessageResponse) {
 		option (google.api.http) = {
 			put: "/v1/comments/{id}/upvotes"
 			
@@ -202,7 +202,9 @@ message UpdateCommentResponse{
 	
 }
 
-
+message MessageResponse{
+	string message = 1;
+}
 
 message CommentList{
 	repeated Comment comments = 1;

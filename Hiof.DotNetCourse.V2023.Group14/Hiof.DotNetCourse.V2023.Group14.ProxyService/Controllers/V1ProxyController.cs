@@ -651,9 +651,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             using var response = await _httpClient.PutAsync(url, content);
 
             if (response.IsSuccessStatusCode)
-                return Ok();
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
             else
-                return BadRequest(response.RequestMessage);
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
         }
 
         [HttpPut("comments/[action]")]
@@ -665,9 +669,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             using var response = await _httpClient.PutAsync(url, content);
 
             if (response.IsSuccessStatusCode)
-                return Ok();
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
             else
-                return BadRequest(response.RequestMessage);
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
         }
 
 

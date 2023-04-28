@@ -82,260 +82,47 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             }
         }
 
-
-
-    
-
         public override async Task<CommentList> GetAllComments(Empty request, ServerCallContext context)
         {
-
-            _logger.LogInformation("GetAllComments is called");
-            var comments = await _context.Comments.ToListAsync();
-
-            var commentList = new CommentList();
-
-            foreach (var commentEntity in comments)
+            try
             {
-                var comment = new Comment
+                _logger.LogInformation("GetAllComments is called");
+                var comments = await _context.Comments.ToListAsync();
+
+                var commentList = new CommentList();
+
+                foreach (var commentEntity in comments)
                 {
-                    Id = commentEntity.Id.ToString(),
-                    Body = commentEntity.Body,
-                    CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(commentEntity.CreatedAt, DateTimeKind.Utc)),
-                    Upvotes = commentEntity.Upvotes ?? 0,
-                    AuthorId = commentEntity.AuthorId.ToString(),
-                    ParentCommentId = commentEntity.ParentCommentId?.ToString() ?? "",
-                    CommentType = (CommentType)commentEntity.CommentType,
-                    ISBN10 = commentEntity.ISBN10 ?? "",
-                    ISBN13 = commentEntity.ISBN13 ?? "",
-                    UserId = commentEntity.UserId?.ToString() ?? ""
-                };
+                    var comment = new Comment
+                    {
+                        Id = commentEntity.Id.ToString(),
+                        Body = commentEntity.Body,
+                        CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(commentEntity.CreatedAt, DateTimeKind.Utc)),
+                        Upvotes = commentEntity.Upvotes ?? 0,
+                        AuthorId = commentEntity.AuthorId.ToString(),
+                        ParentCommentId = commentEntity.ParentCommentId?.ToString() ?? "",
+                        CommentType = (CommentType)commentEntity.CommentType,
+                        ISBN10 = commentEntity.ISBN10 ?? "",
+                        ISBN13 = commentEntity.ISBN13 ?? "",
+                        UserId = commentEntity.UserId?.ToString() ?? ""
+                    };
 
-                commentList.Comments.Add(comment);
-            }
-
-            return commentList;
-        }
-
-
-
-
-
-        public override async Task<DeleteCommentResponse> DeleteComment(DeleteCommentRequest request, ServerCallContext context)
-        {
-            if (!Guid.TryParse(request.Id, out Guid commentId))
-            {
-                _logger.LogWarning("Invalid comment id format. Use Guid");
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
-            }
-
-            var commentEntity = await _context.Comments.FindAsync(commentId);
-
-            if (commentEntity == null)
-            {
-                throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
-            }
-
-            
-            var children = await _context.Comments.Where(c => c.ParentCommentId == commentId).ToListAsync();
-            if (children.Any())
-            {
-                
-                foreach (var child in children)
-                {
-                    await DeleteComment(new DeleteCommentRequest { Id = child.Id.ToString() }, context);
+                    commentList.Comments.Add(comment);
                 }
-            }
 
-            _context.Comments.Remove(commentEntity);
-            await _context.SaveChangesAsync();
-
-            var response = new DeleteCommentResponse { Id = commentEntity.Id.ToString() };
-            return response;
-        }
-
-
-
-
-
-        public override async Task<GetCommentRequest> CreateComment(CreateCommentRequest request, ServerCallContext context)
-        {
-            var comment = new V1Comments
-            {
-                Id = Guid.NewGuid(),
-                Body = request.Body,
-                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
-                Upvotes = request.Upvotes,
-                AuthorId = Guid.Parse(request.AuthorId),
-                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
-                UserId = Guid.Parse(request.UserId)
-            };
-
-            try
-            {
-                await _context.Comments.AddAsync(comment);
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
-                _logger.LogInformation($"Comment with ID {comment.Body} added successfully");
+                return commentList;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
-                Debug.WriteLine(comment);
-                
-                throw;
+                _logger.LogError(ex, "Error occurred while getting all comments.");
+                throw new RpcException(new Status(StatusCode.Internal, "Error occurred while getting all comments."));
             }
-
-            var commentResponse = new GetCommentRequest
-            {
-                Id = comment.Id.ToString(),
-            };
-
-            return commentResponse;
         }
 
-        public override async Task<GetCommentRequest> CreateBookComment(CreateBookCommentRequest request, ServerCallContext context)
-        {
-            var comment = new V1Comments
-            {
-                Id = Guid.NewGuid(),
-                Body = request.Body,
-                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
-                Upvotes = request.Upvotes,
-                AuthorId = Guid.Parse(request.AuthorId),
-                CommentType = ClassLibrary.Enums.V1.CommentType.Book,
-                ISBN10 = request.ISBN10,
-                ISBN13= request.ISBN13,
-            };
-
-            try
-            {
-                await _context.Comments.AddAsync(comment);
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
-                Debug.WriteLine(comment);
-
-                throw;
-            }
-
-            var commentResponse = new GetCommentRequest
-            {
-                Id = comment.Id.ToString(),
-            };
-
-            return commentResponse;
-        }
-        public override async Task<GetCommentRequest> CreateReplyComment(CreateReplyCommentRequest request, ServerCallContext context)
-        {
-            var comment = new V1Comments
-            {
-                Id = Guid.NewGuid(),
-                Body = request.Body,
-                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
-                Upvotes = request.Upvotes,
-                AuthorId = Guid.Parse(request.AuthorId),
-                CommentType = ClassLibrary.Enums.V1.CommentType.Reply,
-                ParentCommentId = Guid.Parse(request.ParentCommentId)
-            };
-
-            try
-            {
-                await _context.Comments.AddAsync(comment);
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
-                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.CommentType);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
-                Debug.WriteLine(comment);
-
-                throw;
-            }
-
-            var commentResponse = new GetCommentRequest
-            {
-                Id = comment.Id.ToString(),
-            };
-
-            return commentResponse;
-        }
-
-
-
-        public override async Task<UpdateCommentResponse> UpdateComment(UpdateCommentRequest request, ServerCallContext context)
-        {
-
-            if (!Guid.TryParseExact(request.Id, "D", out Guid commentId))
-            {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
-            }
-
-
-            var comment = await _context.Comments.FindAsync(commentId);
-
-
-            if (comment == null)
-            {
-                throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
-            }
-
-
-            comment.Body = request.Body;
-            comment.CreatedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-
-
-            var response = new UpdateCommentResponse
-            {
-                Id = comment.Id.ToString(),
-                Body = comment.Body,
-                CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(comment.CreatedAt, DateTimeKind.Utc))
-            };
-
-            return response;
-        }
-
-        public override async Task<IncrementUpvotesResponse> IncrementUpvotes(IncrementUpvotesRequest request, ServerCallContext context)
-        {
-           
-            if (!Guid.TryParse(request.Id, out Guid commentId))
-            {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
-            }
-
-            
-            var comment = await _context.Comments.FindAsync(commentId);
-
-           
-            if (comment == null)
-            {
-                throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
-            }
-
-            
-            comment.Upvotes ++;
-            await _context.SaveChangesAsync();
-
-            
-            var response = new IncrementUpvotesResponse
-            {
-                Id = comment.Id.ToString(),
-                Upvotes = (int)comment.Upvotes 
-            };
-
-            return response;
-        }
 
         public override async Task<CommentFilteredResponse> GetCommentsByUserId(GetCommentsByUserIdRequest request, ServerCallContext context)
         {
-           
+
             var comments = await _context.Comments
                 .Where(c => c.UserId == Guid.Parse(request.UserId))
                 .OrderByDescending(c => c.CreatedAt)
@@ -350,7 +137,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 AuthorId = c.AuthorId.ToString(),
             });
 
-            
+
             var response = new CommentFilteredResponse
             {
                 Response = { commentResponses }
@@ -358,7 +145,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
             return response;
         }
-        
+
         public override async Task<CommentFilteredResponse> GetCommentsByISBN(GetCommentsByISBNRequest request, ServerCallContext context)
         {
             var comments = await _context.Comments
@@ -405,7 +192,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 Body = c.Body,
                 CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(c.CreatedAt, DateTimeKind.Utc)),
                 Upvotes = c.Upvotes ?? 0,
-                
+
                 ParentCommentId = c.ParentCommentId?.ToString() ?? "",
                 CommentType = (CommentType)c.CommentType,
                 ISBN10 = c.ISBN10 ?? "",
@@ -420,6 +207,212 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
             return response;
         }
+
+
+
+        public override async Task<MessageResponse> DeleteComment(DeleteCommentRequest request, ServerCallContext context)
+        {
+            if (!Guid.TryParse(request.Id, out Guid commentId))
+            {
+                _logger.LogWarning("Invalid comment id format. Use Guid");
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
+            }
+
+            var commentEntity = await _context.Comments.FindAsync(commentId);
+
+            if (commentEntity == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
+            }
+
+            
+            var children = await _context.Comments.Where(c => c.ParentCommentId == commentId).ToListAsync();
+            if (children.Any())
+            {
+                
+                foreach (var child in children)
+                {
+                    await DeleteComment(new DeleteCommentRequest { Id = child.Id.ToString() }, context);
+                }
+            }
+
+            _context.Comments.Remove(commentEntity);
+            await _context.SaveChangesAsync();
+
+            var response = new MessageResponse { Message = $"{request.Id} successfully deleted!"   };
+            return response;
+        }
+
+
+
+
+
+        public override async Task<MessageResponse> CreateComment(CreateCommentRequest request, ServerCallContext context)
+        {
+            var comment = new V1Comments
+            {
+                Id = Guid.NewGuid(),
+                Body = request.Body,
+                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
+                Upvotes = request.Upvotes,
+                AuthorId = Guid.Parse(request.AuthorId),
+                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
+                UserId = Guid.Parse(request.UserId)
+            };
+
+            try
+            {
+                await _context.Comments.AddAsync(comment);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
+                _logger.LogInformation($"Comment with ID {comment.Body} added successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
+                
+                
+                throw;
+            }
+
+            var commentResponse = new MessageResponse
+            {
+                Message = $"{comment.Id} added successfully!!"
+            };
+
+            return commentResponse;
+        }
+
+        public override async Task<MessageResponse> CreateBookComment(CreateBookCommentRequest request, ServerCallContext context)
+        {
+            var comment = new V1Comments
+            {
+                Id = Guid.NewGuid(),
+                Body = request.Body,
+                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
+                Upvotes = request.Upvotes,
+                AuthorId = Guid.Parse(request.AuthorId),
+                CommentType = ClassLibrary.Enums.V1.CommentType.Book,
+                ISBN10 = request.ISBN10,
+                ISBN13= request.ISBN13,
+            };
+
+            try
+            {
+                await _context.Comments.AddAsync(comment);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
+                
+
+                throw;
+            }
+
+            var commentResponse = new MessageResponse { Message = $"{comment.Id} added successfully!!" };
+
+            return commentResponse;
+        }
+        public override async Task<MessageResponse> CreateReplyComment(CreateReplyCommentRequest request, ServerCallContext context)
+        {
+            var comment = new V1Comments
+            {
+                Id = Guid.NewGuid(),
+                Body = request.Body,
+                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
+                Upvotes = request.Upvotes,
+                AuthorId = Guid.Parse(request.AuthorId),
+                CommentType = ClassLibrary.Enums.V1.CommentType.Reply,
+                ParentCommentId = Guid.Parse(request.ParentCommentId)
+            };
+
+            try
+            {
+                await _context.Comments.AddAsync(comment);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Comment with ID {CommentId} added successfully", comment.Id);
+                _logger.LogInformation($"{comment}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
+                Debug.WriteLine(comment);
+
+                throw;
+            }
+
+            var commentResponse = new MessageResponse { Message = $"{comment.Id} added successfully!!" };
+
+            return commentResponse;
+        }
+
+
+
+        public override async Task<MessageResponse> UpdateComment(UpdateCommentRequest request, ServerCallContext context)
+        {
+
+            if (!Guid.TryParseExact(request.Id, "D", out Guid commentId))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
+            }
+
+
+            var comment = await _context.Comments.FindAsync(commentId);
+
+
+            if (comment == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
+            }
+
+
+            comment.Body = request.Body;
+            comment.CreatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+
+            var response = new MessageResponse
+            {
+                Message = $"{comment.Id} was successfully updated. New comment is: {comment.Body}" ,
+                
+            };
+
+            return response;
+        }
+
+        public override async Task<MessageResponse> IncrementUpvotes(IncrementUpvotesRequest request, ServerCallContext context)
+        {
+           
+            if (!Guid.TryParse(request.Id, out Guid commentId))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
+            }
+
+            
+            var comment = await _context.Comments.FindAsync(commentId);
+
+           
+            if (comment == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Comment not found"));
+            }
+
+            
+            comment.Upvotes ++;
+            await _context.SaveChangesAsync();
+
+            
+            var response = new MessageResponse { Message = $"{comment.Id} upvotes were successfull incremented. New upvotes is: {comment.Upvotes}." };
+
+            return response;
+        }
+
+     
 
 
     }
