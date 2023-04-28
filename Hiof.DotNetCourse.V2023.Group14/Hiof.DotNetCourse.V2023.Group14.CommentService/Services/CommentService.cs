@@ -249,6 +249,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
         public override async Task<MessageResponse> CreateComment(CreateCommentRequest request, ServerCallContext context)
         {
+            
+            if (string.IsNullOrWhiteSpace(request.Body))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The comment body is required."));
+            }
+
+            if (request.AuthorId == null || request.UserId == null)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The author ID and user ID are required."));
+            }
             var comment = new V1Comments
             {
                 Id = Guid.NewGuid(),
@@ -256,12 +266,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow).ToDateTime(),
                 Upvotes = request.Upvotes,
                 AuthorId = Guid.Parse(request.AuthorId),
-                CommentType = (ClassLibrary.Enums.V1.CommentType)request.CommentType,
+                CommentType = ClassLibrary.Enums.V1.CommentType.User,
                 UserId = Guid.Parse(request.UserId)
             };
 
             try
             {
+               
                 await _context.Comments.AddAsync(comment);
                 await _context.SaveChangesAsync();
 
@@ -271,9 +282,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
-                
-                
-                throw;
+                throw new RpcException(new Status(StatusCode.Internal, "An error occurred while adding the comment."));
             }
 
             var commentResponse = new MessageResponse
@@ -284,8 +293,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             return commentResponse;
         }
 
+
         public override async Task<MessageResponse> CreateBookComment(CreateBookCommentRequest request, ServerCallContext context)
         {
+            if (string.IsNullOrWhiteSpace(request.Body))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The comment body is required."));
+            }
+            if (string.IsNullOrEmpty(request.ISBN10) && string.IsNullOrEmpty(request.ISBN13))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Either ISBN10 or ISBN13 must be provided."));
+            }
+            if (request.AuthorId == null )
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The author ID is required."));
+            }
             var comment = new V1Comments
             {
                 Id = Guid.NewGuid(),
@@ -295,7 +317,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 AuthorId = Guid.Parse(request.AuthorId),
                 CommentType = ClassLibrary.Enums.V1.CommentType.Book,
                 ISBN10 = request.ISBN10,
-                ISBN13= request.ISBN13,
+                ISBN13 = request.ISBN13,
             };
 
             try
@@ -308,7 +330,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error adding comment with ID {CommentId}", comment.Id);
-                
+
 
                 throw;
             }
@@ -317,8 +339,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
             return commentResponse;
         }
+
         public override async Task<MessageResponse> CreateReplyComment(CreateReplyCommentRequest request, ServerCallContext context)
         {
+            if (string.IsNullOrWhiteSpace(request.Body))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The comment body is required."));
+            }
+            if (request.AuthorId == null || request.ParentCommentId == null)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The author ID and parent comment ID are required."));
+            }
             var comment = new V1Comments
             {
                 Id = Guid.NewGuid(),
@@ -360,7 +391,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid comment id format"));
             }
-
+            if (string.IsNullOrWhiteSpace(request.Body))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The comment body is required."));
+            }
 
             var comment = await _context.Comments.FindAsync(commentId);
 
