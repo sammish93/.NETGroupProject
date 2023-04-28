@@ -13,6 +13,7 @@ using Microsoft.Maui.Controls;
 using System.Diagnostics;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.Maui.Layouts;
+using Microsoft.Maui;
 
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
@@ -22,25 +23,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
-
-        public V1User LoggedInUser { get; set; }
-        public V1Book Book { get; set; }
-        public V1LibraryEntryWithImage SelectedLibraryEntry { get; set; }
-        public ReadingStatus readingStatus { get; set; }
-
-        private Button SaveButton;
-
-        public ObservableCollection<V1LibraryEntryWithImage> ReadEntries { get; set; }
-        public ObservableCollection<V1LibraryEntryWithImage> ToBeRead { get; set; }
-        public ObservableCollection<V1LibraryEntryWithImage> CurrentlyReading { get; set; }
+        private V1User _loggedInUser { get; set; }
+        private V1Book _book { get; set; }
+        private V1LibraryEntryWithImage _selectedEntry;
+        private V1Book _selectedEntryBook;
+        private V1LibraryCollection _completeLibrary { get; set; }
+        private ObservableCollection<V1LibraryEntry> _readEntries { get; set; }
+        private ObservableCollection<V1LibraryEntry> _toBeRead { get; set; }
+        private ObservableCollection<V1LibraryEntry> _currentlyReading { get; set; }
         private bool _isBusy;
-        private bool _isVisible;
 
-        public bool IsVisible
-        {
-            get => _isVisible;
-            set => _isVisible = value;
-        }
+        private ObservableCollection<ReadingStatus> _readingStatuses;
+        private ReadingStatus? _selectedReadingStatus;
+        private ObservableCollection<int> _ratings;
+        private int? _selectedRating;
+        private DateTime? _selectedDate;
+
         public bool IsBusy
         {
             get => _isBusy;
@@ -51,9 +49,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public V1User LoggedInUser
+        {
+            get => _loggedInUser;
+            set
+            {
+                _loggedInUser = value;
+                OnPropertyChanged();
 
+            }
+        }
 
-        private V1LibraryEntryWithImage _selectedEntry;
+        public V1Book Book
+        {
+            get => _book;
+            set
+            {
+                _book = value;
+                OnPropertyChanged();
+
+            }
+        }
+
         public V1LibraryEntryWithImage SelectedEntry
         {
             get { return _selectedEntry; }
@@ -65,72 +82,177 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public V1Book SelectedEntryBook
+        {
+            get { return _selectedEntryBook; }
+            set
+            {
+                _selectedEntryBook = value;
+                OnPropertyChanged();
 
+            }
+        }
+
+        public V1LibraryCollection CompleteLibrary
+        {
+            get => _completeLibrary;
+            set
+            {
+                _completeLibrary = value;
+                OnPropertyChanged();
+
+            }
+        }
+
+        public ObservableCollection<V1LibraryEntry> ReadEntries
+        {
+            get => _readEntries;
+            set
+            {
+                _readEntries = value;
+                OnPropertyChanged();
+
+            }
+        }
+
+        public ObservableCollection<V1LibraryEntry> ToBeRead
+        {
+            get => _toBeRead;
+            set
+            {
+                _toBeRead = value;
+                OnPropertyChanged();
+
+            }
+        }
+
+        public ObservableCollection<V1LibraryEntry> CurrentlyReading
+        {
+            get => _currentlyReading;
+            set
+            {
+                _currentlyReading = value;
+                OnPropertyChanged();
+
+            }
+        }
+
+        public ObservableCollection<ReadingStatus> ReadingStatuses
+        {
+            get => _readingStatuses;
+            set
+            {
+                _readingStatuses = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ReadingStatus? SelectedReadingStatus
+        {
+            get => _selectedReadingStatus;
+            set
+            {
+                _selectedReadingStatus = value;
+                OnPropertyChanged();
+            }
+        }
+        private List<ReadingStatus> _readingStatusValues;
+
+        public List<ReadingStatus> ReadingStatusValues
+        {
+            get => _readingStatusValues;
+            set
+            {
+                _readingStatusValues = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<int> Ratings
+        {
+            get => _ratings;
+            set
+            {
+                _ratings = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int? SelectedRating
+        {
+            get => _selectedRating;
+            set
+            {
+                _selectedRating = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public DateTime? SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         public LibraryPageViewModel()
         {
-            LoggedInUser = App.LoggedInUser;
-            ReadEntries = new ObservableCollection<V1LibraryEntryWithImage>();
-            ToBeRead = new ObservableCollection<V1LibraryEntryWithImage>();
-            CurrentlyReading = new ObservableCollection<V1LibraryEntryWithImage>();
-            
+            LoggedInUser = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser;
+            ReadEntries = new ObservableCollection<V1LibraryEntry>();
+            ToBeRead = new ObservableCollection<V1LibraryEntry>();
+            CurrentlyReading = new ObservableCollection<V1LibraryEntry>();
 
+            SelectedDate = DateTime.Now;
+
+            ReadingStatusValues = new List<ReadingStatus>
+            {
+                ReadingStatus.Completed,
+                ReadingStatus.ToRead,
+                ReadingStatus.Reading
+            };
+
+            Ratings = new ObservableCollection<int>();
+            for (int i = 1; i <= 10; i++)
+            {
+                Ratings.Add(i);
+            }
         }
-        public async Task PopulateBooks()
+
+
+        public async Task GetUserLibrary(V1User user)
         {
             try
             {
-                ReadEntries.Clear();
-                ToBeRead.Clear();
-                CurrentlyReading.Clear();
 
-                string loginUrl = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={LoggedInUser.Id}";
+                string url = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={user.Id}";
 
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
                 responseMessage.EnsureSuccessStatusCode();
                 var json = await responseMessage.Content.ReadAsStringAsync();
                 V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
 
+                CompleteLibrary = library;
+
+                ToBeRead.Clear();
+                CurrentlyReading.Clear();
+                ReadEntries.Clear();
+
                 foreach (V1LibraryEntry entry in library.Entries)
                 {
-                    string isbn = entry.LibraryEntryISBN10 ?? entry.LibraryEntryISBN13;
-                    if (string.IsNullOrEmpty(isbn))
+                    if (entry.ReadingStatus == ReadingStatus.Completed)
                     {
-                        continue;
-                    }
-
-                    var book = await GetBookImageUrlAsync(isbn);
-                    if (book == null)
+                        ReadEntries.Add(entry);
+                    } else if (entry.ReadingStatus == ReadingStatus.ToRead)
                     {
-                        continue;
-                    }
-
-                    var imageUrl = book.ImageLinks["thumbnail"];
-
-                    var entryWithImage = new V1LibraryEntryWithImage(
-                        entry.Id,
-                        entry.Title,
-                        entry.MainAuthor,
-                        entry.Rating,
-                        entry.ReadingStatus,
-
-                        imageUrl
-                    );
-                    
-                    if(entryWithImage.ReadingStatus == ReadingStatus.Completed)
-                        ReadEntries.Add(entryWithImage);
-                    else if(entryWithImage.ReadingStatus == ReadingStatus.ToRead)
+                        ToBeRead.Add(entry);
+                    } else if (entry.ReadingStatus == ReadingStatus.Reading)
                     {
-                        ToBeRead.Add(entryWithImage);
+                        CurrentlyReading.Add(entry);
                     }
-                    else if(entryWithImage.ReadingStatus == ReadingStatus.Reading)
-                    {
-                        CurrentlyReading.Add(entryWithImage);
-                    }
-                   
-
-
                 }
             }
             catch (Exception ex)
@@ -139,14 +261,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        private async Task<V1Book> GetBookImageUrlAsync(string isbn)
+        public async Task<V1Book> GetBookWithEntryAsync(string isbn)
         {
-            string loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={isbn}";
+            string url = $"{_apiBaseUrl}/books/GetByIsbn?isbn={isbn}";
 
-            using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
-            responseMessageTwo.EnsureSuccessStatusCode();
-            var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
-            V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
+            using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+            responseMessage.EnsureSuccessStatusCode();
+            var json = await responseMessage.Content.ReadAsStringAsync();
+            V1BooksDto bookSearch = new V1BooksDto(json);
 
             foreach (V1Book book in bookSearch.Books)
             {
@@ -159,22 +281,149 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
-        public async Task NavigateToLibraryEntryDetailPage(V1LibraryEntryWithImage entry)
+        public void PopulateSelectedEntryFields()
         {
-            App.SelectedEntry = entry;
+            SelectedReadingStatus = SelectedEntry.ReadingStatus;
 
-            
 
-            await Shell.Current.GoToAsync($"//entryDetail?entryid={entry.Id}");
+            if (SelectedEntry.Rating.HasValue)
+            {
+                SelectedRating = (int)SelectedEntry.Rating;
+            }
+
+            if (SelectedEntry.DateRead.HasValue)
+            {
+                SelectedDate = (DateTime)SelectedEntry.DateRead;
+            }
+        }
+
+        public ICommand SaveChangesCommand => new Command(async () => await SaveChangesAsync());
+        public ICommand DeleteEntryCommand => new Command(async () => await DeleteEntryAsync());
+        public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPage(SelectedEntryBook));
+
+        public async Task SaveChangesAsync()
+        {
+
+            try
+            {
+
+                string readingStatusUrl = $"{_apiBaseUrl}/libraries/ChangeReadingStatus?entryId={SelectedEntry.Id}&readingStatus={SelectedReadingStatus}";
+                string ratingUrl = $"{_apiBaseUrl}/libraries/ChangeRating?entryId={SelectedEntry.Id}&rating={SelectedRating}";
+                string dateUrl = $"{_apiBaseUrl}/libraries/ChangeDateRead?entryId={SelectedEntry.Id}&dateTime={SelectedDate}";
+
+                HttpResponseMessage response = null;
+
+
+                if (SelectedReadingStatus?.CompareTo(SelectedEntry.ReadingStatus) != 0)
+                {
+                    var jsonString = JsonConvert.SerializeObject(SelectedReadingStatus);
+                    var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    response = await _httpClient.PutAsync(readingStatusUrl, httpContent);
+
+                    SelectedEntry.ReadingStatus = (ReadingStatus)SelectedReadingStatus;
+                }
+
+                if (SelectedRating?.CompareTo(SelectedEntry.Rating) != 0)
+                {
+                    var jsonString = JsonConvert.SerializeObject(SelectedRating);
+                    var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    response = await _httpClient.PutAsync(ratingUrl, httpContent);
+
+                    SelectedEntry.Rating = SelectedRating;
+                }
+
+                if (SelectedDate?.CompareTo(SelectedEntry.DateRead) != 0)
+                {
+                    var jsonString = JsonConvert.SerializeObject(SelectedDate);
+                    var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    response = await _httpClient.PutAsync(dateUrl, httpContent);
+
+                    SelectedEntry.DateRead = SelectedDate;
+                }
+
+                if (response != null && response.IsSuccessStatusCode)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Success!", "Your changes have been saved.", "OK");
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                    await LoadAsync();
+
+                } else if (response == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "You haven't made any changes.", "OK");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "Your changes could not be saved.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public async Task DeleteEntryAsync()
+        {
+            try
+            {
+                if (SelectedEntry == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "You haven't selected an entry.", "OK");
+                    return;
+                } else
+                {
+                    string deleteEntryUrl = $"{_apiBaseUrl}/libraries/DeleteEntry?entry={SelectedEntry.Id}";
+                    var response = await _httpClient.DeleteAsync(deleteEntryUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Success!", "The entry has been deleted.", "OK");
+                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                        await LoadAsync();
+                        SelectedEntry = null;
+                        SelectedReadingStatus = null;
+                        SelectedDate = DateTime.Now;
+                        SelectedRating = null;
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Oops!", "This entry no longer exists.", "OK");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public void UpdateDate(DateTime dateTime)
+        {
+            SelectedDate = dateTime;
+        }
+
+        public async Task NavigateToBookPage(V1Book book)
+        {
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
+            string bookId = "";
+
+            if (book.IndustryIdentifiers["ISBN_13"] != null)
+            {
+                bookId = book.IndustryIdentifiers["ISBN_13"];
+            }
+            else if (book.IndustryIdentifiers["ISBN_10"] != null)
+            {
+                bookId = book.IndustryIdentifiers["ISBN_10"];
+            }
+
+            await Shell.Current.GoToAsync($"///book?bookid={bookId}");
         }
 
         public async Task LoadAsync()
         {
             IsBusy = true;
 
-            IsVisible = false;
-
-            await PopulateBooks();
+            await GetUserLibrary(LoggedInUser);
 
             IsBusy = false;
         }

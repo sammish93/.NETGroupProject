@@ -111,7 +111,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task PopulateHighestRatedBooks()
         {
-            if (HighestRatedBooks.IsNullOrEmpty() || App.IsUserLibraryAltered)
+            if (HighestRatedBooks.IsNullOrEmpty() || Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered)
             {
                 try
                 {
@@ -155,8 +155,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                             HighestRatedBooks.Add(book);
                         }
                     }
-
-                    App.IsUserLibraryAltered = false;
                 }
                 catch (Exception ex)
                 {
@@ -167,7 +165,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task PopulateRecentlyReadBooks()
         {
-            if (RecentlyReadBooks.IsNullOrEmpty() || App.IsUserLibraryAltered)
+            if (RecentlyReadBooks.IsNullOrEmpty() || Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered)
             {
                 try
                 {
@@ -211,8 +209,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                             RecentlyReadBooks.Add(book);
                         }
                     }
-
-                    App.IsUserLibraryAltered = false;
                 }
                 catch (Exception ex)
                 {
@@ -257,7 +253,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         }
                         else
                         {
-                            userWithDisplayPicture = new V1UserWithDisplayPicture(user, App.DefaultDisplayPicture);
+                            userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
                         }
 
                         NearbyUsers.Add(userWithDisplayPicture);
@@ -272,7 +268,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task NavigateToUserPage(V1User user)
         {
-            App.SelectedUser = user;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
             await GetSelectedUserDisplayPicture(user.UserName);
             await Shell.Current.GoToAsync($"///user?userid={user.Id}");
         }
@@ -288,16 +284,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
 
-                App.SelectedUserDisplayPicture = displayPicture.DisplayPicture;
+                Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = displayPicture.DisplayPicture;
             } else
             {
-                App.SelectedUserDisplayPicture = App.DefaultDisplayPicture;
+                Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
             }
         }
 
         public async Task NavigateToBookPage(V1Book book)
         {
-            App.SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)
@@ -331,6 +327,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             IsBusy = true;
             await PopulateHighestRatedBooks();
             await PopulateRecentlyReadBooks();
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = false;
             await PopulateNearbyUsers();
             IsBusy = false;
         }

@@ -1,4 +1,5 @@
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 
@@ -20,13 +21,13 @@ public partial class Page3 : ContentPage
         { 
             string bookId = "";
 
-            if (App.SelectedBook.IndustryIdentifiers["ISBN_13"] != null)
+            if (Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook.IndustryIdentifiers["ISBN_13"] != null)
             {
-                bookId = App.SelectedBook.IndustryIdentifiers["ISBN_13"];
+                bookId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook.IndustryIdentifiers["ISBN_13"];
             }
-            else if (App.SelectedBook.IndustryIdentifiers["ISBN_10"] != null)
+            else if (Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook.IndustryIdentifiers["ISBN_10"] != null)
             {
-                bookId = App.SelectedBook.IndustryIdentifiers["ISBN_10"];
+                bookId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook.IndustryIdentifiers["ISBN_10"];
             }
 
             await Shell.Current.GoToAsync($"///book?bookid={bookId}");

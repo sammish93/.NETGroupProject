@@ -118,7 +118,7 @@
                        VerticalOptions="End" />
 
                 <Button Grid.Row="8"
-                        Text="Signup here!"
+                        Text="Sign up here!"
                         Command="{Binding SignupCommand}"
                         TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"

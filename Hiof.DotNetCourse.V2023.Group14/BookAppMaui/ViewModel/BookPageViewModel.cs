@@ -174,7 +174,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     if (response.IsSuccessStatusCode)
                     {
                         await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
-                        App.IsUserLibraryAltered = true;
+                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
                         if (SelectedReadingStatus == ReadingStatus.Completed)
                         {
                             await UpdateReadingLibrary(User.Id, SelectedDate);

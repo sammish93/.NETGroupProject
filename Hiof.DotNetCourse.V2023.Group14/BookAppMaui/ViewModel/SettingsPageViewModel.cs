@@ -141,8 +141,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 if (response.IsSuccessStatusCode)
                 {
-                    App.LoggedInUser = userChanged;
-                    App.IsUserLibraryAltered = true;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser = userChanged;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
                     await Application.Current.MainPage.DisplayAlert("Success!", "Your changes have been saved.", "OK");
                     await Shell.Current.GoToAsync("///home");
 
@@ -192,7 +192,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
             else
             {
-                UserDisplayPicture = App.DefaultDisplayPicture;
+                UserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
             }
         }
 
@@ -266,7 +266,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     UserDisplayPicture = displayPicture;
-                    App.UserDisplayPicture = displayPicture;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture = displayPicture;
                 }
             }
             catch (Exception ex)

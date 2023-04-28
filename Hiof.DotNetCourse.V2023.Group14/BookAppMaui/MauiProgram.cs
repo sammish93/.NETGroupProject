@@ -2,6 +2,7 @@
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
@@ -23,10 +24,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 
 #if DEBUG
             builder.Logging.AddDebug();
+            builder.Services.AddSingleton<UserSingleton>();
 #endif
             // var currentUser = UserSingleton.Instance.GetUser();
-           
-            
+
+
 
 
 

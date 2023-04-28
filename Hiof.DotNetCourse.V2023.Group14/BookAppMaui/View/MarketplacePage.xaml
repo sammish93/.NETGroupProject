@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.MarketplacePage"
+             xmlns:viewmodel="clr-namespace:Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel"
+             xmlns:model="clr-namespace:Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;assembly=Hiof.DotNetCourse.V2023.Group14.ClassLibrary"
+             Title="MarketplacePage"
+             x:Name="marketplacePage"
+             BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+
+    <ScrollView>
+        <Grid x:Name="backgroundPage"
+              BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <!-- The main page scales dynamically between 800px and 1366px. 
+                Look at the onPageAllocated() override in the .cs file -->
+            <Grid x:Name="dynamicColumn"
+                  Grid.Column="1"
+                  Grid.Row="0"
+                  Padding="5"
+                  MaximumWidthRequest="1366"
+                  MinimumWidthRequest="800"
+                  MinimumHeightRequest="600">
+
+                <Grid BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Gray600}}"
+                      ColumnSpacing="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid x:Name="dynamicLeftColumn"
+                          Grid.Column="0"
+                          MaximumWidthRequest="450"
+                          MinimumHeightRequest="600"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray600}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <SearchBar Grid.Row="0"
+                                   x:Name="searchBar"
+                                   Margin="5"
+                                   Placeholder="Search for a book..."
+                                   TextChanged="SearchBar_TextChanged"
+                                   PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Secondary}}"
+                                   BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
+
+                        <HorizontalStackLayout Grid.Row="1"
+                                               HorizontalOptions="Center">
+                            <CheckBox x:Name="checkBox"
+                                      VerticalOptions="Center"
+                                      Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}" />
+                            <Label Text="Items for sale"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+
+                        <CollectionView Grid.Row="2"
+                                        x:Name="collectionLibraryAll"
+                                        ItemsSource="{Binding BookSearch}"
+                                        SelectionMode="Single"
+                                        SelectionChanged="OnItemSelected"
+                                        ItemsLayout="VerticalList"
+                                        IsVisible="True"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10"
+                                          RowSpacing="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0"
+                                               Text="{Binding Title}"
+                                               FontAttributes="Bold"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Start"
+                                               FontSize="11"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="1"
+                                               Text="{Binding Authors[0]}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="xxxxx"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="xxxxxx"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="End"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+
+                    <Grid Grid.Column="1"
+                          x:Name="InsideDynamicColumn"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray600}}"
+                          RowSpacing="5"
+                          MaximumWidthRequest="910"
+                          MinimumHeightRequest="600">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <AbsoluteLayout x:Name="absoluteBanner"
+                                        IsVisible="false"
+                                        VerticalOptions="Start"
+                                        HorizontalOptions="Start"
+                                        ZIndex="1">
+
+                            <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                    StrokeThickness="0"
+                                    Background="Transparent"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
+                                    ZIndex="3">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="20" />
+                                </Border.StrokeShape>
+                                <Image Grid.Row="0"
+                                       x:Name="bookThumbnail"
+                                       Source="{Binding SelectedBook.ImageLinks[thumbnail]}"
+                                       Aspect="AspectFit"
+                                       ZIndex="3" />
+                            </Border>
+
+                            <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
+                                     Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray500}}"
+                                     WidthRequest="{Binding Width}"
+                                     HeightRequest="100"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="Start"
+                                     AbsoluteLayout.LayoutBounds="0, 25, AutoSize, AutoSize">
+                                <BoxView.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                            Radius="5"
+                                            Offset="0,5"
+                                            Opacity="0.3" />
+                                </BoxView.Shadow>
+                            </BoxView>
+
+                            <Label FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   Text="{Binding SelectedBook.Title}"
+                                   MaximumWidthRequest="700"
+                                   LineBreakMode="TailTruncation"
+                                   FontSize="Large"
+                                   AbsoluteLayout.LayoutBounds="170, 35, AutoSize, AutoSize"
+                                   ZIndex="2" />
+
+                            <Label HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   MaximumWidthRequest="700"
+                                   Text="{Binding SelectedBook.Authors[0]}"
+                                   LineBreakMode="TailTruncation"
+                                   FontSize="Small"
+                                   FontAttributes="Italic"
+                                   AbsoluteLayout.LayoutBounds="170, 90, AutoSize, AutoSize"
+                                   ZIndex="2" />
+
+                            <Button Text="More Information"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                    VerticalOptions="End"
+                                    HorizontalOptions="End"
+                                    Command="{Binding NavigateToBookPageCommand}"
+                                    AbsoluteLayout.LayoutBounds="150, 135, AutoSize, AutoSize">
+                                <Button.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                            Radius="5"
+                                            Offset="0,5"
+                                            Opacity="0.3" />
+                                </Button.Shadow>
+                            </Button>
+
+                        </AbsoluteLayout>
+
+                        <Label Grid.Row="0"
+                               Grid.RowSpan="2"
+                               x:Name="selectPromptLabel"
+                               Text="Select a book to buy or sell."
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+
+                        <Grid RowSpacing="10"
+                              x:Name="bookDisplayGrid"
+                              VerticalOptions="Center"
+                              IsVisible="false">
+
+                            <VerticalStackLayout x:Name="buyAndSellButtons"
+                                                 Spacing="10"
+                                                 IsVisible="{Binding IsBuyAndSellButtonsVisible}">
+                                <Button x:Name="buyButton"
+                                        Text="Buy"
+                                        WidthRequest="150"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="Center"
+                                        Command="{Binding BuyCommand}"
+                                        AbsoluteLayout.LayoutBounds="150, 135, AutoSize, AutoSize">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
+
+                                <Button x:Name="sellButton"
+                                        Text="Sell"
+                                        WidthRequest="150"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="Center"
+                                        Command="{Binding SellCommand}"
+                                        AbsoluteLayout.LayoutBounds="150, 135, AutoSize, AutoSize">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
+                            </VerticalStackLayout>
+
+                            <Grid RowSpacing="10"
+                                  VerticalOptions="Start"
+                                  x:Name="sellGrid"
+                                  IsVisible="{Binding IsSellGridVisible}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="50" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <VerticalStackLayout Grid.Row="0"
+                                                     HorizontalOptions="Center"
+                                                     Spacing="5">
+                                    <Label Text="Price"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Entry Placeholder="Enter price..."
+                                               Text="{Binding Price}"
+                                               x:Name="priceEntry"
+                                               TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                               BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                               PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center"
+                                               WidthRequest="125">
+                                            <Entry.Shadow>
+                                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                                        Radius="5"
+                                                        Offset="0,5"
+                                                        Opacity="0.3" />
+                                            </Entry.Shadow>
+                                        </Entry>
+                                        <Picker x:Name="pickerCurrency"
+                                                WidthRequest="80"
+                                                HorizontalTextAlignment="Center"
+                                                VerticalTextAlignment="Center"
+                                                HorizontalOptions="Center"
+                                                BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                                ItemsSource="{Binding CurrencyValues}"
+                                                ItemDisplayBinding="{Binding .}"
+                                                SelectedItem="{Binding SelectedCurrency}">
+                                            <Picker.Shadow>
+                                                <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                        Radius="5"
+                                                        Offset="0,5"
+                                                        Opacity="0.3" />
+                                            </Picker.Shadow>
+                                        </Picker>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Row="1"
+                                                     HorizontalOptions="Center"
+                                                     Spacing="5">
+                                    <Label Text="Condition"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                    <Entry Placeholder="Enter condition..."
+                                           Text="{Binding Condition}"
+                                           x:Name="conditionEntry"
+                                           TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                           BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                           PlaceholderColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"
+                                           WidthRequest="205">
+                                        <Entry.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                                    Radius="5"
+                                                    Offset="0,5"
+                                                    Opacity="0.3" />
+                                        </Entry.Shadow>
+                                    </Entry>
+                                </VerticalStackLayout>
+
+                                <HorizontalStackLayout Grid.Row="3"
+                                                       HorizontalOptions="Center"
+                                                       Spacing="5">
+                                    <Button Text="Create Ad"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                            TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            WidthRequest="100"
+                                            Command="{Binding CreateAdCommand}">
+                                        <Button.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                    Radius="5"
+                                                    Offset="0,5"
+                                                    Opacity="0.3" />
+                                        </Button.Shadow>
+                                    </Button>
+                                    <Button Text="Back"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                            TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                            VerticalOptions="End"
+                                            HorizontalOptions="End"
+                                            WidthRequest="100"
+                                            Command="{Binding BackCommand}">
+                                        <Button.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                    Radius="5"
+                                                    Offset="0,5"
+                                                    Opacity="0.3" />
+                                        </Button.Shadow>
+                                    </Button>
+                                </HorizontalStackLayout>
+
+                            </Grid>
+
+                            <Grid MaximumWidthRequest="450"
+                                  VerticalOptions="Start"
+                                  RowSpacing="10"
+                                  x:Name="buyGrid"
+                                  IsVisible="{Binding IsBuyGridVisible}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="50" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0"
+                                       Text="Books for sale"
+                                       HorizontalOptions="Center"
+                                       LineBreakMode="TailTruncation"
+                                       FontSize="Medium" />
+
+                                <CollectionView Grid.Row="1"
+                                                HeightRequest="300"
+                                                x:Name="selectedBookSellers"
+                                                ItemsSource="{Binding BookSearch}"
+                                                SelectionMode="Single"
+                                                SelectionChanged="OnItemSelected"
+                                                ItemsLayout="VerticalList"
+                                                IsVisible="True"
+                                                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Padding="10"
+                                                  RowSpacing="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="auto" />
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Row="0"
+                                                       Text="{Binding Title}"
+                                                       FontAttributes="Bold"
+                                                       LineBreakMode="CharacterWrap"
+                                                       HorizontalOptions="Start"
+                                                       FontSize="11"
+                                                       HorizontalTextAlignment="Start" />
+                                                <Label Grid.Row="1"
+                                                       Text="{Binding Authors[0]}"
+                                                       LineBreakMode="CharacterWrap"
+                                                       FontAttributes="Italic"
+                                                       HorizontalOptions="Start"
+                                                       FontSize="12"
+                                                       HorizontalTextAlignment="Start" />
+                                                <Label Grid.Row="2"
+                                                       Text="xxxxx"
+                                                       LineBreakMode="CharacterWrap"
+                                                       FontAttributes="Italic"
+                                                       HorizontalOptions="Start"
+                                                       FontSize="12"
+                                                       HorizontalTextAlignment="Start" />
+                                                <Label Grid.Row="2"
+                                                       Text="xxxxxx"
+                                                       LineBreakMode="CharacterWrap"
+                                                       FontAttributes="Italic"
+                                                       HorizontalOptions="End"
+                                                       FontSize="12"
+                                                       HorizontalTextAlignment="Start" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                                <HorizontalStackLayout Grid.Row="3"
+                                                       HorizontalOptions="Center"
+                                                       Spacing="5">
+                                    <Button Text="Send Message"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                            TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            WidthRequest="150"
+                                            Command="{Binding CreateAdCommand}">
+                                        <Button.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                    Radius="5"
+                                                    Offset="0,5"
+                                                    Opacity="0.3" />
+                                        </Button.Shadow>
+                                    </Button>
+                                    <Button Text="Back"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                            TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                            VerticalOptions="End"
+                                            HorizontalOptions="End"
+                                            WidthRequest="100"
+                                            Command="{Binding BackCommand}">
+                                        <Button.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                    Radius="5"
+                                                    Offset="0,5"
+                                                    Opacity="0.3" />
+                                        </Button.Shadow>
+                                    </Button>
+                                </HorizontalStackLayout>
+
+                            </Grid>
+
+                        </Grid>
+                    </Grid>
+
+                    <ActivityIndicator Grid.Column="0"
+                                       Grid.ColumnSpan="2"
+                                       IsRunning="{Binding IsBusy}"
+                                       Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray600}}"
+                                       Scale="3" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</ContentPage>

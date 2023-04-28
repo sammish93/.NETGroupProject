@@ -14,7 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
         {
             InitializeComponent();
 
-            this.BindingContext = new MessagesViewModel(App.LoggedInUser);
+            this.BindingContext = new MessagesViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser);
         }
 
         protected override async void OnAppearing()

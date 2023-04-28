@@ -52,8 +52,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             IsLoggingIn = true;
 
-            // IsSuccessLabelVisible = false;
-
             try
             {
                 string loginUrl = $"{_apiBaseUrl}/login/Verification";
@@ -76,7 +74,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                     var currentViewModel = Shell.Current.BindingContext as AppShellViewModel;
                    // UserSingleton.Instance.SetUser(user, true);
-                    App.LoggedInUser= user;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser= user;
 
                     string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
                     HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
@@ -85,8 +83,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     var defaultDisplayPicture = System.Drawing.Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "/../../../../../Resources/Images/default_display_picture.png");
                     ImageConverter converter = new ImageConverter();
                     byte[] displayPictureInBytes = (byte[])converter.ConvertTo(defaultDisplayPicture, typeof(byte[]));
-                    App.DefaultDisplayPicture = displayPictureInBytes;
-                    App.SelectedUserDisplayPicture = displayPictureInBytes;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture = displayPictureInBytes;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = displayPictureInBytes;
 
                     if (resultDisplayPicture.IsSuccessStatusCode) 
                     {
@@ -98,7 +96,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                         await UpdateUser(user);
 
-                        App.UserDisplayPicture = displayPicture.DisplayPicture;
+                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture = displayPicture.DisplayPicture;
                         Shell.Current.BindingContext = new AppShellViewModel(user, displayPicture.DisplayPicture);
                     } else
                     {

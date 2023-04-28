@@ -7,238 +7,476 @@
              Title="LibraryPage"
              x:Name="libraryPage"
              BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
-    
-    
-    <Grid
-            Margin="0"
-        ColumnSpacing="5">
 
-        <ScrollView>
+    <ScrollView>
+        <Grid x:Name="backgroundPage"
+              BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
-            <Grid
-            Grid.Column="0"
-            RowSpacing="5"
-            ColumnSpacing="0"
-            Padding="5"
-            BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
+            <!-- The main page scales dynamically between 800px and 1366px. 
+                Look at the onPageAllocated() override in the .cs file -->
+            <Grid x:Name="dynamicColumn"
+                  Grid.Column="1"
+                  Grid.Row="0"
+                  Padding="5"
+                  MaximumWidthRequest="1366"
+                  MinimumWidthRequest="800"
+                  MinimumHeightRequest="600">
 
-                <Label Grid.Row="0" 
-                       Text="Current read"  
-                       Padding="10" 
-                       Margin="10" 
-                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
-                
-                <CollectionView ItemsSource="{Binding CurrentlyReading}"
-                        SelectionMode="Single"
-                        SelectionChanged="OnItemSelected"        
-                        Grid.Row="1"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout
-                             Orientation="Horizontal"
-                             ItemSpacing="20" />
-                    </CollectionView.ItemsLayout>
-                    
-                    <CollectionView.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
-                                        Radius="5"
-                                        Offset="0,5"
-                                        Opacity="0.3" />
-                    </CollectionView.Shadow>
+                <Grid BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource Gray600}}"
+                      ColumnSpacing="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Padding="10" >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="3*"/>
-                                    <RowDefinition Height="1*"/>
-                                    <RowDefinition Height="1*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                                                StrokeThickness="0"
-                                                Background="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                                                HorizontalOptions="Center"
-                                                VerticalOptions="Center">
-                                    <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="5,5,5,5" />
-                                    </Border.StrokeShape>
-                                    <Image Grid.Row="0"
-                                                   Source="{Binding ImageSource}"
-                                                   Aspect="AspectFit" />
-                                </Border>
-                                <Label Grid.Row="1"
-                               Text="{Binding Title}"
-                               FontAttributes="Bold"
-                               LineBreakMode="CharacterWrap"
-                               HorizontalOptions="Center" 
-                               FontSize="11" 
-                               HorizontalTextAlignment="Center" 
-                               VerticalTextAlignment="Center"/>
-                                <Label Grid.Row="2"
-                               Text="{Binding MainAuthor}"
-                               LineBreakMode="CharacterWrap"
-                               FontAttributes="Italic"
-                               HorizontalOptions="Center" 
-                               FontSize="12" 
-                               HorizontalTextAlignment="Center"/>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                    <Grid x:Name="dynamicLeftColumn"
+                          Grid.Column="0"
+                          MaximumWidthRequest="450"
+                          MinimumHeightRequest="600"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray600}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
 
-                <Label Grid.Row="2" 
-                       Text="To be read:"  
-                       Padding="10" 
-                       Margin="10" 
-                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
+                        <HorizontalStackLayout Grid.Row="0"
+                                               Spacing="10"
+                                               HorizontalOptions="Center">
+                            <RadioButton Content="All"
+                                         GroupName="libraryFilter"
+                                         IsChecked="true" 
+                                         CheckedChanged="RadioButtonAll_CheckedChanged"/>
+                            <RadioButton Content="Read"
+                                         GroupName="libraryFilter"
+                                         CheckedChanged="RadioButtonRead_CheckedChanged" />
+                            <RadioButton Content="Reading"
+                                         GroupName="libraryFilter"
+                                         CheckedChanged="RadioButtonReading_CheckedChanged" />
+                            <RadioButton Content="To Read"
+                                         GroupName="libraryFilter"
+                                         CheckedChanged="RadioButtonToRead_CheckedChanged" />
+                        </HorizontalStackLayout>
 
-                <CollectionView ItemsSource="{Binding ToBeRead}"
-                        SelectionMode="Single"
-                        SelectionChanged="OnItemSelected" 
-                        Grid.Row="3"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout
-                             Orientation="Horizontal"
-                             ItemSpacing="20" />
-                    </CollectionView.ItemsLayout>
+                        <Label Grid.Row="1"
+                               Margin="5"
+                               HorizontalOptions="Center">
+                            <Label.Text>
+                                <MultiBinding StringFormat="You have {0} books in your library, {1} of which are completed.">
+                                    <Binding Path="CompleteLibrary.Items" />
+                                    <Binding Path="CompleteLibrary.ItemsRead" />
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
 
-                    <CollectionView.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
-                                        Radius="5"
-                                        Offset="0,5"
-                                        Opacity="0.3" />
-                    </CollectionView.Shadow>
+                        <CollectionView Grid.Row="2"
+                                        x:Name="collectionLibraryAll"
+                                        ItemsSource="{Binding CompleteLibrary.Entries}"
+                                        SelectionMode="Single"
+                                        SelectionChanged="OnItemSelected"
+                                        ItemsLayout="VerticalList"
+                                        IsVisible="True"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Padding="10" >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="3*"/>
-                                    <RowDefinition Height="1*"/>
-                                    <RowDefinition Height="1*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                                                StrokeThickness="0"
-                                                Background="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                                                HorizontalOptions="Center"
-                                                VerticalOptions="Center">
-                                    <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="5,5,5,5" />
-                                    </Border.StrokeShape>
-                                    <Image Grid.Row="0"
-                                                   Source="{Binding ImageSource}"
-                                                   Aspect="AspectFit" />
-                                </Border>
-                                <Label Grid.Row="1"
-                               Text="{Binding Title}"
-                               FontAttributes="Bold"
-                               LineBreakMode="CharacterWrap"
-                               HorizontalOptions="Center" 
-                               FontSize="11" 
-                               HorizontalTextAlignment="Center" 
-                               VerticalTextAlignment="Center"/>
-                                <Label Grid.Row="2"
-                               Text="{Binding MainAuthor}"
-                               LineBreakMode="CharacterWrap"
-                               FontAttributes="Italic"
-                               HorizontalOptions="Center" 
-                               FontSize="12" 
-                               HorizontalTextAlignment="Center"/>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10"
+                                          RowSpacing="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0"
+                                               Text="{Binding Title}"
+                                               FontAttributes="Bold"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Start"
+                                               FontSize="11"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="1"
+                                               Text="{Binding MainAuthor}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="{Binding DateRead, StringFormat='{0:d}'}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="{Binding ReadingStatus}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="End"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
 
-                <Label Grid.Row="4" 
-                       Text="Completed Books"  
-                       Padding="10" 
-                       Margin="10" 
-                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
+                        <CollectionView Grid.Row="2"
+                                        x:Name="collectionLibraryRead"
+                                        ItemsSource="{Binding ReadEntries}"
+                                        SelectionMode="Single"
+                                        SelectionChanged="OnItemSelected"
+                                        ItemsLayout="VerticalList"
+                                        IsVisible="False"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
 
-                <CollectionView ItemsSource="{Binding ReadEntries}"
-                        SelectionMode="Single"
-                        SelectionChanged="OnItemSelected" 
-                        Grid.Row="5"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout
-                             Orientation="Horizontal"
-                             ItemSpacing="20" />
-                    </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10"
+                                          RowSpacing="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0"
+                                               Text="{Binding Title}"
+                                               FontAttributes="Bold"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Start"
+                                               FontSize="11"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="1"
+                                               Text="{Binding MainAuthor}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="{Binding DateRead, StringFormat='{0:d}'}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
 
-                    <CollectionView.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
-                                        Radius="5"
-                                        Offset="0,5"
-                                        Opacity="0.3" />
-                    </CollectionView.Shadow>
+                        <CollectionView Grid.Row="2"
+                                        x:Name="collectionLibraryReading"
+                                        ItemsSource="{Binding CurrentlyReading}"
+                                        SelectionMode="Single"
+                                        SelectionChanged="OnItemSelected"
+                                        ItemsLayout="VerticalList"
+                                        IsVisible="False"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Padding="10" >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="3*"/>
-                                    <RowDefinition Height="1*"/>
-                                    <RowDefinition Height="1*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                                                StrokeThickness="0"
-                                                Background="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
-                                                HorizontalOptions="Center"
-                                                VerticalOptions="Center">
-                                    <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="5,5,5,5" />
-                                    </Border.StrokeShape>
-                                    <Image Grid.Row="0"
-                                                   Source="{Binding ImageSource}"
-                                                   Aspect="AspectFit" />
-                                </Border>
-                                <Label Grid.Row="1"
-                               Text="{Binding Title}"
-                               FontAttributes="Bold"
-                               LineBreakMode="CharacterWrap"
-                               HorizontalOptions="Center" 
-                               FontSize="11" 
-                               HorizontalTextAlignment="Center" 
-                               VerticalTextAlignment="Center"/>
-                                <Label Grid.Row="2"
-                               Text="{Binding MainAuthor}"
-                               LineBreakMode="CharacterWrap"
-                               FontAttributes="Italic"
-                               HorizontalOptions="Center" 
-                               FontSize="12" 
-                               HorizontalTextAlignment="Center"/>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10"
+                                          RowSpacing="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0"
+                                               Text="{Binding Title}"
+                                               FontAttributes="Bold"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Start"
+                                               FontSize="11"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="1"
+                                               Text="{Binding MainAuthor}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="{Binding DateRead, StringFormat='{0:d}'}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
 
+                        <CollectionView Grid.Row="2"
+                                        x:Name="collectionLibraryToRead"
+                                        ItemsSource="{Binding ToBeRead}"
+                                        SelectionMode="Single"
+                                        SelectionChanged="OnItemSelected"
+                                        ItemsLayout="VerticalList"
+                                        IsVisible="False"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10"
+                                          RowSpacing="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0"
+                                               Text="{Binding Title}"
+                                               FontAttributes="Bold"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Start"
+                                               FontSize="11"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="1"
+                                               Text="{Binding MainAuthor}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="{Binding DateRead, StringFormat='{0:d}'}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                    </Grid>
+
+                    <Grid Grid.Column="1"
+                          x:Name="InsideDynamicColumn"
+                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray600}}"
+                          RowSpacing="5"
+                          MaximumWidthRequest="910"
+                          MinimumHeightRequest="600">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <AbsoluteLayout x:Name="absoluteBanner"
+                                        IsVisible="false"
+                                        VerticalOptions="Start"
+                                        HorizontalOptions="Start"
+                                        ZIndex="1">
+
+                            <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                    StrokeThickness="0"
+                                    Background="Transparent"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    AbsoluteLayout.LayoutBounds="10, 10, AutoSize, AutoSize"
+                                    ZIndex="3">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="20" />
+                                </Border.StrokeShape>
+                                <Image Grid.Row="0"
+                                       x:Name="bookThumbnail"
+                                       Source="{Binding SelectedEntry.Thumbnail}"
+                                       Aspect="AspectFit"
+                                       ZIndex="3" />
+                            </Border>
+
+                            <BoxView BindingContext="{x:Reference InsideDynamicColumn}"
+                                     Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray500}}"
+                                     WidthRequest="{Binding Width}"
+                                     HeightRequest="100"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="Start"
+                                     AbsoluteLayout.LayoutBounds="0, 25, AutoSize, AutoSize">
+                                <BoxView.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                            Radius="5"
+                                            Offset="0,5"
+                                            Opacity="0.3" />
+                                </BoxView.Shadow>
+                            </BoxView>
+
+                            <Label FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   Text="{Binding SelectedEntry.Title}"
+                                   MaximumWidthRequest="700"
+                                   LineBreakMode="TailTruncation"
+                                   FontSize="Large"
+                                   AbsoluteLayout.LayoutBounds="170, 35, AutoSize, AutoSize"
+                                   ZIndex="2" />
+
+                            <Label HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   MaximumWidthRequest="700"
+                                   Text="{Binding SelectedEntry.MainAuthor}"
+                                   LineBreakMode="TailTruncation"
+                                   FontSize="Small"
+                                   FontAttributes="Italic"
+                                   AbsoluteLayout.LayoutBounds="170, 90, AutoSize, AutoSize"
+                                   ZIndex="2" />
+
+                            <Button Text="More Information"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                    VerticalOptions="End"
+                                    HorizontalOptions="End"
+                                    Command="{Binding NavigateToBookPageCommand}"
+                                    AbsoluteLayout.LayoutBounds="150, 135, AutoSize, AutoSize">
+                                <Button.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                            Radius="5"
+                                            Offset="0,5"
+                                            Opacity="0.3" />
+                                </Button.Shadow>
+                            </Button>
+
+                        </AbsoluteLayout>
+
+                        <Label Grid.Row="0"
+                               Grid.RowSpan="2"
+                               x:Name="selectPromptLabel"
+                               Text="Select a library entry to edit."
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                        <Grid Grid.Row="1"
+                              HeightRequest="115"
+                              RowSpacing="10"
+                              x:Name="entryFormGrid"
+                              IsVisible="false">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <VerticalStackLayout Grid.Row="0"
+                                                 HorizontalOptions="Center"
+                                                 Spacing="5">
+                                <Label Text="Reading Status"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                                <Picker x:Name="pickerReadingStatus"
+                                        WidthRequest="135"
+                                        HorizontalTextAlignment="Center"
+                                        HorizontalOptions="Center"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                        ItemsSource="{Binding ReadingStatusValues}"
+                                        ItemDisplayBinding="{Binding .}"
+                                        SelectedItem="{Binding SelectedReadingStatus}">
+                                    <Picker.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Picker.Shadow>
+                                </Picker>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Row="1"
+                                                 HorizontalOptions="Center"
+                                                 Spacing="5">
+                                <Label Text="Date Read"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                                <DatePicker MinimumDate="01/01/1900"
+                                            MaximumDate="12/31/2099"
+                                            WidthRequest="135"
+                                            Date="{Binding SelectedDate}"
+                                            x:Name="entryDatePicker"
+                                            HorizontalOptions="Center"
+                                            DateSelected="entryDatePicker_DateSelected"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}">
+                                    <DatePicker.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </DatePicker.Shadow>
+                                </DatePicker>
+
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Row="2"
+                                                 HorizontalOptions="Center"
+                                                 Spacing="5">
+                                <Label Text="Rating"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                                <Picker x:Name="pickerRating"
+                                        WidthRequest="135"
+                                        HorizontalTextAlignment="Center"
+                                        HorizontalOptions="Center"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                        ItemsSource="{Binding Ratings}"
+                                        ItemDisplayBinding="{Binding .}"
+                                        SelectedItem="{Binding SelectedRating}">
+                                    <Picker.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Picker.Shadow>
+                                </Picker>
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout Grid.Row="3"
+                                                   HorizontalOptions="Center"
+                                                   Spacing="5">
+                                <Button Text="Save"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        Command="{Binding SaveChangesCommand}">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
+                                <Button Text="Delete"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="End"
+                                        Command="{Binding DeleteEntryCommand}">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
+                            </HorizontalStackLayout>
+
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <ActivityIndicator Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   IsRunning="{Binding IsBusy}"
+                                   Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource Gray600}}"
+                                   Scale="3" />
             </Grid>
-            
-    
-
-
-
-
+        </Grid>
     </ScrollView>
-    </Grid>
-
 </ContentPage>

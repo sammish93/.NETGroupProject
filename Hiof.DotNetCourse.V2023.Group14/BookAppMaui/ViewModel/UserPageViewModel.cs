@@ -266,13 +266,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
             else
             {
-                SelectedUserDisplayPicture = App.DefaultDisplayPicture;
+                SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
             }
         }
 
         public async Task NavigateToBookPage(V1Book book)
         {
-            App.SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)
@@ -343,7 +343,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         if (response.IsSuccessStatusCode)
                         {
                             await Application.Current.MainPage.DisplayAlert("Success!", "You have added a new reading goal.", "OK");
-                            App.IsUserLibraryAltered = true;
+                            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
                             await LoadProgressBarAsync();
                             await PopulateReadingGoals(SelectedUser);
                             IsBusy = false;
@@ -365,7 +365,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(App.LoggedInUser, SelectedUser));
+        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, SelectedUser));
 
         private async Task SendMessageAsync(V1User userSender, V1User userRecipient)
         {

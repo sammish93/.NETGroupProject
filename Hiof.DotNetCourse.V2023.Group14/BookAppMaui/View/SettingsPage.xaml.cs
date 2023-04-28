@@ -1,4 +1,5 @@
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 
@@ -7,7 +8,7 @@ public partial class SettingsPage : ContentPage
 	public SettingsPage()
 	{
 		InitializeComponent();
-		this.BindingContext = new SettingsPageViewModel(App.LoggedInUser, App.UserDisplayPicture);
+		this.BindingContext = new SettingsPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture);
 	}
 
     protected override async void OnAppearing()
@@ -17,7 +18,7 @@ public partial class SettingsPage : ContentPage
 
         if (model != null)
         {
-            await model.LoadAsync(App.LoggedInUser);
+            await model.LoadAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser);
         }
 
         base.OnAppearing();

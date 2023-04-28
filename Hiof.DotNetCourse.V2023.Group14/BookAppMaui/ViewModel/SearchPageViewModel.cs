@@ -207,7 +207,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     }
                     else
                     {
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, App.DefaultDisplayPicture);
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
                     }
 
                     Users.Add(userWithDisplayPicture);
@@ -221,13 +221,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task NavigateToUserPage(V1User user)
         {
-            App.SelectedUser = user;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
             await Shell.Current.GoToAsync($"///user?userid={user.Id}");
         }
 
         public async Task NavigateToBookPage(V1Book book)
         {
-            App.SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)

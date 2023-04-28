@@ -104,8 +104,8 @@
                                                 Grid.Row="0"
                                                 Grid.Column="0"
                                                 Grid.RowSpan="2"
-                                                WidthRequest="40"
-                                                HeightRequest="40">
+                                                WidthRequest="45"
+                                                HeightRequest="45">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="5" />
                                             </Border.StrokeShape>
@@ -242,8 +242,6 @@
                                 Command="{Binding SendMessageCommand}"
                                 BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
                                 TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
-
-
 
                     </Grid>
                 </Grid>

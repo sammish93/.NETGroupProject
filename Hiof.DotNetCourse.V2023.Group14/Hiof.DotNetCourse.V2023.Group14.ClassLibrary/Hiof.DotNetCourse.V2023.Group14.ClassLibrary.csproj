@@ -27,5 +27,9 @@
   <ItemGroup>
     <None Remove="Pomelo.EntityFrameworkCore.MySql" />
     <None Remove="New Folder\" />
+    <None Remove="Classes\V1\MarketplaceModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Classes\V1\MarketplaceModels\" />
   </ItemGroup>
 </Project>

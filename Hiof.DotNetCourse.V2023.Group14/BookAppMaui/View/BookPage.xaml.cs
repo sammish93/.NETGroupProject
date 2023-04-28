@@ -8,14 +8,14 @@ public partial class BookPage : ContentPage
 	public BookPage()
 	{
 		InitializeComponent();
-        BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
+        BindingContext = new BookPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook);
 	}
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
 
-        BindingContext = new BookPageViewModel(App.LoggedInUser, App.SelectedBook);
+        BindingContext = new BookPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook);
 
         var addBookToLibraryButton = this.FindByName<Button>("addBookToLibraryButton");
 
@@ -23,7 +23,7 @@ public partial class BookPage : ContentPage
 
         if (model != null)
         {
-            if (await model.isBookInLibrary(App.SelectedBook))
+            if (await model.isBookInLibrary(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook))
             {
                 addBookToLibraryButton.Text = "Add a re-read to library";
             }
