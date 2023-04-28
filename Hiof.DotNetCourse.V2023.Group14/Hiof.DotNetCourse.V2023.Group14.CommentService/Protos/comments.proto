@@ -12,21 +12,21 @@ service CommentingService {
 	rpc CreateComment(CreateCommentRequest) 
 	returns (MessageResponse){
 		option (google.api.http) = {
-			post: "/v1/comments"
+			post: "/v1/comments/user"
 			body:"*"
 		};
 	}	   
 	rpc CreateBookComment(CreateBookCommentRequest) 
 	returns (MessageResponse){
 		option (google.api.http) = {
-			post: "/v1/book_comments"
+			post: "/v1/comments/book"
 			body:"*"
 		};
 	}
 	rpc CreateReplyComment(CreateReplyCommentRequest) 
 	returns (MessageResponse){
 		option (google.api.http) = {
-			post: "/v1/reply_comment"
+			post: "/v1/comments/reply"
 			body:"*"
 		};
 	}
@@ -63,16 +63,17 @@ service CommentingService {
 			put: "/v1/comments/{id}/body"
 		};
 	}
-	rpc DeleteComment(DeleteCommentRequest) returns (MessageResponse){
-		option (google.api.http) = {
-			delete: "/v1/delete_comment/{id}"
-		};
-	}
+	
 	rpc IncrementUpvotes(IncrementUpvotesRequest) returns (MessageResponse) {
 		option (google.api.http) = {
 			put: "/v1/comments/{id}/upvotes"
 			
 			
+		};
+	}
+	rpc DeleteComment(DeleteCommentRequest) returns (MessageResponse){
+		option (google.api.http) = {
+			delete: "/v1/comments/delete/{id}"
 		};
 	}
 
