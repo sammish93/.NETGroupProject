@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 {
@@ -122,11 +123,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
         public override async Task<CommentFilteredResponse> GetCommentsByUserId(GetCommentsByUserIdRequest request, ServerCallContext context)
         {
+            
+            if (!Guid.TryParse(request.UserId, out Guid userId))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid user ID format"));
+            }
 
             var comments = await _context.Comments
-                .Where(c => c.UserId == Guid.Parse(request.UserId))
+                .Where(c => c.UserId == userId)
                 .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync();
+
+            if (comments.Count == 0)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "No comments found for the given user ID"));
+            }
 
             var commentResponses = comments.Select(c => new CommentFiltered
             {
@@ -136,7 +147,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 Upvotes = c.Upvotes ?? 0,
                 AuthorId = c.AuthorId.ToString(),
             });
-
 
             var response = new CommentFilteredResponse
             {
@@ -148,11 +158,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
         public override async Task<CommentFilteredResponse> GetCommentsByISBN(GetCommentsByISBNRequest request, ServerCallContext context)
         {
+            if (string.IsNullOrEmpty(request.Isbn))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN is required."));
+            }
+
+            Regex regex = new Regex(@"^\d{10}|\d{13}$");
+            if (!regex.IsMatch(request.Isbn))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN must be 10 or 13 digits."));
+            }
+
             var comments = await _context.Comments
                 .Where(c => c.ISBN10 == request.Isbn || c.ISBN13 == request.Isbn)
                 .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync();
 
+            if (comments.Count == 0)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "No comments for this book yet."));
+            }
 
             var commentResponses = comments.Select(c => new CommentFiltered
             {
@@ -170,6 +195,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
 
             return response;
         }
+
+
         public override async Task<CommentListedResponse> GetCommentsByAuthorId(GetCommentsByAuthorIdRequest request, ServerCallContext context)
         {
             _logger.LogInformation("GetCommentsByAuthorId is called");
