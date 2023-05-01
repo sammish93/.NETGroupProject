@@ -15,12 +15,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
         [Column("MessageId", TypeName = "char(36)")]
         public Guid MessageId { get; set; }
 
+        [Required]
         [Column(TypeName = "LONGTEXT")]
         public string Sender { get; set; }
 
         [NotMapped]
         public V1UserWithDisplayPicture? SenderObject { get; set; }
 
+        [Required]
         [Column(TypeName = "LONGTEXT")]
         public string Message { get; set; }
 

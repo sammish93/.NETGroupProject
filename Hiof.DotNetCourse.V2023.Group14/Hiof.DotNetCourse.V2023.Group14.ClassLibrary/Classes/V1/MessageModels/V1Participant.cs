@@ -10,7 +10,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
     [PrimaryKey("Participant", "ConversationId")]
     public class V1Participant
 	{
-        [Column(TypeName = "LONGTEXT")]
         public string Participant { get; set; }
 
         public bool IsRead { get; set; }
