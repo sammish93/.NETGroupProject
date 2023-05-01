@@ -40,6 +40,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private DateTime _selectedStartDate;
         private DateTime _selectedEndDate;
         private string _goalTarget;
+        private bool _isCommentButtonVisible;
+        private bool _isReplyButtonVisible;
+        private string _messagePlaceholder;
+        private Guid _replyId;
+        private string _commentEntry;
 
 
         public bool IsBusy
@@ -48,6 +53,27 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public bool IsCommentButtonVisible
+        {
+            get => _isCommentButtonVisible;
+            set
+            {
+                _isCommentButtonVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsReplyButtonVisible
+        {
+            get => _isReplyButtonVisible;
+            set
+            {
+                _isReplyButtonVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -152,12 +178,43 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+
+        public string MessagePlaceholder
+        {
+            get => _messagePlaceholder;
+            set
+            {
+                _messagePlaceholder = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Guid ReplyId
+        {
+            get => _replyId;
+            set
+            {
+                _replyId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CommentEntry
+        {
+            get => _commentEntry;
+            set => SetProperty(ref _commentEntry, value);
+        }
+
         public string GoalTarget { get => _goalTarget; set => SetProperty(ref _goalTarget, value); }
 
         public UserPageViewModel(V1User loggedInUser, V1User selectedUser, byte[] selectedUserDisplayPicture)
         {
             User = loggedInUser;
             SelectedUser = selectedUser;
+            IsCommentButtonVisible = true;
+            IsReplyButtonVisible = false;
+            MessagePlaceholder = "Enter a comment...";
+            CommentsOnUserPage = new ObservableCollection<V1Comments>();
             UserBooks = new ObservableCollection<V1Book>();
             UserReadingGoals = new ObservableCollection<V1ReadingGoals>();
             CommentsOnUserPage = new ObservableCollection<V1Comments>();
@@ -229,14 +286,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateComments(V1User user)
+        public async Task PopulateComments(V1User selectedUser)
         {
 
             try
             {
                 CommentsOnUserPage.Clear();
 
-                string url = $"{_apiBaseUrl}/comments/GetCommentsByUserId?id={user.Id}";
+                string url = $"{_apiBaseUrl}/comments/GetCommentsByUserId?id={selectedUser.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
                 responseMessage.EnsureSuccessStatusCode();
@@ -246,6 +303,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 foreach (JObject commentsJson in jArrayReadingGoals["response"])
                 {
                     V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(commentsJson.ToString());
+                    comment = await PopulateCommentReplies(comment);
                     comment.AuthorObject = await GetUserWithDisplayPictureAsync(comment.AuthorId.ToString());
                     CommentsOnUserPage.Add(comment);
                 }
@@ -254,6 +312,33 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
 
             }
+        }
+
+        public async Task<V1Comments> PopulateCommentReplies(V1Comments selectedComments)
+        {
+
+            try
+            {
+                string url = $"{_apiBaseUrl}/comments/GetCommentById?id={selectedComments.Id}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+                V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(json);
+
+                foreach (V1Comments reply in comment.Replies)
+                {
+                    reply.AuthorObject = await GetUserWithDisplayPictureAsync(reply.AuthorId.ToString());
+                }
+
+                return comment;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
         }
 
         public async Task<V1UserWithDisplayPicture> GetUserWithDisplayPictureAsync(String guidString)
@@ -532,6 +617,87 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
 
             return false;
+        }
+
+        public ICommand ReplyCommand => new Command(async (e) => await Reply((V1Comments)e));
+
+        public async Task Reply(V1Comments comment)
+        {
+            IsCommentButtonVisible = false;
+            IsReplyButtonVisible = true;
+            MessagePlaceholder = $"Enter a reply to {comment.AuthorObject.User.UserName}...";
+            ReplyId = comment.Id;
+        }
+
+        public ICommand UpvoteCommand => new Command(async (e) => await Upvote((V1Comments)e));
+
+        public async Task Upvote(V1Comments comment)
+        {
+            string url = $"{_apiBaseUrl}/comments/UpdateCommentUpvotes?id={comment.Id}&upvotes=1";
+
+            var jsonString = JsonConvert.SerializeObject(new { id = comment.Id, upvotes = 1 });
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(url, httpContent);
+            if (response.IsSuccessStatusCode)
+            {
+                await PopulateComments(SelectedUser);
+            }
+        }
+
+        public ICommand SendCommentCommand => new Command(async () => await SendComment(CommentEntry));
+
+        public async Task SendComment(string message)
+        {
+            string url = $"{_apiBaseUrl}/comments/CreateComment";
+
+            if (message != null)
+            {
+
+                var requestBodyJson = JsonConvert.SerializeObject(new
+                {
+                    body = message,
+                    createdAt = DateTime.UtcNow,
+                    upvotes = 0,
+                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id,
+                    userId = SelectedUser.Id
+                });
+                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    await PopulateComments(SelectedUser);
+                }
+            }
+        }
+
+        public ICommand SendReplyCommand => new Command(async () => await SendReply(CommentEntry));
+
+        public async Task SendReply(string message)
+        {
+            string url = $"{_apiBaseUrl}/comments/CreateReplyComment";
+
+            if (message != null)
+            {
+
+                var requestBodyJson = JsonConvert.SerializeObject(new
+                {
+                    body = message,
+                    createdAt = DateTime.UtcNow,
+                    upvotes = 0,
+                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id,
+                    parentCommentId = ReplyId,
+                    userId = SelectedUser.Id
+                });
+                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    await PopulateComments(SelectedUser);
+                }
+            }
         }
 
         public async Task LoadAsync()
