@@ -455,19 +455,44 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             if (message != null)
             {
-                var requestBody = new V1Comments
-                {
-                    Id = Guid.NewGuid(),
-                    Body = message,
-                    CreatedAt = DateTime.Now,
-                    AuthorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id,
-                    Upvotes = 0,
-                    CommentType = ClassLibrary.Enums.V1.CommentType.Book,
+
+                var requestBodyJson = JsonConvert.SerializeObject( new { 
+                    body = message, 
+                    createdAt = DateTime.UtcNow, 
+                    upvotes = 0, 
+                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id, 
                     ISBN10 = SelectedBook.IndustryIdentifiers["ISBN_10"],
                     ISBN13 = SelectedBook.IndustryIdentifiers["ISBN_13"]
-                };
+                });
+                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
 
-                var requestBodyJson = JsonConvert.SerializeObject(requestBody);
+                HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    await LoadAsync();
+                }
+            }
+        }
+
+        public ICommand SendReplyCommand => new Command(async () => await SendReply(CommentEntry));
+
+        public async Task SendReply(string message)
+        {
+            string url = $"{_apiBaseUrl}/comments/CreateReplyComment";
+
+            if (message != null)
+            {
+
+                var requestBodyJson = JsonConvert.SerializeObject(new
+                {
+                    body = message,
+                    createdAt = DateTime.UtcNow,
+                    upvotes = 0,
+                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id,
+                    parentCommentId = ReplyId,
+                    ISBN10 = SelectedBook.IndustryIdentifiers["ISBN_10"],
+                    ISBN13 = SelectedBook.IndustryIdentifiers["ISBN_13"]
+                });
                 var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);

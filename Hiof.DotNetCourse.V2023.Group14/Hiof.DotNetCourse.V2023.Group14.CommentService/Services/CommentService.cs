@@ -181,8 +181,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN is required."));
             }
 
-            Regex regex = new Regex(@"^\d{10}|\d{13}$");
-            if (!regex.IsMatch(request.Isbn))
+
+            if (request.Isbn.Length != 10 && request.Isbn.Length != 13)
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN must be 10 or 13 digits."));
             }
@@ -359,11 +359,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Either ISBN10 or ISBN13 must be provided."));
             }
             */
-            if (!string.IsNullOrEmpty(request.ISBN10) && !Regex.IsMatch(request.ISBN10, @"^\d{10}$"))
+            if (!string.IsNullOrEmpty(request.ISBN10) && request.ISBN10.Length != 10)
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN must be 10 or 13 digits"));
             }
-            if (!string.IsNullOrEmpty(request.ISBN13) && !Regex.IsMatch(request.ISBN13, @"^\d{13}$"))
+            if (!string.IsNullOrEmpty(request.ISBN13) && request.ISBN13.Length != 13)
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN must be 10 or 13 digits"));
             }
@@ -382,6 +382,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 ISBN10 = request.ISBN10,
                 ISBN13 = request.ISBN13,
             };
+            _logger.LogInformation($"{request.ISBN13}");
+            _logger.LogInformation($"{request.ISBN10}");
+            _logger.LogInformation($"{comment.Body}");
 
             try
             {

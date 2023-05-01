@@ -309,21 +309,22 @@
 
                                             <VerticalStackLayout BindableLayout.ItemsSource="{Binding Replies}"
                                                                  Grid.Column="1"
-                                                                 Grid.Row="2">
+                                                                 Grid.Row="2"
+                                                                 Spacing="5">
                                                 <BindableLayout.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackLayout>
                                                             <VerticalStackLayout Spacing="5"
                                                                                  Padding="5"
                                                                                  BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}">
-                                                                <HorizontalStackLayout Spacing="20">
+                                                                <Grid>
                                                                     <Label Grid.Row="0"
                                                                            Text="{Binding AuthorObject.User.UserName}"
                                                                            FontAttributes="Bold" />
                                                                     <Label Grid.Row="0"
                                                                            Text="{Binding CreatedAt}"
-                                                                           HorizontalOptions="End" />
-                                                                </HorizontalStackLayout>
+                                                                           HorizontalOptions="End"/>
+                                                                </Grid>
 
                                                                 <Label Grid.Row="1"
                                                                        Text="{Binding Body}" />

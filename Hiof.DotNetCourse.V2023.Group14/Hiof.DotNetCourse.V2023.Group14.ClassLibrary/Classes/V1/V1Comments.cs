@@ -47,12 +47,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         [JsonProperty("commentType")]
         public CommentType CommentType { get; set; }
         [Column("isbn_10")]
-        [JsonProperty("isbN10")]
+        [JsonProperty("ISBN10")]
         
         public string? ISBN10 { get; set; }
 
         [Column("isbn_13")]
-        [JsonProperty("isbN13")]
+        [JsonProperty("ISBN13")]
         public string? ISBN13 { get; set; }
 
         [Column("user_id", TypeName = "char(36)")]
@@ -60,6 +60,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         public Guid? UserId { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public V1UserWithDisplayPicture? AuthorObject { get; set; }
     }
 }
