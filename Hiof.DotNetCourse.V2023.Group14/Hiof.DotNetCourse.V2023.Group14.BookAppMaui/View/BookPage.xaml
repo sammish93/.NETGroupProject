@@ -2,11 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View.BookPage"
-             Title="Book Page">
+             Title="Book Page"
+             x:Name="MyPage"
+             BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}">
 
     <!-- If the GUI is scaled to below 800x600 it is scrollable -->
     <ScrollView>
-        <Grid>
+        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="auto" />
@@ -42,7 +44,7 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="20,20,20,20" />
                         </Border.StrokeShape>
-                            <Image Grid.Row="0"
+                        <Image Grid.Row="0"
                                x:Name="bookThumbnail"
                                Source="{Binding SelectedBook.ImageLinks[thumbnail]}"
                                Aspect="AspectFit"
@@ -202,7 +204,7 @@
                                             MaximumDate="12/31/2099"
                                             DateSelected="DatePicker_DateSelected"
                                             HorizontalOptions="Center"
-                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"/>
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
 
                                 <Picker x:Name="pickerRating"
                                         Grid.Row="1"
@@ -234,6 +236,7 @@
                               MinimumHeightRequest="600">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="1*" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
@@ -242,70 +245,193 @@
                                    Text="Comments"
                                    Padding="5" />
 
-                            <ScrollView Grid.Row="1">
-                                <Grid RowSpacing="5"
-                                      ColumnSpacing="5"
-                                      Padding="5"
-                                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.Row="0"
-                                           Grid.Column="0"
-                                           WidthRequest="30"
-                                           HeightRequest="30"
-                                           Source="portrait.png"
-                                           Aspect="AspectFit"
-                                           VerticalOptions="Start" />
-                                    <Label Grid.Column="1"
-                                           Grid.Row="0"
-                                           Text="Username"
-                                           LineBreakMode="CharacterWrap"
-                                           FontAttributes="Bold"
-                                           HorizontalOptions="Start"
-                                           FontSize="Small"
-                                           HorizontalTextAlignment="Start" />
-                                    <Label Grid.Column="1"
-                                           Grid.Row="1"
-                                           Text="{Binding SelectedBook.Title}"
-                                           FontAttributes="Bold"
-                                           HorizontalOptions="Start"
-                                           VerticalOptions="Center"
-                                           FontSize="Small"
-                                           HorizontalTextAlignment="Center"
-                                           VerticalTextAlignment="Start" />
-                                    <Label Grid.Column="1"
-                                           Grid.Row="2"
-                                           Text="{Binding SelectedBook.Description}"
-                                           LineBreakMode="CharacterWrap"
-                                           FontAttributes="Italic"
-                                           HorizontalOptions="Start"
-                                           FontSize="Caption"
-                                           HorizontalTextAlignment="Start" />
-                                </Grid>
-                            </ScrollView>
+                            <CollectionView ItemsSource="{Binding CommentsOnUserPage}"
+                                            ItemsLayout="VerticalList"
+                                            Grid.Row="1"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid RowSpacing="5"
+                                              ColumnSpacing="5"
+                                              Padding="5"
+                                              x:Name="commentGrid"
+                                              BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                    StrokeThickness="0"
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2"
+                                                    WidthRequest="60"
+                                                    HeightRequest="60">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="5" />
+                                                </Border.StrokeShape>
+                                                <Image Grid.Row="0"
+                                                       Source="{Binding AuthorObject.DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                       Aspect="AspectFit" />
+                                            </Border>
+
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="0"
+                                                   Text="{Binding AuthorObject.User.UserName}"
+                                                   LineBreakMode="CharacterWrap"
+                                                   FontAttributes="Bold"
+                                                   HorizontalOptions="Start"
+                                                   FontSize="16"
+                                                   HorizontalTextAlignment="Start" />
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="0"
+                                                   Text="{Binding CreatedAt}"
+                                                   LineBreakMode="WordWrap"
+                                                   FontAttributes="Italic"
+                                                   HorizontalOptions="End"
+                                                   FontSize="11"
+                                                   HorizontalTextAlignment="End" />
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="1"
+                                                   Text="{Binding Body}"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Center"
+                                                   FontSize="14"
+                                                   HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Start" />
 
 
+                                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Replies}"
+                                                                 Grid.Column="1"
+                                                                 Grid.Row="2">
+                                                <BindableLayout.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout>
+                                                            <VerticalStackLayout Spacing="5"
+                                                                                 Padding="5"
+                                                                                 BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}">
+                                                                <HorizontalStackLayout Spacing="20">
+                                                                    <Label Grid.Row="0"
+                                                                           Text="{Binding AuthorObject.User.UserName}"
+                                                                           FontAttributes="Bold" />
+                                                                    <Label Grid.Row="0"
+                                                                           Text="{Binding CreatedAt}"
+                                                                           HorizontalOptions="End" />
+                                                                </HorizontalStackLayout>
+
+                                                                <Label Grid.Row="1"
+                                                                       Text="{Binding Body}" />
+                                                            </VerticalStackLayout>
+
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </BindableLayout.ItemTemplate>
+                                            </VerticalStackLayout>
+
+
+                                            <HorizontalStackLayout Grid.Column="1"
+                                                                   Grid.Row="3"
+                                                                   HorizontalOptions="End">
+                                                <Label Text="{Binding Replies.Count, StringFormat='{0} Replies'}"
+                                                       VerticalOptions="Center"
+                                                       TranslationX="30" />
+                                                <Label Text="{Binding Upvotes, StringFormat='{0} Upvotes'}"
+                                                       LineBreakMode="CharacterWrap"
+                                                       FontAttributes="Bold"
+                                                       VerticalOptions="Center"
+                                                       TranslationX="40" />
+                                                <Button FontSize="18"
+                                                        WidthRequest="90"
+                                                        Scale="0.7"
+                                                        TranslationX="40"
+                                                        Text="Reply"
+                                                        CommandParameter="{Binding .}"
+                                                        Command="{Binding BindingContext.ReplyCommand, Source={x:Reference MyPage}}"
+                                                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource AlternatePrimary}}"
+                                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+                                                <Button FontSize="18"
+                                                        WidthRequest="110"
+                                                        Scale="0.7"
+                                                        TranslationX="15"
+                                                        Text="Upvote"
+                                                        CommandParameter="{Binding .}"
+                                                        Command="{Binding BindingContext.UpvoteCommand, Source={x:Reference MyPage}}"
+                                                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource AlternatePrimary}}"
+                                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+
+                                            </HorizontalStackLayout>
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <Grid Grid.Row="2"
+                                  Margin="5"
+                                  ColumnSpacing="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Entry Grid.Column="0"
+                                       Placeholder="{Binding MessagePlaceholder}"
+                                       Text="{Binding CommentEntry}"
+                                       x:Name="messageEntry"
+                                       IsVisible="true"
+                                       MaxLength="120"
+                                       ClearButtonVisibility="WhileEditing"
+                                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"
+                                       PlaceholderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="Center"
+                                       VerticalOptions="Center">
+                                    <Entry.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Secondary}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Entry.Shadow>
+                                </Entry>
+
+                                <Button Grid.Column="1"
+                                        Text="Comment"
+                                        VerticalOptions="Start"
+                                        x:Name="messageButton"
+                                        IsVisible="{Binding IsCommentButtonVisible}"
+                                        Command="{Binding SendCommentCommand}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+
+                                <Button Grid.Column="1"
+                                        Text="Reply"
+                                        VerticalOptions="Start"
+                                        x:Name="replyButton"
+                                        IsVisible="{Binding IsReplyButtonVisible}"
+                                        Command="{Binding SendReplyCommand}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}" />
+
+                            </Grid>
                         </Grid>
-
                     </Grid>
-
                 </Grid>
-
-                <!-- Set IsRunning to a {Binding chosenBinding} -->
-                <ActivityIndicator Grid.Column="0"
-                                   Grid.ColumnSpan="2"
-                                   IsRunning="{Binding IsBusy}"
-                                   Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
-                                   Scale="3" />
-
             </Grid>
+            
+            <!-- Set IsRunning to a {Binding chosenBinding} -->
+            <ActivityIndicator Grid.Column="0"
+                               Grid.ColumnSpan="3"
+                               IsRunning="{Binding IsBusy}"
+                               Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                               Scale="3" />
+
         </Grid>
     </ScrollView>
 

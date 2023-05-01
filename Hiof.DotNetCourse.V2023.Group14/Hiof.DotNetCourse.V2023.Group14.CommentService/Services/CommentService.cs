@@ -353,10 +353,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "The comment body is required."));
             }
+            /*
             if (string.IsNullOrEmpty(request.ISBN10) && string.IsNullOrEmpty(request.ISBN13))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Either ISBN10 or ISBN13 must be provided."));
             }
+            */
             if (!string.IsNullOrEmpty(request.ISBN10) && !Regex.IsMatch(request.ISBN10, @"^\d{10}$"))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN must be 10 or 13 digits"));

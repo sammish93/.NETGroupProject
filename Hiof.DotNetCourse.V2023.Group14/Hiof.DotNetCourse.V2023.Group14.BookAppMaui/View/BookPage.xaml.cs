@@ -31,6 +31,8 @@ public partial class BookPage : ContentPage
             {
                 addBookToLibraryButton.Text = "Add to library";
             }
+
+            await model.LoadAsync();
         }
     }
 

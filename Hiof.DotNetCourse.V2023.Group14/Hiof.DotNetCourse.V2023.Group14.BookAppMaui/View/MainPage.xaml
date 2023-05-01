@@ -389,7 +389,7 @@
                                                VerticalOptions="Start" />
                                         <Label Grid.Column="1"
                                                Grid.Row="0"
-                                               Text="Username"
+                                               Text="{Binding AuthorId}"
                                                LineBreakMode="CharacterWrap"
                                                FontAttributes="Bold"
                                                HorizontalOptions="Start"
@@ -397,7 +397,7 @@
                                                HorizontalTextAlignment="Start" />
                                         <Label Grid.Column="1"
                                                Grid.Row="1"
-                                               Text="{Binding Title}"
+                                               Text="{Binding Body}"
                                                FontAttributes="Bold"
                                                HorizontalOptions="Start"
                                                VerticalOptions="Center"

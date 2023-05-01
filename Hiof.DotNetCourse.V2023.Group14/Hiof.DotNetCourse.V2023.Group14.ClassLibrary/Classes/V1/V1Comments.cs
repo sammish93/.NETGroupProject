@@ -59,6 +59,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
         [JsonProperty("userId")]
         public Guid? UserId { get; set; }
 
-
+        [NotMapped]
+        public V1UserWithDisplayPicture? AuthorObject { get; set; }
     }
 }

@@ -36,6 +36,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private V1LibraryCollection _userLibrary;
         private ObservableCollection<V1Book> _userBooks;
         private ObservableCollection<V1ReadingGoals> _userReadingGoals;
+        private ObservableCollection<V1Comments> _commentsOnUserPage;
         private DateTime _selectedStartDate;
         private DateTime _selectedEndDate;
         private string _goalTarget;
@@ -121,6 +122,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public ObservableCollection<V1Comments> CommentsOnUserPage
+        {
+            get => _commentsOnUserPage;
+            set
+            {
+                _commentsOnUserPage = value;
+                OnPropertyChanged();
+            }
+        }
+
         public DateTime SelectedStartDate
         {
             get => _selectedStartDate;
@@ -149,6 +160,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             SelectedUser = selectedUser;
             UserBooks = new ObservableCollection<V1Book>();
             UserReadingGoals = new ObservableCollection<V1ReadingGoals>();
+            CommentsOnUserPage = new ObservableCollection<V1Comments>();
             SelectedUserDisplayPicture = selectedUserDisplayPicture;
 
             SelectedStartDate = DateTime.Now;
@@ -215,9 +227,75 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
 
             }
-            finally
+        }
+
+        public async Task PopulateComments(V1User user)
+        {
+
+            try
             {
+                CommentsOnUserPage.Clear();
+
+                string url = $"{_apiBaseUrl}/comments/GetCommentsByUserId?id={user.Id}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+                dynamic? jArrayReadingGoals = JsonConvert.DeserializeObject(json);
+
+                foreach (JObject commentsJson in jArrayReadingGoals["response"])
+                {
+                    V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(commentsJson.ToString());
+                    comment.AuthorObject = await GetUserWithDisplayPictureAsync(comment.AuthorId.ToString());
+                    CommentsOnUserPage.Add(comment);
+                }
             }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public async Task<V1UserWithDisplayPicture> GetUserWithDisplayPictureAsync(String guidString)
+        {
+            try
+            {
+
+                var guid = Guid.Parse(guidString);
+                string loginUrl = $"{_apiBaseUrl}/users/GetById?id={guid}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+
+                V1User user = JsonConvert.DeserializeObject<V1User>(json.ToString());
+
+                V1UserWithDisplayPicture userWithDisplayPicture;
+
+
+                string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                if (resultDisplayPicture.IsSuccessStatusCode)
+                {
+                    var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                    V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                }
+                else
+                {
+                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                }
+
+                return userWithDisplayPicture;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
         }
 
         public async Task PopulateReadingGoals(V1User user)
@@ -462,6 +540,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await GetSelectedUserDisplayPicture(SelectedUser.UserName);
             await PopulateBooks(SelectedUser);
             await PopulateReadingGoals(SelectedUser);
+            await PopulateComments(SelectedUser);
             IsBusy = false;
         }
 

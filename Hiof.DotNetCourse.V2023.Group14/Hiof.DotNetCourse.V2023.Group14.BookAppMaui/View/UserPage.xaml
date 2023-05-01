@@ -401,56 +401,69 @@
                                    FontSize="Medium"
                                    Text="Comments"
                                    Padding="5" />
-
-                            <ScrollView Grid.Row="1">
-                                <Grid RowSpacing="5"
-                                      ColumnSpacing="5"
-                                      Padding="5"
-                                      BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray600}}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.Row="0"
-                                           Grid.Column="0"
-                                           WidthRequest="30"
-                                           HeightRequest="30"
-                                           Source="portrait.png"
-                                           Aspect="AspectFit"
-                                           VerticalOptions="Start" />
-                                    <Label Grid.Column="1"
-                                           Grid.Row="0"
-                                           Text="{Binding SelectedUser.UserName}"
-                                           LineBreakMode="CharacterWrap"
-                                           FontAttributes="Bold"
-                                           HorizontalOptions="Start"
-                                           FontSize="Small"
-                                           HorizontalTextAlignment="Start" />
-                                    <Label Grid.Column="1"
-                                           Grid.Row="1"
-                                           Text="Title"
-                                           FontAttributes="Bold"
-                                           HorizontalOptions="Start"
-                                           VerticalOptions="Center"
-                                           FontSize="Small"
-                                           HorizontalTextAlignment="Center"
-                                           VerticalTextAlignment="Start" />
-                                    <Label Grid.Column="1"
-                                           Grid.Row="2"
-                                           Text="I love pickled onion flavour monster munch."
-                                           LineBreakMode="CharacterWrap"
-                                           FontAttributes="Italic"
-                                           HorizontalOptions="Start"
-                                           FontSize="Caption"
-                                           HorizontalTextAlignment="Start" />
-                                </Grid>
-                            </ScrollView>
-
+                            
+                            <CollectionView ItemsSource="{Binding CommentsOnUserPage}"
+                                            ItemsLayout="VerticalList"
+                                            Grid.Row="1"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid RowSpacing="5"
+                                              ColumnSpacing="5"
+                                              Padding="5"
+                                              BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                    StrokeThickness="0"
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2"
+                                                    WidthRequest="30"
+                                                    HeightRequest="30">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="5" />
+                                                </Border.StrokeShape>
+                                                <Image Grid.Row="0"
+                                                       Source="{Binding AuthorObject.DisplayPicture , Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                       Aspect="AspectFit" />
+                                            </Border>
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="0"
+                                                   Text="{Binding AuthorObject.User.UserName}"
+                                                   LineBreakMode="CharacterWrap"
+                                                   FontAttributes="Bold"
+                                                   HorizontalOptions="Start"
+                                                   FontSize="20"
+                                                   HorizontalTextAlignment="Start" />
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="1"
+                                                   Text="{Binding Body}"
+                                                   FontAttributes="Bold"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Center"
+                                                   FontSize="12"
+                                                   HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Start" />
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="2"
+                                                   Text="{Binding Description}"
+                                                   LineBreakMode="WordWrap"
+                                                   FontAttributes="Italic"
+                                                   HorizontalOptions="Start"
+                                                   FontSize="11"
+                                                   HorizontalTextAlignment="Start" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
                         </Grid>
 
