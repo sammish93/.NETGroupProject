@@ -1,5 +1,6 @@
 ﻿using System;
 using Hangfire;
+using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.DTO.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 
@@ -7,32 +8,40 @@ using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
-    // Background job used to check for new messages in a messaging system. The
-    // class uses the Hangfire library to create a background job that runs every
-    // 10 seconds. The CheckMessage method adds the MessageJob method to the
-    // background job, which is responsible for checking for new messages.
-  
-	public class MessageChecker
+  	public class MessageChecker
 	{
 		private readonly ILogger<MessageChecker> _logger;
         private readonly MessagingContext _context;
+        private readonly MessageToMaui _messageToMaui;
 
-		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context)
+		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context, MessageToMaui messageToMaui)
 		{
 			_logger = logger;
             _context = context;
+            _messageToMaui = messageToMaui;
+            
 		}
 
-        // This will make the job run every 10 second.
         public void CheckMessages()
 		{
-            _logger.LogInformation("Background job for checking messages every hour.");
-			RecurringJob.AddOrUpdate(() => MessageJob(), cronExpression: "*/10 * * * * *");
+            _logger.LogInformation("Background job for checking messages every 5 secounds.");
+			RecurringJob.AddOrUpdate(() => MessageJob(), cronExpression: "*/5 * * * * *");
 		}
 
-        public async Task<IEnumerable<V1Messages>> GetNewMessagesAsync()
+        public async Task<IEnumerable<V1Messages>> GetNewMessages()
         {
-            throw new NotImplementedException();
+            return await _context.Messages
+                .Where(m => !m.IsChecked)
+                .ToListAsync();
+        }
+
+        public async Task UpdateMessagesAsChecked(IEnumerable<V1Messages> messages)
+        {
+            foreach (var message in messages)
+            {
+                message.IsChecked = true;
+            }
+            await _context.SaveChangesAsync();
 
         }
 
@@ -42,7 +51,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
             {
                 _logger.LogInformation("Checking for new messages...");
 
-                // check for mesages in the database here.
+                var newMessage = await GetNewMessages();
+
+                if (newMessage.Any())
+                {
+                    // Send the new message to maui gui.
+                    _messageToMaui.OnNewMessagesReceived(newMessage.ToList());
+
+                    // Update messages as checked in the database.
+                    await UpdateMessagesAsChecked(newMessage);
+
+                }
 
                 _logger.LogInformation("Job ran successfully!");
 
