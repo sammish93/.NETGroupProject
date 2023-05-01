@@ -12,6 +12,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using NuGet.Protocol;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Hiof.DotNetCourse.V2023.Group14.APICommunicatorService.Controllers.V1;
 
 namespace LibraryCollection.Tests
 {
@@ -101,6 +102,7 @@ namespace LibraryCollection.Tests
 
             // Dispose of context once test is complete.
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             dbContext.Add(entry1);
@@ -111,7 +113,7 @@ namespace LibraryCollection.Tests
             dbContext.Add(entry6);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetUserLibrary(entry5.UserId);
 
@@ -130,9 +132,10 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetUserLibrary(entry5.UserId);
 
@@ -147,6 +150,7 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
             // Adds 6 entries.
             dbContext.Add(entry1);
@@ -157,7 +161,7 @@ namespace LibraryCollection.Tests
             dbContext.Add(entry6);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetAllEntries();
 
@@ -176,11 +180,12 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             // Adds 0 entries.
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetAllEntries();
 
@@ -195,12 +200,13 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             dbContext.Add(entry1);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetEntry(entry1.Id);
 
@@ -219,9 +225,10 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetEntry(entry1.Id);
 
@@ -236,12 +243,13 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             dbContext.Add(entry1);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetEntry(entry1.Id);
 
@@ -273,11 +281,12 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             // No entries added.
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetEntry(entry1.Id);
 
@@ -300,11 +309,12 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             // No entries added.
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetUserLibrary(entry1.UserId);
 
@@ -327,6 +337,7 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
 
@@ -338,7 +349,7 @@ namespace LibraryCollection.Tests
             dbContext.Add(entry6);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetUserLibrary(entry5.UserId);
 
@@ -367,12 +378,13 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             dbContext.Add(entry1);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetEntry(entry1.Id);
 
@@ -397,12 +409,13 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             dbContext.Add(entry1);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetEntry(entry1.Id);
 
@@ -425,12 +438,13 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             dbContext.Add(entry1);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetEntry(entry1.Id);
 
@@ -454,12 +468,13 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             dbContext.Add(entry1);
             dbContext.SaveChanges();
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.GetEntry(entry1.Id);
 
@@ -486,6 +501,7 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             V1LibraryEntry entry = new V1LibraryEntry
@@ -501,7 +517,7 @@ namespace LibraryCollection.Tests
                 ReadingStatus = ReadingStatus.Completed
             };
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.CreateEntry(entry);
 
@@ -528,6 +544,7 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             V1LibraryEntry entry = new V1LibraryEntry
@@ -543,7 +560,7 @@ namespace LibraryCollection.Tests
                 ReadingStatus = ReadingStatus.Completed
             };
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.CreateEntry(entry);
 
@@ -559,6 +576,7 @@ namespace LibraryCollection.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
             using var dbContext = new LibraryCollectionContext(options);
+            var mockLogger = new Mock<ILogger<V1LibraryCollectionController>>();
 
 
             V1LibraryEntry entry = new V1LibraryEntry
@@ -574,7 +592,7 @@ namespace LibraryCollection.Tests
                 ReadingStatus = ReadingStatus.Completed
             };
 
-            var controller = new V1LibraryCollectionController(dbContext);
+            var controller = new V1LibraryCollectionController(dbContext, mockLogger.Object);
 
             var actionResult = await controller.CreateEntry(entry);
 
