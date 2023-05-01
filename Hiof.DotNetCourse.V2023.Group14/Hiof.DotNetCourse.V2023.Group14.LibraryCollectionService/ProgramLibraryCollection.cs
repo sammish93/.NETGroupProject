@@ -24,6 +24,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.LibraryCollectionService
                     .GetConnectionString("SqlServerConnectionString");
 
                 builder.Services.AddDbContext<LibraryCollectionContext>(options => options.UseSqlServer(connectionString));
+
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) 
             {
                 // Connection string for MySQL-database (only for stian).
