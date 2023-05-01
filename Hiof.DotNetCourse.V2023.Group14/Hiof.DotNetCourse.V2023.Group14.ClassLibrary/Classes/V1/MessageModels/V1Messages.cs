@@ -26,6 +26,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
         [Column(TypeName = "varchar(1000)")]
         public string Message { get; set; }
 
+        [Column(TypeName = "bit")]
+        public bool IsChecked { get; set; }
+
 		public DateTime Date { get; set; }
 
         public List<V1Reactions> Reactions { get; set; }

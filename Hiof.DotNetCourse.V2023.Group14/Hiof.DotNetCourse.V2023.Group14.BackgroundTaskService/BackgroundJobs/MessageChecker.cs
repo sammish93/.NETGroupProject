@@ -1,5 +1,7 @@
 ﻿using System;
 using Hangfire;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
+using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 
 // This class needs to be modified later in order to work.
 
@@ -13,12 +15,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 	public class MessageChecker
 	{
 		private readonly ILogger<MessageChecker> _logger;
-        private readonly HttpClient _httpClient;
+        private readonly MessagingContext _context;
 
-		public MessageChecker(ILogger<MessageChecker> logger, HttpClient client)
+		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context)
 		{
 			_logger = logger;
-            _httpClient = client;
+            _context = context;
 		}
 
         // This will make the job run every 10 second.
@@ -28,19 +30,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 			RecurringJob.AddOrUpdate(() => MessageJob(), cronExpression: "*/10 * * * * *");
 		}
 
+        public async Task<IEnumerable<V1Messages>> GetNewMessagesAsync()
+        {
+            throw new NotImplementedException();
+
+        }
+
         public async Task MessageJob()
         {
             try
             {
                 _logger.LogInformation("Checking for new messages...");
 
-                // Retrieve all conversations.
-                HttpResponseMessage response = await _httpClient.GetAsync("/messages");
-                response.EnsureSuccessStatusCode();
-
-                // TODO: Process the response and send notification if there are new messages.
-                // Not really sure what to do here yet. Maybe we need to wait to the messaging
-                // is up and running.
+                // check for mesages in the database here.
 
                 _logger.LogInformation("Job ran successfully!");
 
