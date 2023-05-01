@@ -16,14 +16,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels
         public Guid MessageId { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(max)")]
+        [Column(TypeName = "varchar(255)")]
         public string Sender { get; set; }
 
         [NotMapped]
         public V1UserWithDisplayPicture? SenderObject { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(max)")]
+        [Column(TypeName = "varchar(1000)")]
         public string Message { get; set; }
 
 		public DateTime Date { get; set; }
