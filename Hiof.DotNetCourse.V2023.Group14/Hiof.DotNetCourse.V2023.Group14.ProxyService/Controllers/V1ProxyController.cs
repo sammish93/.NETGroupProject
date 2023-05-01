@@ -558,11 +558,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
-<<<<<<< HEAD
-
         [HttpGet("comments/[action]")]
         public async Task<IActionResult> GetAllComments()
-             => await Proxy(_apiUrls.Value.GetAllComments);
+     => await Proxy(_apiUrls.Value.GetAllComments);
 
         [HttpGet("comments/[action]")]
         public async Task<IActionResult> GetCommentById(Guid id)
@@ -585,26 +583,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         {
             var url = _apiUrls.Value.CreateComment;
             using var content = new StringContent(JsonConvert.SerializeObject(comment), Encoding.UTF8, "application/json");
-=======
-        [HttpGet]
-        [Route("marketplace/[action]")]
-        public async Task<IActionResult> GetAllPosts()
-            => await Proxy(_apiUrls.Value.GetAllPosts);
-
-
-        [HttpGet]
-        [Route("marketplace/[action]")]
-        public async Task<IActionResult> GetPostById(Guid postId)
-            => await Proxy($"{_apiUrls.Value.GetPostById}?postId={postId}");
-
-
-        [HttpPost]
-        [Route("marketplace/[action]")]
-        public async Task<IActionResult> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
-        {
-            var url = $"{_apiUrls.Value.CreateNewPost}?ownerId={ownerId}&currency={currency}&status={status}";
-            using var content = SerializeToJsonString(post);
->>>>>>> stian-sprint6_3
             using var response = await _httpClient.PostAsync(url, content);
 
             if (response.IsSuccessStatusCode)
@@ -617,7 +595,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
-<<<<<<< HEAD
         [HttpPost("comments/[action]")]
         public async Task<IActionResult> CreateBookComment(V1Comments comment)
         {
@@ -674,14 +651,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             var url = $"{_apiUrls.Value.UpdateCommentBody}{id}/body?body={body}";
 
             using var content = SerializeToJsonString(body);
-=======
-        [HttpPut]
-        [Route("marketplace/[action]")]
-        public async Task<IActionResult> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
-        {
-            var url = $"{_apiUrls.Value.UpdatePost}?postId={postId}";
-            var content = SerializeToJsonString(post);
->>>>>>> stian-sprint6_3
             using var response = await _httpClient.PutAsync(url, content);
 
             if (response.IsSuccessStatusCode)
@@ -690,7 +659,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
             else
             {
-<<<<<<< HEAD
                 return BadRequest(await response.Content.ReadAsStringAsync());
             }
         }
@@ -702,7 +670,61 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
             using var content = SerializeToJsonString(upvotes);
             using var response = await _httpClient.PutAsync(url, content);
-=======
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        [HttpGet]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> GetAllPosts()
+    => await Proxy(_apiUrls.Value.GetAllPosts);
+
+
+        [HttpGet]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> GetPostById(Guid postId)
+            => await Proxy($"{_apiUrls.Value.GetPostById}?postId={postId}");
+
+
+        [HttpPost]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
+        {
+            var url = $"{_apiUrls.Value.CreateNewPost}?ownerId={ownerId}&currency={currency}&status={status}";
+            using var content = SerializeToJsonString(post);
+            using var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
+                return BadRequest(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        [HttpPut]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
+        {
+            var url = $"{_apiUrls.Value.UpdatePost}?postId={postId}";
+            var content = SerializeToJsonString(post);
+            using var response = await _httpClient.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            else
+            {
                 return NotFound(await response.Content.ReadAsStringAsync());
             }
         }
@@ -713,7 +735,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         {
             var url = $"{_apiUrls.Value.DeletePost}?postId={postId}";
             var response = await _httpClient.DeleteAsync(url);
->>>>>>> stian-sprint6_3
 
             if (response.IsSuccessStatusCode)
             {
@@ -721,21 +742,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
             else
             {
-<<<<<<< HEAD
-                return BadRequest(await response.Content.ReadAsStringAsync());
-            }
-        }
-
-
-
-=======
                 return NotFound(await response.Content.ReadAsStringAsync());
             }
 
         }
 
-
->>>>>>> stian-sprint6_3
         private async Task<IActionResult> Proxy(string url)
         {
             var response = await _httpClient.GetAsync(url);
