@@ -3,7 +3,6 @@ using System;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -18,13 +17,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1ConversationModel", b =>
                 {
-                    b.Property<string>("ConversationId")
+                    b.Property<Guid>("ConversationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("ConversationId");
@@ -36,26 +33,25 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Messages", b =>
                 {
-                    b.Property<string>("MessageId")
+                    b.Property<Guid>("MessageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("MessageId");
 
-                    b.Property<string>("ConversationId")
-                        .IsRequired()
+                    b.Property<Guid>("ConversationId")
                         .HasColumnType("char(36)")
                         .HasColumnName("ConversationId");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("Sender")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("MessageId");
 
@@ -67,14 +63,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Participant", b =>
                 {
                     b.Property<string>("Participant")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(255)");
 
-                    b.Property<string>("ConversationId")
+                    b.Property<Guid>("ConversationId")
                         .HasColumnType("char(36)")
                         .HasColumnName("ConversationId");
 
                     b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Participant", "ConversationId");
 
@@ -85,13 +81,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels.V1Reactions", b =>
                 {
-                    b.Property<string>("ReactionId")
+                    b.Property<Guid>("ReactionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("ReactionId");
 
-                    b.Property<string>("MessageId")
-                        .IsRequired()
+                    b.Property<Guid>("MessageId")
                         .HasColumnType("char(36)")
                         .HasColumnName("MessageId");
 
