@@ -68,5 +68,51 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
                 }
             }
         }
+
+        private async void CollectionView_SelectionChangedComment(object sender, SelectionChangedEventArgs e)
+        {
+            var model = BindingContext as ViewModel.MainPageViewModel;
+
+            if (model != null)
+            {
+                if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
+                {
+                    V1Comments comment = ((V1Comments)e.CurrentSelection.First());
+
+                    if (comment.CommentType == ClassLibrary.Enums.V1.CommentType.User)
+                    {
+                        V1UserWithDisplayPicture userWithDisplayPicture = await model.GetUserWithDisplayPictureAsync(comment.UserId.ToString());
+                        await model.NavigateToUserPage(userWithDisplayPicture.User);
+                    } else if (comment.CommentType == ClassLibrary.Enums.V1.CommentType.Book)
+                    {
+                        string isbn = "";
+                        if (!comment.ISBN13.IsNullOrEmpty())
+                        {
+                            isbn = comment.ISBN13;
+                        }
+                        else if (!comment.ISBN10.IsNullOrEmpty())
+                        {
+                            isbn = comment.ISBN10;
+                        }
+
+                        V1Book book = await model.GetBookAsync(isbn);
+                        await model.NavigateToBookPage(book);
+                    } else if (comment.CommentType == ClassLibrary.Enums.V1.CommentType.Reply)
+                    {
+                        
+                        if (comment.BookObject != null)
+                        {
+                            await model.NavigateToBookPage(comment.BookObject);
+                        } else if (comment.AuthorObject != null)
+                        {
+                            V1UserWithDisplayPicture userWithDisplayPicture = await model.GetUserWithDisplayPictureAsync(comment.AuthorObject.User.Id.ToString());
+                            await model.NavigateToUserPage(userWithDisplayPicture.User);
+                        }
+                    }
+                    
+                }
+            }
+        }
+
     }
 }

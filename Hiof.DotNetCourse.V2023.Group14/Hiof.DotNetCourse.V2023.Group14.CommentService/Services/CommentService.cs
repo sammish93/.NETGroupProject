@@ -353,12 +353,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "The comment body is required."));
             }
-            /*
             if (string.IsNullOrEmpty(request.ISBN10) && string.IsNullOrEmpty(request.ISBN13))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Either ISBN10 or ISBN13 must be provided."));
             }
-            */
             if (!string.IsNullOrEmpty(request.ISBN10) && request.ISBN10.Length != 10)
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "ISBN must be 10 or 13 digits"));
@@ -380,11 +378,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.CommentService.Services
                 AuthorId = Guid.Parse(request.AuthorId),
                 CommentType = ClassLibrary.Enums.V1.CommentType.Book,
                 ISBN10 = request.ISBN10,
-                ISBN13 = request.ISBN13,
+                ISBN13 = request.ISBN13
             };
-            _logger.LogInformation($"{request.ISBN13}");
-            _logger.LogInformation($"{request.ISBN10}");
-            _logger.LogInformation($"{comment.Body}");
 
             try
             {

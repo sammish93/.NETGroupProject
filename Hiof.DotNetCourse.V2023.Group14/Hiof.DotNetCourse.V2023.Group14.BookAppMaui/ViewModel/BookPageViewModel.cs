@@ -21,6 +21,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using System.Diagnostics.Metrics;
 using System.Globalization;
+using System.Numerics;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
