@@ -61,6 +61,47 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 
         [NotMapped]
         [JsonIgnore]
-        public V1UserWithDisplayPicture? AuthorObject { get; set; }
+        private V1UserWithDisplayPicture? _authorObject { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        private V1Book? _bookObject { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        private string? _commentSummary { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        public V1UserWithDisplayPicture? AuthorObject
+        {
+            get => _authorObject;
+            set
+            {
+                _authorObject = value;
+            }
+        }
+
+        [NotMapped]
+        [JsonIgnore]
+        public V1Book? BookObject
+        {
+            get => _bookObject;
+            set
+            {
+                _bookObject = value;
+            }
+        }
+
+        [NotMapped]
+        [JsonIgnore]
+        public string? CommentSummary
+        {
+            get => _commentSummary;
+            set
+            {
+                _commentSummary = value;
+            }
+        }
     }
 }

@@ -355,22 +355,24 @@
 
 
                         <Label Grid.Row="0"
-                               Text="{Binding Path='LoggedInUser.UserName', StringFormat='Recent Comments for {0}'}"
+                               Text="{Binding Path='LoggedInUser.UserName', StringFormat='Recent Comments by {0}'}"
                                VerticalOptions="Center"
                                HorizontalOptions="Center"
                                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"
                                Margin="5" />
 
-                        <CollectionView ItemsSource="{Binding RecentlyReadBooks}"
+                        <CollectionView ItemsSource="{Binding RecentComments}"
                                         ItemsLayout="VerticalList"
                                         Grid.Row="1"
-                                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}">
+                                        Margin="5"
+                                        SelectionMode="Single"
+                                        SelectionChanged="CollectionView_SelectionChangedComment"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid RowSpacing="5"
+                                    <Grid RowSpacing="10"
                                           ColumnSpacing="5"
-                                          Margin="5"
-                                          BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                          Margin="5">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
@@ -380,38 +382,48 @@
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition Width="1*" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Grid.Row="0"
-                                               Grid.Column="0"
-                                               WidthRequest="30"
-                                               HeightRequest="30"
-                                               Source="portrait.png"
-                                               Aspect="AspectFit"
-                                               VerticalOptions="Start" />
-                                        <Label Grid.Column="1"
-                                               Grid.Row="0"
-                                               Text="{Binding AuthorId}"
-                                               LineBreakMode="CharacterWrap"
-                                               FontAttributes="Bold"
-                                               HorizontalOptions="Start"
-                                               FontSize="20"
-                                               HorizontalTextAlignment="Start" />
+                                        <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                StrokeThickness="0"
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.RowSpan="2"
+                                                WidthRequest="40"
+                                                HeightRequest="40">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="5" />
+                                            </Border.StrokeShape>
+                                            <Image Grid.Row="0"
+                                                   Source="{Binding AuthorObject.DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                   Aspect="AspectFit" />
+                                        </Border>
+
+                                        <Grid Grid.Column="1"
+                                              Grid.Row="0">
+                                            <Label Text="{Binding CommentSummary}"
+                                                   LineBreakMode="TailTruncation"
+                                                   FontAttributes="Bold"
+                                                   HorizontalOptions="Start"
+                                                   FontSize="14"
+                                                   MaximumWidthRequest="270"
+                                                   MaxLines="1"
+                                                   HorizontalTextAlignment="Start" />
+                                            <Label Text="{Binding CreatedAt}"
+                                                   LineBreakMode="WordWrap"
+                                                   FontAttributes="Italic"
+                                                   HorizontalOptions="End"
+                                                   FontSize="11"
+                                                   HorizontalTextAlignment="Start" />
+                                        </Grid>
                                         <Label Grid.Column="1"
                                                Grid.Row="1"
                                                Text="{Binding Body}"
-                                               FontAttributes="Bold"
                                                HorizontalOptions="Start"
                                                VerticalOptions="Center"
-                                               FontSize="12"
-                                               HorizontalTextAlignment="Center"
+                                               FontSize="14"
+                                               LineBreakMode="HeadTruncation"
+                                               HorizontalTextAlignment="Start"
                                                VerticalTextAlignment="Start" />
-                                        <Label Grid.Column="1"
-                                               Grid.Row="2"
-                                               Text="{Binding Description}"
-                                               LineBreakMode="WordWrap"
-                                               FontAttributes="Italic"
-                                               HorizontalOptions="Start"
-                                               FontSize="11"
-                                               HorizontalTextAlignment="Start" />
+
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
