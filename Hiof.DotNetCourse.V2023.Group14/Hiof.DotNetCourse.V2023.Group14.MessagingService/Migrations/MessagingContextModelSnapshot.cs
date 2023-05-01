@@ -47,7 +47,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                         .HasColumnName("ConversationId");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Message")
                         .IsRequired()

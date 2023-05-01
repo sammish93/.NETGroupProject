@@ -34,7 +34,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                     MessageId = table.Column<string>(type: "char(36)", nullable: false),
                     Sender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime", nullable: false),
                     ConversationId = table.Column<string>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
