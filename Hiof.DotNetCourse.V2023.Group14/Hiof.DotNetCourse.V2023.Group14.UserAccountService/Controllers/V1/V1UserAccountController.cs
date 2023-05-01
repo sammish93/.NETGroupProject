@@ -25,7 +25,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         // Example of inserting a new object into the database. If you use swagger you can see that we supply it with a JSON DTO.
         // This Http request isn't coded to include lots of different Http codes yet.
         // Remember that it's important that this is set to async, along with await keywords.
-        [HttpPost("create")]
+        [HttpPost("Create")]
         public async Task<ActionResult> Create(V1User user)
         {
             if (user != null)
@@ -66,7 +66,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
             return Ok(user);
         }
 
-        [HttpGet("getUsers")]
+        [HttpGet("GetUsers")]
         public async Task<ActionResult> GetAllUsers()
         {
             
@@ -82,7 +82,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserAccountService.Controllers.V1
         }
 
 
-        [HttpGet("getUserById")]
+        [HttpGet("GetUserById")]
 
         public async Task<ActionResult> GetUserId(Guid guid)
         {
