@@ -103,6 +103,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         Shell.Current.BindingContext = new AppShellViewModel(user, displayPictureInBytes);
                     }
 
+                    if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("No Internet Connection!", "You don't seem to be connected to the internet. Please be aware that " +
+                            "some services may be unavailable or won't function as intended.", "OK");
+                    }
+
                     await Shell.Current.GoToAsync("///home");
                 } else
                 {

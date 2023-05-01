@@ -10,6 +10,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         {
             InitializeComponent();
             MainPage = new AppShell();
+
+            MainPage.BindingContext = new LoginViewModel();
         }
         protected override Window CreateWindow(IActivationState activationState)
         {

@@ -9,7 +9,6 @@ public partial class LogInPage : ContentPage
 	{
 		InitializeComponent();
 		this.BindingContext = new LoginViewModel();
-
     }
 
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
