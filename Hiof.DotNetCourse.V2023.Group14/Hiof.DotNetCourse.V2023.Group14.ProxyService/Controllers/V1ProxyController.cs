@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text;
+using System.Threading;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.Security;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
@@ -11,6 +13,7 @@ using Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 {
@@ -18,6 +21,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
     [Route("proxy/1.0/")]
     public class V1ProxyController : ControllerBase
     {
+        // TODO: Implement logging in the Proxy service.
 
         private readonly HttpClient _httpClient;
         private readonly IOptions<ProxySettings> _apiUrls;
@@ -554,6 +558,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
+<<<<<<< HEAD
 
         [HttpGet("comments/[action]")]
         public async Task<IActionResult> GetAllComments()
@@ -580,6 +585,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         {
             var url = _apiUrls.Value.CreateComment;
             using var content = new StringContent(JsonConvert.SerializeObject(comment), Encoding.UTF8, "application/json");
+=======
+        [HttpGet]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> GetAllPosts()
+            => await Proxy(_apiUrls.Value.GetAllPosts);
+
+
+        [HttpGet]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> GetPostById(Guid postId)
+            => await Proxy($"{_apiUrls.Value.GetPostById}?postId={postId}");
+
+
+        [HttpPost]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
+        {
+            var url = $"{_apiUrls.Value.CreateNewPost}?ownerId={ownerId}&currency={currency}&status={status}";
+            using var content = SerializeToJsonString(post);
+>>>>>>> stian-sprint6_3
             using var response = await _httpClient.PostAsync(url, content);
 
             if (response.IsSuccessStatusCode)
@@ -592,6 +617,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpPost("comments/[action]")]
         public async Task<IActionResult> CreateBookComment(V1Comments comment)
         {
@@ -648,6 +674,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             var url = $"{_apiUrls.Value.UpdateCommentBody}{id}/body?body={body}";
 
             using var content = SerializeToJsonString(body);
+=======
+        [HttpPut]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> UpdatePost(Guid postId, V1MarketplaceBookUpdated post)
+        {
+            var url = $"{_apiUrls.Value.UpdatePost}?postId={postId}";
+            var content = SerializeToJsonString(post);
+>>>>>>> stian-sprint6_3
             using var response = await _httpClient.PutAsync(url, content);
 
             if (response.IsSuccessStatusCode)
@@ -656,6 +690,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
             else
             {
+<<<<<<< HEAD
                 return BadRequest(await response.Content.ReadAsStringAsync());
             }
         }
@@ -667,6 +702,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
 
             using var content = SerializeToJsonString(upvotes);
             using var response = await _httpClient.PutAsync(url, content);
+=======
+                return NotFound(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        [HttpDelete]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> DeletePost(Guid postId)
+        {
+            var url = $"{_apiUrls.Value.DeletePost}?postId={postId}";
+            var response = await _httpClient.DeleteAsync(url);
+>>>>>>> stian-sprint6_3
 
             if (response.IsSuccessStatusCode)
             {
@@ -674,12 +721,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
             }
             else
             {
+<<<<<<< HEAD
                 return BadRequest(await response.Content.ReadAsStringAsync());
             }
         }
 
 
 
+=======
+                return NotFound(await response.Content.ReadAsStringAsync());
+            }
+
+        }
+
+
+>>>>>>> stian-sprint6_3
         private async Task<IActionResult> Proxy(string url)
         {
             var response = await _httpClient.GetAsync(url);

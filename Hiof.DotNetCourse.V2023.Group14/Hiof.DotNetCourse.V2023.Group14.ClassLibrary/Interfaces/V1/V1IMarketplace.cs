@@ -16,7 +16,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 
 		Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post);
 
-		Task<bool> UpdatePost(Guid postId, V1MarketplaceBookUpdated post);
+		Task<string> UpdatePost(Guid postId, V1MarketplaceBookUpdated post);
 
 		Task<bool> DeletePost(Guid id);
 	}

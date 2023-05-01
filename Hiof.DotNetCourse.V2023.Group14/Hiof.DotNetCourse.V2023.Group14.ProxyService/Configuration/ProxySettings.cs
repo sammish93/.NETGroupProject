@@ -67,6 +67,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string UpdateIsRead { get; set; }
         public string DeleteConversation { get; set; }
         public string DeleteMessage { get; set; }
+<<<<<<< HEAD
         // Urls for commenting service.
         public string GetAllComments { get;  set; }
         public string GetCommentById { get; set; }
@@ -80,6 +81,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Configuration
         public string UpdateCommentBody { get; set;}
         public string UpdateCommentUpvotes { get; set; }
 
+=======
+
+        // Urls for marketplace service.
+        public string GetAllPosts { get; set; }
+        public string GetPostById { get; set; }
+        public string CreateNewPost { get; set; }
+        public string UpdatePost { get; set; }
+        public string DeletePost { get; set; }
+>>>>>>> stian-sprint6_3
     }
 }
 
