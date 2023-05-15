@@ -1,8 +1,4 @@
-﻿using System;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.DTO.V1;
-using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 

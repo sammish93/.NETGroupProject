@@ -5,6 +5,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 
 // This class needs to be modified later in order to work.
+// TODO: Need to fix this later.
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
@@ -22,13 +23,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
             
 		}
 
-        public void CheckMessages()
+        public MessageChecker() { }
+
+        public void CheckMessages(Guid userId)
 		{
             _logger.LogInformation("Background job for checking messages every 5 secounds.");
-			RecurringJob.AddOrUpdate(() => MessageJob(), cronExpression: "*/5 * * * * *");
+			RecurringJob.AddOrUpdate(() => MessageJob(userId), cronExpression: "*/5 * * * * *");
 		}
 
-        public async Task<IEnumerable<V1Messages>> GetNewMessages()
+        public async Task<IEnumerable<V1Messages>> GetNewMessages(Guid userId)
         {
             return await _context.Messages
                 .Where(m => !m.IsChecked)
@@ -45,13 +48,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 
         }
 
-        public async Task MessageJob()
+        public async Task MessageJob(Guid userId)
         {
             try
             {
                 _logger.LogInformation("Checking for new messages...");
 
-                var newMessage = await GetNewMessages();
+                var newMessage = await GetNewMessages(userId);
 
                 if (newMessage.Any())
                 {
