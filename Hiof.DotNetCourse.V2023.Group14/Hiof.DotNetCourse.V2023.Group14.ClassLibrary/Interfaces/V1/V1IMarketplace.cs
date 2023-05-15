@@ -14,7 +14,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1
 
 		Task<V1MarketplaceBookResponse?> GetPostById(Guid id);
 
-		Task<V1MarketplaceBookResponse> GetPostByIsbn(string isbn);
+		Task<V1MarketplaceBookResponse?> GetPostByIsbn(string isbn);
 
 		Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post);
 

@@ -17,9 +17,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             _context = context;
         }
 
-        public async Task<V1MarketplaceBookResponse> GetPostByIsbn(string isbn)
+        public async Task<V1MarketplaceBookResponse?> GetPostByIsbn(string isbn)
         {
-            throw new NotImplementedException();
+            var post = await _context.MarketplaceBooks
+                .FirstOrDefaultAsync(book => book.ISBN10 == isbn || book.ISBN13 == isbn);
+
+            if (post != null)
+            {
+                return new V1MarketplaceBookResponse
+                {
+                    Id = post.Id,
+                    Condition = post.Condition,
+                    Price = post.Price,
+                    Currency = post.Currency,
+                    Status = post.Status,
+                    OwnerId = post.OwnerId,
+                    DateCreated = post.DateCreated,
+                    DateModified = post.DateModified,
+                    ISBN10 = post.ISBN10 ?? "",
+                    ISBN13 = post.ISBN13 ?? ""
+                };
+            }
+            return null;
         }
 
         public async Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post)
