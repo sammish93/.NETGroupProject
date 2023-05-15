@@ -27,7 +27,7 @@ public class V1MarketplaceController : ControllerBase
     {
         _logger.LogInformation("GetAllPosts: Featching all posts from the marketplace.");
         var response = await _service.GetAllPosts();
-        if (response != null)
+        if (response != null && response.Count != 0)
         {
             _logger.LogInformation("GetAllPosts: Successfully featched all posts!");
             return Ok(response);
