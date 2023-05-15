@@ -93,7 +93,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             LoggedInUser = user;
         }
 
-        public async Task PopulateUserResultsAsync(String username)
+        // Retrieves user object (username etc), as well as display picture of a specific user based off their username. Method will be called when a conversation 
+        // is selected, and user objects will be added to a collection of the current conversaton.
+        public async Task PopulateUserParticipantsAsync(String username)
         {
 
             try
@@ -139,6 +141,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Retrieves all conversations involving the logged in user. 
         public async Task PopulateConversationsAsync(V1User user)
         {
             Conversations.Clear();
@@ -155,6 +158,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
 
+                // Super clunky solution to Maui's lack of support for a collection view that can grow 'upwards'. Collection view is flipped, and then each 
+                // individual item (message + display picture + date etc) is then flipped.
+                // Note: this solution means that the scroll bar is reversed. Once again, Maui currently only allows you to change a scroll bar's behaviour for each 
+                // individual view model. I.e. if this scrollbar was reversed, so too would the collectionview containing all collections.
                 if (!conversation.Messages.IsNullOrEmpty())
                 {
                     conversation.LastMessage = conversation.Messages.Last();
@@ -175,6 +182,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Retrieves all messages in a single conversation, together with display picture, time of message.
         public async Task PopulateConversationAsync(string conversationId, V1User user)
         {
 
@@ -209,7 +217,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             SelectedConversation = conversation;
         }
 
-
+        // Retrieves both a user object and its display picture.
         public async Task<V1UserWithDisplayPicture> GetUserWithDisplayPictureAsync(String guidString)
         {
             try
@@ -252,6 +260,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         return null;
         }
 
+        // Method to make display picture retrieval more efficient - Each conversation only retrieves the user object + display picture of each participant 
+        // a single time, as opposed to retrieving it for every single message - hence the 'break'.
         public void PopulateMessagesWithUserMetadataAsync(V1ConversationModel conversation)
         {
             var loggedInUser = new V1UserWithDisplayPicture(LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture);
@@ -279,6 +289,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(SelectedConversation.ConversationId.ToString(), LoggedInUser.Id.ToString()));
 
+        // Sends a message, updates the database, then 'refreshes' the page to show the new message.
+        // Note: this could be improved in the future by using cancellation tokens.
         public async Task SendMessageAsync(string conversationId, string sender)
         {
             var url = $"{_apiBaseUrl}/messages/AddMessageToConversation/?conversationId={conversationId}&sender={sender}";
@@ -290,10 +302,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             if (response.IsSuccessStatusCode)
             {
                 await PopulateConversationAsync(conversationId, LoggedInUser);
-                await UpdateIsRead(Guid.Parse(conversationId), sender, true);
+                await UpdateIsReadAsync(Guid.Parse(conversationId), sender, true);
                 foreach (V1UserWithDisplayPicture receiver in SelectedConversation.ParticipantsAsObjects)
                 {
-                    await UpdateIsRead(Guid.Parse(conversationId), receiver.User.Id.ToString(), false);
+                    await UpdateIsReadAsync(Guid.Parse(conversationId), receiver.User.Id.ToString(), false);
                 }
                 Message = "";
 
@@ -303,7 +315,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task UpdateIsRead(Guid conversationId, string participantId, bool isRead)
+        // Updates the conversation with a new message in the database.
+        public async Task UpdateIsReadAsync(Guid conversationId, string participantId, bool isRead)
         {
             string url = $"{_apiBaseUrl}/messages/UpdateIsRead?conversationId={conversationId}&participantId={participantId}&isRead={isRead}";
 
@@ -311,11 +324,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             var response = await _httpClient.PutAsync(url, requestContent);
         }
+
         public async Task LoadAsync()
         {
             IsBusy = true;
             await PopulateConversationsAsync(LoggedInUser);
-            await PopulateUserResultsAsync(LoggedInUser.UserName);
+            await PopulateUserParticipantsAsync(LoggedInUser.UserName);
             IsBusy = false;
         }
     }

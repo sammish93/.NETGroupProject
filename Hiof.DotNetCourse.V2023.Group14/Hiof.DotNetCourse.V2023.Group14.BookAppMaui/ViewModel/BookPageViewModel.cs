@@ -231,7 +231,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 }
 
-                bool isBookInLibraryResult = await IsBookInLibrary(SelectedBook);
+                bool isBookInLibraryResult = await IsBookInLibraryAsync(SelectedBook);
                 bool answer = false;
 
                 // Functionality to allow books to be re-read and added multiple times.
@@ -256,7 +256,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         if (SelectedReadingStatus == ReadingStatus.Completed)
                         {
                             // Updates the reading goal.
-                            await UpdateReadingLibrary(User.Id, SelectedDate);
+                            await UpdateReadingLibraryAsync(User.Id, SelectedDate);
                         }
 
                     }
@@ -274,7 +274,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         // Checks to see if the book already exists in a user's library. (Book re-reads are permitted, but a prompt is shown the double check that the user wishes to 
         // add the book multiple times).
-        public async Task<bool> IsBookInLibrary(V1Book book)
+        public async Task<bool> IsBookInLibraryAsync(V1Book book)
         {
             string isbn = "";
             if (book.IndustryIdentifiers["ISBN_13"] != null)
@@ -309,7 +309,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
         // Retrieves all comments linked to a specific book (as well as all replies).
-        public async Task PopulateComments(V1Book selectedBook)
+        public async Task PopulateCommentsAsync(V1Book selectedBook)
         {
 
             try
@@ -337,7 +337,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 {
                     V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(commentsJson.ToString());
                     // Retrieves all replies to said comment.
-                    comment = await PopulateCommentReplies(comment);
+                    comment = await PopulateCommentRepliesAsync(comment);
                     // Retrieves both the user object (username etc) and display picture of the comment author.
                     comment.AuthorObject = await GetUserWithDisplayPictureAsync(comment.AuthorId.ToString());
                     CommentsOnUserPage.Add(comment);
@@ -350,7 +350,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
         // Retrieves all replies to a single comment. This method is called by PopulateComments().
-        public async Task<V1Comments> PopulateCommentReplies(V1Comments selectedComments)
+        public async Task<V1Comments> PopulateCommentRepliesAsync(V1Comments selectedComments)
         {
 
             try
@@ -423,7 +423,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
         // Updates the library of the user, as well as incrementing the specific reading goal.
-        public async Task UpdateReadingLibrary(Guid userId, DateTime dateTime)
+        public async Task UpdateReadingLibraryAsync(Guid userId, DateTime dateTime)
         {
             string url = $"{_apiBaseUrl}/goals/GetGoalId?userId={userId}&GoalDate={dateTime.ToString("yyyy/MM/dd")}";
 
@@ -476,10 +476,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand SendCommentCommand => new Command(async () => await SendComment(CommentEntry));
+        public ICommand SendCommentCommand => new Command(async () => await SendCommentAsync(CommentEntry));
 
         // Allows the user to send a specific comment linked to a specific book.
-        public async Task SendComment(string message)
+        public async Task SendCommentAsync(string message)
         {
             string url = $"{_apiBaseUrl}/comments/CreateBookComment";
 
@@ -505,10 +505,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand SendReplyCommand => new Command(async () => await SendReply(CommentEntry));
+        public ICommand SendReplyCommand => new Command(async () => await SendReplyAsync(CommentEntry));
 
         // Allows a user to send a specific reply linked to a specific comment.
-        public async Task SendReply(string message)
+        public async Task SendReplyAsync(string message)
         {
             string url = $"{_apiBaseUrl}/comments/CreateReplyComment";
 
@@ -539,7 +539,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public async Task LoadAsync()
         {
             IsBusy = true;
-            await PopulateComments(SelectedBook);
+            await PopulateCommentsAsync(SelectedBook);
             IsBusy = false;
         }
     }

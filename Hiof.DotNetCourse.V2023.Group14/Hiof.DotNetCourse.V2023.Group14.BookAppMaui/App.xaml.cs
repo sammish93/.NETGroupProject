@@ -11,26 +11,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
             InitializeComponent();
             MainPage = new AppShell();
 
+            // The login page is the first page that is shown when the app is started.
             MainPage.BindingContext = new LoginViewModel();
         }
         protected override Window CreateWindow(IActivationState activationState)
         {
             var window = base.CreateWindow(activationState);
+            // Creates a window with the resolution 1366x768 by default. Can be resized. UI is fully responsive down to 800x600 on desktop.
             window.Width = 1366;
             window.Height = 768;
-
-
-            // This code makes the GUI fixed to specific dimensions
-            /*
-            const int newWidth = 1024;
-            const int newHeight = 768
-
-            window.Width = newWidth;
-            window.Height = newHeight;
-
-            window.MinimumWidth = newWidth;
-            window.MinimumHeight = newHeight;
-            */
 
             return window;
         }

@@ -72,7 +72,7 @@
 
 
                         <Label Grid.Row="0"
-                               Text="Books recommended based on your current library:"
+                               Text="Your top rated books:"
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                Padding="5"
@@ -316,6 +316,7 @@
                                                  Grid.Row="1">
                                 <Label Grid.Column="1"
                                        Grid.Row="1"
+                                       x:Name="mostRecentReadingGoalLabel"
                                        LineBreakMode="CharacterWrap"
                                        FontAttributes="Italic"
                                        HorizontalOptions="Center"

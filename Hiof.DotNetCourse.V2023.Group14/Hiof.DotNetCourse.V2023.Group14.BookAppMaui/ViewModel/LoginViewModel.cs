@@ -25,8 +25,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private string _password;
         private bool _isLoggingIn;
 
-        
-
         public string Username
         {
             get => _username;
@@ -48,6 +46,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand LoginCommand => new Command(async () => await LoginAsync());
 
+        // Retrieves a username and password combination from entry fields and passes them to an API call that hashes the password and validates that username and 
+        // password combination exists. If true then the login attempt is successful, and a user is redirected to the main page.
         private async Task LoginAsync()
         {
             IsLoggingIn = true;
@@ -64,7 +64,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
 
                 {
-                    //Preferences.Set("UserIsLoggedIn", true);
                     loginUrl = $"{_apiBaseUrl}/users/getByName?name={Username}";
 
                     HttpResponseMessage result = await _httpClient.GetAsync(loginUrl);
@@ -73,13 +72,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
 
                     var currentViewModel = Shell.Current.BindingContext as AppShellViewModel;
-                   // UserSingleton.Instance.SetUser(user, true);
                     Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser= user;
 
                     string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
                     HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
 
-
+                    // Note: Very clunky solution that can be fixed in future versions when we have more time.
+                    // This code only works on Windows OS, and retrieves both a user's display picture (if it exists), as well as the default display picture 
+                    // from the resources folder.
                     var defaultDisplayPicture = System.Drawing.Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "/../../../../../Resources/Images/default_display_picture.png");
                     ImageConverter converter = new ImageConverter();
                     byte[] displayPictureInBytes = (byte[])converter.ConvertTo(defaultDisplayPicture, typeof(byte[]));
@@ -92,9 +92,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                         V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
 
+                        // Updates when the user last logged in and passes it to a method that includes an API call to update the database.
                         user.LastActive = DateTime.Now;
 
-                        await UpdateUser(user);
+                        await UpdateUserAsync(user);
 
                         Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture = displayPicture.DisplayPicture;
                         Shell.Current.BindingContext = new AppShellViewModel(user, displayPicture.DisplayPicture);
@@ -103,18 +104,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         Shell.Current.BindingContext = new AppShellViewModel(user, displayPictureInBytes);
                     }
 
+                    // Prompt is displayed if the user currently doesn't have full internet access. This mostly affects retrieval from the external Google Books API.
                     if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
                     {
                         await Application.Current.MainPage.DisplayAlert("No Internet Connection!", "You don't seem to be connected to the internet. Please be aware that " +
                             "some services may be unavailable or won't function as intended.", "OK");
                     }
 
+                    // User is redirected to the main page.
                     await Shell.Current.GoToAsync("///home");
                 } else
                 {
                     string content = await response.Content.ReadAsStringAsync();
 
-                    // Dynamic does so the type is decieded at runtime.
                     dynamic json = JsonConvert.DeserializeObject(content);
 
                     StringBuilder errorMessage = new StringBuilder();
@@ -137,7 +139,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task UpdateUser(V1User user)
+        // Updates the user in the database (date last active).
+        public async Task UpdateUserAsync(V1User user)
         {
             var url = $"{_apiBaseUrl}/users/UpdateAccountById";
 
@@ -149,17 +152,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand SignupCommand => new Command(async () => await SignupAsync());
 
+        // Redirects new users to a sign-up page.
         private async Task SignupAsync()
         {
             await Shell.Current.GoToAsync("///signup");
         }
 
-  
         private Task DisplayAlert(string v1, string v2, string v3)
         {
             return Task.CompletedTask;
         }
-
-
     }
 }

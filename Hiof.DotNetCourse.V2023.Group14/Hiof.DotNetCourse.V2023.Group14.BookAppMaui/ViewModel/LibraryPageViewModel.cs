@@ -226,7 +226,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
 
         // Retrieves the library page of a specifi user (in this case the user that is currently logged in).
-        public async Task GetUserLibrary(V1User user)
+        public async Task GetUserLibraryAsync(V1User user)
         {
             try
             {
@@ -306,7 +306,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand SaveChangesCommand => new Command(async () => await SaveChangesAsync());
         public ICommand DeleteEntryCommand => new Command(async () => await DeleteEntryAsync());
-        public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPage(SelectedEntryBook));
+        public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPageAsync(SelectedEntryBook));
 
         // Saves the information modified by the user and changes data in the database.
         public async Task SaveChangesAsync()
@@ -346,8 +346,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     response = await _httpClient.PutAsync(dateUrl, httpContent);
 
-                    await UpdateReadingLibrary(LoggedInUser.Id, (DateTime)SelectedEntry.DateRead, -1);
-                    await UpdateReadingLibrary(LoggedInUser.Id, (DateTime)SelectedDate, 1);
+                    // Decrements the book's original reading goal by 1.
+                    await UpdateReadingLibraryAsync(LoggedInUser.Id, (DateTime)SelectedEntry.DateRead, -1);
+                    // Increments the book's new reading goal by 1.
+                    await UpdateReadingLibraryAsync(LoggedInUser.Id, (DateTime)SelectedDate, 1);
 
                     SelectedEntry.DateRead = SelectedDate;
                 }
@@ -390,8 +392,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     if (response.IsSuccessStatusCode)
                     {
                         await Application.Current.MainPage.DisplayAlert("Success!", "The entry has been deleted.", "OK");
-                        await UpdateReadingLibrary(LoggedInUser.Id, (DateTime)SelectedEntry.DateRead, -1);
+                        // Decrements the book's reading goal by 1.
+                        await UpdateReadingLibraryAsync(LoggedInUser.Id, (DateTime)SelectedEntry.DateRead, -1);
+                        // Prompts the main page to reload data after a change.
                         Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                        // 'Reloads' the current page.
                         await LoadAsync();
                         SelectedEntry = null;
                         SelectedReadingStatus = null;
@@ -410,7 +415,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task UpdateReadingLibrary(Guid userId, DateTime dateTime, int amount)
+        // Used by DeleteEntryAsync() and SaveChangesAsync() to modify the increment count of the a user's reading goal.
+        public async Task UpdateReadingLibraryAsync(Guid userId, DateTime dateTime, int amount)
         {
             string url = $"{_apiBaseUrl}/goals/GetGoalId?userId={userId}&GoalDate={dateTime.ToString("yyyy/MM/dd")}";
 
@@ -436,7 +442,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             SelectedDate = dateTime;
         }
 
-        public async Task NavigateToBookPage(V1Book book)
+        // Allows the user to navigate to a book's dedicated page (with additional information, comments etc) from their library.
+        public async Task NavigateToBookPageAsync(V1Book book)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
@@ -457,7 +464,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             IsBusy = true;
 
-            await GetUserLibrary(LoggedInUser);
+            await GetUserLibraryAsync(LoggedInUser);
 
             IsBusy = false;
         }

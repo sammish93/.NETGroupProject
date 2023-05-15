@@ -32,6 +32,7 @@ public partial class UserPage : ContentPage
             var labelEndDate = this.FindByName<Label>("labelEndDate");
             var labelGoalTarget = this.FindByName<Label>("labelGoalTarget");
 
+            // If the user is visiting their own page then elements pertaining to the creation of a new reading goal is shown.
             if (Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id == Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser.Id)
             {
                 messageButton.IsVisible = false;
@@ -43,6 +44,7 @@ public partial class UserPage : ContentPage
                 labelEndDate.IsVisible = true;
                 labelGoalTarget.IsVisible = true;
             } else
+            // If the user is visiting another user's page then these elements are hidden and a button to send a message to another user is shown instead.
             {
                 readingGoalButton.IsVisible = false;
                 pickerStartDate.IsVisible = false;
@@ -59,12 +61,14 @@ public partial class UserPage : ContentPage
 
             if (model.SelectedUserRecentReadingGoal != null) 
             {
+                // Division expression to calculate the percentage of reading goal completion.
                 double progress = Convert.ToDouble(model.SelectedUserRecentReadingGoal.GoalCurrent) / Convert.ToDouble(model.SelectedUserRecentReadingGoal.GoalTarget);
-
+                // Animates the progress bar.
                 await progressBar.ProgressTo(progress, 750, Easing.Linear);
             } else
             {
                 var mostRecentReadingGoalLabel = this.FindByName<Label>("mostRecentReadingGoalLabel");
+                // If no reading goal is present then this is shown instead.
                 mostRecentReadingGoalLabel.Text = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser.UserName + " hasn't created a reading goal yet.";
                 await progressBar.ProgressTo(0, 750, Easing.Linear);
             }
@@ -81,6 +85,7 @@ public partial class UserPage : ContentPage
         dynamicColumn.HeightRequest = height;
     }
 
+    // Handles the behaviour when a book is selected.
     private async void CollectionViewBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var model = BindingContext as ViewModel.UserPageViewModel;
@@ -90,7 +95,7 @@ public partial class UserPage : ContentPage
             if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
             {
                 V1Book book = ((V1Book)e.CurrentSelection.First());
-                await model.NavigateToBookPage(book);
+                await model.NavigateToBookPageAsync(book);
             }
         }
     }
@@ -101,6 +106,7 @@ public partial class UserPage : ContentPage
 
         if (model != null)
         {
+            // Date picker behaves differently than entry forms, and thus requires this method for the date to be saved to a variable (and thus retrieved).
             model.UpdateStartDate(e.NewDate);
         }
     }
@@ -111,6 +117,7 @@ public partial class UserPage : ContentPage
 
         if (model != null)
         {
+            // Date picker behaves differently than entry forms, and thus requires this method for the date to be saved to a variable (and thus retrieved).
             model.UpdateEndDate(e.NewDate);
         }
     }

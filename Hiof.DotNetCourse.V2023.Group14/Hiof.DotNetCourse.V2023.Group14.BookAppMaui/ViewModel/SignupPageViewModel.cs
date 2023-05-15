@@ -36,7 +36,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
 
-
         [Required(ErrorMessage = "{0} is required")]
         [StringLength(20, ErrorMessage = "{0} must be between {2} and {1}.", MinimumLength = 5)]
         [RegularExpression(@"^[a-zA-Z0-9]+$",
@@ -67,14 +66,18 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public string Country { get => _country; set => SetProperty(ref _country, value); }
         public string City { get => _city; set => SetProperty(ref _city, value); }
         public string Lang_Preference { get => _langpref; set => SetProperty(ref _langpref, value); }
-        //public UserRole userRole{ get => _userRole; set => SetProperty(ref _userRole, value);  }
 
         public ICommand SignUpCommand => new Command(async () => await SignupAsync());
+
+        // Allows the user to fill entry forms, selection boxes, and other page elements, and then fetches the information and creates a V1User object which is then used 
+        // to save data to a database by creating a new user entry.
         public async Task SignupAsync()
         {
             try
             {
                 bool answer = false;
+                // Prompt for a rudimentary explanation of some of the GDPR laws relating to data collection. 
+                // Note: as of now, the GUI doesn't support users who aren't logged in, so data collection and agreement is necessary.
                 answer = await Application.Current.MainPage.DisplayAlert("Our application stores personal information about our users." ,
                     "We store information entered by each user on account registration, " +
                     "as well as any comments or messages entered by users during use of the application. " +
@@ -110,11 +113,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                     if (response.IsSuccessStatusCode)
                     {
+                        // Redirects the user to the login page on a successful signup.
                         await Shell.Current.GoToAsync("///login");
 
                     }
                 } else
                 {
+                    // Prompt that informs the user that as of right now there is no functionality available for anonymous/users not logged in to use the application.
                     await Application.Current.MainPage.DisplayAlert("Uh oh!", "Sadly we cannot provide a functional service to our users without agreeing to the collection " +
                         "of data. Functionality to provide users without accounts to access parts of our service is coming soon. Stay tuned!", "OK");
                 }
@@ -127,6 +132,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand BackCommand => new Command(async () => await BackAsync());
 
+        // Navigates the user back to the login page.
         private async Task BackAsync()
         {
             await Shell.Current.GoToAsync("///login");

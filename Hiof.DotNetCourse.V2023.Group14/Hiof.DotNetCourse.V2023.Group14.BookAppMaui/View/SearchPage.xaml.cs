@@ -43,6 +43,7 @@ public partial class SearchPage : ContentPage
         dynamicColumn.HeightRequest = height;
     }
 
+    // Handles the behaviour when a user is selected.
     private async void CollectionViewUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var model = BindingContext as ViewModel.SearchPageViewModel;
@@ -52,11 +53,12 @@ public partial class SearchPage : ContentPage
             if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
             {
                 V1User user = ((V1UserWithDisplayPicture)e.CurrentSelection.First()).User;
-                await model.NavigateToUserPage(user);
+                await model.NavigateToUserPageAsync(user);
             }
         }
     }
 
+    // Handles the behaviour when a book is selected.
     private async void CollectionViewBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var model = BindingContext as ViewModel.SearchPageViewModel;
@@ -66,7 +68,7 @@ public partial class SearchPage : ContentPage
             if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
             {
                 V1Book book = ((V1Book)e.CurrentSelection.First());
-                await model.NavigateToBookPage(book);
+                await model.NavigateToBookPageAsync(book);
             }
         }
     }

@@ -32,7 +32,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private string _queryString;
         private V1User _user;
 
-
         public bool IsBusy
         {
             get => _isBusy;
@@ -99,7 +98,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             User = user;
         }
 
-        public async Task PopulateBookTitleResults(string query)
+        // Retrieves the books that include the string search parameter as a result based on book title (via Google Books API).
+        public async Task PopulateBookTitleResultsAsync(string query)
         {
             
             try
@@ -107,6 +107,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 BooksBasedOnTitle.Clear();
 
                 var queryReplaced = query;
+                // Replaces empty space symbol with html encoding.
                 queryReplaced.Replace(" ", "%20");
                 string url = $"{_apiBaseUrl}/books/GetByTitle?title={queryReplaced}&maxResults=40";
 
@@ -117,6 +118,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 foreach (V1Book book in bookSearch.Books)
                 {
+                    // Doesn't show books that don't contain -either- a valid ISBN 10 or 13. 
+                    // Note: not all books on Google Books follow the same format.
                     if (book.IndustryIdentifiers == null
                         || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
                     {
@@ -127,7 +130,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     book.ImageLinks["thumbnail"].Replace("&", "&amp;");
                     BooksBasedOnTitle.Add(book);
                 }
-
             }
             catch (Exception ex)
             {
@@ -135,9 +137,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateBookAuthorResults(string query)
+        // Retrieves the books that include the string search parameter as a result based on author (via Google Books API).
+        public async Task PopulateBookAuthorResultsAsync(string query)
         {
-
             try
             {
                 BooksBasedOnAuthor.Clear();
@@ -170,9 +172,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateUserResults(string query)
+        // Retrieves all users with a username including the search string parameter ('testaccount' is displayed as a result for 'test', 'account', 'stacco' etc).
+        public async Task PopulateUserResultsAsync(string query)
         {
-
             try
             {
                 Users.Clear();
@@ -219,13 +221,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task NavigateToUserPage(V1User user)
+        // Navigates to the user page when a user is selected via an on-click event. Note that QueryIdentifier is passed but not fully integrated in the current 
+        // version of Maui.
+        public async Task NavigateToUserPageAsync(V1User user)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
             await Shell.Current.GoToAsync($"///user?userid={user.Id}");
         }
 
-        public async Task NavigateToBookPage(V1Book book)
+        // Navigates to the book page when a book is selected via an on-click event. Note that QueryIdentifier is passed but not fully integrated in the current 
+        // version of Maui.
+        public async Task NavigateToBookPageAsync(V1Book book)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
@@ -246,9 +252,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             IsBusy = true;
 
-            await PopulateBookTitleResults(searchQuery);
-            await PopulateBookAuthorResults(searchQuery);
-            await PopulateUserResults(searchQuery);
+            await PopulateBookTitleResultsAsync(searchQuery);
+            await PopulateBookAuthorResultsAsync(searchQuery);
+            await PopulateUserResultsAsync(searchQuery);
 
             IsBusy = false;
         }
