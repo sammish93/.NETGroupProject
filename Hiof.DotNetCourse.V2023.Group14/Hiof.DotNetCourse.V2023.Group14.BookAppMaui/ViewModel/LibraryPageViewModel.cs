@@ -208,6 +208,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
             SelectedDate = DateTime.Now;
 
+            // Populates the drop-down selector with ReadingStatus enums.
             ReadingStatusValues = new List<ReadingStatus>
             {
                 ReadingStatus.Completed,
@@ -216,6 +217,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             };
 
             Ratings = new ObservableCollection<int>();
+            // Populates the drow-down selector to allow a user to rate a book from 1 to 10.
             for (int i = 1; i <= 10; i++)
             {
                 Ratings.Add(i);
@@ -223,6 +225,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
 
+        // Retrieves the library page of a specifi user (in this case the user that is currently logged in).
         public async Task GetUserLibrary(V1User user)
         {
             try
@@ -237,10 +240,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 CompleteLibrary = library;
 
+                // Empties the collections to avoid duplicate values appearing on multuiple page refreshes/visits.
                 ToBeRead.Clear();
                 CurrentlyReading.Clear();
                 ReadEntries.Clear();
 
+                // Adds the libraries to three differing arrays that can be filtered by the user.
                 foreach (V1LibraryEntry entry in library.Entries)
                 {
                     if (entry.ReadingStatus == ReadingStatus.Completed)
@@ -261,6 +266,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Retrieves a V1Book object based on an ISBN identifier. This is used to show additional information about said book when clicked on.
         public async Task<V1Book> GetBookWithEntryAsync(string isbn)
         {
             string url = $"{_apiBaseUrl}/books/GetByIsbn?isbn={isbn}";
@@ -281,6 +287,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
+        // Populates selectors and page elements with the reading status, rating, and date of completion when added by the user at an earlier instance.
         public void PopulateSelectedEntryFields()
         {
             SelectedReadingStatus = SelectedEntry.ReadingStatus;
@@ -301,12 +308,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public ICommand DeleteEntryCommand => new Command(async () => await DeleteEntryAsync());
         public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPage(SelectedEntryBook));
 
+        // Saves the information modified by the user and changes data in the database.
         public async Task SaveChangesAsync()
         {
 
             try
             {
-
+                // Currently each modification requires its own API call. Could be improved by having a single API call to modify a book.
                 string readingStatusUrl = $"{_apiBaseUrl}/libraries/ChangeReadingStatus?entryId={SelectedEntry.Id}&readingStatus={SelectedReadingStatus}";
                 string ratingUrl = $"{_apiBaseUrl}/libraries/ChangeRating?entryId={SelectedEntry.Id}&rating={SelectedRating}";
                 string dateUrl = $"{_apiBaseUrl}/libraries/ChangeDateRead?entryId={SelectedEntry.Id}&dateTime={SelectedDate}";
@@ -338,6 +346,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     response = await _httpClient.PutAsync(dateUrl, httpContent);
 
+                    await UpdateReadingLibrary(LoggedInUser.Id, (DateTime)SelectedEntry.DateRead, -1);
+                    await UpdateReadingLibrary(LoggedInUser.Id, (DateTime)SelectedDate, 1);
+
                     SelectedEntry.DateRead = SelectedDate;
                 }
 
@@ -362,6 +373,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Removes an entry from a user's library
         public async Task DeleteEntryAsync()
         {
             try
@@ -378,6 +390,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     if (response.IsSuccessStatusCode)
                     {
                         await Application.Current.MainPage.DisplayAlert("Success!", "The entry has been deleted.", "OK");
+                        await UpdateReadingLibrary(LoggedInUser.Id, (DateTime)SelectedEntry.DateRead, -1);
                         Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
                         await LoadAsync();
                         SelectedEntry = null;
@@ -394,6 +407,27 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+            }
+        }
+
+        public async Task UpdateReadingLibrary(Guid userId, DateTime dateTime, int amount)
+        {
+            string url = $"{_apiBaseUrl}/goals/GetGoalId?userId={userId}&GoalDate={dateTime.ToString("yyyy/MM/dd")}";
+
+            HttpResponseMessage result = await _httpClient.GetAsync(url);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var libraryId = await result.Content.ReadAsStringAsync();
+
+                Guid libraryIdGuid = JsonConvert.DeserializeObject<Guid>(libraryId);
+
+                url = $"{_apiBaseUrl}/goals/IncrementReadingGoal?id={libraryIdGuid}&amount={amount}";
+
+                var jsonString = JsonConvert.SerializeObject(new { id = libraryIdGuid, amount = amount });
+                var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync(url, httpContent);
             }
         }
 
