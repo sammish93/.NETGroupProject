@@ -142,12 +142,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             }
             else
             {
+                string? isbn10 = post.ISBN10;
+                string? isbn13 = post.ISBN13;
+
+                if (isbn10.Equals("string"))
+                    isbn10 = null;
+
+                if (isbn13.Equals("string"))
+                    isbn13 = null;
+
+
                 existingPost.Condition = post.Condition;
                 existingPost.Price = post.Price;
                 existingPost.Currency = post.Currency;
                 existingPost.Status = post.Status;
                 existingPost.OwnerId = post.OwnerId;
                 existingPost.DateModified = DateTime.UtcNow;
+                existingPost.ISBN10 = isbn10;
+                existingPost.ISBN13 = isbn13;
 
                 await _context.SaveChangesAsync();
                 return "Successfully updated the post!";
