@@ -118,7 +118,7 @@ public partial class MarketplacePage : ContentPage
         {
             if (searchQuery != null && !searchQuery.Equals(SearchQuery))
             {
-                await model.GetBookSearch(searchQuery);
+                await model.GetBookSearchAsync(searchQuery);
                 SearchQuery = searchQuery;
             }
         }

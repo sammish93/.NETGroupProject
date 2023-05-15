@@ -136,11 +136,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public MarketplacePageViewModel()
         {
             LoggedInUser = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser;
+            // Hides the 'nested' page until a book is selected.
             IsBuyAndSellButtonsVisible = false;
             IsSellGridVisible = false;
             IsBuyGridVisible = false;
             BookSearch = new ObservableCollection<V1Book>();
 
+            // Adds supported currencies. Additional currencies can easily be added in future versions.
             CurrencyValues = new ObservableCollection<V1Currency>();
             CurrencyValues.Add(V1Currency.EUR);
             CurrencyValues.Add(V1Currency.NOK);
@@ -149,15 +151,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
 
-        public async Task GetBookSearch(string searchQuery)
+        public async Task GetBookSearchAsync(string searchQuery)
         {
             try
             {
                 BookSearch.Clear();
 
-                await PopulateBookIsbnResults(searchQuery);
-                await PopulateBookTitleResults(searchQuery);
-                await PopulateBookAuthorResults(searchQuery);
+                await PopulateBookIsbnResultsAsync(searchQuery);
+                await PopulateBookTitleResultsAsync(searchQuery);
+                await PopulateBookAuthorResultsAsync(searchQuery);
             }
             catch (Exception ex)
             {
@@ -165,7 +167,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateBookIsbnResults(string query)
+        public async Task PopulateBookIsbnResultsAsync(string query)
         {
 
             try
@@ -201,7 +203,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
 
-        public async Task PopulateBookTitleResults(string query)
+        public async Task PopulateBookTitleResultsAsync(string query)
         {
 
             try
@@ -235,7 +237,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateBookAuthorResults(string query)
+        public async Task PopulateBookAuthorResultsAsync(string query)
         {
 
             try
@@ -268,10 +270,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPage(SelectedBook));
+        public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPageAsync(SelectedBook));
 
 
-        public async Task NavigateToBookPage(V1Book book)
+        public async Task NavigateToBookPageAsync(V1Book book)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
@@ -288,28 +290,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await Shell.Current.GoToAsync($"///book?bookid={bookId}");
         }
 
-        public ICommand SellCommand => new Command(async () => await Sell());
+        public ICommand SellCommand => new Command(async () => await SellAsync());
 
 
-        public async Task Sell()
+        public async Task SellAsync()
         {
             IsBuyAndSellButtonsVisible = false;
             IsSellGridVisible = true;
         }
 
-        public ICommand BuyCommand => new Command(async () => await Buy());
+        public ICommand BuyCommand => new Command(async () => await BuyAsync());
 
 
-        public async Task Buy()
+        public async Task BuyAsync()
         {
             IsBuyAndSellButtonsVisible = false;
             IsBuyGridVisible = true;
         }
 
-        public ICommand CreateAdCommand => new Command(async () => await CreateAd());
+        public ICommand CreateAdCommand => new Command(async () => await CreateAdAsync());
 
 
-        public async Task CreateAd()
+        public async Task CreateAdAsync()
         {
 
             await Application.Current.MainPage.DisplayAlert("Success!", "You have successfully created an ad.", "OK");
@@ -319,10 +321,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         }
 
-        public ICommand BackCommand => new Command(async () => await Back());
+        public ICommand BackCommand => new Command(async () => await BackAsync());
 
 
-        public async Task Back()
+        public async Task BackAsync()
         {
             IsBuyGridVisible = false;
             IsSellGridVisible = false;

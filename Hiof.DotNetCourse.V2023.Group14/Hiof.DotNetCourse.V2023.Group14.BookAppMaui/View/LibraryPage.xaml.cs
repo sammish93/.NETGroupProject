@@ -13,8 +13,6 @@ public partial class LibraryPage : ContentPage
         
     }
 
-
-
     protected override async void OnAppearing()
     {
         var model = BindingContext as LibraryPageViewModel;
@@ -66,6 +64,7 @@ public partial class LibraryPage : ContentPage
                 var entryDatePicker = this.FindByName<DatePicker>("entryDatePicker");
                 var entryFormGrid = this.FindByName<Grid>("entryFormGrid");
 
+                // Shows the 'nested' page containing details relating to a specific library when selected.
                 selectPromptLabel.IsVisible = false;
                 absoluteBanner.IsVisible = true;
                 model.PopulateSelectedEntryFields();
@@ -75,6 +74,7 @@ public partial class LibraryPage : ContentPage
         }
     }
 
+    // All library entries are shown by default.
     private void RadioButtonAll_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         var collectionLibraryAll = this.FindByName<CollectionView>("collectionLibraryAll");
@@ -88,6 +88,7 @@ public partial class LibraryPage : ContentPage
         collectionLibraryToRead.IsVisible = false;
     }
 
+    // Only entries that are marked as completed are shown.
     private void RadioButtonRead_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         var collectionLibraryAll = this.FindByName<CollectionView>("collectionLibraryAll");
@@ -101,6 +102,7 @@ public partial class LibraryPage : ContentPage
         collectionLibraryToRead.IsVisible = false;
     }
 
+    // Only entries that are marked as currently reading are shown.
     private void RadioButtonReading_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         var collectionLibraryAll = this.FindByName<CollectionView>("collectionLibraryAll");
@@ -114,6 +116,7 @@ public partial class LibraryPage : ContentPage
         collectionLibraryToRead.IsVisible = false;
     }
 
+    // Only entries that are marked as to-read are shown.
     private void RadioButtonToRead_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         var collectionLibraryAll = this.FindByName<CollectionView>("collectionLibraryAll");
@@ -133,6 +136,7 @@ public partial class LibraryPage : ContentPage
 
         if (model != null)
         {
+            // Date picker behaves differently than entry forms, and thus requires this method for the date to be saved to a variable (and thus retrieved).
             model.UpdateDate(e.NewDate);
         }
     }

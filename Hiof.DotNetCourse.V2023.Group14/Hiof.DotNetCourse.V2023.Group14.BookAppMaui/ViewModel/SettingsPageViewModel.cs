@@ -98,13 +98,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             UserDisplayPicture = userDisplayPicture;
         }
 
-        public ICommand UploadImageCommand => new Command(async () => await FileSelector(PickOptions.Images, LoggedInUser));
+        public ICommand UploadImageCommand => new Command(async () => await FileSelectorAsync(PickOptions.Images, LoggedInUser));
         public ICommand SaveCommand => new Command(async () =>
         {
             await UpdateDisplayPictureAsync(LoggedInUser, UserDisplayPicture);
             await SaveAsync();
         });
 
+        // Saves changes made to a user's profile (name, location, password etc.), as well as changes to a user's display picture.
+        // Changes are only saved once this method is called, even if the GUI shows a 'preview' of the new display picture etc.
         private async Task SaveAsync()
         {
             string content = "";
@@ -116,6 +118,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 string url = $"{_apiBaseUrl}/users/UpdateAccountById";
 
+                // Creates a new V1User object based on entry form elements on the GUI.
                 var userChanged = new V1User
                 {
                     Id = LoggedInUser.Id,
@@ -132,6 +135,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     LastActive = LoggedInUser.LastActive
 
                 };
+
                 var requestBodyJson = JsonConvert.SerializeObject(userChanged);
                 var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
 
@@ -141,9 +145,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 if (response.IsSuccessStatusCode)
                 {
+                    // Updates the data pertaining to the user that is logged in after a successful change.
+                    // Important in cases where a username or display picture has been changed, so all other pages are updated.
                     Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser = userChanged;
                     Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
                     await Application.Current.MainPage.DisplayAlert("Success!", "Your changes have been saved.", "OK");
+                    // Redirects the user to the main page once a change has been successfully saved.
                     await Shell.Current.GoToAsync("///home");
 
                 } else
@@ -165,6 +172,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Populates entry forms in the GUI with the currently saved data of the logged in user.
         private void PopulateEntries(V1User user)
         {
             UserName = user.UserName;
@@ -177,7 +185,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             Lang_Preference = user.LangPreference;
         }
 
-        public async Task GetUserDisplayPicture(V1User user)
+        // Retrieves a display picture of a specific user. A default display picture is provided if no existing display picture is present.
+        public async Task GetUserDisplayPictureAsync(V1User user)
         {
             string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
             HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
@@ -196,7 +205,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task<FileResult> FileSelector(PickOptions pickOptions, V1User user)
+        // The GUI only currently supports .jpg and .png images, and these can only be deserialised and shown on Windows OS machines currently.
+        public async Task<FileResult> FileSelectorAsync(PickOptions pickOptions, V1User user)
         {
             try
             {
@@ -207,6 +217,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         result.FileName.EndsWith("png", StringComparison.OrdinalIgnoreCase))
                     {
                         using var stream = await result.OpenReadAsync();
+                        // Retrieves an image file and converts it into a byte stream which can then be easily saved to a database, as well as displayed
+                        // in the GUI.
                         var newDisplayPicture = System.Drawing.Image.FromStream(stream);
 
                         ImageConverter converter = new ImageConverter();
@@ -226,6 +238,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
+        // Used to display the -updated- display picture throughout the life of the application. 
+        // Note: the picture is already saved to the database, but this method updates the logged in user object without restarting the application.
         private async Task UpdateDisplayPictureAsync(V1User user, byte[] displayPicture)
         {
             try
@@ -280,7 +294,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             IsBusy = true;
             PopulateEntries(user);
-            await GetUserDisplayPicture(user);
+            await GetUserDisplayPictureAsync(user);
             IsBusy = false;
         }
     }

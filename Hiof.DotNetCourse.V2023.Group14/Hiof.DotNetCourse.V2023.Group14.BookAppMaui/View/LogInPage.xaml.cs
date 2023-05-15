@@ -15,7 +15,9 @@ public partial class LogInPage : ContentPage
     {
 		if(e.Value == true)
 		{
+            // On checkbox selected the username and password entry forms are filled with a test account.
             LoginViewModel loginView = (LoginViewModel)this.BindingContext;
+            // Test account username and password:
             loginView.Username = "JinkxMonsoon";
             loginView.Password = "Itismonsoonseason1!";
         }

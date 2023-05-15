@@ -65,10 +65,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await NavigateToSearchPage(query);
         });
 
+        // Navigates to the search page after a text string is entered in the shell search bar.
         public async Task NavigateToSearchPage(string query)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery = query;
             await Shell.Current.GoToAsync($"///home");
+            // Note that the parameters passed via QueryProperty doesn't currently work as intended in the current version of Maui. Query string is therefore 
+            // saved in the UserSingleton class used as a singleton.
             await Shell.Current.GoToAsync($"///search?query={query}");
         }
 
@@ -79,6 +82,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await Shell.Current.GoToAsync($"///user?userid={user.Id}");
         }
 
+        // Retrieves the logged in user's display picture.
         public async Task GetSelectedUserDisplayPicture(string username)
         {
             string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={username}";
@@ -94,6 +98,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
             else
             {
+                // If the user has no display picture then a default one is shown.
                 Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
             }
         }

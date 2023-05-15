@@ -24,13 +24,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 
 #if DEBUG
             builder.Logging.AddDebug();
-            builder.Services.AddSingleton<UserSingleton>();
 #endif
-            // var currentUser = UserSingleton.Instance.GetUser();
-
-
-
-
+            // Includes variables that are saved during runtime (User that is logged in, which book/user etc is displayed after clicked-on event).
+            builder.Services.AddSingleton<UserSingleton>();
 
             return builder.Build();
         }

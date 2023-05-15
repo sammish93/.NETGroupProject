@@ -29,7 +29,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private bool _isBusy;
         private V1User _loggedInUser;
         private V1ReadingGoals _loggedInUserRecentReadingGoal;
-
         private ObservableCollection<V1Comments> _recentComments;
         private double _readingGoalProgress;
 
@@ -123,7 +122,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             LoggedInUser = user;
         }
 
-        public async Task PopulateHighestRatedBooks()
+        // Retrieves the highest rated books from the logged in user's library.
+        public async Task PopulateHighestRatedBooksAsync()
         {
             if (HighestRatedBooks.IsNullOrEmpty() || Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered)
             {
@@ -163,7 +163,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                         foreach (V1Book book in bookSearch.Books)
                         {
-
+                            // Converts symbols from URL plaintext to retrieve an image from a site.
                             book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
                             book.ImageLinks["thumbnail"].Replace("&", "&amp;");
                             HighestRatedBooks.Add(book);
@@ -172,12 +172,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 }
                 catch (Exception ex)
                 {
-
+                    // Any additional error handling goes here if desired.
                 }
             }
         }
 
-        public async Task PopulateRecentlyReadBooks()
+        // Retrieves the most recently read books (based on date entered) from the logged in user's library.
+        public async Task PopulateRecentlyReadBooksAsync()
         {
             if (RecentlyReadBooks.IsNullOrEmpty() || Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered)
             {
@@ -231,7 +232,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateNearbyUsers()
+        // Retrieves all users in the same city as the logged in user.
+        // Note: This is -only- based on the 'city' string variable of the logged in user. Any neighbouring towns etc will be ignored.
+        // Future versions could be improved by including geodata.
+        public async Task PopulateNearbyUsersAsync()
         {
             if (NearbyUsers.IsNullOrEmpty())
             {
@@ -247,6 +251,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                     dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
 
+                    // Retrieves each user's display picture.
                     foreach (JObject userJson in jArrayUsers)
                     {
                         V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
@@ -267,6 +272,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         }
                         else
                         {
+                            // Default display picture is provided i nthe case that no display picture has been set by said user.
                             userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
                         }
 
@@ -280,14 +286,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Navigates to a specific user's page. QueryProperty is used for future builds, but currently Maui does not support it as desired. UserSingleton object is used to 
+        // hold references to objects selected during an on-click event etc.
         public async Task NavigateToUserPage(V1User user)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
-            await GetSelectedUserDisplayPicture(user.UserName);
+            await GetSelectedUserDisplayPictureAsync(user.UserName);
             await Shell.Current.GoToAsync($"///user?userid={user.Id}");
         }
 
-        public async Task GetSelectedUserDisplayPicture(string username)
+        // Retrieves the display picture of the user before nagivation to the page takes place - smoother transition.
+        public async Task GetSelectedUserDisplayPictureAsync(string username)
         {
             string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={username}";
             HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
@@ -305,7 +314,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task NavigateToBookPage(V1Book book)
+        // Navigates the the book page on on-click event.
+        public async Task NavigateToBookPageAsync(V1Book book)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
             string bookId = "";
@@ -321,7 +331,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await Shell.Current.GoToAsync($"///book?bookid={bookId}");
         }
 
-        public async Task GetMostRecentReadingGoal()
+        // Retrieves the newest reading goal added by the user to be displayed on the main page.
+        // Note: a single user -cannot- have overlapping reading goals. A solution for a user to 'curate' a collection of books may be better implemented using 
+        // groups.
+        public async Task GetMostRecentReadingGoalAsync()
         {
             string url = $"{_apiBaseUrl}/goals/GetRecentGoal?userId={LoggedInUser.Id}";
             HttpResponseMessage result = await _httpClient.GetAsync(url);
@@ -336,9 +349,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateComments(V1User selectedUser)
+        // Loads the most recent comments posted by the logged in user. These include replies, and comments are formatted to show whether they are a reply to a specific 
+        // user, or a post on a specific user/book page.
+        public async Task PopulateCommentsAsync(V1User selectedUser)
         {
-
             try
             {
                 RecentComments.Clear();
@@ -411,6 +425,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Retrieves a specific user's display picture. A default picture is provided if no specific display picture exists.
         public async Task<V1UserWithDisplayPicture> GetUserWithDisplayPictureAsync(String guidString)
         {
             try
@@ -453,6 +468,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
+        // Retrieves a V1Book object serialised based on an API call to Google Books.
         public async Task<V1Book> GetBookAsync(string isbn)
         {
             try
@@ -467,7 +483,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 foreach (V1Book book in bookSearch.Books)
                 {
-
+                    // Plaintext URL symbols are changed to allow encoded calls to retrieve image from URL.
                     book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
                     book.ImageLinks["thumbnail"].Replace("&", "&amp;");
                     return book;
@@ -480,21 +496,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
+        // Loads the page. Each method checks to see if their library has been altered/new comment has been posted. If so, then the page is reloaded on being navigated 
+        // to.
         public async Task LoadAsync()
         {
             IsBusy = true;
-            await PopulateHighestRatedBooks();
-            await PopulateRecentlyReadBooks();
+            await PopulateHighestRatedBooksAsync();
+            await PopulateRecentlyReadBooksAsync();
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = false;
-            await PopulateNearbyUsers();
-            await PopulateComments(LoggedInUser);
+            await PopulateNearbyUsersAsync();
+            await PopulateCommentsAsync(LoggedInUser);
             IsBusy = false;
         }
 
         public async Task LoadProgressBarAsync()
         {
             IsBusy = true;
-            await GetMostRecentReadingGoal();
+            await GetMostRecentReadingGoalAsync();
         }
     }
 }

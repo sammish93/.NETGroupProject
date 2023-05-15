@@ -9,18 +9,12 @@ using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
     public partial class BaseViewModel : ObservableObject
-
     {
         public BaseViewModel()
         {
-
         }
 
-       
         [ObservableProperty]
         string title;
-        
-
-        
     }
 }

@@ -186,11 +186,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             User = user;
             SelectedBook = book;
 
+            // The user is prompted to post a comment (as opposed to a reply) by default. If the user clicks on a reply then the comment button is hidden and the 
+            // reply button is shown.
             IsCommentButtonVisible = true;
             IsReplyButtonVisible = false;
             MessagePlaceholder = "Enter a comment...";
 
             CommentsOnUserPage = new ObservableCollection<V1Comments>();
+            // Populates the drop-down selector with ReadingStatus enums.
             ReadingStatuses = new ObservableCollection<ReadingStatus>();
             ReadingStatuses.Add(ReadingStatus.ToRead);
             ReadingStatuses.Add(ReadingStatus.Reading);
@@ -199,6 +202,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             SelectedDate = DateTime.Now;
 
             Ratings = new ObservableCollection<int>();
+            // Populates the drow-down selector to allow a user to rate a book from 1 to 10.
             for (int i = 1; i <= 10; i++)
             {
                 Ratings.Add(i);
@@ -207,6 +211,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand AddBookToLibraryCommand => new Command(async () => await AddBookToLibraryAsync());
 
+        // Retrieves a book (via ISBN identifier from Google Books) and adds it to the user's library.
         private async Task AddBookToLibraryAsync()
         {
             try
@@ -214,6 +219,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string createLibEntryUrl = $"{_apiBaseUrl}/libraries/CreateEntry";
 
                 int? rating = null; 
+                // Books that are completed require a rating.
                 if (SelectedReadingStatus == ReadingStatus.Completed)
                 {
                     if (SelectedRating == 0)
@@ -225,9 +231,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 }
 
-                bool isBookInLibraryResult = await isBookInLibrary(SelectedBook);
+                bool isBookInLibraryResult = await IsBookInLibraryAsync(SelectedBook);
                 bool answer = false;
 
+                // Functionality to allow books to be re-read and added multiple times.
                 if (isBookInLibraryResult)
                 {
                     answer = await Application.Current.MainPage.DisplayAlert("This book is already in your library", "Would you like to add it an additional time?", "Yes", "No");
@@ -244,10 +251,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     if (response.IsSuccessStatusCode)
                     {
                         await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
+                        // Prompts the main mage to update when navigated to.
                         Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
                         if (SelectedReadingStatus == ReadingStatus.Completed)
                         {
-                            await UpdateReadingLibrary(User.Id, SelectedDate);
+                            // Updates the reading goal.
+                            await UpdateReadingLibraryAsync(User.Id, SelectedDate);
                         }
 
                     }
@@ -263,7 +272,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task<bool> isBookInLibrary(V1Book book)
+        // Checks to see if the book already exists in a user's library. (Book re-reads are permitted, but a prompt is shown the double check that the user wishes to 
+        // add the book multiple times).
+        public async Task<bool> IsBookInLibraryAsync(V1Book book)
         {
             string isbn = "";
             if (book.IndustryIdentifiers["ISBN_13"] != null)
@@ -297,7 +308,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             SelectedDate = dateTime;
         }
 
-        public async Task PopulateComments(V1Book selectedBook)
+        // Retrieves all comments linked to a specific book (as well as all replies).
+        public async Task PopulateCommentsAsync(V1Book selectedBook)
         {
 
             try
@@ -324,7 +336,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 foreach (JObject commentsJson in jArrayReadingGoals["response"])
                 {
                     V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(commentsJson.ToString());
-                    comment = await PopulateCommentReplies(comment);
+                    // Retrieves all replies to said comment.
+                    comment = await PopulateCommentRepliesAsync(comment);
+                    // Retrieves both the user object (username etc) and display picture of the comment author.
                     comment.AuthorObject = await GetUserWithDisplayPictureAsync(comment.AuthorId.ToString());
                     CommentsOnUserPage.Add(comment);
                 }
@@ -335,7 +349,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task<V1Comments> PopulateCommentReplies(V1Comments selectedComments)
+        // Retrieves all replies to a single comment. This method is called by PopulateComments().
+        public async Task<V1Comments> PopulateCommentRepliesAsync(V1Comments selectedComments)
         {
 
             try
@@ -349,6 +364,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 foreach (V1Comments reply in comment.Replies)
                 {
+                    // Retrieves both the user object (username etc) and display picture of the reply author.
                     reply.AuthorObject = await GetUserWithDisplayPictureAsync(reply.AuthorId.ToString());
                 }
 
@@ -362,6 +378,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
+        // Retrieves the user object (username etc) and display picture of a specific author.
         public async Task<V1UserWithDisplayPicture> GetUserWithDisplayPictureAsync(String guidString)
         {
             try
@@ -392,6 +409,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 }
                 else
                 {
+                    // Uses a default display picture if no display picture has been set.
                     userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
                 }
 
@@ -404,7 +422,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
-        public async Task UpdateReadingLibrary(Guid userId, DateTime dateTime)
+        // Updates the library of the user, as well as incrementing the specific reading goal.
+        public async Task UpdateReadingLibraryAsync(Guid userId, DateTime dateTime)
         {
             string url = $"{_apiBaseUrl}/goals/GetGoalId?userId={userId}&GoalDate={dateTime.ToString("yyyy/MM/dd")}";
 
@@ -418,22 +437,31 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 int amount = 1;
                 url = $"{_apiBaseUrl}/goals/IncrementReadingGoal?id={libraryIdGuid}&amount={amount}";
-                
+
+                var jsonString = JsonConvert.SerializeObject(new { id = libraryIdGuid, amount = amount });
+                var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync(url, httpContent);
             }
         }
 
         public ICommand ReplyCommand => new Command(async (e) => await Reply((V1Comments)e));
 
+        // Allows a comment to be deemed a reply to a previously existing comment.
         public async Task Reply(V1Comments comment)
         {
+            // Hides page elements that provide functionality to comment, and instead shows elements that allow the user to reply.
             IsCommentButtonVisible = false;
             IsReplyButtonVisible = true;
+            // Changes placeholder text to inform the user of the change of behaviour.
             MessagePlaceholder = $"Enter a reply to {comment.AuthorObject.User.UserName}...";
             ReplyId = comment.Id;
         }
 
         public ICommand UpvoteCommand => new Command(async (e) => await Upvote((V1Comments)e));
 
+        // Allows a user to incrementally increase an upvote by 1.
+        // Note: Functionality is currently very basic, and there exists no restrictions on how many times a single user can upvote.
         public async Task Upvote(V1Comments comment)
         {
             string url = $"{_apiBaseUrl}/comments/UpdateCommentUpvotes?id={comment.Id}&upvotes=1";
@@ -448,9 +476,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand SendCommentCommand => new Command(async () => await SendComment(CommentEntry));
+        public ICommand SendCommentCommand => new Command(async () => await SendCommentAsync(CommentEntry));
 
-        public async Task SendComment(string message)
+        // Allows the user to send a specific comment linked to a specific book.
+        public async Task SendCommentAsync(string message)
         {
             string url = $"{_apiBaseUrl}/comments/CreateBookComment";
 
@@ -470,14 +499,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
                 if (response.IsSuccessStatusCode)
                 {
+                    // Reloads the comments.
                     await LoadAsync();
                 }
             }
         }
 
-        public ICommand SendReplyCommand => new Command(async () => await SendReply(CommentEntry));
+        public ICommand SendReplyCommand => new Command(async () => await SendReplyAsync(CommentEntry));
 
-        public async Task SendReply(string message)
+        // Allows a user to send a specific reply linked to a specific comment.
+        public async Task SendReplyAsync(string message)
         {
             string url = $"{_apiBaseUrl}/comments/CreateReplyComment";
 
@@ -499,6 +530,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
                 if (response.IsSuccessStatusCode)
                 {
+                    // Reloads the comments.
                     await LoadAsync();
                 }
             }
@@ -507,7 +539,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public async Task LoadAsync()
         {
             IsBusy = true;
-            await PopulateComments(SelectedBook);
+            await PopulateCommentsAsync(SelectedBook);
             IsBusy = false;
         }
     }
