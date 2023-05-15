@@ -63,27 +63,38 @@ public class V1MarketplaceController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> CreateNewPost([Required] Guid ownerId, V1Currency currency, V1BookStatus status, [FromBody] V1MarketplaceBook post)
     {
-        _logger.LogInformation("CreateNewPost: Creating a new post with owner ID {OwnerId}", ownerId);
-        var newPost = await _service.CreateNewPost(ownerId, currency, status, post);
-        if (newPost)
+        if (post.ISBN10 != null && post.ISBN10.Length != 10 && post.ISBN10 != "string")
         {
-            if (post.Condition.Equals("string"))
-            {
-                _logger.LogWarning("CreateNewPost: Invalid book condition provided.");
-                return BadRequest("Please write about the condition to the book.");
-            }
-            else if (post.Price == 0)
-            {
-                _logger.LogWarning("CreateNewPost: Price not set on the book");
-                return BadRequest("Need to set a price one the book!");
-            }
-            _logger.LogInformation("CreateNewPost: New post successfully added with owner ID {OwnerId}", ownerId);
-            return Ok("New post successfully added!");
+            return BadRequest("ISBN10 needs to have a length of 10.");
+        }
+        else if (post.ISBN13 != null && post.ISBN13.Length != 13 && post.ISBN13 != "string")
+        {
+            return BadRequest("ISBN13 needs to have a length of 13.");
         }
         else
         {
-            _logger.LogError("CreateNewPost: Failed to add new post with owner ID {ownerId}", ownerId);
-            return BadRequest("Could not add the post.");
+            _logger.LogInformation("CreateNewPost: Creating a new post with owner ID {OwnerId}", ownerId);
+            var newPost = await _service.CreateNewPost(ownerId, currency, status, post);
+            if (newPost)
+            {
+                if (post.Condition.Equals("string"))
+                {
+                    _logger.LogWarning("CreateNewPost: Invalid book condition provided.");
+                    return BadRequest("Please write about the condition to the book.");
+                }
+                else if (post.Price == 0)
+                {
+                    _logger.LogWarning("CreateNewPost: Price not set on the book");
+                    return BadRequest("Need to set a price one the book!");
+                }
+                _logger.LogInformation("CreateNewPost: New post successfully added with owner ID {OwnerId}", ownerId);
+                return Ok("New post successfully added!");
+            }
+            else
+            {
+                _logger.LogError("CreateNewPost: Failed to add new post with owner ID {ownerId}", ownerId);
+                return BadRequest("Could not add the post.");
+            }
         }
     }
 
