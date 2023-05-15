@@ -59,7 +59,7 @@ public class V1MarketplaceController : ControllerBase
 
     [HttpGet]
     [Route("[action]")]
-    public async Task<IActionResult> GetPostByIsbn(string isbn)
+    public async Task<IActionResult> GetPostByIsbn([Required] string isbn)
     {
         if (isbn.Length != 10 && isbn.Length != 13)
         {
@@ -68,7 +68,7 @@ public class V1MarketplaceController : ControllerBase
         }
         else
         {
-            _logger.LogInformation("GetPostByIsbn: Fetching post with ISBN {ISBN}}.", isbn);
+            _logger.LogInformation("GetPostByIsbn: Fetching post with ISBN {ISBN}.", isbn);
             var response = await _service.GetPostByIsbn(isbn);
             if (response == null)
             {
