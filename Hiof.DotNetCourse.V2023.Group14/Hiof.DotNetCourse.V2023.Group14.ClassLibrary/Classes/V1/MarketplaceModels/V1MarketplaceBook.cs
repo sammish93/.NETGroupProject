@@ -47,6 +47,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 		[JsonIgnore]
 		public DateTime DateModified { get; set; }
 
+		[Column("ISBN10", TypeName = "varchar(10)")]
+		public string? ISBN10 { get; set; }
+
+		[Column("ISBN13", TypeName = "varchar(13)")]
+		public string? ISBN13 { get; set; }
+
 	}
 }
 
