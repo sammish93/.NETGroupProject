@@ -112,54 +112,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             var post = await _context.MarketplaceBooks.FindAsync(id);
             if (post != null)
             {
-                if (post.ISBN10 != null)
+                return new V1MarketplaceBookResponse
                 {
-                    return new V1MarketplaceBookResponse
-                    {
-                        Id = post.Id,
-                        Condition = post.Condition,
-                        Price = post.Price,
-                        Currency = post.Currency,
-                        Status = post.Status,
-                        OwnerId = post.OwnerId,
-                        DateCreated = post.DateCreated,
-                        DateModified = post.DateModified,
-                        ISBN10 = post.ISBN10
-                    };
-                }
-                else if (post.ISBN13 != null)
-                {
-                    return new V1MarketplaceBookResponse
-                    {
-                        Id = post.Id,
-                        Condition = post.Condition,
-                        Price = post.Price,
-                        Currency = post.Currency,
-                        Status = post.Status,
-                        OwnerId = post.OwnerId,
-                        DateCreated = post.DateCreated,
-                        DateModified = post.DateModified,
-                        ISBN13 = post.ISBN13
-                    };
-
-                }
-                else if (post.ISBN10 != null && post.ISBN13 != null)
-                {
-                    return new V1MarketplaceBookResponse
-                    {
-                        Id = post.Id,
-                        Condition = post.Condition,
-                        Price = post.Price,
-                        Currency = post.Currency,
-                        Status = post.Status,
-                        OwnerId = post.OwnerId,
-                        DateCreated = post.DateCreated,
-                        DateModified = post.DateModified,
-                        ISBN10 = post.ISBN10,
-                        ISBN13 = post.ISBN13
-                    };
-
-                }
+                   Id = post.Id,
+                   Condition = post.Condition,
+                   Price = post.Price,
+                   Currency = post.Currency,
+                   Status = post.Status,
+                   OwnerId = post.OwnerId,
+                   DateCreated = post.DateCreated,
+                   DateModified = post.DateModified,
+                   ISBN10 = post.ISBN10,
+                   ISBN13 = post.ISBN13
+                };
             }
             return null;
         }
