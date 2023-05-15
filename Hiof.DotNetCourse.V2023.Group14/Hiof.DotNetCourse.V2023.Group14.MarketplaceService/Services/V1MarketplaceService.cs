@@ -17,6 +17,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             _context = context;
         }
 
+        public async Task<V1MarketplaceBookResponse> GetPostByIsbn(string isbn)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post)
         {
             var isbn10 = post.ISBN10;
@@ -107,17 +112,54 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             var post = await _context.MarketplaceBooks.FindAsync(id);
             if (post != null)
             {
-                return new V1MarketplaceBookResponse
+                if (post.ISBN10 != null)
                 {
-                    Id = post.Id,
-                    Condition = post.Condition,
-                    Price = post.Price,
-                    Currency = post.Currency,
-                    Status = post.Status,
-                    OwnerId = post.OwnerId,
-                    DateCreated = post.DateCreated,
-                    DateModified = post.DateModified
-                };
+                    return new V1MarketplaceBookResponse
+                    {
+                        Id = post.Id,
+                        Condition = post.Condition,
+                        Price = post.Price,
+                        Currency = post.Currency,
+                        Status = post.Status,
+                        OwnerId = post.OwnerId,
+                        DateCreated = post.DateCreated,
+                        DateModified = post.DateModified,
+                        ISBN10 = post.ISBN10
+                    };
+                }
+                else if (post.ISBN13 != null)
+                {
+                    return new V1MarketplaceBookResponse
+                    {
+                        Id = post.Id,
+                        Condition = post.Condition,
+                        Price = post.Price,
+                        Currency = post.Currency,
+                        Status = post.Status,
+                        OwnerId = post.OwnerId,
+                        DateCreated = post.DateCreated,
+                        DateModified = post.DateModified,
+                        ISBN13 = post.ISBN13
+                    };
+
+                }
+                else if (post.ISBN10 != null && post.ISBN13 != null)
+                {
+                    return new V1MarketplaceBookResponse
+                    {
+                        Id = post.Id,
+                        Condition = post.Condition,
+                        Price = post.Price,
+                        Currency = post.Currency,
+                        Status = post.Status,
+                        OwnerId = post.OwnerId,
+                        DateCreated = post.DateCreated,
+                        DateModified = post.DateModified,
+                        ISBN10 = post.ISBN10,
+                        ISBN13 = post.ISBN13
+                    };
+
+                }
             }
             return null;
         }

@@ -19,6 +19,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceMod
         public Guid OwnerId { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+        public string ISBN10 { get; set; }
+        public string ISBN13 { get; set; }
     }
 }
 
