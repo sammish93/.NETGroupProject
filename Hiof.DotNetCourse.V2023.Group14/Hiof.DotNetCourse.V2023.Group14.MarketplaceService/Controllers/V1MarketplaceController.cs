@@ -61,7 +61,7 @@ public class V1MarketplaceController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> GetPostByIsbn(string isbn)
     {
-        if (isbn.Length != 10 || isbn.Length != 13)
+        if (isbn.Length != 10 && isbn.Length != 13)
         {
             _logger.LogError("GetPostByIsbn: ISBN must have a length of 10 or 13!");
             return BadRequest("ISBN needs to have a length of 10 or 13");
