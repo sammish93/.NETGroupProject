@@ -122,8 +122,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
                    OwnerId = post.OwnerId,
                    DateCreated = post.DateCreated,
                    DateModified = post.DateModified,
-                   ISBN10 = post.ISBN10,
-                   ISBN13 = post.ISBN13
+                   ISBN10 = post.ISBN10 ?? "",
+                   ISBN13 = post.ISBN13 ?? ""
                 };
             }
             return null;
