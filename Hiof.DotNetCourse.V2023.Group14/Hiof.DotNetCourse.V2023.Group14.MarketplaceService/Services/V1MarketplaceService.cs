@@ -19,6 +19,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
 
         public async Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post)
         {
+            var isbn10 = post.ISBN10;
+            var isbn13 = post.ISBN13;
+
+            if (isbn10 != null && isbn10.Equals("string"))
+                isbn10 = null;
+
+            else if (isbn13 != null && isbn13.Equals("string"))
+                isbn13 = null;
+
             var newPost = new V1MarketplaceBook
             {
                 Id = Guid.NewGuid(),
@@ -28,7 +37,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
                 Status = status,
                 OwnerId = ownerId,
                 DateCreated = DateTime.UtcNow,
-                DateModified = DateTime.UtcNow
+                DateModified = DateTime.UtcNow,
+                ISBN10 = isbn10,
+                ISBN13 = isbn13
             };
 
             // Find user with the given owner id
