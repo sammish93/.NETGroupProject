@@ -55,7 +55,32 @@ public class V1MarketplaceController : ControllerBase
             _logger.LogInformation("GetPostById: Successfully fetched post with ID {PostId}.", postId);
             return Ok(response);
         }
+    }
 
+    [HttpGet]
+    [Route("[action]")]
+    public async Task<IActionResult> GetPostByIsbn(string isbn)
+    {
+        if (isbn.Length != 10 || isbn.Length != 13)
+        {
+            _logger.LogError("GetPostByIsbn: ISBN must have a length of 10 or 13!");
+            return BadRequest("ISBN needs to have a length of 10 or 13");
+        }
+        else
+        {
+            _logger.LogInformation("GetPostByIsbn: Fetching post with ISBN {ISBN}}.", isbn);
+            var response = await _service.GetPostByIsbn(isbn);
+            if (response == null)
+            {
+                _logger.LogWarning("GetPostByIsbn: No post found with ISBN: {ISBN}.", isbn);
+                return NotFound("No post has the provided ISBN.");
+            }
+            else
+            {
+                _logger.LogInformation("GetPostByIsbn: Successfully fetched post with ISBN: {ISBN}.", isbn);
+                return Ok(response);
+            }
+        }
     }
 
 
