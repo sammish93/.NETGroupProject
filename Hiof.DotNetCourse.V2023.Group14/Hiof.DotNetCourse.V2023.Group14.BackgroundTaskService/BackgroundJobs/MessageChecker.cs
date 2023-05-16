@@ -38,7 +38,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 
             // Get the new messages for those conversations.
             var messages = await _context.Messages
-                .Where(m => userConversation.Contains(m.ConversationId) && !m.IsChecked)
+                .Where(m => userConversation.Contains(m.ConversationId) && !m.IsChecked && m.Sender != currentUserId)
                 .ToListAsync();
 
             // Return empty list if messages is null.

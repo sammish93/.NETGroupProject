@@ -100,7 +100,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             try
             {
                 _messageChecker.CheckMessages(userId);
-                return Ok($"Message checking job successfully created for user ID: {userId}.");
+                return Ok($"Recurring message checking job successfully created for user ID: {userId}.");
             }
             catch (Exception ex)
             {
