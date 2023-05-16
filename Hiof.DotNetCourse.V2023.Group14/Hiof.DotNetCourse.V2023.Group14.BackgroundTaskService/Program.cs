@@ -28,17 +28,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
             var dbHost = "localhost";
             var dbName = "user_accounts";
             var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
+            var msgConnectionStr = $"Server = {dbHost};Database = user_messages;Trusted_Connection = Yes;Encrypt=False;";
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
                 builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
-                builder.Services.AddDbContext<MessagingContext>(options => options.UseSqlServer(dbConnectionStr));
+                builder.Services.AddDbContext<MessagingContext>(options => options.UseSqlServer(msgConnectionStr));
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 
                 var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;";
+                var mConnectionStr = $"Server={dbHost};Database=user_messages;Uid=root;";
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
                     connectionStr,
                     new MySqlServerVersion(new Version(8, 0, 32)),
@@ -56,7 +58,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
                     }
                 ));
                 builder.Services.AddDbContext<MessagingContext>(options => options.UseMySql(
-                    connectionStr,
+                    mConnectionStr,
                     new MySqlServerVersion(new Version(8, 0, 32)),
                     mysqlOptions =>
                     {
