@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -25,6 +23,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceMod
         public DateTime DateCreated { get; set; }
         [JsonIgnore]
         public DateTime DateModified { get; set; }
+        public string ISBN10 { get; set; }
+        public string ISBN13 { get; set; }
 
     }
 }

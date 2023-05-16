@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 {
     [DbContext(typeof(MessagingContext))]
-    [Migration("20230501115014_TypesWithLimit")]
-    partial class TypesWithLimit
+    [Migration("20230501121404_AddedIsCheckedField")]
+    partial class AddedIsCheckedField
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<ulong>("IsChecked")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .IsRequired()

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Text.Json.Serialization;
-using Hangfire;
+﻿using Hangfire;
 using Hangfire.Storage;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
-using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
-using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 {
@@ -42,7 +36,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         [Route("UpdateCache/[action]")]
         public IActionResult StartJob()
         {
-            UpdateCacheJob job = new UpdateCacheJob(_httpClient);
+            UpdateCacheJob job = new(_httpClient);
             try
             {
                 // This will make the job run every hour on the first minute.
@@ -60,7 +54,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         [Route("InactiveUser/[action]")]
         public IActionResult Start()
         {
-            InactiveUsers inactive = new InactiveUsers(_httpClient);
+            InactiveUsers inactive = new(_httpClient);
             try
             {
                 // This will check the database for inactive users every day.
@@ -78,7 +72,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         }
 
 
-        [HttpPost]
+        [HttpDelete]
         [Route("InactiveUser/[action]")]
         public IActionResult Stop()
         {
@@ -94,6 +88,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             {
                 return NotFound("Inactive user-job not found.");
             }
+        }
+
+        [HttpPost]
+        [Route("MessageChecker/[action]")]
+        public IActionResult Start(Guid userId)
+        {
+            MessageChecker messageCheckerJob = new();
+            try
+            {
+                messageCheckerJob.CheckMessages(userId);
+                return Ok("Job successfully created!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "Error: An Exception occurred!", ex.Message);
+                return StatusCode(500, "An error occurred while scheduling the message checker job.");
+            }
+
         }
        
         public static void SendWelcomeMail(string mail)
