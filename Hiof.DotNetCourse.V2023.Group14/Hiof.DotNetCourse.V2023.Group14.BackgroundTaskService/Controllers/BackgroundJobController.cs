@@ -109,6 +109,32 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("MessageChecker/[action]")]
+        public IActionResult Stop(string userId)
+        {
+            try
+            {
+                var storage = JobStorage.Current;
+                var recurringJobIds = storage.GetConnection().GetRecurringJobs().Select(x => x.Id);
+
+                if (recurringJobIds.Contains(userId))
+                {
+                    RecurringJob.RemoveIfExists(userId);
+                    return Ok($"Message checking job successfully stopped for user ID: {userId}.");
+                }
+                else
+                {
+                    return NotFound($"No message checking job found for user ID: {userId}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "Error: An Exception occurred!", ex.Message);
+                return StatusCode(500, "An error occurred while stopping the message checker job.");
+            }
+        }
+
         [HttpGet]
         [Route("MessageChecker/NewMessages/{userId}")]
         public async Task<IActionResult> GetNewMessages(string userId)
