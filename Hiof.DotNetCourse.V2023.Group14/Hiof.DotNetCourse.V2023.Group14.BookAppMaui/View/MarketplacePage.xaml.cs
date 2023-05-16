@@ -43,7 +43,6 @@ public partial class MarketplacePage : ContentPage
     }
 
 
-
     protected override async void OnAppearing()
     {
         var model = BindingContext as MarketplacePageViewModel;

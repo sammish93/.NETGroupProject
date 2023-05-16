@@ -373,10 +373,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         string url = $"{_apiBaseUrl}/messages/CreateNewConversation?conversationId={conversationId}";
 
                         List<string> participants = new List<string>
-                {
-                    userSender.Id.ToString(),
-                    userRecipient.Id.ToString()
-                };
+                        {
+                            userSender.Id.ToString(),
+                            userRecipient.Id.ToString()
+                        };
 
                         var requestBodyJson = JsonConvert.SerializeObject(participants);
                         var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
