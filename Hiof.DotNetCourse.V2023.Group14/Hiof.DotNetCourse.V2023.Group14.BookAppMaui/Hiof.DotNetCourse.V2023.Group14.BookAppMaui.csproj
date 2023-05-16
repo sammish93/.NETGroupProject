@@ -73,9 +73,12 @@
 	  <None Remove="Resources\Images\book_alt.png" />
 	  <None Remove="Resources\Images\default_display_picture.png" />
 	  <None Remove="Resources\Images\home.png" />
+	  <None Remove="Resources\Images\home_large.png" />
 	  <None Remove="Resources\Images\icon_references.txt" />
 	  <None Remove="Resources\Images\messages.png" />
+	  <None Remove="Resources\Images\messages_large.png" />
 	  <None Remove="Resources\Images\portrait.png" />
+	  <None Remove="Resources\Images\profile.png" />
 	  <None Remove="Resources\Images\settings.png" />
 	  <None Remove="Resources\Images\shop.png" />
 	</ItemGroup>

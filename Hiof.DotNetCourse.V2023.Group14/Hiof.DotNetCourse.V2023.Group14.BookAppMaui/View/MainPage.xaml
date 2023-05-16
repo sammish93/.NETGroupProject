@@ -224,7 +224,7 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="6*" />
                                             <RowDefinition Height="2*" />
-                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="auto" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100" />

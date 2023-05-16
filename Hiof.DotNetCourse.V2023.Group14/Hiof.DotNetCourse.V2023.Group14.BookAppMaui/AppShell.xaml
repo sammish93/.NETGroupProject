@@ -40,7 +40,7 @@
                          CornerRadius="50"
                          HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
                          Command="{Binding HomeButtonCommand}"
-                         Source="home.png"
+                         Source="home_large.png"
                          HorizontalOptions="Center"
                          VerticalOptions="Center" />
             <Label Grid.Column="1"
@@ -71,7 +71,7 @@
             <ImageButton Grid.Column="3"
                          Grid.Row="1"
                          CornerRadius="50"
-                         Source="messages.png"
+                         Source="messages_large.png"
                          HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
                          Command="{Binding MessagesButtonCommand}"
                          HorizontalOptions="Center"
@@ -81,7 +81,7 @@
                          CornerRadius="50"
                          HeightRequest="{Binding Height, Source={x:Reference SearchBar}}"
                          Command="{Binding ProfileButtonCommand}"
-                         Source="default_display_picture.png"
+                         Source="profile.png"
                          HorizontalOptions="Center"
                          VerticalOptions="Center" />
         </Grid>
