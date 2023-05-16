@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 {
     /// <inheritdoc />
-    public partial class TypesWithLimit : Migration
+    public partial class AddedIsCheckedField : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Message = table.Column<string>(type: "varchar(1000)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsChecked = table.Column<ulong>(type: "bit", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ConversationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },

@@ -45,6 +45,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<ulong>("IsChecked")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("varchar(1000)");

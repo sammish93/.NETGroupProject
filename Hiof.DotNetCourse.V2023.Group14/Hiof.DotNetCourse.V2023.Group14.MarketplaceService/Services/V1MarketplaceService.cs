@@ -17,8 +17,41 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             _context = context;
         }
 
+        public async Task<V1MarketplaceBookResponse?> GetPostByIsbn(string isbn)
+        {
+            var post = await _context.MarketplaceBooks
+                .FirstOrDefaultAsync(book => book.ISBN10 == isbn || book.ISBN13 == isbn);
+
+            if (post != null)
+            {
+                return new V1MarketplaceBookResponse
+                {
+                    Id = post.Id,
+                    Condition = post.Condition,
+                    Price = post.Price,
+                    Currency = post.Currency,
+                    Status = post.Status,
+                    OwnerId = post.OwnerId,
+                    DateCreated = post.DateCreated,
+                    DateModified = post.DateModified,
+                    ISBN10 = post.ISBN10 ?? "",
+                    ISBN13 = post.ISBN13 ?? ""
+                };
+            }
+            return null;
+        }
+
         public async Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post)
         {
+            var isbn10 = post.ISBN10;
+            var isbn13 = post.ISBN13;
+
+            if (isbn10 != null && isbn10.Equals("string"))
+                isbn10 = null;
+
+            else if (isbn13 != null && isbn13.Equals("string"))
+                isbn13 = null;
+
             var newPost = new V1MarketplaceBook
             {
                 Id = Guid.NewGuid(),
@@ -28,7 +61,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
                 Status = status,
                 OwnerId = ownerId,
                 DateCreated = DateTime.UtcNow,
-                DateModified = DateTime.UtcNow
+                DateModified = DateTime.UtcNow,
+                ISBN10 = isbn10,
+                ISBN13 = isbn13
             };
 
             // Find user with the given owner id
@@ -98,14 +133,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             {
                 return new V1MarketplaceBookResponse
                 {
-                    Id = post.Id,
-                    Condition = post.Condition,
-                    Price = post.Price,
-                    Currency = post.Currency,
-                    Status = post.Status,
-                    OwnerId = post.OwnerId,
-                    DateCreated = post.DateCreated,
-                    DateModified = post.DateModified
+                   Id = post.Id,
+                   Condition = post.Condition,
+                   Price = post.Price,
+                   Currency = post.Currency,
+                   Status = post.Status,
+                   OwnerId = post.OwnerId,
+                   DateCreated = post.DateCreated,
+                   DateModified = post.DateModified,
+                   ISBN10 = post.ISBN10 ?? "",
+                   ISBN13 = post.ISBN13 ?? ""
                 };
             }
             return null;
@@ -124,12 +161,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             }
             else
             {
+                string? isbn10 = post.ISBN10;
+                string? isbn13 = post.ISBN13;
+
+                if (isbn10.Equals("string"))
+                    isbn10 = null;
+
+                if (isbn13.Equals("string"))
+                    isbn13 = null;
+
+
                 existingPost.Condition = post.Condition;
                 existingPost.Price = post.Price;
                 existingPost.Currency = post.Currency;
                 existingPost.Status = post.Status;
                 existingPost.OwnerId = post.OwnerId;
                 existingPost.DateModified = DateTime.UtcNow;
+                existingPost.ISBN10 = isbn10;
+                existingPost.ISBN13 = isbn13;
 
                 await _context.SaveChangesAsync();
                 return "Successfully updated the post!";

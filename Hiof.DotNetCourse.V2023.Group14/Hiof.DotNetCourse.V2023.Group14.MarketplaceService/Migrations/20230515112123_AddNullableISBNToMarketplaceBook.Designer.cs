@@ -3,7 +3,6 @@ using System;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -12,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
 {
     [DbContext(typeof(MarketplaceContext))]
-    [Migration("20230426063640_Initial-Create")]
-    partial class InitialCreate
+    [Migration("20230515112123_AddNullableISBNToMarketplaceBook")]
+    partial class AddNullableISBNToMarketplaceBook
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,13 +20,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels.V1MarketplaceUser", b =>
                 {
-                    b.Property<string>("OwnerId")
+                    b.Property<Guid>("OwnerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("OwnerId");
@@ -39,7 +36,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
 
             modelBuilder.Entity("Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.V1MarketplaceBook", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("Id");
@@ -62,8 +59,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("DateModified");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
+                    b.Property<string>("ISBN10")
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("ISBN10");
+
+                    b.Property<string>("ISBN13")
+                        .HasColumnType("varchar(13)")
+                        .HasColumnName("ISBN13");
+
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("char(36)")
                         .HasColumnName("OwnerId");
 
