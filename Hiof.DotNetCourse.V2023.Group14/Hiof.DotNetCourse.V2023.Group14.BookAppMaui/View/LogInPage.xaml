@@ -76,6 +76,7 @@
                 </Entry>
 
                 <Entry Grid.Row="3"
+                       x:Name="passwordEntry"
                        Placeholder="Enter Password"
                        Text="{Binding Password}"
                        TextColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource OffWhite}}"

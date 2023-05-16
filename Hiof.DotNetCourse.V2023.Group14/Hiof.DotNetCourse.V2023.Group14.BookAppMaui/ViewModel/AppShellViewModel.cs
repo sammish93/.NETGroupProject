@@ -14,6 +14,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.Messaging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -55,35 +56,58 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
         public ICommand HomeButtonCommand => new Command(async () => await NavButtonAsync("///home"));
-        public ICommand ProfileButtonCommand => new Command(async () => await NavigateToUserPage(User));
-        public ICommand LibraryCommand => new Command(async () => await NavButtonAsync("///library"));
-        public ICommand MarketplaceCommand => new Command(async () => await NavButtonAsync("///marketplace"));
-        public ICommand SettingsCommand => new Command(async () => await NavButtonAsync("///settings"));
-        public ICommand MessagesButtonCommand => new Command(async () => await NavButtonAsync("///messages"));
+        public ICommand ProfileButtonCommand => new Command(async () => await NavigateToUserPageAsync(User));
+        public ICommand LibraryCommand => new Command(async () => await NavButtonAsync("library"));
+        public ICommand MarketplaceCommand => new Command(async () => await NavButtonAsync("marketplace"));
+        public ICommand SettingsCommand => new Command(async () => await NavButtonAsync("settings"));
+        public ICommand MessagesButtonCommand => new Command(async () => await NavButtonAsync("messages"));
+        public ICommand LogOutCommand => new Command(async () => await LogOutAsync());
         public ICommand PerformSearch => new Command<string>(async (string query) =>
         {
-            await NavigateToSearchPage(query);
+            await NavigateToSearchPageAsync(query);
         });
 
         // Navigates to the search page after a text string is entered in the shell search bar.
-        public async Task NavigateToSearchPage(string query)
+        public async Task NavigateToSearchPageAsync(string query)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery = query;
             await Shell.Current.GoToAsync($"///home");
             // Note that the parameters passed via QueryProperty doesn't currently work as intended in the current version of Maui. Query string is therefore 
             // saved in the UserSingleton class used as a singleton.
-            await Shell.Current.GoToAsync($"///search?query={query}");
+            await Shell.Current.GoToAsync($"search?query={query}");
         }
 
-        public async Task NavigateToUserPage(V1User user)
+        public async Task NavigateToUserPageAsync(V1User user)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
-            await GetSelectedUserDisplayPicture(user.UserName);
-            await Shell.Current.GoToAsync($"///user?userid={user.Id}");
+            await GetSelectedUserDisplayPictureAsync(user.UserName);
+            await Shell.Current.GoToAsync($"user?userid={user.Id}");
+        }
+
+        public async Task LogOutAsync()
+        {
+            // Removes all saved data relating to the previously logged in user.
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedEntry = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedEntry = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture = null;
+            // Navigates back to the login page and removes all other pages from the nav stack.
+            await Shell.Current.GoToAsync($"///login");
         }
 
         // Retrieves the logged in user's display picture.
-        public async Task GetSelectedUserDisplayPicture(string username)
+        public async Task GetSelectedUserDisplayPictureAsync(string username)
         {
             string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={username}";
             HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);

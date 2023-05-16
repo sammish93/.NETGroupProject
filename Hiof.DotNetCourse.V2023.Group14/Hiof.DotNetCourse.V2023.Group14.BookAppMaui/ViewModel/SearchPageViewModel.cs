@@ -226,7 +226,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public async Task NavigateToUserPageAsync(V1User user)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
-            await Shell.Current.GoToAsync($"///user?userid={user.Id}");
+            await Shell.Current.GoToAsync($"user?userid={user.Id}");
         }
 
         // Navigates to the book page when a book is selected via an on-click event. Note that QueryIdentifier is passed but not fully integrated in the current 
@@ -245,7 +245,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 bookId = book.IndustryIdentifiers["ISBN_10"];
             }
 
-            await Shell.Current.GoToAsync($"///book?bookid={bookId}");
+            await Shell.Current.GoToAsync($"book?bookid={bookId}");
         }
 
         public async Task LoadAsync(string searchQuery)

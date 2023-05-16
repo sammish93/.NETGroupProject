@@ -464,7 +464,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 bookId = book.IndustryIdentifiers["ISBN_10"];
             }
 
-            await Shell.Current.GoToAsync($"///book?bookid={bookId}");
+            await Shell.Current.GoToAsync($"book?bookid={bookId}");
         }
 
         // Retrieves the most recent (by date) reading goal. This is displayed in the GUI slightly larger than the other previous reading goals.
@@ -583,7 +583,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
                     if (response.IsSuccessStatusCode)
                     {
-                        await Shell.Current.GoToAsync("///messages");
+                        await Shell.Current.GoToAsync("messages");
                     }
                     else
                     {
@@ -591,7 +591,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     }
                 } else
                 {
-                    await Shell.Current.GoToAsync("///messages");
+                    await Shell.Current.GoToAsync("messages");
                 }
                 
             }

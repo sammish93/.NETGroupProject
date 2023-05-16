@@ -287,7 +287,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 bookId = book.IndustryIdentifiers["ISBN_10"];
             }
 
-            await Shell.Current.GoToAsync($"///book?bookid={bookId}");
+            await Shell.Current.GoToAsync($"book?bookid={bookId}");
         }
 
         public ICommand SellCommand => new Command(async () => await SellAsync());

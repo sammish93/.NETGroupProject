@@ -155,7 +155,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // Redirects new users to a sign-up page.
         private async Task SignupAsync()
         {
-            await Shell.Current.GoToAsync("///signup");
+            await Shell.Current.GoToAsync("signup");
         }
 
         private Task DisplayAlert(string v1, string v2, string v3)

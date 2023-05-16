@@ -244,6 +244,10 @@
               IconImageSource="settings.png"
               Command="{Binding SettingsCommand}" />
 
+    <MenuItem Text="Log Out"
+              IconImageSource="logout.png"
+              Command="{Binding LogOutCommand}" />
+
 
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>

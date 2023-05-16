@@ -17,7 +17,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View
 
         protected override async void OnAppearing()
         {
-
+            // Required to 'reset' the logged in user in the event that one user logs out and another logs in without closing the application window.
+            BindingContext = new MainPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser);
             var model = BindingContext as ViewModel.MainPageViewModel;
 
             if (model != null)

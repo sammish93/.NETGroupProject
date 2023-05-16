@@ -75,6 +75,7 @@
 	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\home_large.png" />
 	  <None Remove="Resources\Images\icon_references.txt" />
+	  <None Remove="Resources\Images\logout.png" />
 	  <None Remove="Resources\Images\messages.png" />
 	  <None Remove="Resources\Images\messages_large.png" />
 	  <None Remove="Resources\Images\portrait.png" />

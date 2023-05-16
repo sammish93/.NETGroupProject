@@ -12,7 +12,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         {
             InitializeComponent();
 
-            Routing.RegisterRoute(nameof(LogInPage), typeof(LogInPage));
+            Routing.RegisterRoute("login", typeof(LogInPage));
+            Routing.RegisterRoute("signup", typeof(SignupPage));
+            Routing.RegisterRoute("home", typeof(MainPage));
+            Routing.RegisterRoute("book", typeof(BookPage));
+            Routing.RegisterRoute("search", typeof(SearchPage));
+            Routing.RegisterRoute("user", typeof(UserPage));
+            Routing.RegisterRoute("library", typeof(LibraryPage));
+            Routing.RegisterRoute("marketplace", typeof(MarketplacePage));
+            Routing.RegisterRoute("messages", typeof(MessagesPage));
+            Routing.RegisterRoute("settings", typeof(SettingsPage));
 
             this.BindingContext = new AppShellViewModel();
         }

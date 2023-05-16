@@ -292,7 +292,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
             await GetSelectedUserDisplayPictureAsync(user.UserName);
-            await Shell.Current.GoToAsync($"///user?userid={user.Id}");
+            await Shell.Current.GoToAsync($"user?userid={user.Id}");
         }
 
         // Retrieves the display picture of the user before nagivation to the page takes place - smoother transition.
@@ -328,7 +328,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 bookId = book.IndustryIdentifiers["ISBN_10"];
             }
 
-            await Shell.Current.GoToAsync($"///book?bookid={bookId}");
+            await Shell.Current.GoToAsync($"book?bookid={bookId}");
         }
 
         // Retrieves the newest reading goal added by the user to be displayed on the main page.
