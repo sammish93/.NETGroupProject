@@ -20,6 +20,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
             startup.ConfigureServices(builder.Services);
 
             // Add services
+            builder.Services.AddScoped<MessageChecker>();
             builder.Services.AddControllers();
 
 
