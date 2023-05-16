@@ -4,9 +4,6 @@ using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.DTO.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 
-// This class needs to be modified later in order to work.
-// TODO: Need to fix this later.
-
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
   	public class MessageChecker
