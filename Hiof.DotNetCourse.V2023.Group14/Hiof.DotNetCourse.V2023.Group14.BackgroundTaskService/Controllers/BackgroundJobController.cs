@@ -114,7 +114,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         public async Task<IActionResult> GetNewMessages(string userId)
         {
             var newMessages = await _messageChecker.GetNewMessages(userId);
-            if (newMessages == Enumerable.Empty<V1Messages>())
+            if (!newMessages.Any())
             {
                 return NotFound($"No new messages for user with ID: {userId}.");
             }
