@@ -3,6 +3,7 @@ using Hangfire;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.DTO.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 {
