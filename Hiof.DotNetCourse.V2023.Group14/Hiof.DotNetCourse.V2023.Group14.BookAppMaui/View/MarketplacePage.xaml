@@ -98,14 +98,14 @@
                                                FontSize="12"
                                                HorizontalTextAlignment="Start" />
                                         <Label Grid.Row="2"
-                                               Text="xxxxx"
+                                               Text="{Binding PublishedDate}"
                                                LineBreakMode="CharacterWrap"
                                                FontAttributes="Italic"
                                                HorizontalOptions="Start"
                                                FontSize="12"
                                                HorizontalTextAlignment="Start" />
                                         <Label Grid.Row="2"
-                                               Text="xxxxxx"
+                                               Text="{Binding IndustryIdentifiers[ISBN_13]}"
                                                LineBreakMode="CharacterWrap"
                                                FontAttributes="Italic"
                                                HorizontalOptions="End"
@@ -389,9 +389,9 @@
                                 <CollectionView Grid.Row="1"
                                                 HeightRequest="300"
                                                 x:Name="selectedBookSellers"
-                                                ItemsSource="{Binding BookSearch}"
+                                                ItemsSource="{Binding BookPosts}"
                                                 SelectionMode="Single"
-                                                SelectionChanged="OnItemSelected"
+                                                SelectionChanged="OnSellerSelected"
                                                 ItemsLayout="VerticalList"
                                                 IsVisible="True"
                                                 BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
@@ -406,28 +406,41 @@
                                                     <RowDefinition Height="auto" />
                                                 </Grid.RowDefinitions>
                                                 <Label Grid.Row="0"
-                                                       Text="{Binding Title}"
                                                        FontAttributes="Bold"
                                                        LineBreakMode="CharacterWrap"
                                                        HorizontalOptions="Start"
                                                        FontSize="11"
-                                                       HorizontalTextAlignment="Start" />
+                                                       HorizontalTextAlignment="Start">
+                                                    <Label.Text>
+                                                        <MultiBinding StringFormat="Seller: {0} from {1}, {2}">
+                                                            <Binding Path="OwnerObject.UserName" />
+                                                            <Binding Path="OwnerObject.City" />
+                                                            <Binding Path="OwnerObject.Country" />
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
                                                 <Label Grid.Row="1"
-                                                       Text="{Binding Authors[0]}"
+                                                       Text="{Binding Condition, StringFormat='Condition: {0}'}"
                                                        LineBreakMode="CharacterWrap"
                                                        FontAttributes="Italic"
                                                        HorizontalOptions="Start"
                                                        FontSize="12"
                                                        HorizontalTextAlignment="Start" />
                                                 <Label Grid.Row="2"
-                                                       Text="xxxxx"
                                                        LineBreakMode="CharacterWrap"
                                                        FontAttributes="Italic"
                                                        HorizontalOptions="Start"
                                                        FontSize="12"
-                                                       HorizontalTextAlignment="Start" />
+                                                       HorizontalTextAlignment="Start">
+                                                    <Label.Text>
+                                                        <MultiBinding StringFormat="Price: {0} {1}">
+                                                            <Binding Path="Price" />
+                                                            <Binding Path="Currency" />
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
                                                 <Label Grid.Row="2"
-                                                       Text="xxxxxx"
+                                                       Text="{Binding DateCreated, StringFormat='Date Created: {0}'}"
                                                        LineBreakMode="CharacterWrap"
                                                        FontAttributes="Italic"
                                                        HorizontalOptions="End"
@@ -447,7 +460,7 @@
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
                                             WidthRequest="150"
-                                            Command="{Binding CreateAdCommand}">
+                                            Command="{Binding SendMessageCommand}">
                                         <Button.Shadow>
                                             <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
                                                     Radius="5"

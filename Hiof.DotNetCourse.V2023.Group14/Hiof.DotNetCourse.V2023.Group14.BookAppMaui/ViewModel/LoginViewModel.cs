@@ -13,6 +13,7 @@ using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Drawing;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -131,7 +132,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Login Error", ex.Message, "OK");
+                if (Username.IsNullOrEmpty() || Password.IsNullOrEmpty())
+                {
+                    await Application.Current.MainPage.DisplayAlert("Oops!", "You must enter both a username and password.", "OK");
+                } else
+                {
+                     await Application.Current.MainPage.DisplayAlert("Oops!", "The username and password combination is not valid.", "OK");
+                }
             }
             finally
             {

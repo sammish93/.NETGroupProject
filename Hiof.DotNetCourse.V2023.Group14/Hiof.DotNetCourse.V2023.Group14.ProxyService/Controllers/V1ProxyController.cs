@@ -692,6 +692,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.ProxyService.Controllers
         public async Task<IActionResult> GetPostById(Guid postId)
             => await Proxy($"{_apiUrls.Value.GetPostById}?postId={postId}");
 
+        [HttpGet]
+        [Route("marketplace/[action]")]
+        public async Task<IActionResult> GetPostByIsbn(string isbn)
+            => await Proxy($"{_apiUrls.Value.GetPostByIsbn}?isbn={isbn}");
+
 
         [HttpPost]
         [Route("marketplace/[action]")]

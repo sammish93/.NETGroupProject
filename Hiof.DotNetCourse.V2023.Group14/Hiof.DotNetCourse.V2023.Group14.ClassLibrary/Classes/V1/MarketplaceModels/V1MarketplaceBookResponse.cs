@@ -17,6 +17,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceMod
         public V1BookStatus Status { get; set; }
         [Column("OwnerId", TypeName = "char(36)")]
         public Guid OwnerId { get; set; }
+        [NotMapped]
+        public V1User? OwnerObject { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public string ISBN10 { get; set; }
