@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui.Behaviors;
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Maui.Controls;
 using System.Timers;
@@ -84,6 +85,21 @@ public partial class MarketplacePage : ContentPage
                 model.IsSellGridVisible = false;
                 model.IsBuyGridVisible = false;
                 model.IsBuyAndSellButtonsVisible = true;
+            }
+        }
+    }
+
+    private void OnSellerSelected(object sender, SelectionChangedEventArgs e)
+    {
+        var model = BindingContext as ViewModel.MarketplacePageViewModel;
+
+        if (model != null)
+        {
+            if (!e.CurrentSelection.IsNullOrEmpty() && e.CurrentSelection.First() != null)
+            {
+                V1MarketplaceBookResponse post = ((V1MarketplaceBookResponse)e.CurrentSelection.First());
+
+                model.SelectedUser = post.OwnerObject;
             }
         }
     }

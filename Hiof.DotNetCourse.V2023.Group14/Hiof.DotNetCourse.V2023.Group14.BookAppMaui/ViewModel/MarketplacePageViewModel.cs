@@ -14,7 +14,9 @@ using System.Diagnostics;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.Maui.Layouts;
 using Microsoft.Maui;
-
+using Newtonsoft.Json.Linq;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 {
@@ -25,7 +27,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private V1User _loggedInUser;
         private V1Book _selectedBook;
+        private V1User _selectedUser;
         private ObservableCollection<V1Book> _bookSearch;
+        private ObservableCollection<V1MarketplaceBookResponse> _bookPosts;
         private string _condition;
         private decimal _price;
         private ObservableCollection<V1Currency> _currencyValues;
@@ -42,7 +46,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 _isBusy = value;
-
             }
         }
 
@@ -52,7 +55,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 SetProperty(ref _isBuyAndSellButtonsVisible, value);
-
             }
         }
 
@@ -62,7 +64,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 SetProperty(ref _isSellGridVisible, value);
-
             }
         }
 
@@ -72,7 +73,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 SetProperty(ref _isBuyGridVisible, value);
-
             }
         }
 
@@ -83,7 +83,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 _loggedInUser = value;
                 OnPropertyChanged();
-
             }
         }
 
@@ -94,7 +93,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 _selectedBook = value;
                 OnPropertyChanged();
+            }
+        }
 
+        public V1User SelectedUser
+        {
+            get { return _selectedUser; }
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged();
             }
         }
 
@@ -105,7 +113,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 _bookSearch = value;
                 OnPropertyChanged();
+            }
+        }
 
+        public ObservableCollection<V1MarketplaceBookResponse> BookPosts
+        {
+            get => _bookPosts;
+            set
+            {
+                _bookPosts = value;
+                OnPropertyChanged();
             }
         }
 
@@ -141,6 +158,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             IsSellGridVisible = false;
             IsBuyGridVisible = false;
             BookSearch = new ObservableCollection<V1Book>();
+            BookPosts = new ObservableCollection<V1MarketplaceBookResponse>();
 
             // Adds supported currencies. Additional currencies can easily be added in future versions.
             CurrencyValues = new ObservableCollection<V1Currency>();
@@ -169,7 +187,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task PopulateBookIsbnResultsAsync(string query)
         {
-
             try
             {
                 var queryReplaced = query;
@@ -200,6 +217,67 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
 
             }
+        }
+
+        public async Task PopulateBookPostsAsync()
+        {
+            try
+            {
+                string isbn = "";
+                if (SelectedBook.IndustryIdentifiers["ISBN_13"] != null)
+                {
+                    isbn = SelectedBook.IndustryIdentifiers["ISBN_13"];
+                }
+                else if (SelectedBook.IndustryIdentifiers["ISBN_10"] != null)
+                {
+                    isbn = SelectedBook.IndustryIdentifiers["ISBN_10"];
+                }
+
+                string url = $"{_apiBaseUrl}/marketplace/GetPostByIsbn?isbn={isbn}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    dynamic? jArrayBookPosts = JsonConvert.DeserializeObject(json);
+
+                    foreach (JObject postObject in jArrayBookPosts)
+                    {
+                        V1MarketplaceBookResponse post = JsonConvert.DeserializeObject<V1MarketplaceBookResponse>(postObject.ToString());
+                        post.OwnerObject = await GetUserAsync(post.OwnerId.ToString());
+                        BookPosts.Add(post);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public async Task<V1User> GetUserAsync(String guidString)
+        {
+            try
+            {
+
+                var guid = Guid.Parse(guidString);
+                string loginUrl = $"{_apiBaseUrl}/users/GetById?id={guid}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    V1User user = JsonConvert.DeserializeObject<V1User>(json.ToString());
+
+                    return user;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
         }
 
 
@@ -270,6 +348,112 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, SelectedUser));
+
+        // A user can start a conversation with another user by clicking on a 'send message' button. This method is called as a response to that button press.
+        // In the event that the user hasn't previously had a conversation with another, a conversation is created and saved to the database, and the user is then 
+        // redirected to the messages page.
+        // In the event that the user has previously had contact with another user then the user is redirected to the messages page.
+        private async Task SendMessageAsync(V1User userSender, V1User userRecipient)
+        {
+            try
+            {
+                if (userSender.Id == userRecipient.Id)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Uh oh!", "You can't send a message to yourself.", "OK");
+                } else
+                {
+                    bool isConversationExist = await GetExistingConversationAsync(userSender, userRecipient);
+
+                    // Creates a new conversation and saves it to the database.
+                    if (!isConversationExist)
+                    {
+                        var conversationId = Guid.NewGuid();
+
+                        string url = $"{_apiBaseUrl}/messages/CreateNewConversation?conversationId={conversationId}";
+
+                        List<string> participants = new List<string>
+                {
+                    userSender.Id.ToString(),
+                    userRecipient.Id.ToString()
+                };
+
+                        var requestBodyJson = JsonConvert.SerializeObject(participants);
+                        var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                        HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            await Shell.Current.GoToAsync("messages");
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
+                        }
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync("messages");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        // Checks to see if a user has previously had contact with another user. This is used by the SendMessageAsync function.
+        private async Task<bool> GetExistingConversationAsync(V1User userSender, V1User userReceiver)
+        {
+            try
+            {
+                string url = $"{_apiBaseUrl}/messages/GetByParticipant?name={userSender.Id}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+                responseMessage.EnsureSuccessStatusCode();
+                var json = await responseMessage.Content.ReadAsStringAsync();
+
+                dynamic? jArrayConversations = JsonConvert.DeserializeObject(json);
+
+                foreach (JObject conversationsJson in jArrayConversations)
+                {
+                    V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
+
+                    bool includesSender = false;
+                    bool includesReceiver = false;
+
+                    foreach (V1Participant participant in conversation.Participants)
+                    {
+                        if (participant.Participant.Equals(userSender.Id.ToString()))
+                        {
+                            includesSender = true;
+                        }
+                        else if (participant.Participant.Equals(userReceiver.Id.ToString()))
+                        {
+                            includesReceiver = true;
+                        }
+                    }
+
+                    if (includesSender && includesReceiver)
+                    {
+                        // Breaks foreach iteration if result is found.
+                        return true;
+                    }
+
+                }
+
+                // If no conversation is found then the method returns a false boolean value.
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return false;
+        }
+
         public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPageAsync(SelectedBook));
 
 
@@ -304,6 +488,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task BuyAsync()
         {
+            await PopulateBookPostsAsync();
             IsBuyAndSellButtonsVisible = false;
             IsBuyGridVisible = true;
         }

@@ -5,6 +5,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
 {
@@ -17,28 +18,37 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services
             _context = context;
         }
 
-        public async Task<V1MarketplaceBookResponse?> GetPostByIsbn(string isbn)
+        public async Task<IList<V1MarketplaceBookResponse>?> GetPostByIsbn(string isbn)
         {
-            var post = await _context.MarketplaceBooks
-                .FirstOrDefaultAsync(book => book.ISBN10 == isbn || book.ISBN13 == isbn);
+            var postList = await (from posts in _context.MarketplaceBooks where posts.ISBN10 == isbn || posts.ISBN13 == isbn
+                   select posts).ToListAsync();
 
-            if (post != null)
+
+            if (!postList.IsNullOrEmpty())
             {
-                return new V1MarketplaceBookResponse
+                IList<V1MarketplaceBookResponse> postListConverted = new List<V1MarketplaceBookResponse>();
+
+                foreach (V1MarketplaceBook post in postList)
                 {
-                    Id = post.Id,
-                    Condition = post.Condition,
-                    Price = post.Price,
-                    Currency = post.Currency,
-                    Status = post.Status,
-                    OwnerId = post.OwnerId,
-                    DateCreated = post.DateCreated,
-                    DateModified = post.DateModified,
-                    ISBN10 = post.ISBN10 ?? "",
-                    ISBN13 = post.ISBN13 ?? ""
-                };
+                    postListConverted.Add(new V1MarketplaceBookResponse
+                    {
+                        Id = post.Id,
+                        Condition = post.Condition,
+                        Price = post.Price,
+                        Currency = post.Currency,
+                        Status = post.Status,
+                        OwnerId = post.OwnerId,
+                        DateCreated = post.DateCreated,
+                        DateModified = post.DateModified,
+                        ISBN10 = post.ISBN10 ?? "",
+                        ISBN13 = post.ISBN13 ?? ""
+                    });  
+                }
+
+                return postListConverted;
             }
             return null;
+
         }
 
         public async Task<bool> CreateNewPost(Guid ownerId, V1Currency currency, V1BookStatus status, V1MarketplaceBook post)
