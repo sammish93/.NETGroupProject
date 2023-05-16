@@ -10,22 +10,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 	{
 		private readonly ILogger<MessageChecker> _logger;
         private readonly MessagingContext _context;
-        private readonly MessageToMaui _messageToMaui;
 
-		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context, MessageToMaui messageToMaui)
+		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context)
 		{
 			_logger = logger;
             _context = context;
-            _messageToMaui = messageToMaui;
-            
 		}
 
         public MessageChecker() { }
 
         public void CheckMessages(string currentUserId)
 		{
-            _logger.LogInformation("Background job for checking messages every 5 secounds.");
-			RecurringJob.AddOrUpdate(() => MessageJob(currentUserId), cronExpression: "*/5 * * * * *");
+            _logger.LogInformation("Background job for checking messages every 5 secounds activated.");
+
+            // By adding the 'currentUserId' we can control that only one background job is
+            // running for a specific user at time.
+			RecurringJob.AddOrUpdate(currentUserId, () => MessageJob(currentUserId), cronExpression: "*/5 * * * * *");
 		}
 
         // The parameter should represent the currently logged in user.
@@ -66,9 +66,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 
                 if (newMessage.Any())
                 {
-                    // Send the new message to maui gui.
-                    _messageToMaui.OnNewMessagesReceived(newMessage.ToList());
-
                     // Update messages as checked in the database.
                     await UpdateMessagesAsChecked(newMessage);
 
