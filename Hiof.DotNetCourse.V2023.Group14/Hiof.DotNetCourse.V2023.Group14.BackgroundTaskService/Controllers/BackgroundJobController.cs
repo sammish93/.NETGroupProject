@@ -92,7 +92,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
         [HttpPost]
         [Route("MessageChecker/[action]")]
-        public IActionResult Start(Guid userId)
+        public IActionResult Start(string userId)
         {
             MessageChecker messageCheckerJob = new();
             try

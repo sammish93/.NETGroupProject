@@ -25,10 +25,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 
         public MessageChecker() { }
 
-        public void CheckMessages()
+        public void CheckMessages(string currentUserId)
 		{
             _logger.LogInformation("Background job for checking messages every 5 secounds.");
-			RecurringJob.AddOrUpdate(() => MessageJob(), cronExpression: "*/5 * * * * *");
+			RecurringJob.AddOrUpdate(() => MessageJob(currentUserId), cronExpression: "*/5 * * * * *");
 		}
 
         // The parameter should represent the currently logged in user.
@@ -59,13 +59,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 
         }
 
-        public async Task MessageJob()
+        public async Task MessageJob(string currentUserId)
         {
             try
             {
                 _logger.LogInformation("Checking for new messages...");
 
-                var newMessage = await GetNewMessages();
+                var newMessage = await GetNewMessages(currentUserId);
 
                 if (newMessage.Any())
                 {
