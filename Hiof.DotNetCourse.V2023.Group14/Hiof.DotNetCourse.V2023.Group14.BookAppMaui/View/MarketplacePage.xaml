@@ -98,14 +98,14 @@
                                                FontSize="12"
                                                HorizontalTextAlignment="Start" />
                                         <Label Grid.Row="2"
-                                               Text="xxxxx"
+                                               Text="{Binding PublishedDate}"
                                                LineBreakMode="CharacterWrap"
                                                FontAttributes="Italic"
                                                HorizontalOptions="Start"
                                                FontSize="12"
                                                HorizontalTextAlignment="Start" />
                                         <Label Grid.Row="2"
-                                               Text="xxxxxx"
+                                               Text="{Binding IndustryIdentifiers[ISBN_13]}"
                                                LineBreakMode="CharacterWrap"
                                                FontAttributes="Italic"
                                                HorizontalOptions="End"

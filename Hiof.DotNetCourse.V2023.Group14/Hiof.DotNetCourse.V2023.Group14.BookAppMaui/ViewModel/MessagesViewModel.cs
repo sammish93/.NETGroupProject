@@ -293,7 +293,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // Note: this could be improved in the future by using cancellation tokens.
         public async Task SendMessageAsync(string conversationId, string sender)
         {
-            var url = $"{_apiBaseUrl}/messages/AddMessageToConversation/?conversationId={conversationId}&sender={sender}";
+            var url = $"{_apiBaseUrl}/messages/AddMessageToConversation?conversationId={conversationId}&sender={sender}";
 
             var requestBodyJson = JsonConvert.SerializeObject(Message);
             var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");

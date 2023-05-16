@@ -313,12 +313,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task CreateAdAsync()
         {
+            var url = $"{_apiBaseUrl}/marketplace/CreateNewPost?ownerId={LoggedInUser.Id}&currency={SelectedCurrency}&status={V1BookStatus.UNSOLD}";
 
-            await Application.Current.MainPage.DisplayAlert("Success!", "You have successfully created an ad.", "OK");
+            var requestBodyJson = JsonConvert.SerializeObject(new { 
+                condition = Condition, 
+                price = Price, 
+                isbN10 = SelectedBook.IndustryIdentifiers["ISBN_10"] ?? null, 
+                isbN13 = SelectedBook.IndustryIdentifiers["ISBN_13"] ?? null});
+
+            var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
+            if (response.IsSuccessStatusCode)
+            {
+                await Application.Current.MainPage.DisplayAlert("Success!", "You have successfully created an ad.", "OK");
+
+            } else
+            {
+                await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
+            }
 
             IsSellGridVisible = false;
             IsBuyGridVisible = true;
-
         }
 
         public ICommand BackCommand => new Command(async () => await BackAsync());
