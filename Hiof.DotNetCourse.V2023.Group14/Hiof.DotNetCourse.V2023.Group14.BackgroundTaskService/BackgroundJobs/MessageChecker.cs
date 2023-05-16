@@ -18,8 +18,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
             _context = context;
 		}
 
-        public MessageChecker() { }
-
         public void CheckMessages(string currentUserId)
 		{
             _logger.LogInformation("Background job for checking messages every 5 secounds activated.");
