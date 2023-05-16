@@ -99,6 +99,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         {
             try
             {
+                _logger.LogInformation("Recurring message checking job started for user ID: {userId}.", userId);
                 _messageChecker.CheckMessages(userId);
                 return Ok($"Recurring message checking job successfully created for user ID: {userId}.");
             }
@@ -120,11 +121,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
                 if (recurringJobIds.Contains(userId))
                 {
+                    _logger.LogInformation("Successfully removed message checking job.");
                     RecurringJob.RemoveIfExists(userId);
                     return Ok($"Message checking job successfully stopped for user ID: {userId}.");
                 }
                 else
                 {
+                    _logger.LogWarning("No message checking job found for user ID: {userId}.", userId);
                     return NotFound($"No message checking job found for user ID: {userId}.");
                 }
             }
@@ -142,10 +145,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             var newMessages = await _messageChecker.GetNewMessages(userId);
             if (!newMessages.Any())
             {
+                _logger.LogWarning("No new messages found for user with ID: {userId}.", userId);
                 return NotFound($"No new messages for user with ID: {userId}.");
             }
             else
             {
+                _logger.LogInformation("New messages found for user with ID: {userId}.", userId);
                 return Ok(newMessages);
             }
         }
