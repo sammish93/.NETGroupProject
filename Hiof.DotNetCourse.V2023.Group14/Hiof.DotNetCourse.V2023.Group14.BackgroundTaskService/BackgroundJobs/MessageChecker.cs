@@ -25,17 +25,28 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 
         public MessageChecker() { }
 
-        public void CheckMessages(Guid userId)
+        public void CheckMessages()
 		{
             _logger.LogInformation("Background job for checking messages every 5 secounds.");
-			RecurringJob.AddOrUpdate(() => MessageJob(userId), cronExpression: "*/5 * * * * *");
+			RecurringJob.AddOrUpdate(() => MessageJob(), cronExpression: "*/5 * * * * *");
 		}
 
-        public async Task<IEnumerable<V1Messages>> GetNewMessages(Guid userId)
+        // The parameter should represent the currently logged in user.
+        public async Task<IEnumerable<V1Messages>> GetNewMessages(string currentUserId)
         {
-            return await _context.Messages
-                .Where(m => !m.IsChecked)
+            // Get conversation where current user is a participant.
+            var userConversation = await _context.Participant
+                .Where(p => p.Participant == currentUserId)
+                .Select(p => p.ConversationId)
                 .ToListAsync();
+
+            // Get the new messages for those conversations.
+            var messages = await _context.Messages
+                .Where(m => userConversation.Contains(m.ConversationId) && !m.IsChecked)
+                .ToListAsync();
+
+            // Return empty list if messages is null.
+            return messages ?? Enumerable.Empty<V1Messages>();
         }
 
         public async Task UpdateMessagesAsChecked(IEnumerable<V1Messages> messages)
@@ -48,13 +59,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 
         }
 
-        public async Task MessageJob(Guid userId)
+        public async Task MessageJob()
         {
             try
             {
                 _logger.LogInformation("Checking for new messages...");
 
-                var newMessage = await GetNewMessages(userId);
+                var newMessage = await GetNewMessages();
 
                 if (newMessage.Any())
                 {
