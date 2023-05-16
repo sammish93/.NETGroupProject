@@ -22,7 +22,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
             // Add services
             builder.Services.AddScoped<MessageChecker>();
-            builder.Services.AddScoped<MessagingContext>();
             builder.Services.AddControllers();
 
 
@@ -34,6 +33,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
             {
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
                 builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
+                builder.Services.AddDbContext<MessagingContext>(options => options.UseSqlServer(dbConnectionStr));
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
@@ -48,6 +48,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
                     }
                 ));
                 builder.Services.AddDbContext<UserAccountContext>(options => options.UseMySql(
+                    connectionStr,
+                    new MySqlServerVersion(new Version(8, 0, 32)),
+                    mysqlOptions =>
+                    {
+                        mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
+                    }
+                ));
+                builder.Services.AddDbContext<MessagingContext>(options => options.UseMySql(
                     connectionStr,
                     new MySqlServerVersion(new Version(8, 0, 32)),
                     mysqlOptions =>
