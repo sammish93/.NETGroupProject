@@ -743,10 +743,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         {
             IsBusy = true;
             await GetSelectedUserDisplayPictureAsync(SelectedUser.UserName);
+            await PopulateCommentsAsync(SelectedUser);
             // 5 results are retrieved.
             await PopulateBooksAsync(SelectedUser, 5);
             await PopulateReadingGoalsAsync(SelectedUser);
-            await PopulateCommentsAsync(SelectedUser);
             IsBusy = false;
         }
 

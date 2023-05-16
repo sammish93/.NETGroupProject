@@ -70,6 +70,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\add.png" />
+	  <None Remove="Resources\Images\bookshelf.png" />
 	  <None Remove="Resources\Images\book_alt.png" />
 	  <None Remove="Resources\Images\default_display_picture.png" />
 	  <None Remove="Resources\Images\home.png" />

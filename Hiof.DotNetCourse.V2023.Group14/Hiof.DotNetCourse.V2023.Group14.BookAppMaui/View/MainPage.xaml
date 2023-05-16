@@ -290,7 +290,7 @@
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="5*" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="book_alt.png"
+                        <Image Source="bookshelf.png"
                                Aspect="AspectFit"
                                Grid.Column="0" />
                         <Grid Grid.Column="1">
