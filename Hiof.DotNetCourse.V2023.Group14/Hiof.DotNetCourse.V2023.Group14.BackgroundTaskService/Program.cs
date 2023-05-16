@@ -7,6 +7,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserAccountService.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
@@ -20,22 +21,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
             startup.ConfigureServices(builder.Services);
 
             // Add services
+            builder.Services.AddScoped<MessageChecker>();
             builder.Services.AddControllers();
 
 
             var dbHost = "localhost";
             var dbName = "user_accounts";
             var dbConnectionStr = $"Server = {dbHost};Database = {dbName};Trusted_Connection = Yes;Encrypt=False;";
+            var msgConnectionStr = $"Server = {dbHost};Database = user_messages;Trusted_Connection = Yes;Encrypt=False;";
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(dbConnectionStr));
                 builder.Services.AddDbContext<UserAccountContext>(options => options.UseSqlServer(dbConnectionStr));
+                builder.Services.AddDbContext<MessagingContext>(options => options.UseSqlServer(msgConnectionStr));
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 
                 var connectionStr = $"Server={dbHost};Database={dbName};Uid=root;";
+                var mConnectionStr = $"Server={dbHost};Database=user_messages;Uid=root;";
                 builder.Services.AddDbContext<LoginDbContext>(options => options.UseMySql(
                     connectionStr,
                     new MySqlServerVersion(new Version(8, 0, 32)),
@@ -46,6 +51,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
                 ));
                 builder.Services.AddDbContext<UserAccountContext>(options => options.UseMySql(
                     connectionStr,
+                    new MySqlServerVersion(new Version(8, 0, 32)),
+                    mysqlOptions =>
+                    {
+                        mysqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore);
+                    }
+                ));
+                builder.Services.AddDbContext<MessagingContext>(options => options.UseMySql(
+                    mConnectionStr,
                     new MySqlServerVersion(new Version(8, 0, 32)),
                     mysqlOptions =>
                     {

@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.Storage;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +14,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
         // Dependency injection - must update the raport.
         private readonly HttpClient _httpClient;
         private readonly ILogger<BackgroundJobController> _logger;
+        private readonly MessageChecker _messageChecker;
 
-        public BackgroundJobController(IHttpClientFactory httpClientFactory, ILogger<BackgroundJobController> logger)
+        public BackgroundJobController(IHttpClientFactory httpClientFactory, ILogger<BackgroundJobController> logger, MessageChecker messageChecker)
         {
             _httpClient = httpClientFactory.CreateClient();
             _logger = logger;
+            _messageChecker = messageChecker;
         }
 
 
@@ -92,21 +95,35 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
         [HttpPost]
         [Route("MessageChecker/[action]")]
-        public IActionResult Start(Guid userId)
+        public IActionResult Start(string userId)
         {
-            MessageChecker messageCheckerJob = new();
             try
             {
-                messageCheckerJob.CheckMessages(userId);
-                return Ok("Job successfully created!");
+                _messageChecker.CheckMessages(userId);
+                return Ok($"Recurring message checking job successfully created for user ID: {userId}.");
             }
             catch (Exception ex)
             {
                 _logger.LogDebug(ex, "Error: An Exception occurred!", ex.Message);
                 return StatusCode(500, "An error occurred while scheduling the message checker job.");
             }
-
         }
+
+        [HttpGet]
+        [Route("MessageChecker/NewMessages/{userId}")]
+        public async Task<IActionResult> GetNewMessages(string userId)
+        {
+            var newMessages = await _messageChecker.GetNewMessages(userId);
+            if (!newMessages.Any())
+            {
+                return NotFound($"No new messages for user with ID: {userId}.");
+            }
+            else
+            {
+                return Ok(newMessages);
+            }
+        }
+
        
         public static void SendWelcomeMail(string mail)
         {
