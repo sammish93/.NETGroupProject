@@ -2,6 +2,7 @@
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,9 @@ public class V1MarketplaceController : ControllerBase
 {
     // TODO: Write unit tests for the API.
     private readonly ILogger<V1MarketplaceController> _logger;
-    private readonly V1MarketplaceService _service;
+    private readonly V1IMarketplace _service;
 
-    public V1MarketplaceController(ILogger<V1MarketplaceController> logger, V1MarketplaceService service)
+    public V1MarketplaceController(ILogger<V1MarketplaceController> logger, V1IMarketplace service)
     {
         _logger = logger;
         _service = service;
