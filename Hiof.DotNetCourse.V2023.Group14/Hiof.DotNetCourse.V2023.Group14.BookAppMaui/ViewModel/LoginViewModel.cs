@@ -112,6 +112,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                             "some services may be unavailable or won't function as intended.", "OK");
                     }
 
+                    // Forces the main page to reload all data. Useful in the event that one user logs in and then logs out, and then another user logs in without closing 
+                    // the application.
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+
                     // User is redirected to the main page.
                     await Shell.Current.GoToAsync("///home");
                 } else

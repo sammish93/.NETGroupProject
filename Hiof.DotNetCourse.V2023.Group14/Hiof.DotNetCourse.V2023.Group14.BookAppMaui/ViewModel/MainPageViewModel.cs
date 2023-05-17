@@ -501,11 +501,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public async Task LoadAsync()
         {
             IsBusy = true;
+
             await PopulateHighestRatedBooksAsync();
             await PopulateRecentlyReadBooksAsync();
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = false;
             await PopulateNearbyUsersAsync();
             await PopulateCommentsAsync(LoggedInUser);
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = false;
+
             IsBusy = false;
         }
 

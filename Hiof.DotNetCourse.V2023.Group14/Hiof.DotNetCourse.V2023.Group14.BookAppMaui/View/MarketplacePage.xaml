@@ -60,6 +60,7 @@
                                                HorizontalOptions="Center">
                             <CheckBox x:Name="checkBox"
                                       VerticalOptions="Center"
+                                      CheckedChanged="checkBox_CheckedChanged"
                                       Color="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}" />
                             <Label Text="Items for sale"
                                    VerticalOptions="Center" />
@@ -71,7 +72,58 @@
                                         SelectionMode="Single"
                                         SelectionChanged="OnItemSelected"
                                         ItemsLayout="VerticalList"
-                                        IsVisible="True"
+                                        IsVisible="{Binding IsSearchResultsVisible}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10"
+                                          RowSpacing="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0"
+                                               Text="{Binding Title}"
+                                               FontAttributes="Bold"
+                                               LineBreakMode="CharacterWrap"
+                                               HorizontalOptions="Start"
+                                               FontSize="11"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="1"
+                                               Text="{Binding Authors[0]}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="{Binding PublishedDate}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Start"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="2"
+                                               Text="{Binding IndustryIdentifiers[ISBN_13]}"
+                                               LineBreakMode="CharacterWrap"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="End"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Start" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <CollectionView Grid.Row="2"
+                                        x:Name="collectionLibraryForSale"
+                                        ItemsSource="{Binding BookSearchForSale}"
+                                        SelectionMode="Single"
+                                        SelectionChanged="OnItemSelected"
+                                        ItemsLayout="VerticalList"
+                                        IsVisible="{Binding IsSearchResultsForSaleVisible}"
                                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
 
                             <CollectionView.ItemTemplate>

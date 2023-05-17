@@ -29,6 +29,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private V1Book _selectedBook;
         private V1User _selectedUser;
         private ObservableCollection<V1Book> _bookSearch;
+        private ObservableCollection<V1Book> _bookSearchForSale;
         private ObservableCollection<V1MarketplaceBookResponse> _bookPosts;
         private string _condition;
         private decimal _price;
@@ -38,6 +39,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private bool _isBuyAndSellButtonsVisible;
         private bool _isSellGridVisible;
         private bool _isBuyGridVisible;
+        private bool _isCheckboxChecked;
+        private bool _isSearchResultsVisible;
+        private bool _isSearchResultsForSaleVisible;
+        private HashSet<string> _isbnNumbersInCollection;
+        private string _searchQuery;
 
 
         public bool IsBusy
@@ -73,6 +79,33 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             set
             {
                 SetProperty(ref _isBuyGridVisible, value);
+            }
+        }
+
+        public bool IsCheckboxChecked
+        {
+            get => _isCheckboxChecked;
+            set
+            {
+                SetProperty(ref _isCheckboxChecked, value);
+            }
+        }
+
+        public bool IsSearchResultsVisible
+        {
+            get => _isSearchResultsVisible;
+            set
+            {
+                SetProperty(ref _isSearchResultsVisible, value);
+            }
+        }
+
+        public bool IsSearchResultsForSaleVisible
+        {
+            get => _isSearchResultsForSaleVisible;
+            set
+            {
+                SetProperty(ref _isSearchResultsForSaleVisible, value);
             }
         }
 
@@ -116,6 +149,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public ObservableCollection<V1Book> BookSearchForSale
+        {
+            get => _bookSearchForSale;
+            set
+            {
+                _bookSearchForSale = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<V1MarketplaceBookResponse> BookPosts
         {
             get => _bookPosts;
@@ -149,6 +192,26 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public HashSet<string> IsbnNumbersInCollection
+        {
+            get => _isbnNumbersInCollection;
+            set
+            {
+                _isbnNumbersInCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+
+            }
+        }
+
 
         public MarketplacePageViewModel()
         {
@@ -157,8 +220,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             IsBuyAndSellButtonsVisible = false;
             IsSellGridVisible = false;
             IsBuyGridVisible = false;
+            IsSearchResultsVisible = true;
+            IsSearchResultsForSaleVisible = false;
+            IsCheckboxChecked = false;
             BookSearch = new ObservableCollection<V1Book>();
+            BookSearchForSale = new ObservableCollection<V1Book>();
             BookPosts = new ObservableCollection<V1MarketplaceBookResponse>();
+            IsbnNumbersInCollection = new HashSet<string>();
 
             // Adds supported currencies. Additional currencies can easily be added in future versions.
             CurrencyValues = new ObservableCollection<V1Currency>();
@@ -169,15 +237,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         }
 
 
+        // Calls several API requests to Google Books and populates a collectionview with the results of the search, then calls a method that iterates through 
+        // said search results, and checks if each result has a marketplace post (book is for sale).
         public async Task GetBookSearchAsync(string searchQuery)
         {
             try
             {
+                // Clears all variables that held data relating to a previous search.
                 BookSearch.Clear();
+                BookSearchForSale.Clear();
+                IsbnNumbersInCollection.Clear();
 
                 await PopulateBookIsbnResultsAsync(searchQuery);
                 await PopulateBookTitleResultsAsync(searchQuery);
                 await PopulateBookAuthorResultsAsync(searchQuery);
+                // Checks to see if any of the books in the search result are for sale.
+                await GetBookSearchForSaleAsync();
             }
             catch (Exception ex)
             {
@@ -185,6 +260,43 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Checks to see if each book in the search result is for sale. If so, they are added to a separate collectionview which is only shown if a checkbox is enabled.
+        public async Task GetBookSearchForSaleAsync()
+        {
+            try
+            {
+                foreach (V1Book book in BookSearch)
+                {
+                    bool isExists = await PopulateBookPostsAsync(book, false);
+
+                    if  (isExists)
+                    {
+                        string isbn = "";
+                        if (book.IndustryIdentifiers["ISBN_13"] != null)
+                        {
+                            isbn = book.IndustryIdentifiers["ISBN_13"];
+                        }
+                        else if (book.IndustryIdentifiers["ISBN_10"] != null)
+                        {
+                            isbn = book.IndustryIdentifiers["ISBN_10"];
+                        }
+
+                        if (!IsbnNumbersInCollection.Contains(isbn))
+                        {
+                            BookSearchForSale.Add(book);
+                            // Uses a hash set to add ISBN numbers of books for sale to it.
+                            IsbnNumbersInCollection.Add(isbn);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        // Searches by ISBN.
         public async Task PopulateBookIsbnResultsAsync(string query)
         {
             try
@@ -219,18 +331,21 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public async Task PopulateBookPostsAsync()
+        // Populates a collectionview that is shown on the 'buy' nested page. This is based on a book selected from a search results collectionview.
+        public async Task<bool> PopulateBookPostsAsync(V1Book book, bool addToBookPosts)
         {
             try
             {
+                BookPosts.Clear();
+
                 string isbn = "";
-                if (SelectedBook.IndustryIdentifiers["ISBN_13"] != null)
+                if (book.IndustryIdentifiers["ISBN_13"] != null)
                 {
-                    isbn = SelectedBook.IndustryIdentifiers["ISBN_13"];
+                    isbn = book.IndustryIdentifiers["ISBN_13"];
                 }
-                else if (SelectedBook.IndustryIdentifiers["ISBN_10"] != null)
+                else if (book.IndustryIdentifiers["ISBN_10"] != null)
                 {
-                    isbn = SelectedBook.IndustryIdentifiers["ISBN_10"];
+                    isbn = book.IndustryIdentifiers["ISBN_10"];
                 }
 
                 string url = $"{_apiBaseUrl}/marketplace/GetPostByIsbn?isbn={isbn}";
@@ -241,25 +356,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     var json = await responseMessage.Content.ReadAsStringAsync();
                     dynamic? jArrayBookPosts = JsonConvert.DeserializeObject(json);
 
+                    // API call returns a list of V1MarketplaceBookResponse objects.
                     foreach (JObject postObject in jArrayBookPosts)
                     {
-                        V1MarketplaceBookResponse post = JsonConvert.DeserializeObject<V1MarketplaceBookResponse>(postObject.ToString());
-                        post.OwnerObject = await GetUserAsync(post.OwnerId.ToString());
-                        BookPosts.Add(post);
+                        if (addToBookPosts)
+                        {
+                            V1MarketplaceBookResponse post = JsonConvert.DeserializeObject<V1MarketplaceBookResponse>(postObject.ToString());
+                            // Finds the owner object of the seller. This is used to send a message to the seller, as well as show location and username of said seller.
+                            post.OwnerObject = await GetUserAsync(post.OwnerId.ToString());
+                            BookPosts.Add(post);
+                        } else
+                        {
+                            return true;
+                        }
                     }
+                    return true;
                 }
+
+                return false;
             }
             catch (Exception ex)
             {
-
+                return false;
             }
         }
 
+        // Retrieves a V1User object from a unique Guid.
         public async Task<V1User> GetUserAsync(String guidString)
         {
             try
             {
-
                 var guid = Guid.Parse(guidString);
                 string loginUrl = $"{_apiBaseUrl}/users/GetById?id={guid}";
 
@@ -280,7 +406,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             return null;
         }
 
-
+        // Searches by book title.
         public async Task PopulateBookTitleResultsAsync(string query)
         {
 
@@ -315,6 +441,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        // Searches by author.
         public async Task PopulateBookAuthorResultsAsync(string query)
         {
 
@@ -456,7 +583,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand NavigateToBookPageCommand => new Command(async () => await NavigateToBookPageAsync(SelectedBook));
 
-
+        // Navigates to the book page of the book that has been selected from a collectionview from search results.
         public async Task NavigateToBookPageAsync(V1Book book)
         {
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
@@ -474,28 +601,29 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await Shell.Current.GoToAsync($"book?bookid={bookId}");
         }
 
-        public ICommand SellCommand => new Command(async () => await SellAsync());
+        public ICommand SellCommand => new Command(async () => SellAsync());
 
-
+        // Hides the nested 'buy or sell' page and shows the nested sell page where a user can create a new marketplace post.
         public async Task SellAsync()
         {
             IsBuyAndSellButtonsVisible = false;
             IsSellGridVisible = true;
         }
 
-        public ICommand BuyCommand => new Command(async () => await BuyAsync());
+        public ICommand BuyCommand => new Command(async () => BuyAsync());
 
-
+        // Hides the nested 'buy or sell' page and shows the nested buy page and populates the collectionview on display with marketplace posts (includes seller 
+        // username and location, as well as book price and condition).
         public async Task BuyAsync()
         {
-            await PopulateBookPostsAsync();
+            await PopulateBookPostsAsync(SelectedBook, true);
             IsBuyAndSellButtonsVisible = false;
             IsBuyGridVisible = true;
         }
 
         public ICommand CreateAdCommand => new Command(async () => await CreateAdAsync());
 
-
+        // Creates a new marketplace post/advertisement.
         public async Task CreateAdAsync()
         {
             var url = $"{_apiBaseUrl}/marketplace/CreateNewPost?ownerId={LoggedInUser.Id}&currency={SelectedCurrency}&status={V1BookStatus.UNSOLD}";
@@ -512,7 +640,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             if (response.IsSuccessStatusCode)
             {
                 await Application.Current.MainPage.DisplayAlert("Success!", "You have successfully created an ad.", "OK");
-
+                await GetBookSearchAsync(SearchQuery);
+                await PopulateBookPostsAsync(SelectedBook, true);
             } else
             {
                 await Application.Current.MainPage.DisplayAlert("Uh oh!", "Something went wrong.", "OK");
@@ -524,7 +653,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public ICommand BackCommand => new Command(async () => await BackAsync());
 
-
+        // Hides the buy/sell nested page and shows the 'buy or sell' nested page.
         public async Task BackAsync()
         {
             IsBuyGridVisible = false;
@@ -535,7 +664,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public async Task LoadAsync()
         {
             IsBusy = true;
-
+            // Not required as of yet.
             IsBusy = false;
         }
     }
