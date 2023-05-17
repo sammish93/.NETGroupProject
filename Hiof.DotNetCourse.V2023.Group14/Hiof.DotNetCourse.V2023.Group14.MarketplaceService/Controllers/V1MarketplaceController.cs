@@ -12,7 +12,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Controllers;
 [Route("marketplace/1.0")]
 public class V1MarketplaceController : ControllerBase
 {
-    // TODO: Write unit tests for the API.
     private readonly ILogger<V1MarketplaceController> _logger;
     private readonly V1IMarketplace _service;
 

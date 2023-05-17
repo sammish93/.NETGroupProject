@@ -225,6 +225,30 @@ public class MarketPlaceControllerTest
     }
 
     [Fact]
+    public async Task CreateNewPost_ReturnsBadRequestResults_OnFailure()
+    {
+        // Arrange.
+        var book = new V1MarketplaceBook
+        {
+            Id = Guid.NewGuid(),
+            Condition = "good",
+            Price = 1000,
+            Currency = V1Currency.SEK,
+            Status = V1BookStatus.ORDERED,
+            OwnerId = Guid.NewGuid(),
+        };
+        _serviceMock.Setup(service => service.CreateNewPost(book.OwnerId, book.Currency, book.Status, book)).ReturnsAsync(false);
+
+        // Act.
+        var result = await _controller.CreateNewPost(book.OwnerId, book.Currency, book.Status, book);
+
+        // Assert.
+        var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("Could not add the post.", badResult.Value);
+
+    }
+
+    [Fact]
     public async Task CreateNewPost_ReturnsOkResult_OnSuccess()
     {
         // Arrange.
@@ -252,5 +276,29 @@ public class MarketPlaceControllerTest
 
     }
 
+    [Fact]
+    public async Task UpdatePost_ReturnsNotFoundResult_WhenProvidedIdDoesNotExists()
+    {
+        // Arrange.
+        var post = new V1MarketplaceBookUpdated
+        {
+            Id = Guid.NewGuid(),
+            Condition = "string",
+            Price = 0,
+            Currency = V1Currency.USD,
+            Status = V1BookStatus.SOLD,
+            OwnerId = Guid.NewGuid(),
+        };
+        var wrongId = "The id does not exists, please provide a valid id.";
+        _serviceMock.Setup(service => service.UpdatePost(post.Id, post)).ReturnsAsync(wrongId);
+
+        // Act.
+        var result = await _controller.UpdatePost(post.Id, post);
+
+        // Assert.
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    // TODO: Finish tests for UpdatePost and DeletePost.
 
 }
