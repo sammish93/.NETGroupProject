@@ -79,7 +79,8 @@ public class MarketPlaceControllerTest
         var result = await _controller.GetAllPosts();
 
         // Assert.
-        Assert.IsType<OkObjectResult>(result);
-            
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var returnBookResponses = Assert.IsType<List<V1MarketplaceBookResponse>>(okResult.Value);
+        Assert.Equal(2, returnBookResponses.Count);
     }
 }
