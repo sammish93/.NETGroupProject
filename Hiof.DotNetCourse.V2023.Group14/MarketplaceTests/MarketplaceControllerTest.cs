@@ -116,4 +116,46 @@ public class MarketPlaceControllerTest
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(bookResponse, okResult.Value);
     }
+
+    [Fact]
+    public async Task GetPostByIsbn_ReturnsBadRequestResult_WhenIsbnLengthToShort()
+    {
+        // Arrange.
+        var isbn = "23475684";
+        _serviceMock.Setup(service => service.GetPostByIsbn(isbn)).ReturnsAsync((V1MarketplaceBookResponse?)null);
+
+        // Act.
+        var result = await _controller.GetPostByIsbn(isbn);
+
+        // Assert.
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task GetPostByIsbn_ReturnsBadRequestResult_WhenIsbnLengthToLong()
+    {
+        // Arrange.
+        var isbn = "2347568497354678253642749838";
+        _serviceMock.Setup(service => service.GetPostByIsbn(isbn)).ReturnsAsync((V1MarketplaceBookResponse?)null);
+
+        // Act.
+        var result = await _controller.GetPostByIsbn(isbn);
+
+        // Assert.
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task GetPostByIsbn_ReturnsNotFoundResult_WhenNoIsbnExists()
+    {
+        // Arrange.
+        var nonExistingIsbn = "1111111111";
+        _serviceMock.Setup(service => service.GetPostByIsbn(nonExistingIsbn)).ReturnsAsync((V1MarketplaceBookResponse?)null);
+
+        // Act.
+        var result = await _controller.GetPostByIsbn(nonExistingIsbn);
+
+        // Assert.
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
 }
