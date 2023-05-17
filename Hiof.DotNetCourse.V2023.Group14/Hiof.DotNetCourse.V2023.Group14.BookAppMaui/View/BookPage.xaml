@@ -313,24 +313,42 @@
                                                                  Spacing="5">
                                                 <BindableLayout.ItemTemplate>
                                                     <DataTemplate>
-                                                        <StackLayout>
-                                                            <VerticalStackLayout Spacing="5"
-                                                                                 Padding="5"
-                                                                                 BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}">
-                                                                <Grid>
-                                                                    <Label Grid.Row="0"
-                                                                           Text="{Binding AuthorObject.User.UserName}"
-                                                                           FontAttributes="Bold" />
-                                                                    <Label Grid.Row="0"
-                                                                           Text="{Binding CreatedAt}"
-                                                                           HorizontalOptions="End"/>
-                                                                </Grid>
+                                                        <Grid BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="1*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Border Stroke="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                                                    StrokeThickness="0"
+                                                                    Grid.Column="0"
+                                                                    WidthRequest="60"
+                                                                    HeightRequest="60">
+                                                                <Border.StrokeShape>
+                                                                    <RoundRectangle CornerRadius="5" />
+                                                                </Border.StrokeShape>
+                                                                <Image Grid.Row="0"
+                                                                       Source="{Binding AuthorObject.DisplayPicture, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                                       Aspect="AspectFit" />
+                                                            </Border>
 
-                                                                <Label Grid.Row="1"
-                                                                       Text="{Binding Body}" />
-                                                            </VerticalStackLayout>
+                                                            <StackLayout Grid.Column="1">
+                                                                <VerticalStackLayout Spacing="5"
+                                                                                     Padding="5">
+                                                                    <Grid>
+                                                                        <Label Grid.Row="0"
+                                                                               Text="{Binding AuthorObject.User.UserName}"
+                                                                               FontAttributes="Bold" />
+                                                                        <Label Grid.Row="0"
+                                                                               Text="{Binding CreatedAt}"
+                                                                               HorizontalOptions="End" />
+                                                                    </Grid>
 
-                                                        </StackLayout>
+                                                                    <Label Grid.Row="1"
+                                                                           Text="{Binding Body}" />
+                                                                </VerticalStackLayout>
+                                                            </StackLayout>
+                                                        </Grid>
+
                                                     </DataTemplate>
                                                 </BindableLayout.ItemTemplate>
                                             </VerticalStackLayout>
