@@ -48,7 +48,7 @@ public class V1MarketplaceController : ControllerBase
         var response = await _service.GetPostById(postId);
         if (response == null)
         {
-            _logger.LogWarning("GetPostById: No post found with ID {PostId}.", postId);
+            _logger.LogWarning("GetPostById: No post found with ID {PostId}.", postId); 
             return NotFound("No post has the provided id.");
         }
         else

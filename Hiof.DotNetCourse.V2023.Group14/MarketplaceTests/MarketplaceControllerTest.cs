@@ -1,15 +1,14 @@
 ﻿using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Controllers;
-using Moq;
-namespace MarketplaceTests;
-
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+namespace MarketplaceTests;
+using Moq;
 
 public class MarketPlaceControllerTest
 {
@@ -158,4 +157,100 @@ public class MarketPlaceControllerTest
         // Assert.
         Assert.IsType<NotFoundObjectResult>(result);
     }
+
+    [Fact]
+    public async Task GetPostByIsbn_ReturnsOkResult_WhenIsbnExists()
+    {
+        // Arrange.
+        var bookResponse = responses;
+        _serviceMock.Setup(service => service.GetPostByIsbn(bookResponse[0].ISBN10)).ReturnsAsync(bookResponse[0]);
+
+        // Act.
+        var result = await _controller.GetPostByIsbn("1627846358");
+
+        // Arrange.
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var book = okResult.Value;
+        Assert.Equal(responses[0], book);
+    }
+
+    [Fact]
+    public async Task CreateNewPost_ReturnsBadRequestResults_WhenNoConditionIsProvided()
+    {
+        // Arrange.
+        var book = new V1MarketplaceBook
+        {
+            Id = Guid.NewGuid(),
+            Condition = "string",
+            Price = 100,
+            Currency = V1Currency.USD,
+            Status = V1BookStatus.SOLD,
+            OwnerId = Guid.NewGuid(),
+            DateCreated = DateTime.UtcNow,
+            DateModified = DateTime.UtcNow,
+            ISBN10 = "2364789098",
+            ISBN13 = "2536478976453"
+        };
+        _serviceMock.Setup(service => service.CreateNewPost(book.OwnerId, book.Currency, book.Status, book)).ReturnsAsync(true);
+
+        // Act.
+        var result = await _controller.CreateNewPost(book.OwnerId, book.Currency, book.Status, book);
+
+        // Assert.
+        var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("Please write about the condition to the book.", badResult.Value);
+    }
+
+    [Fact]
+    public async Task CreateNewPost_ReturnsBadRequestResults_WhenNoPriceIsProvided()
+    {
+        // Arrange.
+        var book = new V1MarketplaceBook
+        {
+            Id = Guid.NewGuid(),
+            Condition = "good",
+            Price = 0,
+            Currency = V1Currency.USD,
+            Status = V1BookStatus.SOLD,
+            OwnerId = Guid.NewGuid(),
+        };
+        _serviceMock.Setup(service => service.CreateNewPost(book.OwnerId, book.Currency, book.Status, book)).ReturnsAsync(true);
+
+        // Act.
+        var result = await _controller.CreateNewPost(book.OwnerId, book.Currency, book.Status, book);
+
+        // Assert.
+        var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("Need to set a price one the book!", badResult.Value);
+    }
+
+    [Fact]
+    public async Task CreateNewPost_ReturnsOkResult_OnSuccess()
+    {
+        // Arrange.
+        var ownerId = Guid.NewGuid();
+        var currency = V1Currency.EUR;
+        var status = V1BookStatus.UNSOLD;
+
+        var book = new V1MarketplaceBook
+        {
+            Id = Guid.NewGuid(),
+            Condition = "brand new!",
+            Price = 100,
+            ISBN10 = "2364789098",
+            ISBN13 = "2536478976453"
+        };
+
+        _serviceMock.Setup(service => service.CreateNewPost(ownerId, currency, status, book)).ReturnsAsync(true);
+
+        // Act.
+        var result = await _controller.CreateNewPost(ownerId, currency, status, book);
+
+        // Assert.
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal("New post successfully added!", okResult.Value);
+
+    }
+
+
 }
