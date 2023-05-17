@@ -27,27 +27,10 @@ public class MarketPlaceControllerTest
         _controller = new V1MarketplaceController(_loggerMock.Object, _serviceMock.Object);
     }
 
-
-    [Fact]
-    public async Task GetAllPosts_ReturnsNotFoundResult_WhenNoPostsExist()
+    // Dummy data.
+    private readonly List<V1MarketplaceBookResponse> responses = new List<V1MarketplaceBookResponse>
     {
-        // Arrange.
-        _serviceMock.Setup(service => service.GetAllPosts()).ReturnsAsync(new List<V1MarketplaceBookResponse>());
-
-        // Act.
-        var result = await _controller.GetAllPosts();
-
-        // Assert.
-        Assert.IsType<NotFoundObjectResult>(result);
-    }
-
-    [Fact]
-    public async Task GetAllPosts_ReturnsOkResult_WhenPostsExists()
-    {
-        // Arrange.
-        var bookResponse = new List<V1MarketplaceBookResponse>
-        {
-            new V1MarketplaceBookResponse
+        new V1MarketplaceBookResponse
             {
                 Id = Guid.NewGuid(),
                 Condition = "used",
@@ -72,7 +55,27 @@ public class MarketPlaceControllerTest
                 ISBN13 = "1567262555787"
 
             }
-        };
+    };
+        
+
+    [Fact]
+    public async Task GetAllPosts_ReturnsNotFoundResult_WhenNoPostsExist()
+    {
+        // Arrange.
+        _serviceMock.Setup(service => service.GetAllPosts()).ReturnsAsync(new List<V1MarketplaceBookResponse>());
+
+        // Act.
+        var result = await _controller.GetAllPosts();
+
+        // Assert.
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task GetAllPosts_ReturnsOkResult_WhenPostsExists()
+    {
+        // Arrange.
+        var bookResponse = responses;
         _serviceMock.Setup(service => service.GetAllPosts()).ReturnsAsync(bookResponse);
 
         // Act.
@@ -82,5 +85,35 @@ public class MarketPlaceControllerTest
         var okResult = Assert.IsType<OkObjectResult>(result);
         var returnBookResponses = Assert.IsType<List<V1MarketplaceBookResponse>>(okResult.Value);
         Assert.Equal(2, returnBookResponses.Count);
+    }
+
+    [Fact]
+    public async Task GetPostById_ReturnsNotFoundResult_WhenIdDoesNotExists()
+    {
+        // Arrange.
+        Guid postId = Guid.NewGuid();
+        _serviceMock.Setup(service => service.GetPostById(postId)).ReturnsAsync((V1MarketplaceBookResponse?)null);
+
+        // Act.
+        var result = await _controller.GetPostById(postId);
+
+        // Assert.
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task GetPostById_ReturnsOkResult_WhenIdExists()
+    {
+        // Arrange.
+        Guid postId = responses[0].Id;
+        var bookResponse = responses[0];
+        _serviceMock.Setup(service => service.GetPostById(postId)).ReturnsAsync(bookResponse);
+
+        // Act.
+        var result = await _controller.GetPostById(postId);
+
+        // Arrange.
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(bookResponse, okResult.Value);
     }
 }
