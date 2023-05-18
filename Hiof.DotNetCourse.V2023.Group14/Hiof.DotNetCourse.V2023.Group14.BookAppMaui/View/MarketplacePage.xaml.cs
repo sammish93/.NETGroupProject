@@ -90,7 +90,16 @@ public partial class MarketplacePage : ContentPage
             {
                 V1MarketplaceBookResponse post = ((V1MarketplaceBookResponse)e.CurrentSelection.First());
 
-                model.SelectedUser = post.OwnerObject;
+                model.SelectedAd = post;
+
+                // The delete button only appears if a user selects their own ad.
+                if (post.OwnerObject.Id == model.LoggedInUser.Id)
+                {
+                    model.IsDeleteButtonVisible = true;
+                } else
+                {
+                    model.IsDeleteButtonVisible = false;
+                }
             }
         }
     }

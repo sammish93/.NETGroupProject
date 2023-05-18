@@ -430,6 +430,7 @@
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="50" />
                                     <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
 
                                 <Label Grid.Row="0"
@@ -536,8 +537,24 @@
                                     </Button>
                                 </HorizontalStackLayout>
 
-                            </Grid>
+                                <Button Text="Delete Ad"
+                                        Grid.Row="4"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource AlternatePrimary}, Dark={StaticResource AlternatePrimary}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        WidthRequest="255"
+                                        IsVisible="{Binding IsDeleteButtonVisible}"
+                                        Command="{Binding DeleteAdCommand}">
+                                    <Button.Shadow>
+                                        <Shadow Brush="{AppThemeBinding Light={StaticResource PrimaryDarker}, Dark={StaticResource Gray500}}"
+                                                Radius="5"
+                                                Offset="0,5"
+                                                Opacity="0.3" />
+                                    </Button.Shadow>
+                                </Button>
 
+                            </Grid>
                         </Grid>
                     </Grid>
 

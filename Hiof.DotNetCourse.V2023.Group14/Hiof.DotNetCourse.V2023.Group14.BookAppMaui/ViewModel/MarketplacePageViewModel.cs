@@ -27,7 +27,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private readonly string _apiBaseUrl = "https://localhost:7268/proxy/1.0";
         private V1User _loggedInUser;
         private V1Book _selectedBook;
-        private V1User _selectedUser;
+        private V1MarketplaceBookResponse _selectedAd;
         private ObservableCollection<V1Book> _bookSearch;
         private ObservableCollection<V1Book> _bookSearchForSale;
         private ObservableCollection<V1MarketplaceBookResponse> _bookPosts;
@@ -42,6 +42,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         private bool _isCheckboxChecked;
         private bool _isSearchResultsVisible;
         private bool _isSearchResultsForSaleVisible;
+        private bool _isDeleteButtonVisible;
         private HashSet<string> _isbnNumbersInCollection;
         private string _searchQuery;
 
@@ -109,6 +110,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
+        public bool IsDeleteButtonVisible
+        {
+            get => _isDeleteButtonVisible;
+            set
+            {
+                SetProperty(ref _isDeleteButtonVisible, value);
+            }
+        }
+
         public V1User LoggedInUser
         {
             get => _loggedInUser;
@@ -129,12 +139,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public V1User SelectedUser
+        public V1MarketplaceBookResponse SelectedAd
         {
-            get { return _selectedUser; }
+            get { return _selectedAd; }
             set
             {
-                _selectedUser = value;
+                _selectedAd = value;
                 OnPropertyChanged();
             }
         }
@@ -221,6 +231,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             IsSellGridVisible = false;
             IsBuyGridVisible = false;
             IsSearchResultsVisible = true;
+            IsSearchResultsForSaleVisible = false;
             IsSearchResultsForSaleVisible = false;
             IsCheckboxChecked = false;
             BookSearch = new ObservableCollection<V1Book>();
@@ -475,7 +486,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, SelectedUser));
+        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, SelectedAd.OwnerObject));
 
         // A user can start a conversation with another user by clicking on a 'send message' button. This method is called as a response to that button press.
         // In the event that the user hasn't previously had a conversation with another, a conversation is created and saved to the database, and the user is then 
@@ -522,6 +533,39 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     {
                         await Shell.Current.GoToAsync("messages");
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public ICommand DeleteAdCommand => new Command(async () => await DeleteAdAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, SelectedAd));
+
+        private async Task DeleteAdAsync(V1User userSender, V1MarketplaceBookResponse ad)
+        {
+            try
+            {
+                if (userSender.Id == ad.OwnerObject.Id)
+                {
+                    string deleteEntryUrl = $"{_apiBaseUrl}/marketplace/DeletePost?postId={ad.Id}";
+                    var response = await _httpClient.DeleteAsync(deleteEntryUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Success!", "The ad has been deleted.", "OK");
+                        IsDeleteButtonVisible = false;
+                        await PopulateBookPostsAsync(SelectedBook, true);
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Oops!", "This ad no longer exists.", "OK");
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Uh oh!", "You can't delete another user's ad.", "OK");
                 }
             }
             catch (Exception ex)
