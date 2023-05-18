@@ -172,6 +172,8 @@ public class DisplayPictureControllerTest
         Assert.Equal("Username parameter cannot be null!", badRequest.Value);
     }
 
+    // TODO: Continue with test wrinting for the rest of the API.
+
     // Method used for testing purposes.
     private IFormFile GetTestFile()
     {
