@@ -44,7 +44,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             try
             {
                 // This will make the job run every hour on the first minute.
-                RecurringJob.AddOrUpdate(() => job.Update(), "0 * * * *");
+                RecurringJob.AddOrUpdate(jobId, () => job.Update(), "0 * * * *");
                 return Ok("Cache updating job is scheduled!");
             }
             catch (Exception ex)
@@ -61,10 +61,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             var storage = JobStorage.Current;
             var recurringJobIds = storage.GetConnection().GetRecurringJobs().Select(x => x.Id);
 
-            if (recurringJobIds.Contains("BackgroundJobController.Update"))
+            if (recurringJobIds.Contains(jobId))
             {
-                RecurringJob.RemoveIfExists("BackgroundJobController.Update");
-                return Ok("Update cache job successfully stopped.");
+                RecurringJob.RemoveIfExists(jobId);
+                return Ok($"Update cache job successfully stopped. Job ID: {jobId}.");
             }
             else
             {
