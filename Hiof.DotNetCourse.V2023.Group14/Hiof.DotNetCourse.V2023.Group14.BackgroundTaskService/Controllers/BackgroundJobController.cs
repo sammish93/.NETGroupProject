@@ -53,6 +53,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("UpdateCache/[action]")]
+        public IActionResult StopJob()
+        {
+            var storage = JobStorage.Current;
+            var recurringJobIds = storage.GetConnection().GetRecurringJobs().Select(x => x.Id);
+
+            if (recurringJobIds.Contains("BackgroundJobController.Update"))
+            {
+                RecurringJob.RemoveIfExists("BackgroundJobController.Update");
+                return Ok("Update cache job successfully stopped.");
+            }
+            else
+            {
+                return NotFound("Update cache job not found.");
+            }
+        }
+
         [HttpPost]
         [Route("InactiveUser/[action]")]
         public IActionResult Start()
