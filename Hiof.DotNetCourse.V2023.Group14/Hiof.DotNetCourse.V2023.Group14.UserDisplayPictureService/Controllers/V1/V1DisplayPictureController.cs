@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers;
 
@@ -12,11 +13,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers;
 public class V1DisplayPictureController : ControllerBase
 {
 
-    private readonly V1UserIconService _userIconService;
+    private readonly V1IUserIcon _userIconService;
     private readonly UserIconContext _userIconContext;
 
 
-    public V1DisplayPictureController(V1UserIconService service, UserIconContext userIconContext)
+    public V1DisplayPictureController(V1IUserIcon service, UserIconContext userIconContext)
     {
         _userIconService = service;
         _userIconContext = userIconContext;

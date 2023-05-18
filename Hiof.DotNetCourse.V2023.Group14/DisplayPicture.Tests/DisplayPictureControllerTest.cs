@@ -1,4 +1,6 @@
-﻿using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers;
+﻿using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
+using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Data;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +12,7 @@ namespace DisplayPicture.Tests;
 public class DisplayPictureControllerTest
 {
     private readonly V1DisplayPictureController _controller;
-    private readonly Mock<V1UserIconService> _serviceMock;
+    private readonly Mock<V1IUserIcon> _serviceMock;
     private readonly Mock<UserIconContext> _contextMock;
 
     public DisplayPictureControllerTest()
@@ -21,7 +23,7 @@ public class DisplayPictureControllerTest
                 .Options;
 
         _contextMock = new Mock<UserIconContext>(options);
-        _serviceMock = new Mock<V1UserIconService>(MockBehavior.Default, _contextMock.Object);
+        _serviceMock = new Mock<V1IUserIcon>();
         _controller = new V1DisplayPictureController(_serviceMock.Object, _contextMock.Object);
     }
 
@@ -37,6 +39,21 @@ public class DisplayPictureControllerTest
         // Arrange.
         var badResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("ID parameter cannot be an emtpy guid!", badResult.Value);
+    }
+
+    [Fact]
+    public async Task GetById_ReturnsNotFoundResult_WhenIdDoesNotExists()
+    {
+        // Arrange.
+        var nonExistingId = Guid.NewGuid();
+        _serviceMock.Setup(x => x.GetById(nonExistingId)).ReturnsAsync((V1UserIcon?)null);
+
+        // Act.
+        var result = await _controller.GetById(nonExistingId);
+
+        // Arrange.
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        Assert.Equal("User does not exists.", notFoundResult.Value);
     }
     
 }
