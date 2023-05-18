@@ -299,6 +299,42 @@ public class MarketPlaceControllerTest
         Assert.IsType<NotFoundObjectResult>(result);
     }
 
+    [Fact]
+    public async Task UpdatePost_ReturnsBadRequestResult_WhenISBN10HasInvalidLength()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var post = new V1MarketplaceBookUpdated
+        {
+            ISBN10 = "123456"
+        };
+
+        // Act.
+        var result = await _controller.UpdatePost(postId, post);
+
+        // Assert.
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("ISBN10 needs to have a length of 10.", badRequestResult.Value);
+    }
+
+    [Fact]
+    public async Task UpdatePost_ReturnsBadRequestResult_WhenISBN13HasInvalidLength()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var post = new V1MarketplaceBookUpdated
+        {
+            ISBN13 = "123456789012"
+        };
+
+        // Act.
+        var result = await _controller.UpdatePost(postId, post);
+
+        // Assert.
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("ISBN13 needs to have a length of 13.", badRequestResult.Value);
+    }
+
     // TODO: Finish tests for UpdatePost and DeletePost.
 
 }
