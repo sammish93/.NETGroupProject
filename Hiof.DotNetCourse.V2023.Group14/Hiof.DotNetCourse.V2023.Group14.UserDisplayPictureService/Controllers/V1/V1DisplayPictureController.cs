@@ -97,7 +97,7 @@ public class V1DisplayPictureController : ControllerBase
 
         var nameSize = icon.Username.Length;
 
-        if (nameSize < 5 || nameSize > 15)
+        if ((nameSize >= 5 || nameSize <= 15) && nameSize != 0)
         {
             return BadRequest("Username length must be between 5 - 15 characters.");
         }
@@ -110,7 +110,7 @@ public class V1DisplayPictureController : ControllerBase
             return BadRequest(msg);
         }
 
-        if (icon.Username == null)
+        if (string.IsNullOrEmpty(icon.Username))
         {
             return BadRequest("Username parameter cannot be null!");
         }

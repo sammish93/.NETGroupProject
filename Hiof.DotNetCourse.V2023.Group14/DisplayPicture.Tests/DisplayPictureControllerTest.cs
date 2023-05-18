@@ -158,18 +158,34 @@ public class DisplayPictureControllerTest
         Assert.Equal("Username length must be between 5 - 15 characters.", badRequest.Value);
     }
 
+    [Fact]
+    public async Task Add_ReturnsBadRequest_WhenUsernameIsNullOrEmpty()
+    {
+        // Arrange.
+        var iconInputModel = GetModel(Guid.NewGuid(), string.Empty, GetTestFile());
+
+        // Act.
+        var result = await _controller.Add(iconInputModel);
+
+        // Assert.
+        var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("Username parameter cannot be null!", badRequest.Value);
+    }
 
     // Method used for testing purposes.
     private IFormFile GetTestFile()
     {
-        var content = "Hello World!";
+        var content = "this is a test file!";
         var fileName = "test.txt";
         var ms = new MemoryStream();
         var writer = new StreamWriter(ms);
         writer.Write(content);
         writer.Flush();
         ms.Position = 0;
-        return new FormFile(ms, 0, ms.Length, null ?? "", fileName) { Headers = new HeaderDictionary(), ContentType = "text/plain" };
+        return new FormFile(ms, 0, ms.Length, null ?? "", fileName)
+        {
+            Headers = new HeaderDictionary(), ContentType = "text/plain"
+        };
     }
 
     private V1AddIconInputModel GetModel(Guid id, string username, IFormFile file)
