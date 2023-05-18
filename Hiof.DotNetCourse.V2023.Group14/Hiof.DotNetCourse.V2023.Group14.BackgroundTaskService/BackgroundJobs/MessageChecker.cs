@@ -32,17 +32,16 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
         {
             // Get conversation where current user is a participant.
             var userConversation = await _context.Participant
-                .Where(p => p.Participant == currentUserId)
+                .Where(p => p.Participant == currentUserId && !p.IsRead)
                 .ToListAsync();
 
             // Returns empty list if the participant does not exists in any conversation.
             return userConversation;
         }
 
-        public async Task UpdateMessagesAsChecked(V1Participant messages)
+        public void UpdateMessagesAsChecked(V1Participant messages)
         {
             messages.IsRead = true;
-            await _context.SaveChangesAsync();
         }
 
         public async Task MessageJob(string currentUserId)
@@ -57,8 +56,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
                     foreach (var msg in newMessage)
                     {
                         // Update messages as checked in the database.
-                        await UpdateMessagesAsChecked(msg);
+                        UpdateMessagesAsChecked(msg);
                     }
+                    await _context.SaveChangesAsync();
                     _logger.LogInformation("Job ran successfully!");
                 }
                 else
