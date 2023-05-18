@@ -51,13 +51,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
                 _logger.LogInformation("Checking for new messages...");
                 var newMessage = await GetNewMessages(currentUserId);
 
-                if (newMessage != null && newMessage.Count > 0)
+                if (newMessage.Count > 0)
                 {
                     foreach (var msg in newMessage)
                     {
                         // Update messages as checked in the database.
                         UpdateMessagesAsChecked(msg);
                     }
+                    // Update database with the new changes.
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("Job ran successfully!");
                 }
