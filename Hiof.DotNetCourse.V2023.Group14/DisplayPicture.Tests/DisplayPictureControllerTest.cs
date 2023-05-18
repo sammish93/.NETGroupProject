@@ -107,6 +107,28 @@ public class DisplayPictureControllerTest
         Assert.Equal("User does not exists.", notFoundResult.Value);
     }
 
+    [Fact]
+    public async Task GetByUsername_ReturnsOkObjectResult_WhenUsernameIsValid()
+    {
+        // Arrange.
+        var username = "stian";
+        var icon = new V1UserIcon
+        {
+            Id = Guid.NewGuid(),
+            Username = username,
+            DisplayPicture = new byte[] { 18, 52, 86, 120, 154 }
+        };
+        _serviceMock.Setup(service => service.GetByUsername(username)).ReturnsAsync(icon);
+
+        // Act.
+        var result = await _controller.GetByUsername(username);
+
+        // Arrange
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.NotNull(okResult.Value);
+        Assert.Equal(icon, okResult.Value);
+    }
+
 
     
 }
