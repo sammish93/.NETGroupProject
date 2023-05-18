@@ -142,10 +142,10 @@ public class V1MarketplaceController : ControllerBase
 
             if (response.Contains("Successfully updated the post!"))
             {
-                if (post.Condition.Equals("string"))
+                if (string.IsNullOrEmpty(post.Condition) || post.Condition.Equals("string"))
                 {
                     _logger.LogWarning("UpdatePost: Invalid book condition provided.");
-                    return BadRequest("Please write about the condition to the book.");
+                    return BadRequest("Please write about the condition of the book.");
                 }
                 else if (post.Price == 0)
                 {

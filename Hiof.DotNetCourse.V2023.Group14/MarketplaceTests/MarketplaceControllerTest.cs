@@ -335,6 +335,26 @@ public class MarketPlaceControllerTest
         Assert.Equal("ISBN13 needs to have a length of 13.", badRequestResult.Value);
     }
 
+    [Fact]
+    public async Task UpdatePost_ReturnsBadRequestResult_WhenConditionIsInvalid()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var post = new V1MarketplaceBookUpdated
+        {
+            Condition = "string",
+        };
+
+        _serviceMock.Setup(service => service.UpdatePost(postId, post)).ReturnsAsync("Successfully updated the post!");
+
+        // Act.
+        var result = await _controller.UpdatePost(postId, post);
+
+        // Assert.
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("Please write about the condition of the book.", badRequestResult.Value);
+    }
+
     // TODO: Finish tests for UpdatePost and DeletePost.
 
 }
