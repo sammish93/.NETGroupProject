@@ -1,10 +1,10 @@
 ﻿namespace UserDisplayPicture.Tests;
 
-public class UnitTest1
+public class DisplaypictureControllerTest
 {
-    [Fact]
-    public void Test1()
-    {
+    // TODO: Add configuration setup.
 
-    }
+    // TODO: Mock dependencies.
+
+    // TODO: Write tests for display picture.
 }
