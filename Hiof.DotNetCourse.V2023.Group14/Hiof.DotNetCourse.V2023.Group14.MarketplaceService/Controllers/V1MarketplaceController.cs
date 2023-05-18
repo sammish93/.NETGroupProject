@@ -170,7 +170,7 @@ public class V1MarketplaceController : ControllerBase
 
     [HttpDelete]
     [Route("[action]")]
-    public async Task<IActionResult> DeletePost(Guid postId)
+    public async Task<IActionResult> DeletePost([Required] Guid postId)
     {
         _logger.LogInformation("DeletePost: Deleting post with ID {PostId}", postId);
         var response = await _service.DeletePost(postId);

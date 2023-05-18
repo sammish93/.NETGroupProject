@@ -382,6 +382,40 @@ public class MarketPlaceControllerTest
         Assert.Equal(successMessage, okResult.Value);
     }
 
-    // TODO: Finish tests for UpdatePost and DeletePost.
+    [Fact]
+    public async Task DeletePost_ReturnsOkResult_WhenDeleteSucceeds()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var successStatus = true;
+        _serviceMock.Setup(service => service.DeletePost(postId)).ReturnsAsync(successStatus);
+
+        // Act.
+        var result = await _controller.DeletePost(postId);
+
+        // Assert.
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var compare = $"Post with id: {postId} - successfully deleted!";
+        Assert.Equal(compare, okResult.Value);
+
+    }
+
+    [Fact]
+    public async Task DeletePost_NotFoundResult_WhenDeleteFails()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var failStatus = false;
+        _serviceMock.Setup(service => service.DeletePost(postId)).ReturnsAsync(failStatus);
+
+        // Act.
+        var result = await _controller.DeletePost(postId);
+
+        // Assert.
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        var compare = "Provided id does not exist, please provide another one";
+        Assert.Equal(compare, notFoundResult.Value);
+
+    }
 
 }
