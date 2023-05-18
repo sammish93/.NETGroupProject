@@ -32,7 +32,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
         {
             // Get conversation where current user is a participant.
             var userConversation = await _context.Participant
-                .Where(p => p.Participant == currentUserId && !p.IsRead)
+                .Where(p => p.Participant == currentUserId && !p.IsRead
+                    && _context.Messages.Any(m => m.ConversationId == p.ConversationId
+                        && m.Sender != currentUserId))
                 .ToListAsync();
 
             // Returns empty list if the participant does not exists in any conversation.
