@@ -20,7 +20,7 @@ public class DisplayPictureControllerTest
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
 
-        _contextMock = new Mock<UserIconContext>();
+        _contextMock = new Mock<UserIconContext>(options);
         _serviceMock = new Mock<V1UserIconService>(MockBehavior.Default, _contextMock.Object);
         _controller = new V1DisplayPictureController(_serviceMock.Object, _contextMock.Object);
     }
@@ -30,13 +30,13 @@ public class DisplayPictureControllerTest
     {
         // Arrange.
         var id = Guid.Empty;
-        _serviceMock.Setup(service => service.GetById(id));
 
         // Act.
         var result = await _controller.GetById(id);
 
         // Arrange.
-        Assert.IsType<BadRequestObjectResult>(result);
+        var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("ID parameter cannot be an emtpy guid!", badResult.Value);
     }
     
 }
