@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using System.ComponentModel.DataAnnotations;
+using Hangfire;
 using Hangfire.Storage;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
@@ -37,13 +38,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
         [HttpPost]
         [Route("UpdateCache/[action]")]
-        public IActionResult StartJob()
+        public IActionResult StartUpdateCacheJob([Required] string jobId)
         {
             UpdateCacheJob job = new(_httpClient);
             try
             {
                 // This will make the job run every hour on the first minute.
-                RecurringJob.AddOrUpdate(() => job.Update(), "0 * * * *");
+                RecurringJob.AddOrUpdate(jobId, () => job.Update(), "0 * * * *");
                 return Ok("Cache updating job is scheduled!");
             }
             catch (Exception ex)
@@ -53,17 +54,35 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("UpdateCache/[action]")]
+        public IActionResult StopUpdateCacheJob([Required] string jobId)
+        {
+            var storage = JobStorage.Current;
+            var recurringJobIds = storage.GetConnection().GetRecurringJobs().Select(x => x.Id);
+
+            if (recurringJobIds.Contains(jobId))
+            {
+                RecurringJob.RemoveIfExists(jobId);
+                return Ok($"Update cache job successfully stopped. Job ID: {jobId}.");
+            }
+            else
+            {
+                return NotFound("Update cache job not found.");
+            }
+        }
+
         [HttpPost]
         [Route("InactiveUser/[action]")]
-        public IActionResult Start()
+        public IActionResult StartInactiveJob([Required] string jobId)
         {
             InactiveUsers inactive = new(_httpClient);
             try
             {
                 // This will check the database for inactive users every day.
-                RecurringJob.AddOrUpdate(() => inactive.CheckInactivity(), Cron.Daily());
+                RecurringJob.AddOrUpdate(jobId, () => inactive.CheckInactivity(), Cron.Daily());
 
-                var message = "Recurring job to check for inactive users daily is activated";
+                var message = $"Recurring job to check for inactive users daily is activated. Job ID: {jobId}.";
                 return Ok(message);
             }
             catch (Exception ex)
@@ -77,15 +96,15 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
         [HttpDelete]
         [Route("InactiveUser/[action]")]
-        public IActionResult Stop()
+        public IActionResult StopInactiveJob([Required] string jobId)
         {
             var storage = JobStorage.Current;
             var recurringJobIds = storage.GetConnection().GetRecurringJobs().Select(x => x.Id);
 
-            if (recurringJobIds.Contains("BackgroundJobController.CheckInactivity"))
+            if (recurringJobIds.Contains(jobId))
             {
-                RecurringJob.RemoveIfExists("BackgroundJobController.CheckInactivity");
-                return Ok("Inactive user-job successfully stopped.");
+                RecurringJob.RemoveIfExists(jobId);
+                return Ok($"Inactive user-job with ID: {jobId} successfully stopped.");
             }
             else
             {
@@ -95,10 +114,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
 
         [HttpPost]
         [Route("MessageChecker/[action]")]
-        public IActionResult Start(string userId)
+        public IActionResult StartMessageJob([Required] string userId)
         {
             try
             {
+                _logger.LogInformation("Recurring message checking job started for user ID: {userId}.", userId);
                 _messageChecker.CheckMessages(userId);
                 return Ok($"Recurring message checking job successfully created for user ID: {userId}.");
             }
@@ -109,17 +129,47 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("MessageChecker/[action]")]
+        public IActionResult StopMessageJob([Required] string userId)
+        {
+            try
+            {
+                var storage = JobStorage.Current;
+                var recurringJobIds = storage.GetConnection().GetRecurringJobs().Select(x => x.Id);
+
+                if (recurringJobIds.Contains(userId))
+                {
+                    _logger.LogInformation("Successfully removed message checking job.");
+                    RecurringJob.RemoveIfExists(userId);
+                    return Ok($"Message checking job successfully stopped for user ID: {userId}.");
+                }
+                else
+                {
+                    _logger.LogWarning("No message checking job found for user ID: {userId}.", userId);
+                    return NotFound($"No message checking job found for user ID: {userId}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "Error: An Exception occurred!", ex.Message);
+                return StatusCode(500, "An error occurred while stopping the message checker job.");
+            }
+        }
+
         [HttpGet]
         [Route("MessageChecker/NewMessages/{userId}")]
-        public async Task<IActionResult> GetNewMessages(string userId)
+        public async Task<IActionResult> GetNewMessages([Required] string userId)
         {
             var newMessages = await _messageChecker.GetNewMessages(userId);
             if (!newMessages.Any())
             {
+                _logger.LogWarning("No new messages found for user with ID: {userId}.", userId);
                 return NotFound($"No new messages for user with ID: {userId}.");
             }
             else
             {
+                _logger.LogInformation("New messages found for user with ID: {userId}.", userId);
                 return Ok(newMessages);
             }
         }

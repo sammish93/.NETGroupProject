@@ -40,7 +40,7 @@
     "Hiof.DotNetCourse.V2023.Group14.MarketplaceService": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:25029;http://localhost:57461",
+      "applicationUrl": "https://localhost:54984;http://localhost:27693",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

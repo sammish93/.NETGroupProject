@@ -28,31 +28,22 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 		}
 
         // The parameter should represent the currently logged in user.
-        public async Task<IEnumerable<V1Messages>> GetNewMessages(string currentUserId)
+        public async Task<List<V1Participant>> GetNewMessages(string currentUserId)
         {
             // Get conversation where current user is a participant.
             var userConversation = await _context.Participant
-                .Where(p => p.Participant == currentUserId)
-                .Select(p => p.ConversationId)
+                .Where(p => p.Participant == currentUserId && !p.IsRead
+                    && _context.Messages.Any(m => m.ConversationId == p.ConversationId
+                        && m.Sender != currentUserId))
                 .ToListAsync();
 
-            // Get the new messages for those conversations.
-            var messages = await _context.Messages
-                .Where(m => userConversation.Contains(m.ConversationId) && !m.IsChecked && m.Sender != currentUserId)
-                .ToListAsync();
-
-            // Return empty list if messages is null.
-            return messages ?? Enumerable.Empty<V1Messages>();
+            // Returns empty list if the participant does not exists in any conversation.
+            return userConversation;
         }
 
-        public async Task UpdateMessagesAsChecked(IEnumerable<V1Messages> messages)
+        public void UpdateMessagesAsChecked(V1Participant messages)
         {
-            foreach (var message in messages)
-            {
-                message.IsChecked = true;
-            }
-            await _context.SaveChangesAsync();
-
+            messages.IsRead = true;
         }
 
         public async Task MessageJob(string currentUserId)
@@ -60,18 +51,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
             try
             {
                 _logger.LogInformation("Checking for new messages...");
-
                 var newMessage = await GetNewMessages(currentUserId);
 
-                if (newMessage.Any())
+                // Are there any new messages?
+                if (newMessage.Count > 0)
                 {
-                    // Update messages as checked in the database.
-                    await UpdateMessagesAsChecked(newMessage);
-
+                    foreach (var msg in newMessage)
+                    {
+                        // Update messages as checked in the database.
+                        UpdateMessagesAsChecked(msg);
+                    }
+                    // Update database with the new changes.
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("Job ran successfully!");
                 }
-
-                _logger.LogInformation("Job ran successfully!");
-
+                else
+                {
+                    _logger.LogWarning("No new messages for participant with conversationId: {currentUserId}.", currentUserId);
+                }
             }
             catch (Exception ex)
             {

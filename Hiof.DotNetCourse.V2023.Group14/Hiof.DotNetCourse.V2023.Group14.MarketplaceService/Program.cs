@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Data;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddScoped<V1MarketplaceService>();
+        builder.Services.AddScoped<V1IMarketplace>();
         builder.Services.AddControllers();
         builder.Configuration.AddJsonFile("appsettings.json");
 

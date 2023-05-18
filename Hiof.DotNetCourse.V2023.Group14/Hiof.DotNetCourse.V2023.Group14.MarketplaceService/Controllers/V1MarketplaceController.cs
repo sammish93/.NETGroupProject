@@ -2,6 +2,7 @@
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MarketplaceModels;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Enums.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,10 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Controllers;
 [Route("marketplace/1.0")]
 public class V1MarketplaceController : ControllerBase
 {
-    // TODO: Write unit tests for the API.
     private readonly ILogger<V1MarketplaceController> _logger;
-    private readonly V1MarketplaceService _service;
+    private readonly V1IMarketplace _service;
 
-    public V1MarketplaceController(ILogger<V1MarketplaceController> logger, V1MarketplaceService service)
+    public V1MarketplaceController(ILogger<V1MarketplaceController> logger, V1IMarketplace service)
     {
         _logger = logger;
         _service = service;
@@ -47,7 +47,7 @@ public class V1MarketplaceController : ControllerBase
         var response = await _service.GetPostById(postId);
         if (response == null)
         {
-            _logger.LogWarning("GetPostById: No post found with ID {PostId}.", postId);
+            _logger.LogWarning("GetPostById: No post found with ID {PostId}.", postId); 
             return NotFound("No post has the provided id.");
         }
         else
