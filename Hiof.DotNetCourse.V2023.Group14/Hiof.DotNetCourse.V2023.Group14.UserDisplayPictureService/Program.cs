@@ -1,3 +1,4 @@
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Data;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Services;
 using Microsoft.EntityFrameworkCore;

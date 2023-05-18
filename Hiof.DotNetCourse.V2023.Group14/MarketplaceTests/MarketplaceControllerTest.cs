@@ -300,6 +300,123 @@ public class MarketPlaceControllerTest
         Assert.IsType<NotFoundObjectResult>(result);
     }
 
-    // TODO: Finish tests for UpdatePost and DeletePost.
+    [Fact]
+    public async Task UpdatePost_ReturnsBadRequestResult_WhenISBN10HasInvalidLength()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var post = new V1MarketplaceBookUpdated
+        {
+            ISBN10 = "123456"
+        };
+
+        // Act.
+        var result = await _controller.UpdatePost(postId, post);
+
+        // Assert.
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("ISBN10 needs to have a length of 10.", badRequestResult.Value);
+    }
+
+    [Fact]
+    public async Task UpdatePost_ReturnsBadRequestResult_WhenISBN13HasInvalidLength()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var post = new V1MarketplaceBookUpdated
+        {
+            ISBN13 = "123456789012"
+        };
+
+        // Act.
+        var result = await _controller.UpdatePost(postId, post);
+
+        // Assert.
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("ISBN13 needs to have a length of 13.", badRequestResult.Value);
+    }
+
+    [Fact]
+    public async Task UpdatePost_ReturnsBadRequestResult_WhenConditionIsInvalid()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var post = new V1MarketplaceBookUpdated
+        {
+            Condition = "string",
+        };
+
+        var successMessage = "Successfully updated the post!";
+        _serviceMock.Setup(service => service.UpdatePost(postId, post)).ReturnsAsync(successMessage);
+
+        // Act.
+        var result = await _controller.UpdatePost(postId, post);
+
+        // Assert.
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("Please write about the condition of the book.", badRequestResult.Value);
+    }
+
+    [Fact]
+    public async Task UpdatePost_ReturnsOkResult_WhenUpdateSucceeds()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var post = new V1MarketplaceBookUpdated
+        {
+            Condition = "almost new",
+            Price = 999,
+            Currency = V1Currency.NOK,
+            Status = V1BookStatus.UNSOLD,
+            ISBN10 = "1234567890",
+            ISBN13 = "1234567890123"
+        };
+
+        var successMessage = "Successfully updated the post!"; 
+        _serviceMock.Setup(service => service.UpdatePost(postId, post)).ReturnsAsync(successMessage);
+
+        // Act.
+        var result = await _controller.UpdatePost(postId, post);
+
+        // Assert.
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(successMessage, okResult.Value);
+    }
+
+    [Fact]
+    public async Task DeletePost_ReturnsOkResult_WhenDeleteSucceeds()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var successStatus = true;
+        _serviceMock.Setup(service => service.DeletePost(postId)).ReturnsAsync(successStatus);
+
+        // Act.
+        var result = await _controller.DeletePost(postId);
+
+        // Assert.
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var compare = $"Post with id: {postId} - successfully deleted!";
+        Assert.Equal(compare, okResult.Value);
+
+    }
+
+    [Fact]
+    public async Task DeletePost_NotFoundResult_WhenDeleteFails()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var failStatus = false;
+        _serviceMock.Setup(service => service.DeletePost(postId)).ReturnsAsync(failStatus);
+
+        // Act.
+        var result = await _controller.DeletePost(postId);
+
+        // Assert.
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        var compare = "Provided id does not exist, please provide another one";
+        Assert.Equal(compare, notFoundResult.Value);
+
+    }
 
 }

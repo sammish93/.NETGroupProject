@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers;
 
@@ -12,11 +13,11 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers;
 public class V1DisplayPictureController : ControllerBase
 {
 
-    private readonly V1UserIconService _userIconService;
+    private readonly V1IUserIcon _userIconService;
     private readonly UserIconContext _userIconContext;
 
 
-    public V1DisplayPictureController(V1UserIconService service, UserIconContext userIconContext)
+    public V1DisplayPictureController(V1IUserIcon service, UserIconContext userIconContext)
     {
         _userIconService = service;
         _userIconContext = userIconContext;
@@ -96,7 +97,7 @@ public class V1DisplayPictureController : ControllerBase
 
         var nameSize = icon.Username.Length;
 
-        if (nameSize < 5 || nameSize > 15)
+        if ((nameSize >= 5 || nameSize <= 15) && nameSize != 0)
         {
             return BadRequest("Username length must be between 5 - 15 characters.");
         }
@@ -109,7 +110,7 @@ public class V1DisplayPictureController : ControllerBase
             return BadRequest(msg);
         }
 
-        if (icon.Username == null)
+        if (string.IsNullOrEmpty(icon.Username))
         {
             return BadRequest("Username parameter cannot be null!");
         }
