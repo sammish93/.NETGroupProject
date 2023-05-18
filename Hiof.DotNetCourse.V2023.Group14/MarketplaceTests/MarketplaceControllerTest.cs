@@ -345,7 +345,8 @@ public class MarketPlaceControllerTest
             Condition = "string",
         };
 
-        _serviceMock.Setup(service => service.UpdatePost(postId, post)).ReturnsAsync("Successfully updated the post!");
+        var successMessage = "Successfully updated the post!";
+        _serviceMock.Setup(service => service.UpdatePost(postId, post)).ReturnsAsync(successMessage);
 
         // Act.
         var result = await _controller.UpdatePost(postId, post);
@@ -353,6 +354,32 @@ public class MarketPlaceControllerTest
         // Assert.
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("Please write about the condition of the book.", badRequestResult.Value);
+    }
+
+    [Fact]
+    public async Task UpdatePost_ReturnsOkResult_WhenUpdateSucceeds()
+    {
+        // Arrange.
+        var postId = Guid.NewGuid();
+        var post = new V1MarketplaceBookUpdated
+        {
+            Condition = "almost new",
+            Price = 999,
+            Currency = V1Currency.NOK,
+            Status = V1BookStatus.UNSOLD,
+            ISBN10 = "1234567890",
+            ISBN13 = "1234567890123"
+        };
+
+        var successMessage = "Successfully updated the post!"; 
+        _serviceMock.Setup(service => service.UpdatePost(postId, post)).ReturnsAsync(successMessage);
+
+        // Act.
+        var result = await _controller.UpdatePost(postId, post);
+
+        // Assert.
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(successMessage, okResult.Value);
     }
 
     // TODO: Finish tests for UpdatePost and DeletePost.
