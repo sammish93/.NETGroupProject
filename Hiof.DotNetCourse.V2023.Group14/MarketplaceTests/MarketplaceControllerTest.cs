@@ -121,7 +121,7 @@ public class MarketPlaceControllerTest
     {
         // Arrange.
         var isbn = "23475684";
-        _serviceMock.Setup(service => service.GetPostByIsbn(isbn)).ReturnsAsync((V1MarketplaceBookResponse?)null);
+        _serviceMock.Setup(service => service.GetPostByIsbn(isbn));
 
         // Act.
         var result = await _controller.GetPostByIsbn(isbn);
@@ -135,7 +135,7 @@ public class MarketPlaceControllerTest
     {
         // Arrange.
         var isbn = "2347568497354678253642749838";
-        _serviceMock.Setup(service => service.GetPostByIsbn(isbn)).ReturnsAsync((V1MarketplaceBookResponse?)null);
+        _serviceMock.Setup(service => service.GetPostByIsbn(isbn));
 
         // Act.
         var result = await _controller.GetPostByIsbn(isbn);
@@ -149,7 +149,7 @@ public class MarketPlaceControllerTest
     {
         // Arrange.
         var nonExistingIsbn = "1111111111";
-        _serviceMock.Setup(service => service.GetPostByIsbn(nonExistingIsbn)).ReturnsAsync((V1MarketplaceBookResponse?)null);
+        _serviceMock.Setup(service => service.GetPostByIsbn(nonExistingIsbn));
 
         // Act.
         var result = await _controller.GetPostByIsbn(nonExistingIsbn);
@@ -163,15 +163,16 @@ public class MarketPlaceControllerTest
     {
         // Arrange.
         var bookResponse = responses;
-        _serviceMock.Setup(service => service.GetPostByIsbn(bookResponse[0].ISBN10)).ReturnsAsync(bookResponse[0]);
+        _serviceMock.Setup(service => service.GetPostByIsbn(bookResponse[0].ISBN10)).ReturnsAsync(bookResponse);
 
         // Act.
         var result = await _controller.GetPostByIsbn("1627846358");
 
         // Arrange.
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var book = okResult.Value;
-        Assert.Equal(responses[0], book);
+        var book = okResult.Value as IList<V1MarketplaceBookResponse>;
+        Assert.NotNull(book);
+        Assert.Equal(responses[0], book[0]);
     }
 
     [Fact]
