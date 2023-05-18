@@ -47,15 +47,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proxy.Tests", "Proxy.Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.MessagingService", "Hiof.DotNetCourse.V2023.Group14.MessagingService\Hiof.DotNetCourse.V2023.Group14.MessagingService.csproj", "{9106DDAB-FCEA-4F03-82A7-83070BFCFD09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging.Tests", "MessagingTests\Messaging.Tests.csproj", "{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingTests", "MessagingTests\MessagingTests.csproj", "{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.CommentService", "Hiof.DotNetCourse.V2023.Group14.CommentService\Hiof.DotNetCourse.V2023.Group14.CommentService.csproj", "{C2F537D8-4189-4E25-8334-DE7CBCBA60A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.MarketplaceService", "Hiof.DotNetCourse.V2023.Group14.MarketplaceService\Hiof.DotNetCourse.V2023.Group14.MarketplaceService.csproj", "{1258C93B-931D-412C-9FC2-E51E103E9ADC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Tests", "MarketplaceTests\Marketplace.Tests.csproj", "{5A401ADB-C832-4F03-AC1D-9BAD9040707C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketplaceTests", "MarketplaceTests\MarketplaceTests.csproj", "{5A401ADB-C832-4F03-AC1D-9BAD9040707C}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Hiof.DotNetCourse.V2023.Group14.BookAppMaui", "Hiof.DotNetCourse.V2023.Group14.BookAppMaui\Hiof.DotNetCourse.V2023.Group14.BookAppMaui.csproj", "{8D1B6ED4-AD2E-4C46-97AC-9AA5F41B2803}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Hiof.DotNetCourse.V2023.Group14.BookAppMaui", "Hiof.DotNetCourse.V2023.Group14.BookAppMaui\Hiof.DotNetCourse.V2023.Group14.BookAppMaui.csproj", "{4F4205F9-A11C-42E6-BCA3-FD185C9F815C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,12 +139,12 @@ Global
 		{5A401ADB-C832-4F03-AC1D-9BAD9040707C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A401ADB-C832-4F03-AC1D-9BAD9040707C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A401ADB-C832-4F03-AC1D-9BAD9040707C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D1B6ED4-AD2E-4C46-97AC-9AA5F41B2803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D1B6ED4-AD2E-4C46-97AC-9AA5F41B2803}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D1B6ED4-AD2E-4C46-97AC-9AA5F41B2803}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{8D1B6ED4-AD2E-4C46-97AC-9AA5F41B2803}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D1B6ED4-AD2E-4C46-97AC-9AA5F41B2803}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D1B6ED4-AD2E-4C46-97AC-9AA5F41B2803}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{4F4205F9-A11C-42E6-BCA3-FD185C9F815C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F4205F9-A11C-42E6-BCA3-FD185C9F815C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F4205F9-A11C-42E6-BCA3-FD185C9F815C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4F4205F9-A11C-42E6-BCA3-FD185C9F815C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F4205F9-A11C-42E6-BCA3-FD185C9F815C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F4205F9-A11C-42E6-BCA3-FD185C9F815C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,7 +169,7 @@ Global
 		{C2F537D8-4189-4E25-8334-DE7CBCBA60A0} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 		{1258C93B-931D-412C-9FC2-E51E103E9ADC} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 		{5A401ADB-C832-4F03-AC1D-9BAD9040707C} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
-		{8D1B6ED4-AD2E-4C46-97AC-9AA5F41B2803} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
+		{4F4205F9-A11C-42E6-BCA3-FD185C9F815C} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96890292-801C-4299-8C07-E008A6411CBF}
