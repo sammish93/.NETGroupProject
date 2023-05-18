@@ -16,7 +16,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddScoped<V1IMarketplace>();
+        builder.Services.AddScoped<V1MarketplaceService>();
         builder.Services.AddControllers();
         builder.Configuration.AddJsonFile("appsettings.json");
 

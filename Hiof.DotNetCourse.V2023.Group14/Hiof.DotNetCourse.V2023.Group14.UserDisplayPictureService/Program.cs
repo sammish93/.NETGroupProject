@@ -15,7 +15,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddScoped<V1IUserIcon>();
+            builder.Services.AddScoped<V1UserIconService>();
             builder.Services.AddControllers();
             builder.Configuration.AddJsonFile("appsettings.json");
 
