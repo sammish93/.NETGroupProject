@@ -78,6 +78,35 @@ public class DisplayPictureControllerTest
         Assert.Equal(icon, okResult.Value);
     }
 
+    [Fact]
+    public async Task GetByUsername_ReturnsBadRequest_WhenUsernameIsNullOrEmpty()
+    {
+        // Arrange.
+        var username = null ?? "";
+
+        // Act.
+        var result = await _controller.GetByUsername(username);
+
+        // Assert.
+        var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("Username parameter cannot be null or empty!", badResult.Value);
+    }
+
+    [Fact]
+    public async Task GetByUsername_ReturnsNotFoundResult_IfUsernameDoesNotExists()
+    {
+        // Arrange.
+        var username = "notExists";
+        _serviceMock.Setup(service => service.GetByUsername(username)).ReturnsAsync((V1UserIcon?)null);
+
+        // Act.
+        var result = await _controller.GetByUsername(username);
+
+        // Arrange.
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        Assert.Equal("User does not exists.", notFoundResult.Value);
+    }
+
 
     
 }
