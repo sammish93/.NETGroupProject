@@ -3,6 +3,7 @@ using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Controllers;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Data;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -129,6 +130,55 @@ public class DisplayPictureControllerTest
         Assert.Equal(icon, okResult.Value);
     }
 
+    [Fact]
+    public async Task Add_ReturnsBadRequest_WhenFileParameterIsNull()
+    {
+        // Arrange.
+        var iconInputModel = GetModel(Guid.NewGuid(), "tester", null);
 
-    
+        // Act.
+        var result = await _controller.Add(iconInputModel);
+
+        // Assert.
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("File parameter cannot be null or empty.", badRequestResult.Value);
+    }
+
+    [Fact]
+    public async Task Add_ReturnsBadRequest_WhenUsernameToShort()
+    {
+        // Arrange.
+        var iconInputModel = GetModel(Guid.NewGuid(), "A", GetTestFile());
+
+        // Act.
+        var result = await _controller.Add(iconInputModel);
+
+        // Assert.
+        var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("Username length must be between 5 - 15 characters.", badRequest.Value);
+    }
+
+
+    // Method used for testing purposes.
+    private IFormFile GetTestFile()
+    {
+        var content = "Hello World!";
+        var fileName = "test.txt";
+        var ms = new MemoryStream();
+        var writer = new StreamWriter(ms);
+        writer.Write(content);
+        writer.Flush();
+        ms.Position = 0;
+        return new FormFile(ms, 0, ms.Length, null ?? "", fileName) { Headers = new HeaderDictionary(), ContentType = "text/plain" };
+    }
+
+    private V1AddIconInputModel GetModel(Guid id, string username, IFormFile file)
+    {
+        return new V1AddIconInputModel
+        {
+            Id = id,
+            Username = username,
+            File = file
+        };
+    }
 }
