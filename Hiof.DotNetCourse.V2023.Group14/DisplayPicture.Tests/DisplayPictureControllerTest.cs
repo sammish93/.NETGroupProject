@@ -36,7 +36,7 @@ public class DisplayPictureControllerTest
         // Act.
         var result = await _controller.GetById(id);
 
-        // Arrange.
+        // Assert.
         var badResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("ID parameter cannot be an emtpy guid!", badResult.Value);
     }
@@ -46,14 +46,38 @@ public class DisplayPictureControllerTest
     {
         // Arrange.
         var nonExistingId = Guid.NewGuid();
-        _serviceMock.Setup(x => x.GetById(nonExistingId)).ReturnsAsync((V1UserIcon?)null);
+        _serviceMock.Setup(service => service.GetById(nonExistingId)).ReturnsAsync((V1UserIcon?)null);
 
         // Act.
         var result = await _controller.GetById(nonExistingId);
 
-        // Arrange.
+        // Assert.
         var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
         Assert.Equal("User does not exists.", notFoundResult.Value);
     }
+
+    [Fact]
+    public async Task GetById_ReturnsOkObjectResult_WhenIdIsValid()
+    {
+        // Arrange.
+        var id = Guid.NewGuid();
+        var icon = new V1UserIcon
+        {
+            Id = id,
+            Username = "stian",
+            DisplayPicture = new byte[] { 18, 52, 86, 120, 154 }
+        };
+        _serviceMock.Setup(service => service.GetById(id)).ReturnsAsync(icon);
+
+        // Act.
+        var result = await _controller.GetById(id);
+
+        // Assert.
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.NotNull(okResult.Value);
+        Assert.Equal(icon, okResult.Value);
+    }
+
+
     
 }
