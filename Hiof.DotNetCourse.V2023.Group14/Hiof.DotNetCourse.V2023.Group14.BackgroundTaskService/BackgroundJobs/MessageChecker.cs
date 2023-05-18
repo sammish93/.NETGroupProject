@@ -51,6 +51,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
                 _logger.LogInformation("Checking for new messages...");
                 var newMessage = await GetNewMessages(currentUserId);
 
+                // Are there any new messages?
                 if (newMessage.Count > 0)
                 {
                     foreach (var msg in newMessage)
