@@ -28,14 +28,14 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 		}
 
         // The parameter should represent the currently logged in user.
-        public async Task<V1Participant?> GetNewMessages(string currentUserId)
+        public async Task<List<V1Participant>> GetNewMessages(string currentUserId)
         {
             // Get conversation where current user is a participant.
             var userConversation = await _context.Participant
                 .Where(p => p.Participant == currentUserId)
-                .FirstOrDefaultAsync();
+                .ToListAsync();
 
-            // Returns null if the participant does not exists.
+            // Returns empty list if the participant does not exists in any conversation.
             return userConversation;
         }
 
@@ -52,10 +52,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
                 _logger.LogInformation("Checking for new messages...");
                 var newMessage = await GetNewMessages(currentUserId);
 
-                if (newMessage != null)
+                if (newMessage != null && newMessage.Count > 0)
                 {
-                    // Update messages as checked in the database.
-                    await UpdateMessagesAsChecked(newMessage);
+                    foreach (var msg in newMessage)
+                    {
+                        // Update messages as checked in the database.
+                        await UpdateMessagesAsChecked(msg);
+                    }
                     _logger.LogInformation("Job ran successfully!");
                 }
                 else
