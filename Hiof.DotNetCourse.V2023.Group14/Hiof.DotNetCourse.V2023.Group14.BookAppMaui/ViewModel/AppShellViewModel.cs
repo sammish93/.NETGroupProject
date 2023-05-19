@@ -86,6 +86,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task LogOutAsync()
         {
+            // Turns off the background tasker for said user.
+            await SwitchOffBackgroundTaskerAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser);
+
             // Removes all saved data relating to the previously logged in user.
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedEntry = null;
             Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = null;
@@ -124,6 +127,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             {
                 // If the user has no display picture then a default one is shown.
                 Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
+            }
+        }
+
+        // Stops background tasks for the logged in user.
+        private async Task SwitchOffBackgroundTaskerAsync(V1User user)
+        {
+            try
+            {
+                string url = $"https://localhost:7125/api/BackgroundJob/MessageChecker/StopMessageJob?userId={user.Id}";
+                var response = await _httpClient.DeleteAsync(url);
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
