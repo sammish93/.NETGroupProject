@@ -23,7 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
             // Add services
             builder.Services.AddScoped<MessageChecker>();
-            builder.Services.AddScoped<MessageToMaui>();
+            builder.Services.AddSignalR();
             builder.Services.AddControllers();
 
 
@@ -73,11 +73,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
                 // Development machines using Linux can do something here.
             }
 
+            builder.Services.AddCors(option =>
+            {
+                option.AddPolicy("CorsPolicy", builder => builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(_ => true)
+                .AllowCredentials());
+            });
+
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.MapHub<MessageHub>("/MessageHub");
+            app.UseCors("CorsPolicy");
+
             startup.Configure(app, builder.Environment);
         }
     }

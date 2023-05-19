@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.DTO.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
@@ -12,13 +13,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 	{
 		private readonly ILogger<MessageChecker> _logger;
         private readonly MessagingContext _context;
-        private readonly MessageToMaui _messageToMaui;
+        private readonly IHubContext<MessageHub> _hubContext;
 
-		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context, MessageToMaui messageToMaui)
+		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context, IHubContext<MessageHub> hubContext)
 		{
 			_logger = logger;
             _context = context;
-            _messageToMaui = messageToMaui;
+            _hubContext = hubContext;
 		}
 
         public void CheckMessages(string currentUserId)
@@ -59,10 +60,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
                 // Are there any new messages?
                 if (newMessage.Count > 0)
                 {
-                    _messageToMaui.OnNewMessagesReceived(newMessage);
+                    // Sends a true bool value SignalR message if the user has at least one new message.
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", true);
 
                     foreach (var msg in newMessage)
                     {
+                        // Commented out as the GUI currently updates IsRead values in the database when a conversation is opened.
                         // Update messages as checked in the database.
                         //UpdateMessagesAsChecked(msg);
                     }
@@ -72,6 +75,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
                 }
                 else
                 {
+                    // Sends a false bool value SignalR message if the user has no new messages.
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", false);
                     _logger.LogWarning("No new messages for participant with conversationId: {currentUserId}.", currentUserId);
                 }
             }

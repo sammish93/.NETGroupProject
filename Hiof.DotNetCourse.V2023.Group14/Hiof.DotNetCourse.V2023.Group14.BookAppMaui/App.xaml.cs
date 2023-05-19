@@ -18,8 +18,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         {
             var window = base.CreateWindow(activationState);
             // Creates a window with the resolution 1366x768 by default. Can be resized. UI is fully responsive down to 800x600 on desktop.
-            window.Width = 1920;
-            window.Height = 1080;
+            window.Width = 1366;
+            window.Height = 768;
 
             return window;
         }

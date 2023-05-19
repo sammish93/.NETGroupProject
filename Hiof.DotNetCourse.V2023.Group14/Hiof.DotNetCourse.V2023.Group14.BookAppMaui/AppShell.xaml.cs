@@ -2,23 +2,36 @@
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.View;
 using Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Maui.Controls;
+using System.ComponentModel;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
 {
     public partial class AppShell : Shell
     {
-        private IDispatcherTimer _userTypingTimer;
         private bool _isNewMessageReceived = false;
         private bool _isNewMessageReceivedAlertBeenShown = false;
         private readonly HttpClient _httpClient = new HttpClient();
+        private HubConnection _hubConnection;
+        private IDispatcherTimer _messageCheckerTimer;
 
-        public IDispatcherTimer UserTypingTimer
+        public IDispatcherTimer MessageCheckerTimer
         {
-            get => _userTypingTimer;
+            get => _messageCheckerTimer;
             set
             {
-                _userTypingTimer = value;
+                _messageCheckerTimer = value;
+
+            }
+        }
+
+        public HubConnection HubConnection
+        {
+            get => _hubConnection;
+            set
+            {
+                _hubConnection = value;
 
             }
         }
@@ -60,7 +73,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         }
 
         // Sets the Shell TitleView title to the current page title when it has been nagivated to.
-        protected override void OnNavigated(ShellNavigatedEventArgs args)
+        protected override async void OnNavigated(ShellNavigatedEventArgs args)
         {
 
             var model = BindingContext as AppShellViewModel;
@@ -68,7 +81,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
             if (model != null)
             {
                 var currentPage = Shell.Current.CurrentItem.Title;
-;
+                ;
                 if (currentPage != null)
                 {
                     model.TitleCurrentPage = currentPage;
@@ -76,35 +89,49 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                     model.DisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture;
                 }
             }
+            // Connects to a HubConnection and subscribes to receive a SignalR message from the background tasker relating to whether or not the user has 
+            // any unread messages from others.
+            this.HubConnection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:5144/MessageHub")
+                .Build();
 
-            if (UserTypingTimer == null)
+            this.HubConnection.On<bool>("ReceiveMessage", (hasNewMessages) =>
             {
-                UserTypingTimer = Application.Current.Dispatcher.CreateTimer();
-                // The Gui waits 5 seconds (5000 milliseconds) until it checks for a new message.
-                UserTypingTimer.Interval = TimeSpan.FromMilliseconds(5000);
-                UserTypingTimer.Start();
+                if (!hasNewMessages.Equals(IsNewMessageReceived))
+                {
+                    IsNewMessageReceived = hasNewMessages;
+                }
+            });
+
+            await Task.Run(() =>
+            {
+                Application.Current.Dispatcher.Dispatch(async () =>
+                await this.HubConnection.StartAsync());
+            });
+
+            // Creates a timer on the same thread as the GUI which checks to see if the IsNewMessageReceived value has been updated by a SignalR message.
+            if (MessageCheckerTimer == null)
+            {
+                MessageCheckerTimer = Application.Current.Dispatcher.CreateTimer();
+                // The Gui waits 1 second (1000 milliseconds) until it checks for a new message.
+                MessageCheckerTimer.Interval = TimeSpan.FromMilliseconds(1000);
+                MessageCheckerTimer.Start();
             }
 
-            UserTypingTimer.Tick += (s, e) =>
+            MessageCheckerTimer.Tick += (s, e) =>
             {
-                // This happens every 5 seconds.
-                OnTypingTimerElapsed(s, e);
+                // This happens every 1 second.
+                OnReceivingNewMessageSignal(s, e);
             };
 
             base.OnNavigated(args);
         }
 
         // This method is called every n seconds, based on the Timer object's interval.
-        private async void OnTypingTimerElapsed(object sender, EventArgs e)
+        private void OnReceivingNewMessageSignal(object sender, EventArgs e)
         {
             if (Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser != null)
             {
-                var messagesLogo = this.FindByName<ImageButton>("messagesLogo");
-                var fade = new FadeAnimation();
-
-                // Checks to see if there's a new message
-                IsNewMessageReceived = await PerformNewMessageCheck(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser);
-
                 // The (IsNewMessageReceivedAlertBeenShown == false) are there to ensure that the shell doesn't 'flicker' every 5 seconds, and only updates the image 
                 // when it hasn't.
                 if (IsNewMessageReceived)
@@ -112,10 +139,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                     if (IsNewMessageReceivedAlertBeenShown == false)
                     {
                         // Updates the message icon if not already done before.
-                        messagesLogo.Source = "messages_large_unread_message.png";
                         IsNewMessageReceivedAlertBeenShown = true;
                         // Animates the change from one icon to another.
-                        await fade.Animate(messagesLogo);
+                        ChangeMessageIcon("messages_large_unread_message.png");
                     }
                 } else
                 {
@@ -124,38 +150,25 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                         if (IsNewMessageReceivedAlertBeenShown == true)
                         {
                             // Changes the logo back to the original (without new message alert) if all messages are now read.
-                            messagesLogo.Source = "messages_large.png";
                             IsNewMessageReceivedAlertBeenShown = false;
 
                             // Animates the change from one icon to another.
-                            await fade.Animate(messagesLogo);
+                            ChangeMessageIcon("messages_large.png");
                         }
                     }
                 }
             }
         }
 
-        // Method called every n seconds based on a Timer object's interval.
-        private async Task<bool> PerformNewMessageCheck(V1User user)
+        // Changes the message icon to the specified path given as a param.
+        private void ChangeMessageIcon(string iconPath)
         {
-            try
-            {
-                // Checks to see if the logged in user has any unread messages.
-                string url = $"https://localhost:7125/api/BackgroundJob/MessageChecker/NewMessages/{user.Id}";
+            var messagesLogo = this.FindByName<ImageButton>("messagesLogo");
+            var fade = new FadeAnimation();
 
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    // Returns true if so.
-                    return true;
-                }
-
-                return false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }       
+            messagesLogo.Source = iconPath;
+            // The icon appears with an animation where it fades into view.
+            fade.Animate(messagesLogo);
+        }
     }
 }
