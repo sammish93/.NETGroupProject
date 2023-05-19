@@ -80,6 +80,7 @@
 	  <None Remove="Resources\Images\logout.png" />
 	  <None Remove="Resources\Images\messages.png" />
 	  <None Remove="Resources\Images\messages_large.png" />
+	  <None Remove="Resources\Images\messages_large_unread_message.png" />
 	  <None Remove="Resources\Images\portrait.png" />
 	  <None Remove="Resources\Images\profile.png" />
 	  <None Remove="Resources\Images\settings.png" />
