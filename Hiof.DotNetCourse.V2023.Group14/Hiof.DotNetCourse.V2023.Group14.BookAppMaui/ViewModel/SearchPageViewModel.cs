@@ -112,23 +112,25 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/books/GetByTitle?title={queryReplaced}&maxResults=40";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                var bookSearch = new V1BooksDto(json);
-
-                foreach (V1Book book in bookSearch.Books)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    // Doesn't show books that don't contain -either- a valid ISBN 10 or 13. 
-                    // Note: not all books on Google Books follow the same format.
-                    if (book.IndustryIdentifiers == null
-                        || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
-                    {
-                        continue;
-                    }
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    var bookSearch = new V1BooksDto(json);
 
-                    book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                    book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                    BooksBasedOnTitle.Add(book);
+                    foreach (V1Book book in bookSearch.Books)
+                    {
+                        // Doesn't show books that don't contain -either- a valid ISBN 10 or 13. 
+                        // Note: not all books on Google Books follow the same format.
+                        if (book.IndustryIdentifiers == null
+                            || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
+                        {
+                            continue;
+                        }
+
+                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                        BooksBasedOnTitle.Add(book);
+                    }
                 }
             }
             catch (Exception ex)
@@ -149,21 +151,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/books/GetByAuthor?name={queryReplaced}&maxResults=40";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                var bookSearch = new V1BooksDto(json);
-
-                foreach (V1Book book in bookSearch.Books)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    if (book.IndustryIdentifiers == null
-                        || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
-                    {
-                        continue;
-                    }
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    var bookSearch = new V1BooksDto(json);
 
-                    book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                    book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                    BooksBasedOnAuthor.Add(book);
+                    foreach (V1Book book in bookSearch.Books)
+                    {
+                        if (book.IndustryIdentifiers == null
+                            || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
+                        {
+                            continue;
+                        }
+
+                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                        BooksBasedOnAuthor.Add(book);
+                    }
                 }
             }
             catch (Exception ex)
@@ -185,34 +189,36 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/users/GetUsersByName?name={queryReplaced}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-
-                dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
-
-                foreach (JObject userJson in jArrayUsers)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
-                    V1UserWithDisplayPicture userWithDisplayPicture;
+                    var json = await responseMessage.Content.ReadAsStringAsync();
 
+                    dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
 
-                    string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
-                    HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
-
-                    if (resultDisplayPicture.IsSuccessStatusCode)
+                    foreach (JObject userJson in jArrayUsers)
                     {
-                        var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+                        V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
+                        V1UserWithDisplayPicture userWithDisplayPicture;
 
-                        V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
 
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                        string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                        HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                        if (resultDisplayPicture.IsSuccessStatusCode)
+                        {
+                            var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                            V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                            userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                        }
+                        else
+                        {
+                            userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                        }
+
+                        Users.Add(userWithDisplayPicture);
                     }
-                    else
-                    {
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
-                    }
-
-                    Users.Add(userWithDisplayPicture);
                 }
             }
             catch (Exception ex)

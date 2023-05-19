@@ -329,18 +329,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/comments/GetCommentsByISBN?isbn={Isbn}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                dynamic? jArrayReadingGoals = JsonConvert.DeserializeObject(json);
-
-                foreach (JObject commentsJson in jArrayReadingGoals["response"])
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(commentsJson.ToString());
-                    // Retrieves all replies to said comment.
-                    comment = await PopulateCommentRepliesAsync(comment);
-                    // Retrieves both the user object (username etc) and display picture of the comment author.
-                    comment.AuthorObject = await GetUserWithDisplayPictureAsync(comment.AuthorId.ToString());
-                    CommentsOnUserPage.Add(comment);
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    dynamic? jArrayReadingGoals = JsonConvert.DeserializeObject(json);
+
+                    foreach (JObject commentsJson in jArrayReadingGoals["response"])
+                    {
+                        V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(commentsJson.ToString());
+                        // Retrieves all replies to said comment.
+                        comment = await PopulateCommentRepliesAsync(comment);
+                        // Retrieves both the user object (username etc) and display picture of the comment author.
+                        comment.AuthorObject = await GetUserWithDisplayPictureAsync(comment.AuthorId.ToString());
+                        CommentsOnUserPage.Add(comment);
+                    }
                 }
             }
             catch (Exception ex)
@@ -358,17 +360,19 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/comments/GetCommentById?id={selectedComments.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(json);
-
-                foreach (V1Comments reply in comment.Replies)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    // Retrieves both the user object (username etc) and display picture of the reply author.
-                    reply.AuthorObject = await GetUserWithDisplayPictureAsync(reply.AuthorId.ToString());
-                }
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(json);
 
-                return comment;
+                    foreach (V1Comments reply in comment.Replies)
+                    {
+                        // Retrieves both the user object (username etc) and display picture of the reply author.
+                        reply.AuthorObject = await GetUserWithDisplayPictureAsync(reply.AuthorId.ToString());
+                    }
+
+                    return comment;
+                }
             }
             catch (Exception ex)
             {
@@ -388,32 +392,34 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string loginUrl = $"{_apiBaseUrl}/users/GetById?id={guid}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-
-                V1User user = JsonConvert.DeserializeObject<V1User>(json.ToString());
-
-                V1UserWithDisplayPicture userWithDisplayPicture;
-
-
-                string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
-                HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
-
-                if (resultDisplayPicture.IsSuccessStatusCode)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+                    var json = await responseMessage.Content.ReadAsStringAsync();
 
-                    V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+                    V1User user = JsonConvert.DeserializeObject<V1User>(json.ToString());
 
-                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                    V1UserWithDisplayPicture userWithDisplayPicture;
+
+
+                    string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                    HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                    if (resultDisplayPicture.IsSuccessStatusCode)
+                    {
+                        var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                        V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                    }
+                    else
+                    {
+                        // Uses a default display picture if no display picture has been set.
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                    }
+
+                    return userWithDisplayPicture;
                 }
-                else
-                {
-                    // Uses a default display picture if no display picture has been set.
-                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
-                }
-
-                return userWithDisplayPicture;
             }
             catch (Exception ex)
             {

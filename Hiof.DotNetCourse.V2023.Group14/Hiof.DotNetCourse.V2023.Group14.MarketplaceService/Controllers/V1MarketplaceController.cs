@@ -13,9 +13,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.MarketplaceService.Controllers;
 public class V1MarketplaceController : ControllerBase
 {
     private readonly ILogger<V1MarketplaceController> _logger;
-    private readonly V1IMarketplace _service;
+    private readonly V1MarketplaceService _service;
 
-    public V1MarketplaceController(ILogger<V1MarketplaceController> logger, V1IMarketplace service)
+    public V1MarketplaceController(ILogger<V1MarketplaceController> logger, V1MarketplaceService service)
     {
         _logger = logger;
         _service = service;

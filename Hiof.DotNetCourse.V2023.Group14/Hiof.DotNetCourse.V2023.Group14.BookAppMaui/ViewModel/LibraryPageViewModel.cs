@@ -234,29 +234,33 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/libraries/GetUserLibrary?userId={user.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
-
-                CompleteLibrary = library;
-
-                // Empties the collections to avoid duplicate values appearing on multuiple page refreshes/visits.
-                ToBeRead.Clear();
-                CurrentlyReading.Clear();
-                ReadEntries.Clear();
-
-                // Adds the libraries to three differing arrays that can be filtered by the user.
-                foreach (V1LibraryEntry entry in library.Entries)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    if (entry.ReadingStatus == ReadingStatus.Completed)
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
+
+                    CompleteLibrary = library;
+
+                    // Empties the collections to avoid duplicate values appearing on multuiple page refreshes/visits.
+                    ToBeRead.Clear();
+                    CurrentlyReading.Clear();
+                    ReadEntries.Clear();
+
+                    // Adds the libraries to three differing arrays that can be filtered by the user.
+                    foreach (V1LibraryEntry entry in library.Entries)
                     {
-                        ReadEntries.Add(entry);
-                    } else if (entry.ReadingStatus == ReadingStatus.ToRead)
-                    {
-                        ToBeRead.Add(entry);
-                    } else if (entry.ReadingStatus == ReadingStatus.Reading)
-                    {
-                        CurrentlyReading.Add(entry);
+                        if (entry.ReadingStatus == ReadingStatus.Completed)
+                        {
+                            ReadEntries.Add(entry);
+                        }
+                        else if (entry.ReadingStatus == ReadingStatus.ToRead)
+                        {
+                            ToBeRead.Add(entry);
+                        }
+                        else if (entry.ReadingStatus == ReadingStatus.Reading)
+                        {
+                            CurrentlyReading.Add(entry);
+                        }
                     }
                 }
             }
@@ -272,15 +276,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             string url = $"{_apiBaseUrl}/books/GetByIsbn?isbn={isbn}";
 
             using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-            responseMessage.EnsureSuccessStatusCode();
-            var json = await responseMessage.Content.ReadAsStringAsync();
-            V1BooksDto bookSearch = new V1BooksDto(json);
-
-            foreach (V1Book book in bookSearch.Books)
+            if (responseMessage.IsSuccessStatusCode)
             {
-                if (book.ImageLinks != null && book.ImageLinks.ContainsKey("thumbnail"))
+                var json = await responseMessage.Content.ReadAsStringAsync();
+                V1BooksDto bookSearch = new V1BooksDto(json);
+
+                foreach (V1Book book in bookSearch.Books)
                 {
-                    return book;
+                    if (book.ImageLinks != null && book.ImageLinks.ContainsKey("thumbnail"))
+                    {
+                        return book;
+                    }
                 }
             }
 
