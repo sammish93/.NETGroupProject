@@ -48,11 +48,11 @@
                 </Grid.RowDefinitions>
 
                 <Image Grid.Row="1"
-                       Source="books_icon.png"
+                       Source="book_logo.png"
                        BackgroundColor="{AppThemeBinding Light={StaticResource OffWhite}, Dark={StaticResource OffWhite}}"
                        Margin="1"
-                       HeightRequest="70"
-                       WidthRequest="70" />
+                       HeightRequest="200"
+                       WidthRequest="200" />
 
                 <Entry x:Name="usernameEntry"
                        Grid.Row="2"

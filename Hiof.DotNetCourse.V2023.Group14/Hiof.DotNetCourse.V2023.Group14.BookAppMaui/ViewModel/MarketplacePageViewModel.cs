@@ -428,23 +428,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/books/GetByTitle?title={queryReplaced}&maxResults=40";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                var bookSearch = new V1BooksDto(json);
-
-                foreach (V1Book book in bookSearch.Books)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    if (book.IndustryIdentifiers == null
-                        || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    var bookSearch = new V1BooksDto(json);
+
+                    foreach (V1Book book in bookSearch.Books)
                     {
-                        continue;
+                        if (book.IndustryIdentifiers == null
+                            || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
+                        {
+                            continue;
+                        }
+
+                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                        BookSearch.Add(book);
                     }
-
-                    book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                    book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                    BookSearch.Add(book);
                 }
-
             }
             catch (Exception ex)
             {
@@ -463,21 +464,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/books/GetByAuthor?name={queryReplaced}&maxResults=40";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                var bookSearch = new V1BooksDto(json);
-
-                foreach (V1Book book in bookSearch.Books)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    if (book.IndustryIdentifiers == null
-                        || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
-                    {
-                        continue;
-                    }
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    var bookSearch = new V1BooksDto(json);
 
-                    book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                    book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                    BookSearch.Add(book);
+                    foreach (V1Book book in bookSearch.Books)
+                    {
+                        if (book.IndustryIdentifiers == null
+                            || (!book.IndustryIdentifiers.ContainsKey("ISBN_10") && !book.IndustryIdentifiers.ContainsKey("ISBN_13")))
+                        {
+                            continue;
+                        }
+
+                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                        BookSearch.Add(book);
+                    }
                 }
             }
             catch (Exception ex)
@@ -582,36 +585,37 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/messages/GetByParticipant?name={userSender.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var json = await responseMessage.Content.ReadAsStringAsync();
 
                 dynamic? jArrayConversations = JsonConvert.DeserializeObject(json);
 
-                foreach (JObject conversationsJson in jArrayConversations)
-                {
-                    V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
-
-                    bool includesSender = false;
-                    bool includesReceiver = false;
-
-                    foreach (V1Participant participant in conversation.Participants)
+                    foreach (JObject conversationsJson in jArrayConversations)
                     {
-                        if (participant.Participant.Equals(userSender.Id.ToString()))
+                        V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
+
+                        bool includesSender = false;
+                        bool includesReceiver = false;
+
+                        foreach (V1Participant participant in conversation.Participants)
                         {
-                            includesSender = true;
+                            if (participant.Participant.Equals(userSender.Id.ToString()))
+                            {
+                                includesSender = true;
+                            }
+                            else if (participant.Participant.Equals(userReceiver.Id.ToString()))
+                            {
+                                includesReceiver = true;
+                            }
                         }
-                        else if (participant.Participant.Equals(userReceiver.Id.ToString()))
+
+                        if (includesSender && includesReceiver)
                         {
-                            includesReceiver = true;
+                            // Breaks foreach iteration if result is found.
+                            return true;
                         }
                     }
-
-                    if (includesSender && includesReceiver)
-                    {
-                        // Breaks foreach iteration if result is found.
-                        return true;
-                    }
-
                 }
 
                 // If no conversation is found then the method returns a false boolean value.

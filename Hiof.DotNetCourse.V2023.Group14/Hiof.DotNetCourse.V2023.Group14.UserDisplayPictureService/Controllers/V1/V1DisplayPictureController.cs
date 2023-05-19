@@ -97,7 +97,7 @@ public class V1DisplayPictureController : ControllerBase
 
         var nameSize = icon.Username.Length;
 
-        if ((nameSize >= 5 || nameSize <= 15) && nameSize != 0)
+        if (nameSize < 5 || nameSize > 15)
         {
             return BadRequest("Username length must be between 5 - 15 characters.");
         }

@@ -42,6 +42,7 @@ public class DisplayPictureControllerTest
         Assert.Equal("ID parameter cannot be an emtpy guid!", badResult.Value);
     }
 
+
     [Fact]
     public async Task GetById_ReturnsNotFoundResult_WhenIdDoesNotExists()
     {
@@ -56,6 +57,7 @@ public class DisplayPictureControllerTest
         var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
         Assert.Equal("User does not exists.", notFoundResult.Value);
     }
+
 
     [Fact]
     public async Task GetById_ReturnsOkObjectResult_WhenIdIsValid()
@@ -169,7 +171,7 @@ public class DisplayPictureControllerTest
 
         // Assert.
         var badRequest = Assert.IsType<BadRequestObjectResult>(result);
-        Assert.Equal("Username parameter cannot be null!", badRequest.Value);
+        Assert.Equal("Username length must be between 5 - 15 characters.", badRequest.Value);
     }
 
     // TODO: Continue with test wrinting for the rest of the API.
@@ -199,4 +201,5 @@ public class DisplayPictureControllerTest
             File = file
         };
     }
+
 }

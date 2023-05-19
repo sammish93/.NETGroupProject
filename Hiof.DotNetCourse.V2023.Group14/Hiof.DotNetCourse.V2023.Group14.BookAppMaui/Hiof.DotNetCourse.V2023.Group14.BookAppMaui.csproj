@@ -72,6 +72,7 @@
 	  <None Remove="Resources\Images\add.png" />
 	  <None Remove="Resources\Images\bookshelf.png" />
 	  <None Remove="Resources\Images\book_alt.png" />
+	  <None Remove="Resources\Images\book_logo.png" />
 	  <None Remove="Resources\Images\default_display_picture.png" />
 	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\home_large.png" />

@@ -105,14 +105,140 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/users/GetUsersByName?name={username}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+
+                    dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
+
+                    foreach (JObject userJson in jArrayUsers)
+                    {
+                        V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
+                        V1UserWithDisplayPicture userWithDisplayPicture;
+
+
+                        string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                        HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                        if (resultDisplayPicture.IsSuccessStatusCode)
+                        {
+                            var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                            V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                            userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                        }
+                        else
+                        {
+                            userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                        }
+
+                        ConversationParticipants.Add(userWithDisplayPicture);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        // Retrieves all conversations involving the logged in user. 
+        public async Task PopulateConversationsAsync(V1User user)
+        {
+            Conversations.Clear();
+
+            string url = $"{_apiBaseUrl}/messages/GetByParticipant?name={user.Id}";
+
+            using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+            if (responseMessage.IsSuccessStatusCode)
+            {
                 var json = await responseMessage.Content.ReadAsStringAsync();
 
                 dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
 
-                foreach (JObject userJson in jArrayUsers)
+                foreach (JObject conversationsJson in jArrayUsers)
                 {
-                    V1User user = JsonConvert.DeserializeObject<V1User>(userJson.ToString());
+                    V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
+
+                    // Super clunky solution to Maui's lack of support for a collection view that can grow 'upwards'. Collection view is flipped, and then each 
+                    // individual item (message + display picture + date etc) is then flipped.
+                    // Note: this solution means that the scroll bar is reversed. Once again, Maui currently only allows you to change a scroll bar's behaviour for each 
+                    // individual view model. I.e. if this scrollbar was reversed, so too would the collectionview containing all collections.
+                    if (!conversation.Messages.IsNullOrEmpty())
+                    {
+                        conversation.LastMessage = conversation.Messages.Last();
+                        conversation.Messages.Reverse();
+                    }
+
+                    conversation.ParticipantsAsObjects = new List<V1UserWithDisplayPicture>();
+
+                    foreach (V1Participant participant in conversation.Participants)
+                    {
+                        if (!participant.Participant.Equals(user.Id.ToString()))
+                        {
+                            conversation.ParticipantsAsObjects.Add(await GetUserWithDisplayPictureAsync(participant.Participant));
+                        }
+                    }
+
+                    Conversations.Add(conversation);
+                }
+            }
+        }
+
+        // Retrieves all messages in a single conversation, together with display picture, time of message.
+        public async Task PopulateConversationAsync(string conversationId, V1User user)
+        {
+
+            string url = $"{_apiBaseUrl}/messages/GetByConversationId?conversationId={conversationId}";
+
+            using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var json = await responseMessage.Content.ReadAsStringAsync();
+
+                dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
+
+
+                V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(json);
+
+                if (!conversation.Messages.IsNullOrEmpty())
+                {
+                    conversation.LastMessage = conversation.Messages.Last();
+                    conversation.Messages.Reverse();
+                }
+
+                conversation.ParticipantsAsObjects = new List<V1UserWithDisplayPicture>();
+
+                foreach (V1Participant participant in conversation.Participants)
+                {
+                    if (!participant.Participant.Equals(user.Id.ToString()))
+                    {
+                        conversation.ParticipantsAsObjects.Add(await GetUserWithDisplayPictureAsync(participant.Participant));
+                    }
+                }
+
+                PopulateMessagesWithUserMetadataAsync(conversation);
+                SelectedConversation = conversation;
+            }
+        }
+
+        // Retrieves both a user object and its display picture.
+        public async Task<V1UserWithDisplayPicture> GetUserWithDisplayPictureAsync(String guidString)
+        {
+            try
+            {
+
+                var guid = Guid.Parse(guidString);
+                string loginUrl = $"{_apiBaseUrl}/users/GetById?id={guid}";
+
+                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+
+                    V1User user = JsonConvert.DeserializeObject<V1User>(json.ToString());
+
                     V1UserWithDisplayPicture userWithDisplayPicture;
 
 
@@ -132,126 +258,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
                     }
 
-                    ConversationParticipants.Add(userWithDisplayPicture);
+                    return userWithDisplayPicture;
                 }
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        // Retrieves all conversations involving the logged in user. 
-        public async Task PopulateConversationsAsync(V1User user)
-        {
-            Conversations.Clear();
-
-            string url = $"{_apiBaseUrl}/messages/GetByParticipant?name={user.Id}";
-
-            using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-            responseMessage.EnsureSuccessStatusCode();
-            var json = await responseMessage.Content.ReadAsStringAsync();
-
-            dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
-
-            foreach (JObject conversationsJson in jArrayUsers)
-            {
-                V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
-
-                // Super clunky solution to Maui's lack of support for a collection view that can grow 'upwards'. Collection view is flipped, and then each 
-                // individual item (message + display picture + date etc) is then flipped.
-                // Note: this solution means that the scroll bar is reversed. Once again, Maui currently only allows you to change a scroll bar's behaviour for each 
-                // individual view model. I.e. if this scrollbar was reversed, so too would the collectionview containing all collections.
-                if (!conversation.Messages.IsNullOrEmpty())
-                {
-                    conversation.LastMessage = conversation.Messages.Last();
-                    conversation.Messages.Reverse();
-                }
-                
-                conversation.ParticipantsAsObjects = new List<V1UserWithDisplayPicture>();
-                
-                foreach (V1Participant participant in conversation.Participants)
-                {
-                    if (!participant.Participant.Equals(user.Id.ToString()))
-                    {
-                        conversation.ParticipantsAsObjects.Add(await GetUserWithDisplayPictureAsync(participant.Participant));
-                    }
-                }
-
-                Conversations.Add(conversation);
-            }
-        }
-
-        // Retrieves all messages in a single conversation, together with display picture, time of message.
-        public async Task PopulateConversationAsync(string conversationId, V1User user)
-        {
-
-            string url = $"{_apiBaseUrl}/messages/GetByConversationId?conversationId={conversationId}";
-
-            using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-            responseMessage.EnsureSuccessStatusCode();
-            var json = await responseMessage.Content.ReadAsStringAsync();
-
-            dynamic? jArrayUsers = JsonConvert.DeserializeObject(json);
-
-
-            V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(json);
-
-            if (!conversation.Messages.IsNullOrEmpty())
-            {
-                conversation.LastMessage = conversation.Messages.Last();
-                conversation.Messages.Reverse();
-            }
-
-            conversation.ParticipantsAsObjects = new List<V1UserWithDisplayPicture>();
-
-            foreach (V1Participant participant in conversation.Participants)
-            {
-                if (!participant.Participant.Equals(user.Id.ToString()))
-                {
-                    conversation.ParticipantsAsObjects.Add(await GetUserWithDisplayPictureAsync(participant.Participant));
-                }
-            }
-
-            PopulateMessagesWithUserMetadataAsync(conversation);
-            SelectedConversation = conversation;
-        }
-
-        // Retrieves both a user object and its display picture.
-        public async Task<V1UserWithDisplayPicture> GetUserWithDisplayPictureAsync(String guidString)
-        {
-            try
-            {
-
-                var guid = Guid.Parse(guidString);
-                string loginUrl = $"{_apiBaseUrl}/users/GetById?id={guid}";
-
-                using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-
-                V1User user = JsonConvert.DeserializeObject<V1User>(json.ToString());
-
-                V1UserWithDisplayPicture userWithDisplayPicture;
-
-
-                string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
-                HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
-
-                if (resultDisplayPicture.IsSuccessStatusCode)
-                {
-                    var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
-
-                    V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
-
-                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
-                }
-                else
-                {
-                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
-                }
-
-            return userWithDisplayPicture;
             }
             catch (Exception ex)
             {

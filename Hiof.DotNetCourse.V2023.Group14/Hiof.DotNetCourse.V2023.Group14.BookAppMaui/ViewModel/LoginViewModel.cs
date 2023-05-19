@@ -63,7 +63,6 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 HttpResponseMessage response = await _httpClient.PostAsync(loginUrl, requestContent);
 
                 if (response.IsSuccessStatusCode)
-
                 {
                     loginUrl = $"{_apiBaseUrl}/users/getByName?name={Username}";
 
@@ -116,6 +115,9 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     // the application.
                     Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
 
+                    // Turns on the background tasker to check for new messages.
+                    await SwitchOnBackgroundTaskerAsync(user);
+
                     // User is redirected to the main page.
                     await Shell.Current.GoToAsync("///home");
                 } else
@@ -147,6 +149,23 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             finally
             {
                 IsLoggingIn = false;
+            }
+        }
+
+        // Turns on the background tasker jobs. As of now the background tasker checks if the user has received a new message every 5 seconds).
+        private async Task SwitchOnBackgroundTaskerAsync(V1User user)
+        {
+            try
+            {
+                string url = $"https://localhost:7125/api/BackgroundJob/MessageChecker/StartMessageJob?userId={user.Id}";
+                var requestBody = new { userId = user.Id };
+                var requestBodyJson = JsonConvert.SerializeObject(requestBody);
+                var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _httpClient.PostAsync(url, requestContent);
+            } catch (Exception ex)
+            {
+
             }
         }
 

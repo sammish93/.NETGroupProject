@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
+using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.DTO.V1;
 
 namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 {
@@ -22,6 +23,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService
 
             // Add services
             builder.Services.AddScoped<MessageChecker>();
+            builder.Services.AddScoped<MessageToMaui>();
             builder.Services.AddControllers();
 
 

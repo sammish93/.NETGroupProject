@@ -1,3 +1,4 @@
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Interfaces.V1;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Data;
 using Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService.Services;
@@ -15,7 +16,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.UserDisplayPictureService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddScoped<V1UserIconService>();
+            builder.Services.AddScoped<V1IUserIcon, V1UserIconService>();
             builder.Services.AddControllers();
             builder.Configuration.AddJsonFile("appsettings.json");
 

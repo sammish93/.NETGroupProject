@@ -240,48 +240,54 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 // API call to retrieve a maximum of 5 books that are rated highest in relation to the rest of a user's library.
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
-
-                // API call to retrieve amount of books read and other statistics.
-                using HttpResponseMessage responseMessageLibrary = await _httpClient.GetAsync(libraryUrl);
-                responseMessageLibrary.EnsureSuccessStatusCode();
-                var jsonLibrary = await responseMessageLibrary.Content.ReadAsStringAsync();
-                V1LibraryCollection libraryComplete = JsonConvert.DeserializeObject<V1LibraryCollection>(jsonLibrary);
-                UserLibrary = libraryComplete;
-
-
-                foreach (V1LibraryEntry entry in library.Entries)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    string Isbn;
-                    if (entry.LibraryEntryISBN10 != null)
-                    {
-                        Isbn = entry.LibraryEntryISBN10;
-                    }
-                    else if (entry.LibraryEntryISBN13 != null)
-                    {
-                        Isbn = entry.LibraryEntryISBN13;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    V1LibraryCollection library = JsonConvert.DeserializeObject<V1LibraryCollection>(json);
 
-                    // API call to Google Books to retrieve thumbnail of a book's cover.
-                    var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
-
-                    using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
-                    responseMessageTwo.EnsureSuccessStatusCode();
-                    var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
-                    V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
-
-                    foreach (V1Book book in bookSearch.Books)
+                    // API call to retrieve amount of books read and other statistics.
+                    using HttpResponseMessage responseMessageLibrary = await _httpClient.GetAsync(libraryUrl);
+                    if (responseMessageLibrary.IsSuccessStatusCode)
                     {
-                        // Plaintext URL swaps symbols for html encoding.
-                        book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
-                        book.ImageLinks["thumbnail"].Replace("&", "&amp;");
-                        UserBooks.Add(book);
+                        var jsonLibrary = await responseMessageLibrary.Content.ReadAsStringAsync();
+                        V1LibraryCollection libraryComplete = JsonConvert.DeserializeObject<V1LibraryCollection>(jsonLibrary);
+                        UserLibrary = libraryComplete;
+
+
+                        foreach (V1LibraryEntry entry in library.Entries)
+                        {
+                            string Isbn;
+                            if (entry.LibraryEntryISBN10 != null)
+                            {
+                                Isbn = entry.LibraryEntryISBN10;
+                            }
+                            else if (entry.LibraryEntryISBN13 != null)
+                            {
+                                Isbn = entry.LibraryEntryISBN13;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+
+                            // API call to Google Books to retrieve thumbnail of a book's cover.
+                            var loginUrlTwo = $"{_apiBaseUrl}/books/GetByIsbn?isbn={Isbn}";
+
+                            using HttpResponseMessage responseMessageTwo = await _httpClient.GetAsync(loginUrlTwo);
+                            if (responseMessageTwo.IsSuccessStatusCode)
+                            {
+                                var jsonTwo = await responseMessageTwo.Content.ReadAsStringAsync();
+                                V1BooksDto bookSearch = new V1BooksDto(jsonTwo);
+
+                                foreach (V1Book book in bookSearch.Books)
+                                {
+                                    // Plaintext URL swaps symbols for html encoding.
+                                    book.ImageLinks["smallThumbnail"].Replace("&", "&amp;");
+                                    book.ImageLinks["thumbnail"].Replace("&", "&amp;");
+                                    UserBooks.Add(book);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -303,18 +309,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/comments/GetCommentsByUserId?id={selectedUser.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                dynamic? jArrayReadingGoals = JsonConvert.DeserializeObject(json);
-
-                foreach (JObject commentsJson in jArrayReadingGoals["response"])
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(commentsJson.ToString());
-                    // Retrieves replies from a specific comment.
-                    comment = await PopulateCommentRepliesAsync(comment);
-                    // Retrieves data relating to the author of the reply (username, display picture etc.)
-                    comment.AuthorObject = await GetUserWithDisplayPictureAsync(comment.AuthorId.ToString());
-                    CommentsOnUserPage.Add(comment);
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    dynamic? jArrayReadingGoals = JsonConvert.DeserializeObject(json);
+
+                    foreach (JObject commentsJson in jArrayReadingGoals["response"])
+                    {
+                        V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(commentsJson.ToString());
+                        // Retrieves replies from a specific comment.
+                        comment = await PopulateCommentRepliesAsync(comment);
+                        // Retrieves data relating to the author of the reply (username, display picture etc.)
+                        comment.AuthorObject = await GetUserWithDisplayPictureAsync(comment.AuthorId.ToString());
+                        CommentsOnUserPage.Add(comment);
+                    }
                 }
             }
             catch (Exception ex)
@@ -332,18 +340,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/comments/GetCommentById?id={selectedComments.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-                V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(json);
-
-                foreach (V1Comments reply in comment.Replies)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    // Retrieves data relating to the author of the reply (username, display picture etc.)
-                    // Note: though the database supports multi-level replies (a reply to a reply), the GUI hasn't integrated it.
-                    reply.AuthorObject = await GetUserWithDisplayPictureAsync(reply.AuthorId.ToString());
-                }
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    V1Comments comment = JsonConvert.DeserializeObject<V1Comments>(json);
 
-                return comment;
+                    foreach (V1Comments reply in comment.Replies)
+                    {
+                        // Retrieves data relating to the author of the reply (username, display picture etc.)
+                        // Note: though the database supports multi-level replies (a reply to a reply), the GUI hasn't integrated it.
+                        reply.AuthorObject = await GetUserWithDisplayPictureAsync(reply.AuthorId.ToString());
+                    }
+
+                    return comment;
+                }
             }
             catch (Exception ex)
             {
@@ -363,31 +373,33 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string loginUrl = $"{_apiBaseUrl}/users/GetById?id={guid}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-
-                V1User user = JsonConvert.DeserializeObject<V1User>(json.ToString());
-
-                V1UserWithDisplayPicture userWithDisplayPicture;
-
-
-                string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
-                HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
-
-                if (resultDisplayPicture.IsSuccessStatusCode)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+                    var json = await responseMessage.Content.ReadAsStringAsync();
 
-                    V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+                    V1User user = JsonConvert.DeserializeObject<V1User>(json.ToString());
 
-                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                    V1UserWithDisplayPicture userWithDisplayPicture;
+
+
+                    string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
+                    HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
+
+                    if (resultDisplayPicture.IsSuccessStatusCode)
+                    {
+                        var responseStringDisplayPicture = await resultDisplayPicture.Content.ReadAsStringAsync();
+
+                        V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
+
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, displayPicture.DisplayPicture);
+                    }
+                    else
+                    {
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                    }
+
+                    return userWithDisplayPicture;
                 }
-                else
-                {
-                    userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
-                }
-
-                return userWithDisplayPicture;
             }
             catch (Exception ex)
             {
@@ -407,18 +419,20 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string loginUrl = $"{_apiBaseUrl}/goals/GetAllGoals?userId={user.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(loginUrl);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-
-                dynamic? jArrayReadingGoals = JsonConvert.DeserializeObject(json);
-
-                foreach (JObject userJson in jArrayReadingGoals)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    V1ReadingGoals readingGoal = JsonConvert.DeserializeObject<V1ReadingGoals>(userJson.ToString());
+                    var json = await responseMessage.Content.ReadAsStringAsync();
 
-                    if (readingGoal.Id != SelectedUserRecentReadingGoal.Id)
+                    dynamic? jArrayReadingGoals = JsonConvert.DeserializeObject(json);
+
+                    foreach (JObject userJson in jArrayReadingGoals)
                     {
-                        UserReadingGoals.Add(readingGoal);
+                        V1ReadingGoals readingGoal = JsonConvert.DeserializeObject<V1ReadingGoals>(userJson.ToString());
+
+                        if (readingGoal.Id != SelectedUserRecentReadingGoal.Id)
+                        {
+                            UserReadingGoals.Add(readingGoal);
+                        }
                     }
                 }
             }
@@ -609,35 +623,37 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 string url = $"{_apiBaseUrl}/messages/GetByParticipant?name={userSender.Id}";
 
                 using HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
-                responseMessage.EnsureSuccessStatusCode();
-                var json = await responseMessage.Content.ReadAsStringAsync();
-
-                dynamic? jArrayConversations = JsonConvert.DeserializeObject(json);
-
-                foreach (JObject conversationsJson in jArrayConversations)
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
+                    var json = await responseMessage.Content.ReadAsStringAsync();
 
-                    bool includesSender = false;
-                    bool includesReceiver = false;
+                    dynamic? jArrayConversations = JsonConvert.DeserializeObject(json);
 
-                    foreach (V1Participant participant in conversation.Participants)
+                    foreach (JObject conversationsJson in jArrayConversations)
                     {
-                        if (participant.Participant.Equals(userSender.Id.ToString()))
+                        V1ConversationModel conversation = JsonConvert.DeserializeObject<V1ConversationModel>(conversationsJson.ToString());
+
+                        bool includesSender = false;
+                        bool includesReceiver = false;
+
+                        foreach (V1Participant participant in conversation.Participants)
                         {
-                            includesSender = true;
-                        } else if (participant.Participant.Equals(userReceiver.Id.ToString()))
+                            if (participant.Participant.Equals(userSender.Id.ToString()))
+                            {
+                                includesSender = true;
+                            }
+                            else if (participant.Participant.Equals(userReceiver.Id.ToString()))
+                            {
+                                includesReceiver = true;
+                            }
+                        }
+
+                        if (includesSender && includesReceiver)
                         {
-                            includesReceiver = true;
+                            // Breaks foreach iteration if result is found.
+                            return true;
                         }
                     }
-
-                    if (includesSender && includesReceiver)
-                    {
-                        // Breaks foreach iteration if result is found.
-                        return true;
-                    }
-
                 }
 
                 // If no conversation is found then the method returns a false boolean value.
