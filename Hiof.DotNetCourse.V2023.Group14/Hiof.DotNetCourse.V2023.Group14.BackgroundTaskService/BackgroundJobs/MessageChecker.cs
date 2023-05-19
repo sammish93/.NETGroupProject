@@ -1,6 +1,7 @@
 ﻿using System;
 using Hangfire;
 using Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.DTO.V1;
+using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1;
 using Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1.MessageModels;
 using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +12,13 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
 	{
 		private readonly ILogger<MessageChecker> _logger;
         private readonly MessagingContext _context;
+        private readonly MessageToMaui _messageToMaui;
 
-		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context)
+		public MessageChecker(ILogger<MessageChecker> logger, MessagingContext context, MessageToMaui messageToMaui)
 		{
 			_logger = logger;
             _context = context;
+            _messageToMaui = messageToMaui;
 		}
 
         public void CheckMessages(string currentUserId)
@@ -56,10 +59,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BackgroundTaskService.BackgroundJobs
                 // Are there any new messages?
                 if (newMessage.Count > 0)
                 {
+                    _messageToMaui.OnNewMessagesReceived(newMessage);
+
                     foreach (var msg in newMessage)
                     {
                         // Update messages as checked in the database.
-                        UpdateMessagesAsChecked(msg);
+                        //UpdateMessagesAsChecked(msg);
                     }
                     // Update database with the new changes.
                     await _context.SaveChangesAsync();
