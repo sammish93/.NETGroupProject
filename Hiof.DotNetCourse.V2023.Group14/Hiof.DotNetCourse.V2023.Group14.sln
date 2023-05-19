@@ -45,17 +45,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proxy.Tests", "Proxy.Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.MessagingService", "Hiof.DotNetCourse.V2023.Group14.MessagingService\Hiof.DotNetCourse.V2023.Group14.MessagingService.csproj", "{9106DDAB-FCEA-4F03-82A7-83070BFCFD09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingTests", "MessagingTests\MessagingTests.csproj", "{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingTests", "MessagingTests\MessagingTests.csproj", "{615B6F59-2E13-4F81-9EEC-5C6F89A9D2DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.CommentService", "Hiof.DotNetCourse.V2023.Group14.CommentService\Hiof.DotNetCourse.V2023.Group14.CommentService.csproj", "{C2F537D8-4189-4E25-8334-DE7CBCBA60A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.MarketplaceService", "Hiof.DotNetCourse.V2023.Group14.MarketplaceService\Hiof.DotNetCourse.V2023.Group14.MarketplaceService.csproj", "{1258C93B-931D-412C-9FC2-E51E103E9ADC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketplaceTests", "MarketplaceTests\MarketplaceTests.csproj", "{5A401ADB-C832-4F03-AC1D-9BAD9040707C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketplaceTests", "MarketplaceTests\MarketplaceTests.csproj", "{5A401ADB-C832-4F03-AC1D-9BAD9040707C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayPicture.Tests", "DisplayPicture.Tests\DisplayPicture.Tests.csproj", "{69CA39F7-AD70-4036-9865-F61FC36B8009}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DisplayPicture.Tests", "DisplayPicture.Tests\DisplayPicture.Tests.csproj", "{69CA39F7-AD70-4036-9865-F61FC36B8009}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Hiof.DotNetCourse.V2023.Group14.BookAppMaui", "Hiof.DotNetCourse.V2023.Group14.BookAppMaui\Hiof.DotNetCourse.V2023.Group14.BookAppMaui.csproj", "{53AD5BA6-E2BF-4BF2-A21B-EB863FB8866B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hiof.DotNetCourse.V2023.Group14.BookAppMaui", "Hiof.DotNetCourse.V2023.Group14.BookAppMaui\Hiof.DotNetCourse.V2023.Group14.BookAppMaui.csproj", "{53AD5BA6-E2BF-4BF2-A21B-EB863FB8866B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommentServiceTests", "CommentService.Tests\CommentServiceTests.csproj", "{5C0D3B42-D1C6-43B5-B844-47027BEE876B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1CB3B2C6-7728-4F02-AAC1-3766559FFDEB} = {1CB3B2C6-7728-4F02-AAC1-3766559FFDEB}
+		{C2F537D8-4189-4E25-8334-DE7CBCBA60A0} = {C2F537D8-4189-4E25-8334-DE7CBCBA60A0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +151,10 @@ Global
 		{53AD5BA6-E2BF-4BF2-A21B-EB863FB8866B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53AD5BA6-E2BF-4BF2-A21B-EB863FB8866B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53AD5BA6-E2BF-4BF2-A21B-EB863FB8866B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5C0D3B42-D1C6-43B5-B844-47027BEE876B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C0D3B42-D1C6-43B5-B844-47027BEE876B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C0D3B42-D1C6-43B5-B844-47027BEE876B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C0D3B42-D1C6-43B5-B844-47027BEE876B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +180,7 @@ Global
 		{5A401ADB-C832-4F03-AC1D-9BAD9040707C} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
 		{69CA39F7-AD70-4036-9865-F61FC36B8009} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
 		{53AD5BA6-E2BF-4BF2-A21B-EB863FB8866B} = {EA730EF2-3A7D-4C22-AB6B-722B60BADF26}
+		{5C0D3B42-D1C6-43B5-B844-47027BEE876B} = {4B9B2054-4D18-4BD3-ADAC-54B564AE5A8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96890292-801C-4299-8C07-E008A6411CBF}
