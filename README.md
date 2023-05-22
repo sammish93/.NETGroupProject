@@ -47,7 +47,7 @@ Alternatively, if you wish to do the above through a terminal window then:
 3. To create the required databases, navigate to each project location listed in 3.3.2, and type 'dotnet ef database update'
     1. For 'UserAccountService', you will need to enter 'dotnet ef database update --context UserAccountContext'
 
-# Launching the application
+# Launching
 1.	Right click on the solution and select 'Configure Startup Projects', then select the 'Multiple Startup Projects' radio button.
     1. Select the dropdown option 'Start Without Debugging' for the following projects:
         - APICommunicatorService
