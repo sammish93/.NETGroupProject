@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
 {
-    public class UserSingleton
+    public class V1UserSingleton
     {
         private V1User _loggedInUser;
         private V1User _selectedUser;
@@ -99,7 +99,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.ClassLibrary.Classes.V1
             }
         }
 
-        public UserSingleton() { }
+        public V1UserSingleton() { }
 
     }
 }

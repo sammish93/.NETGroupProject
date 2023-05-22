@@ -4,6 +4,7 @@ using Hiof.DotNetCourse.V2023.Group14.MessagingService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiof.DotNetCourse.V2023.Group14.MessagingService.Migrations
 {
     [DbContext(typeof(MessagingContext))]
-    partial class MessagingContextModelSnapshot : ModelSnapshot
+    [Migration("20230522081026_AddSeeding")]
+    partial class AddSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -85,8 +85,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
                 if (currentPage != null)
                 {
                     model.TitleCurrentPage = currentPage;
-                    model.User = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser;
-                    model.DisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture;
+                    model.User = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser;
+                    model.DisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().UserDisplayPicture;
                 }
             }
             // Connects to a HubConnection and subscribes to receive a SignalR message from the background tasker relating to whether or not the user has 
@@ -130,7 +130,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
         // This method is called every n seconds, based on the Timer object's interval.
         private void OnReceivingNewMessageSignal(object sender, EventArgs e)
         {
-            if (Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser != null)
+            if (Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser != null)
             {
                 // The (IsNewMessageReceivedAlertBeenShown == false) are there to ensure that the shell doesn't 'flicker' every 5 seconds, and only updates the image 
                 // when it hasn't.

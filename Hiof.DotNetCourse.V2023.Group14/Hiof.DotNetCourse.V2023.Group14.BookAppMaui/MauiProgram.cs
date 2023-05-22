@@ -26,7 +26,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui
             builder.Logging.AddDebug();
 #endif
             // Includes variables that are saved during runtime (User that is logged in, which book/user etc is displayed after clicked-on event).
-            builder.Services.AddSingleton<UserSingleton>();
+            builder.Services.AddSingleton<V1UserSingleton>();
 
             return builder.Build();
         }

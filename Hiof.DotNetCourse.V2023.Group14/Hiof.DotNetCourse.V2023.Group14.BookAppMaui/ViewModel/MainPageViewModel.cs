@@ -125,7 +125,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // Retrieves the highest rated books from the logged in user's library.
         public async Task PopulateHighestRatedBooksAsync()
         {
-            if (HighestRatedBooks.IsNullOrEmpty() || Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered)
+            if (HighestRatedBooks.IsNullOrEmpty() || Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered)
             {
                 try
                 {
@@ -184,7 +184,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // Retrieves the most recently read books (based on date entered) from the logged in user's library.
         public async Task PopulateRecentlyReadBooksAsync()
         {
-            if (RecentlyReadBooks.IsNullOrEmpty() || Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered)
+            if (RecentlyReadBooks.IsNullOrEmpty() || Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered)
             {
                 try
                 {
@@ -282,7 +282,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                             else
                             {
                                 // Default display picture is provided i nthe case that no display picture has been set by said user.
-                                userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                                userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture);
                             }
 
                             NearbyUsers.Add(userWithDisplayPicture);
@@ -300,7 +300,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // hold references to objects selected during an on-click event etc.
         public async Task NavigateToUserPage(V1User user)
         {
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUser = user;
             await GetSelectedUserDisplayPictureAsync(user.UserName);
             await Shell.Current.GoToAsync($"user?userid={user.Id}");
         }
@@ -317,17 +317,17 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
 
-                Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = displayPicture.DisplayPicture;
+                Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUserDisplayPicture = displayPicture.DisplayPicture;
             } else
             {
-                Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
+                Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture;
             }
         }
 
         // Navigates the the book page on on-click event.
         public async Task NavigateToBookPageAsync(V1Book book)
         {
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)
@@ -472,7 +472,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     }
                     else
                     {
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture);
                     }
 
                     return userWithDisplayPicture;
@@ -525,7 +525,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             await PopulateRecentlyReadBooksAsync();
             await PopulateNearbyUsersAsync();
             await PopulateCommentsAsync(LoggedInUser);
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = false;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered = false;
 
             IsBusy = false;
         }

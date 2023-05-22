@@ -395,7 +395,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     }
                     else
                     {
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture);
                     }
 
                     return userWithDisplayPicture;
@@ -458,7 +458,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
             else
             {
-                SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
+                SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture;
             }
         }
 
@@ -466,7 +466,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // version of Maui.
         public async Task NavigateToBookPageAsync(V1Book book)
         {
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)
@@ -542,7 +542,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         {
                             await Application.Current.MainPage.DisplayAlert("Success!", "You have added a new reading goal.", "OK");
                             // Prompts main page to do a full reload.
-                            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered = true;
                             // Progress bar animation is run.
                             await LoadProgressBarAsync();
                             // Reading goals are refreshed.
@@ -566,7 +566,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, SelectedUser));
+        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser, SelectedUser));
 
         // A user can start a conversation with another user by clicking on a 'send message' button. This method is called as a response to that button press.
         // In the event that the user hasn't previously had a conversation with another, a conversation is created and saved to the database, and the user is then 
@@ -712,7 +712,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     body = message,
                     createdAt = DateTime.UtcNow,
                     upvotes = 0,
-                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id,
+                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser.Id,
                     userId = SelectedUser.Id
                 });
                 var requestContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
@@ -740,7 +740,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     body = message,
                     createdAt = DateTime.UtcNow,
                     upvotes = 0,
-                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id,
+                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser.Id,
                     parentCommentId = ReplyId,
                     userId = SelectedUser.Id
                 });

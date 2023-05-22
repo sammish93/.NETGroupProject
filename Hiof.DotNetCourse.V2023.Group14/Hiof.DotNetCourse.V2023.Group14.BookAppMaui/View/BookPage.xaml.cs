@@ -8,14 +8,14 @@ public partial class BookPage : ContentPage
 	public BookPage()
 	{
 		InitializeComponent();
-        BindingContext = new BookPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook);
+        BindingContext = new BookPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook);
 	}
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
 
-        BindingContext = new BookPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook);
+        BindingContext = new BookPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook);
 
         var addBookToLibraryButton = this.FindByName<Button>("addBookToLibraryButton");
 
@@ -24,7 +24,7 @@ public partial class BookPage : ContentPage
         if (model != null)
         {
             // Button text changes based on whether the book exists in the library or not.
-            if (await model.IsBookInLibraryAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook))
+            if (await model.IsBookInLibraryAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook))
             {
                 addBookToLibraryButton.Text = "Add a re-read to library";
             }

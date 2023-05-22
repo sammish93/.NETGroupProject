@@ -252,7 +252,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     {
                         await Application.Current.MainPage.DisplayAlert("Success!", "You have added this book to your library.", "OK");
                         // Prompts the main mage to update when navigated to.
-                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered = true;
                         if (SelectedReadingStatus == ReadingStatus.Completed)
                         {
                             // Updates the reading goal.
@@ -415,7 +415,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     else
                     {
                         // Uses a default display picture if no display picture has been set.
-                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture);
+                        userWithDisplayPicture = new V1UserWithDisplayPicture(user, Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture);
                     }
 
                     return userWithDisplayPicture;
@@ -496,7 +496,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     body = message, 
                     createdAt = DateTime.UtcNow, 
                     upvotes = 0, 
-                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id, 
+                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser.Id, 
                     ISBN10 = SelectedBook.IndustryIdentifiers["ISBN_10"],
                     ISBN13 = SelectedBook.IndustryIdentifiers["ISBN_13"]
                 });
@@ -526,7 +526,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     body = message,
                     createdAt = DateTime.UtcNow,
                     upvotes = 0,
-                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser.Id,
+                    authorId = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser.Id,
                     parentCommentId = ReplyId,
                     ISBN10 = SelectedBook.IndustryIdentifiers["ISBN_10"],
                     ISBN13 = SelectedBook.IndustryIdentifiers["ISBN_13"]

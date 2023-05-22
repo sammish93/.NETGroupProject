@@ -201,7 +201,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public LibraryPageViewModel()
         {
-            LoggedInUser = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser;
+            LoggedInUser = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser;
             ReadEntries = new ObservableCollection<V1LibraryEntry>();
             ToBeRead = new ObservableCollection<V1LibraryEntry>();
             CurrentlyReading = new ObservableCollection<V1LibraryEntry>();
@@ -363,7 +363,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response != null && response.IsSuccessStatusCode)
                 {
                     await Application.Current.MainPage.DisplayAlert("Success!", "Your changes have been saved.", "OK");
-                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered = true;
                     await LoadAsync();
 
                 } else if (response == null)
@@ -401,7 +401,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         // Decrements the book's reading goal by 1.
                         await UpdateReadingLibraryAsync(LoggedInUser.Id, (DateTime)SelectedEntry.DateRead, -1);
                         // Prompts the main page to reload data after a change.
-                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered = true;
                         // 'Reloads' the current page.
                         await LoadAsync();
                         SelectedEntry = null;
@@ -451,7 +451,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // Allows the user to navigate to a book's dedicated page (with additional information, comments etc) from their library.
         public async Task NavigateToBookPageAsync(V1Book book)
         {
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)

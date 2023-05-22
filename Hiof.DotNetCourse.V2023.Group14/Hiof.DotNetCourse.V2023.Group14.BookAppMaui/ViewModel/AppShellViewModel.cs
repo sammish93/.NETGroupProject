@@ -70,7 +70,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // Navigates to the search page after a text string is entered in the shell search bar.
         public async Task NavigateToSearchPageAsync(string query)
         {
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery = query;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SearchQuery = query;
             await Shell.Current.GoToAsync($"///home");
             // Note that the parameters passed via QueryProperty doesn't currently work as intended in the current version of Maui. Query string is therefore 
             // saved in the UserSingleton class used as a singleton.
@@ -79,7 +79,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public async Task NavigateToUserPageAsync(V1User user)
         {
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = user;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUser = user;
             await GetSelectedUserDisplayPictureAsync(user.UserName);
             await Shell.Current.GoToAsync($"user?userid={user.Id}");
         }
@@ -87,24 +87,24 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         public async Task LogOutAsync()
         {
             // Turns off the background tasker for said user.
-            await SwitchOffBackgroundTaskerAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser);
+            await SwitchOffBackgroundTaskerAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser);
 
             // Removes all saved data relating to the previously logged in user.
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedEntry = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedEntry = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUser = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = null;
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedEntry = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUser = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SearchQuery = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUser = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUserDisplayPicture = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered = true;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SearchQuery = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedEntry = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUser = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUserDisplayPicture = null;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().UserDisplayPicture = null;
             // Navigates back to the login page and removes all other pages from the nav stack.
             await Shell.Current.GoToAsync($"///login");
         }
@@ -121,12 +121,12 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                 V1UserIcon displayPicture = JsonConvert.DeserializeObject<V1UserIcon>(responseStringDisplayPicture);
 
-                Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = displayPicture.DisplayPicture;
+                Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUserDisplayPicture = displayPicture.DisplayPicture;
             }
             else
             {
                 // If the user has no display picture then a default one is shown.
-                Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
+                Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture;
             }
         }
 

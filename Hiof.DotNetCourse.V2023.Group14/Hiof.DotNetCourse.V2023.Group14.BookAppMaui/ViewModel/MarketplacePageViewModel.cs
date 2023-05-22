@@ -225,7 +225,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
         public MarketplacePageViewModel()
         {
-            LoggedInUser = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser;
+            LoggedInUser = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser;
             // Hides the 'nested' page until a book is selected.
             IsBuyAndSellButtonsVisible = false;
             IsSellGridVisible = false;
@@ -489,7 +489,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, SelectedAd.OwnerObject));
+        public ICommand SendMessageCommand => new Command(async () => await SendMessageAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser, SelectedAd.OwnerObject));
 
         // A user can start a conversation with another user by clicking on a 'send message' button. This method is called as a response to that button press.
         // In the event that the user hasn't previously had a conversation with another, a conversation is created and saved to the database, and the user is then 
@@ -544,7 +544,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
         }
 
-        public ICommand DeleteAdCommand => new Command(async () => await DeleteAdAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, SelectedAd));
+        public ICommand DeleteAdCommand => new Command(async () => await DeleteAdAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser, SelectedAd));
 
         private async Task DeleteAdAsync(V1User userSender, V1MarketplaceBookResponse ad)
         {
@@ -634,7 +634,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
         // Navigates to the book page of the book that has been selected from a collectionview from search results.
         public async Task NavigateToBookPageAsync(V1Book book)
         {
-            Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedBook = book;
+            Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedBook = book;
             string bookId = "";
 
             if (book.IndustryIdentifiers["ISBN_13"] != null)

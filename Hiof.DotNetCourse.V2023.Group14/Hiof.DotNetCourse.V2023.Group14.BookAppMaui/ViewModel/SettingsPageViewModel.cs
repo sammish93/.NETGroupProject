@@ -147,8 +147,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 {
                     // Updates the data pertaining to the user that is logged in after a successful change.
                     // Important in cases where a username or display picture has been changed, so all other pages are updated.
-                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser = userChanged;
-                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser = userChanged;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered = true;
                     await Application.Current.MainPage.DisplayAlert("Success!", "Your changes have been saved.", "OK");
                     // Redirects the user to the main page once a change has been successfully saved.
                     await Shell.Current.GoToAsync("///home");
@@ -201,7 +201,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
             }
             else
             {
-                UserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture;
+                UserDisplayPicture = Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture;
             }
         }
 
@@ -280,7 +280,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     UserDisplayPicture = displayPicture;
-                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture = displayPicture;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().UserDisplayPicture = displayPicture;
                 }
             }
             catch (Exception ex)

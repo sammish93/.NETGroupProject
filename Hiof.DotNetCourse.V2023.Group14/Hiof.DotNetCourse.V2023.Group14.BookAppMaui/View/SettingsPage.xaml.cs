@@ -8,7 +8,7 @@ public partial class SettingsPage : ContentPage
 	public SettingsPage()
 	{
 		InitializeComponent();
-		this.BindingContext = new SettingsPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture);
+		this.BindingContext = new SettingsPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser, Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().UserDisplayPicture);
 	}
 
     protected override async void OnAppearing()
@@ -18,7 +18,7 @@ public partial class SettingsPage : ContentPage
 
         if (model != null)
         {
-            await model.LoadAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser);
+            await model.LoadAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser);
         }
 
         base.OnAppearing();

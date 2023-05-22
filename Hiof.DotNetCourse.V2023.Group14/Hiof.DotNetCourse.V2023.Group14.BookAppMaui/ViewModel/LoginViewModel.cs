@@ -72,7 +72,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     V1User user = JsonConvert.DeserializeObject<V1User>(responseString);
 
                     var currentViewModel = Shell.Current.BindingContext as AppShellViewModel;
-                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser= user;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser= user;
 
                     string displayPictureUrl = $"{_apiBaseUrl}/icons/GetIconByName?username={user.UserName}";
                     HttpResponseMessage resultDisplayPicture = await _httpClient.GetAsync(displayPictureUrl);
@@ -83,8 +83,8 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                     var defaultDisplayPicture = System.Drawing.Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "/../../../../../Resources/Images/default_display_picture.png");
                     ImageConverter converter = new ImageConverter();
                     byte[] displayPictureInBytes = (byte[])converter.ConvertTo(defaultDisplayPicture, typeof(byte[]));
-                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().DefaultDisplayPicture = displayPictureInBytes;
-                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SelectedUserDisplayPicture = displayPictureInBytes;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().DefaultDisplayPicture = displayPictureInBytes;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SelectedUserDisplayPicture = displayPictureInBytes;
 
                     if (resultDisplayPicture.IsSuccessStatusCode) 
                     {
@@ -97,7 +97,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                         await UpdateUserAsync(user);
 
-                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().UserDisplayPicture = displayPicture.DisplayPicture;
+                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().UserDisplayPicture = displayPicture.DisplayPicture;
                         Shell.Current.BindingContext = new AppShellViewModel(user, displayPicture.DisplayPicture);
                     } else
                     {
@@ -113,7 +113,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
 
                     // Forces the main page to reload all data. Useful in the event that one user logs in and then logs out, and then another user logs in without closing 
                     // the application.
-                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().IsUserLibraryAltered = true;
+                    Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().IsUserLibraryAltered = true;
 
                     // Turns on the background tasker to check for new messages.
                     await SwitchOnBackgroundTaskerAsync(user);

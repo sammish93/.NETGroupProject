@@ -21,7 +21,7 @@ public partial class SearchPage : ContentPage
     public SearchPage()
 	{
 		InitializeComponent();
-        this.BindingContext = new SearchPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().LoggedInUser);
+        this.BindingContext = new SearchPageViewModel(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().LoggedInUser);
     }
 
     protected override async void OnAppearing()
@@ -32,7 +32,7 @@ public partial class SearchPage : ContentPage
 
         if (model != null)
         {
-            await model.LoadAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<UserSingleton>().SearchQuery);
+            await model.LoadAsync(Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().SearchQuery);
         }
     }
 
