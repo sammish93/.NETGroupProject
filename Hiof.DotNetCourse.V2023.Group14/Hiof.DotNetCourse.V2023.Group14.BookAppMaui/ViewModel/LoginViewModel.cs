@@ -101,6 +101,7 @@ namespace Hiof.DotNetCourse.V2023.Group14.BookAppMaui.ViewModel
                         Shell.Current.BindingContext = new AppShellViewModel(user, displayPicture.DisplayPicture);
                     } else
                     {
+                        Application.Current.MainPage.Handler.MauiContext.Services.GetService<V1UserSingleton>().UserDisplayPicture = displayPictureInBytes;
                         Shell.Current.BindingContext = new AppShellViewModel(user, displayPictureInBytes);
                     }
 
