@@ -90,7 +90,6 @@ namespace ReadingGoals.Tests
            
             Assert.IsType<OkResult>(actionResult);
         }
-        /*
 
         [Fact]
         public async Task GetBadRequestResponseOnCreateGoalWithNullReadingGoal()
@@ -101,7 +100,8 @@ namespace ReadingGoals.Tests
 
             using var dbContext = new ReadingGoalsContext(options);
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
 
             var actionResult = await controller.CreateReadingGoal(null);
@@ -134,9 +134,10 @@ namespace ReadingGoals.Tests
                 GoalEndDate = DateTime.Now.Date.AddDays(10)
             };
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.CreateReadingGoal(overlappingReadingGoal);
 
            
@@ -158,7 +159,8 @@ namespace ReadingGoals.Tests
             dbContext.Add(readingGoal1);
             await dbContext.SaveChangesAsync();
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
 
             var actionResult = await controller.GetGoalByUserId(readingGoal1.UserId);
@@ -176,7 +178,8 @@ namespace ReadingGoals.Tests
             using var dbContext = new ReadingGoalsContext(options);
 
             var userId = Guid.NewGuid();
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
             var actionResult = await controller.GetGoalByUserId(userId);
 
@@ -205,9 +208,10 @@ namespace ReadingGoals.Tests
             await dbContext.ReadingGoals.AddAsync(readingGoal);
             await dbContext.SaveChangesAsync();
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.GetGoalIdUsingUserIdAndDate(userId, goalDate);
 
             var result = Assert.IsType<OkObjectResult>(actionResult);
@@ -226,9 +230,10 @@ namespace ReadingGoals.Tests
             var userId = Guid.NewGuid();
             var goalDate = DateTime.Now.Date;
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.GetGoalIdUsingUserIdAndDate(userId, goalDate);
 
             
@@ -262,9 +267,10 @@ namespace ReadingGoals.Tests
             await dbContext.ReadingGoals.AddRangeAsync(readingGoal1, readingGoal2);
             await dbContext.SaveChangesAsync();
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.GetRecentReadingGoals(userId);
 
             
@@ -284,9 +290,10 @@ namespace ReadingGoals.Tests
 
             var userId = Guid.NewGuid();
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.GetRecentReadingGoals(userId);
 
            
@@ -310,9 +317,10 @@ namespace ReadingGoals.Tests
             await dbContext.ReadingGoals.AddAsync(readingGoal);
             await dbContext.SaveChangesAsync();
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.IncrementReadingGoal(readingGoal.Id, 5);
 
           
@@ -330,9 +338,10 @@ namespace ReadingGoals.Tests
 
             using var dbContext = new ReadingGoalsContext(options);
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.IncrementReadingGoal(Guid.NewGuid(), 5);
 
            
@@ -352,11 +361,12 @@ namespace ReadingGoals.Tests
             await dbContext.ReadingGoals.AddAsync(readingGoal2);
             await dbContext.SaveChangesAsync();
 
-           
 
-            var controller = new V1ReadingGoalsController(dbContext);
 
-            
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
+
+
             var actionResult = await controller.ModifyReadingGoal(readingGoal2.Id, update);
 
             
@@ -376,11 +386,12 @@ namespace ReadingGoals.Tests
 
             using var dbContext = new ReadingGoalsContext(options);
 
-           
 
-            var controller = new V1ReadingGoalsController(dbContext);
 
-            
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
+
+
             var actionResult = await controller.ModifyReadingGoal(Guid.NewGuid(), readingGoal1);
 
             
@@ -398,9 +409,10 @@ namespace ReadingGoals.Tests
             await dbContext.ReadingGoals.AddAsync(readingGoal4);
             await dbContext.SaveChangesAsync();
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.DeleteReadingGoal(readingGoal4.Id);
 
             
@@ -419,16 +431,15 @@ namespace ReadingGoals.Tests
 
             using var dbContext = new ReadingGoalsContext(options);
 
-            var controller = new V1ReadingGoalsController(dbContext);
+            var loggerMock = new Mock<ILogger<V1ReadingGoalsController>>();
+            var controller = new V1ReadingGoalsController(dbContext, loggerMock.Object);
 
-            
+
             var actionResult = await controller.DeleteReadingGoal(Guid.NewGuid());
 
             
             var result = Assert.IsType<NotFoundObjectResult>(actionResult);
         }
-
-        */
 
     }
 
