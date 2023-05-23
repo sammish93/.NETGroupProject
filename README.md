@@ -68,3 +68,5 @@ Alternatively, if you wish to do the above through a terminal window then:
 # Tests
 1. Tests can be run via Visual Studio by selecting 'Test' from the main menu, and then selecting 'Run All Tests'.
     1. Alternatively, tests can be run through a terminal window by typing 'dotnet test Hiof.DotNetCourse.V2023.Group14/Hiof.DotNetCourse.V2023.Group14.sln'
+
+Icons used by the GUI are made by [Ilham Fitrotul Hayat](https://www.flaticon.com/authors/ilham-fitrotul-hayat), [Freepik](https://www.flaticon.com/authors/freepik), [Pixel Perfect](https://www.flaticon.com/authors/pixel-perfect), and [Uicons](https://www.flaticon.com/uicons/interface-icons) from [FlatIcon](https://www.flaticon.com).
